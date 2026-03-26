@@ -76,7 +76,7 @@ export function PageHero({
             </RevealBlock>
           )}
 
-          <RevealBlock className="editorial-page-note" delay={0.22}>
+          <RevealBlock className="editorial-page-note" delay={0.22} variant="left">
             <p className="section-label">{noteTitle}</p>
             <p className="mt-4 max-w-xl text-sm leading-7 text-white/68 sm:text-base">
               {noteText}
@@ -84,7 +84,7 @@ export function PageHero({
           </RevealBlock>
         </div>
 
-        <RevealBlock className="editorial-page-visual" delay={0.1}>
+        <RevealBlock className="editorial-page-visual" delay={0.1} variant="right">
           <EditorialImage
             className="editorial-page-media"
             image={image}

@@ -41,7 +41,7 @@ export default function AboutPage() {
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[1.08fr_0.92fr]">
-          <RevealBlock className="editorial-paper-panel">
+          <RevealBlock className="editorial-paper-panel" variant="left">
             <p className="section-label">Narrative frame</p>
             <h2 className="display-title mt-5 max-w-4xl text-4xl text-[#1f1914] sm:text-5xl">
               Veronica Adane&apos;s story should feel carried by heritage, courage, and deliberate self-definition.
@@ -62,7 +62,11 @@ export default function AboutPage() {
             </div>
           </RevealBlock>
 
-          <RevealBlock className="editorial-photo-block editorial-photo-block--tall" delay={0.08}>
+          <RevealBlock
+            className="editorial-photo-block editorial-photo-block--tall"
+            delay={0.08}
+            variant="right"
+          >
             <EditorialImage
               className="editorial-photo-shell"
               image={editorialImages.hero}
@@ -75,7 +79,7 @@ export default function AboutPage() {
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-          <RevealBlock className="editorial-dark-panel">
+          <RevealBlock className="editorial-dark-panel" variant="left">
             <p className="section-label">Story layers</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
               The public story is strongest when it carries both tenderness and stature.
@@ -88,7 +92,7 @@ export default function AboutPage() {
             </p>
           </RevealBlock>
 
-          <RevealBlock className="editorial-timeline-panel" delay={0.08}>
+          <RevealBlock className="editorial-timeline-panel" delay={0.08} variant="right">
             <p className="section-label">Narrative timeline</p>
             <div className="mt-6 grid gap-4">
               {timeline.map((item, index) => (
@@ -107,11 +111,29 @@ export default function AboutPage() {
       </section>
 
       <section className="section-shell py-10">
+        <RevealBlock className="editorial-quote-banner" variant="scale">
+          <EditorialImage
+            className="editorial-quote-media"
+            image={editorialImages.stage}
+            sizes="100vw"
+            strength={78}
+          />
+          <div className="editorial-quote-copy">
+            <p className="section-label text-white/80">Biography atmosphere</p>
+            <h2 className="display-title mt-4 max-w-4xl text-4xl text-white sm:text-5xl lg:text-6xl">
+              The biography should feel like a sequence of public moments, not a column of facts.
+            </h2>
+          </div>
+        </RevealBlock>
+      </section>
+
+      <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-3">
           {journeyMoments.map((item, index) => (
             <RevealBlock
               className={index === 1 ? "editorial-dark-panel" : "editorial-paper-panel"}
               delay={0.06 + index * 0.05}
+              variant={index === 0 ? "left" : index === 1 ? "scale" : "right"}
               key={item.title}
             >
               <p className="section-label">Biography chapter</p>

@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <main className="editorial-home pb-16 sm:pb-20">
       <section className="section-shell py-5 sm:py-7">
-        <RevealBlock className="editorial-hero">
+        <RevealBlock className="editorial-hero" variant="scale">
           <EditorialImage
             className="editorial-hero-media"
             image={editorialImages.hero}
@@ -71,7 +71,10 @@ export default function Home() {
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-          <RevealBlock className="editorial-photo-block editorial-photo-block--tall">
+          <RevealBlock
+            className="editorial-photo-block editorial-photo-block--tall"
+            variant="left"
+          >
             <EditorialImage
               className="editorial-photo-shell"
               image={editorialImages.cliff}
@@ -80,7 +83,7 @@ export default function Home() {
             />
           </RevealBlock>
 
-          <RevealBlock className="editorial-paper-panel" delay={0.08}>
+          <RevealBlock className="editorial-paper-panel" delay={0.08} variant="right">
             <p className="section-label">Official Biography</p>
             <h2 className="display-title mt-5 max-w-4xl text-4xl text-[#1f1914] sm:text-5xl">
               Veronica Adane should feel presented like an artist of lasting cultural weight.
@@ -114,7 +117,7 @@ export default function Home() {
       </section>
 
       <section className="section-shell py-10">
-        <RevealBlock className="editorial-quote-banner">
+        <RevealBlock className="editorial-quote-banner" variant="scale">
           <EditorialImage
             className="editorial-quote-media"
             image={editorialImages.stage}
@@ -132,7 +135,7 @@ export default function Home() {
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-2">
-          <RevealBlock className="editorial-dark-panel">
+          <RevealBlock className="editorial-dark-panel" variant="left">
             <p className="section-label">Heritage</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
               {editorialStoryNotes[0].title}
@@ -149,7 +152,7 @@ export default function Home() {
             </div>
           </RevealBlock>
 
-          <RevealBlock className="editorial-photo-block" delay={0.08}>
+          <RevealBlock className="editorial-photo-block" delay={0.08} variant="right">
             <EditorialImage
               className="editorial-photo-shell"
               image={editorialImages.microphone}
@@ -162,7 +165,7 @@ export default function Home() {
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-          <RevealBlock className="editorial-paper-panel">
+          <RevealBlock className="editorial-paper-panel" variant="left">
             <p className="section-label">Rise</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
               {editorialStoryNotes[1].title}
@@ -186,7 +189,7 @@ export default function Home() {
             </div>
           </RevealBlock>
 
-          <RevealBlock className="editorial-mosaic" delay={0.08}>
+          <RevealBlock className="editorial-mosaic" delay={0.08} variant="right">
             <div className="editorial-mosaic-narrow">
               <EditorialImage
                 className="editorial-photo-shell"
@@ -208,11 +211,70 @@ export default function Home() {
       </section>
 
       <section className="section-shell py-10">
+        <div className="editorial-filmstrip">
+          <RevealBlock className="editorial-film-panel editorial-film-panel--dark" variant="left">
+            <p className="section-label">Image rhythm</p>
+            <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
+              What makes the reference page memorable is not fancy image delivery. It is sequencing.
+            </h2>
+            <p className="mt-6 max-w-2xl text-base leading-8 text-white/72">
+              Large panels arrive with different motion languages, text sits
+              inside the image flow instead of underneath it, and every frame
+              feels like a chapter instead of a card.
+            </p>
+          </RevealBlock>
+
+          <RevealBlock
+            className="editorial-film-panel editorial-film-panel--stacked"
+            delay={0.08}
+            variant="scale"
+          >
+            <EditorialImage
+              className="editorial-film-media"
+              image={editorialImages.stage}
+              sizes="(max-width: 1024px) 100vw, 34vw"
+              strength={60}
+            />
+            <div className="editorial-film-copy">
+              <p className="section-label text-white/78">Stage-led scene</p>
+              <h3 className="display-title mt-4 max-w-2xl text-4xl text-white sm:text-5xl">
+                A homepage can speak through photography before the user reads a line.
+              </h3>
+            </div>
+          </RevealBlock>
+
+          <RevealBlock
+            className="editorial-film-panel editorial-film-panel--double"
+            delay={0.12}
+            variant="right"
+          >
+            <div className="editorial-film-double editorial-film-double--small">
+              <EditorialImage
+                className="editorial-photo-shell"
+                image={editorialImages.hero}
+                sizes="(max-width: 1024px) 100vw, 18vw"
+                strength={48}
+              />
+            </div>
+            <div className="editorial-film-double editorial-film-double--large">
+              <EditorialImage
+                className="editorial-photo-shell"
+                image={editorialImages.crowd}
+                sizes="(max-width: 1024px) 100vw, 28vw"
+                strength={56}
+              />
+            </div>
+          </RevealBlock>
+        </div>
+      </section>
+
+      <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-3">
           {editorialSections.map((item, index) => (
             <RevealBlock
               className={index === 1 ? "editorial-dark-panel" : "editorial-paper-panel"}
               delay={0.08 + index * 0.06}
+              variant={index === 0 ? "left" : index === 1 ? "scale" : "right"}
               key={item.title}
             >
               <p className="section-label">{item.title}</p>

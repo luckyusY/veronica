@@ -20,16 +20,48 @@ function normalizeWord(word: string) {
   return word.replace(/[^a-z0-9]/gi, "").toLowerCase();
 }
 
-function getRevealState(reducedMotion: boolean, y = 22) {
-  return reducedMotion
-    ? {
-        initial: { opacity: 0 },
-        animate: { opacity: 1 },
-      }
-    : {
-        initial: { opacity: 0, y },
+type RevealVariant = "up" | "left" | "right" | "scale" | "down";
+
+function getRevealState(
+  reducedMotion: boolean,
+  variant: RevealVariant = "up",
+  distance = 22,
+) {
+  if (reducedMotion) {
+    return {
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+    };
+  }
+
+  switch (variant) {
+    case "left":
+      return {
+        initial: { opacity: 0, x: -distance },
+        animate: { opacity: 1, x: 0 },
+      };
+    case "right":
+      return {
+        initial: { opacity: 0, x: distance },
+        animate: { opacity: 1, x: 0 },
+      };
+    case "down":
+      return {
+        initial: { opacity: 0, y: -distance },
         animate: { opacity: 1, y: 0 },
       };
+    case "scale":
+      return {
+        initial: { opacity: 0, scale: 0.94 },
+        animate: { opacity: 1, scale: 1 },
+      };
+    case "up":
+    default:
+      return {
+        initial: { opacity: 0, y: distance },
+        animate: { opacity: 1, y: 0 },
+      };
+  }
 }
 
 type AnimatedEyebrowProps = {
@@ -44,7 +76,7 @@ export function AnimatedEyebrow({
   delay = 0,
 }: AnimatedEyebrowProps) {
   const reducedMotion = useReducedMotion();
-  const state = getRevealState(!!reducedMotion, 16);
+  const state = getRevealState(!!reducedMotion, "up", 16);
 
   return (
     <motion.p
@@ -125,7 +157,7 @@ export function AnimatedParagraph({
   delay = 0,
 }: AnimatedParagraphProps) {
   const reducedMotion = useReducedMotion();
-  const state = getRevealState(!!reducedMotion, 22);
+  const state = getRevealState(!!reducedMotion, "up", 22);
 
   return (
     <motion.p
@@ -145,6 +177,8 @@ type RevealBlockProps = {
   className?: string;
   delay?: number;
   lenisPrevent?: boolean;
+  variant?: RevealVariant;
+  distance?: number;
 };
 
 export function RevealBlock({
@@ -152,9 +186,11 @@ export function RevealBlock({
   className = "",
   delay = 0,
   lenisPrevent = false,
+  variant = "up",
+  distance = 24,
 }: RevealBlockProps) {
   const reducedMotion = useReducedMotion();
-  const state = getRevealState(!!reducedMotion, 24);
+  const state = getRevealState(!!reducedMotion, variant, distance);
 
   return (
     <motion.div
