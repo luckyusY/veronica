@@ -11,137 +11,127 @@ const footerStats = [
 const directLines = [
   {
     title: "Live Booking Desk",
-    detail: "Concerts, festivals, premium private events, and international routing.",
+    detail: "Concerts, festivals, private events, and international routing.",
   },
   {
     title: "Press & Interviews",
-    detail: "Editorial requests, red carpet appearances, media assets, and speaking moments.",
+    detail: "Editorial requests, red carpet appearances, and media assets.",
   },
   {
     title: "Brand Partnerships",
-    detail: "Ambassador campaigns, launch activations, and sponsor-led storytelling.",
+    detail: "Ambassador campaigns, launch activations, and sponsor storytelling.",
   },
 ];
 
-const platformCodes = [
-  "Azmari heritage translated into a modern luxury digital identity.",
-  "A visual system built for releases, diaspora energy, and cinematic storytelling.",
-  "Commerce, press, tour, and fan connection held inside one signature brand house.",
-];
-
-const footerTicker = [
-  "Veronica Adane official platform",
-  "Heritage. Performance. Global African vision.",
-  "Music x Tour x Press x Partnerships",
-  "This is not the end. This is only the beginning.",
+const footerSignals = [
+  "Heritage",
+  "Performance",
+  "Press",
+  "Tour",
+  "Partnerships",
 ];
 
 export function SiteFooter() {
   return (
-    <footer className="section-shell mt-20 pb-10">
-      <div className="footer-stage">
-        <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
-          <div className="footer-grid-card">
-            <p className="section-label text-beam">Veronica Adane</p>
-            <h2 className="display-title mt-4 text-4xl text-balance text-white sm:text-5xl">
-              A closing section that feels like a final stage entrance, not an afterthought.
-            </h2>
-            <p className="mt-4 max-w-3xl text-sm leading-8 text-white/68 sm:text-base">
-              The footer is designed as Veronica&apos;s digital signature:
-              part manifesto, part routing deck, part brand directory. It
-              carries the same premium tension as the homepage instead of
-              collapsing into generic links.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link className="primary-button" href="/contact">
-                Open Direct Contact
-              </Link>
-              <Link className="secondary-button" href="/music">
-                Enter Release Space
-              </Link>
-            </div>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            {footerStats.map((item) => (
-              <div className="footer-stat" key={item.value}>
-                <p className="display-title text-3xl text-[var(--gold-soft)]">
-                  {item.value}
-                </p>
-                <p className="mt-3 text-sm leading-7 text-white/66">
-                  {item.label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-4 grid gap-4 xl:grid-cols-[1.1fr_0.95fr_0.95fr]">
-          <div className="footer-grid-card">
-            <p className="section-label">Navigate The House</p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              {navigationItems.map((item, index) => (
-                <Link className="footer-link-card" href={item.href} key={item.href}>
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/88">
-                      {item.label}
-                    </p>
-                    <p className="mt-1 text-xs uppercase tracking-[0.14em] text-white/46">
-                      Signature Destination
-                    </p>
-                  </div>
-                  <span className="footer-link-index">
-                    {(index + 1).toString().padStart(2, "0")}
-                  </span>
+    <footer className="mt-24 border-t border-white/8 bg-[#0B0F14]">
+      <div className="section-shell py-12 sm:py-14">
+        <div className="footer-stage">
+          <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+            <div className="footer-grid-card">
+              <p className="section-label text-beam">Footer</p>
+              <h2 className="display-title mt-4 text-4xl text-balance text-white sm:text-5xl">
+                The final section should feel grounded, solid, and unmistakably part of the brand.
+              </h2>
+              <p className="mt-4 max-w-3xl text-sm leading-8 text-white/70 sm:text-base">
+                This footer is now a clear closing block for the site: strong
+                surface color, visible structure, direct paths for booking and
+                press, and an obvious end to the experience.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link className="primary-button" href="/contact">
+                  Contact Management
                 </Link>
-              ))}
+                <Link className="secondary-button" href="/music">
+                  Explore Releases
+                </Link>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-2">
+                {footerSignals.map((item) => (
+                  <span className="meta-chip" key={item}>
+                    {item}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="footer-grid-card">
-            <p className="section-label">Direct Lines</p>
-            <div className="mt-6 space-y-3">
-              {directLines.map((item) => (
-                <div className="footer-link-card" key={item.title}>
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--gold-soft)]">
-                      {item.title}
-                    </p>
-                    <p className="mt-2 text-sm leading-7 text-white/66">
-                      {item.detail}
-                    </p>
-                  </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {footerStats.map((item) => (
+                <div className="footer-stat" key={item.value}>
+                  <p className="display-title text-3xl text-[var(--gold-soft)]">
+                    {item.value}
+                  </p>
+                  <p className="mt-3 text-sm leading-7 text-white/68">
+                    {item.label}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="footer-grid-card">
-            <p className="section-label">Platform Code</p>
-            <div className="mt-6 space-y-3">
-              {platformCodes.map((item, index) => (
-                <div className="footer-link-card" key={item}>
-                  <div className="flex items-start gap-4">
+          <div className="mt-4 grid gap-4 xl:grid-cols-[1fr_1fr_1fr]">
+            <div className="footer-grid-card">
+              <p className="section-label">Site Map</p>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {navigationItems.map((item, index) => (
+                  <Link className="footer-link-card" href={item.href} key={item.href}>
+                    <div>
+                      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/88">
+                        {item.label}
+                      </p>
+                      <p className="mt-1 text-xs uppercase tracking-[0.14em] text-white/48">
+                        Main destination
+                      </p>
+                    </div>
                     <span className="footer-link-index">
                       {(index + 1).toString().padStart(2, "0")}
                     </span>
-                    <p className="text-sm leading-7 text-white/66">{item}</p>
-                  </div>
-                </div>
-              ))}
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="chrome-shell mt-4 rounded-[1.5rem] px-4 py-4 sm:px-5">
-          <div className="ticker-wrap">
-            <div className="ticker-track">
-              {[...footerTicker, ...footerTicker].map((item, index) => (
-                <span className="ticker-item" key={`${item}-${index}`}>
-                  <span className="ticker-dot" />
-                  {item}
-                </span>
-              ))}
+            <div className="footer-grid-card">
+              <p className="section-label">Direct Lines</p>
+              <div className="mt-6 space-y-3">
+                {directLines.map((item) => (
+                  <div className="footer-link-card" key={item.title}>
+                    <div>
+                      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--gold-soft)]">
+                        {item.title}
+                      </p>
+                      <p className="mt-2 text-sm leading-7 text-white/68">
+                        {item.detail}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="footer-grid-card">
+              <p className="section-label">Closing Note</p>
+              <div className="mt-6 rounded-[1.25rem] border border-white/8 bg-[#18202A] px-5 py-6">
+                <p className="display-title text-3xl text-white sm:text-4xl">
+                  This is not the end.
+                </p>
+                <p className="display-title mt-2 text-3xl text-[var(--gold-soft)] sm:text-4xl">
+                  This is only the beginning.
+                </p>
+                <p className="mt-4 text-sm leading-7 text-white/68">
+                  A stronger footer should not disappear into the page. It
+                  should close the experience with clarity and presence.
+                </p>
+              </div>
             </div>
           </div>
         </div>

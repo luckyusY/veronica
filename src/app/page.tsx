@@ -103,7 +103,6 @@ export default function Home() {
   return (
     <main className="pb-16 sm:pb-20">
       <section className="section-shell relative overflow-hidden py-10 sm:py-14 lg:py-20">
-        <div className="pointer-events-none absolute inset-x-8 top-4 -z-10 h-[28rem] rounded-[2.75rem] bg-[radial-gradient(circle_at_top,_rgba(212,175,106,0.24),_rgba(217,79,43,0.14),_transparent_68%)] blur-3xl" />
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.02fr)_24rem] lg:items-start">
           <div className="space-y-6">
             <AnimatedEyebrow>Cinematic artist platform</AnimatedEyebrow>
@@ -283,7 +282,7 @@ export default function Home() {
           <div className="mt-6 grid gap-4 lg:grid-cols-3">
             {streamingSignals.map((item, index) => (
               <RevealBlock
-                className="rounded-[1.35rem] border border-white/8 bg-black/20 px-4 py-4 text-sm leading-7 text-white/68"
+                className="solid-note-card text-sm leading-7 text-white/68"
                 delay={0.18 + index * 0.06}
                 key={item}
               >

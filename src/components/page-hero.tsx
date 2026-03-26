@@ -31,7 +31,6 @@ export function PageHero({
 }: PageHeroProps) {
   return (
     <section className="section-shell relative overflow-hidden py-14 sm:py-16 lg:py-20">
-      <div className="pointer-events-none absolute inset-x-8 top-0 -z-10 h-72 rounded-[2rem] bg-[radial-gradient(circle_at_top,_rgba(212,175,106,0.22),_rgba(217,79,43,0.12),_transparent_68%)] blur-2xl" />
       <div className="panel grid gap-8 rounded-[2rem] px-6 py-8 sm:px-10 sm:py-12 lg:grid-cols-[minmax(0,1.3fr)_18rem] lg:items-end">
         <div className="space-y-5">
           <AnimatedEyebrow>{eyebrow}</AnimatedEyebrow>
@@ -61,10 +60,7 @@ export function PageHero({
             </RevealBlock>
           )}
         </div>
-        <RevealBlock
-          className="rounded-[1.5rem] border border-white/10 bg-black/30 p-5 text-sm text-white/65"
-          delay={0.24}
-        >
+        <RevealBlock className="solid-note-card text-sm text-white/65" delay={0.24}>
           <p className="font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
             Build Direction
           </p>

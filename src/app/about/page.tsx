@@ -21,7 +21,7 @@ export default function AboutPage() {
         eyebrow="About Veronica"
         highlightWords={["purpose", "family", "identity"]}
         title="A biography rooted in purpose, discipline, family, and identity."
-        description="This page is meant to carry Veronica's full story with dignity and emotional weight. It should read like an artist profile, not a résumé, while still preserving concrete milestones and cultural context."
+        description="This page is meant to carry Veronica's full story with dignity and emotional weight. It should read like an artist profile, not a resume, while still preserving concrete milestones and cultural context."
         primaryCta={{ href: "/media", label: "View Press Positioning" }}
         secondaryCta={{ href: "/music", label: "Explore Releases" }}
       />
@@ -47,10 +47,7 @@ export default function AboutPage() {
           <p className="section-label">Narrative Timeline</p>
           <div className="mt-8 grid gap-4 lg:grid-cols-5">
             {timeline.map((item, index) => (
-              <article
-                className="rounded-[1.5rem] border border-white/8 bg-black/20 p-5"
-                key={item}
-              >
+              <article className="solid-note-card" key={item}>
                 <p className="text-sm font-semibold text-[var(--accent)]">
                   0{index + 1}
                 </p>

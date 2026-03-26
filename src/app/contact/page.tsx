@@ -45,10 +45,7 @@ export default function ContactPage() {
           <p className="section-label">Implementation Notes</p>
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {workflow.map((item) => (
-              <article
-                className="rounded-[1.5rem] border border-white/8 bg-black/20 p-5"
-                key={item}
-              >
+              <article className="solid-note-card" key={item}>
                 <p className="text-sm leading-7 text-white/68">{item}</p>
               </article>
             ))}
