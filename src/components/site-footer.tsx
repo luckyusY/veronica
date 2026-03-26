@@ -20,7 +20,8 @@ export function SiteFooter() {
         <div className="editorial-classic-footer-brand">
           <p className="section-label">Veronica Adane</p>
           <Link className="editorial-classic-footer-wordmark" href="/">
-            Veronica Adane
+            <span className="brand-script">Veronica</span>
+            <span className="brand-didot">ADANE</span>
           </Link>
           <p className="editorial-classic-footer-copy">
             Built as a classic artist publication: clear, refined, and prepared

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,9 +23,10 @@ export function SiteHeader() {
         </div>
 
         <div className="editorial-classic-brand">
-          <p className="section-label">Singer • Songwriter • Actress • Journalist</p>
+          <p className="section-label">Singer / Songwriter / Actress / Journalist</p>
           <Link className="editorial-classic-wordmark" href="/">
-            Veronica Adane
+            <span className="brand-script">Veronica</span>
+            <span className="brand-didot">ADANE</span>
           </Link>
           <p className="editorial-classic-subtitle">
             A classic editorial home for biography, releases, live
@@ -65,3 +66,4 @@ export function SiteHeader() {
     </header>
   );
 }
+

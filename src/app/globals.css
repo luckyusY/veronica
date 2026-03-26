@@ -23,7 +23,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-manrope);
-  --font-display: var(--font-cormorant);
+  --font-display: var(--font-bodoni);
 }
 
 html {
@@ -301,9 +301,9 @@ a {
   }
 
   .display-title {
-    font-family: var(--font-cormorant), Georgia, serif;
-    line-height: 0.94;
-    letter-spacing: -0.035em;
+    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
   }
 
   .text-beam {
@@ -593,7 +593,7 @@ a {
     right: 1.1rem;
     bottom: 0.5rem;
     z-index: 0;
-    font-family: var(--font-cormorant), Georgia, serif;
+    font-family: var(--font-bodoni), "Didot", Georgia, serif;
     font-size: clamp(4.5rem, 12vw, 7.4rem);
     line-height: 0.88;
     color: rgba(255, 255, 255, 0.05);
@@ -625,7 +625,7 @@ a {
   }
 
   .metric-index {
-    font-family: var(--font-cormorant), Georgia, serif;
+    font-family: var(--font-bodoni), "Didot", Georgia, serif;
     font-size: 3rem;
     line-height: 0.9;
     color: rgba(255, 255, 255, 0.16);
@@ -745,7 +745,7 @@ a {
     border-radius: 1.5rem;
     border: 1px solid rgba(242, 210, 139, 0.22);
     background: linear-gradient(145deg, #3a2b1c 0%, #241813 100%);
-    font-family: var(--font-cormorant), Georgia, serif;
+    font-family: var(--font-bodoni), "Didot", Georgia, serif;
     font-size: 2rem;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -803,7 +803,7 @@ a {
   }
 
   .nav-rail-index {
-    font-family: var(--font-cormorant), Georgia, serif;
+    font-family: var(--font-bodoni), "Didot", Georgia, serif;
     font-size: 1.75rem;
     line-height: 0.9;
     color: rgba(255, 255, 255, 0.12);
@@ -879,7 +879,7 @@ a {
   }
 
   .footer-link-index {
-    font-family: var(--font-cormorant), Georgia, serif;
+    font-family: var(--font-bodoni), "Didot", Georgia, serif;
     font-size: 1.7rem;
     line-height: 0.9;
     color: rgba(255, 255, 255, 0.14);
@@ -977,7 +977,7 @@ a {
 
   .admin-kpi-value {
     margin-top: 1.15rem;
-    font-family: var(--font-cormorant), Georgia, serif;
+    font-family: var(--font-bodoni), "Didot", Georgia, serif;
     font-size: clamp(2.8rem, 6vw, 4.2rem);
     line-height: 0.9;
     color: white;
@@ -1795,7 +1795,7 @@ a {
   .editorial-wordmark {
     display: inline-block;
     max-width: 8ch;
-    font-family: var(--font-cormorant), Georgia, serif;
+    font-family: var(--font-bodoni), "Didot", Georgia, serif;
     font-size: clamp(3.6rem, 9vw, 6.5rem);
     line-height: 0.9;
     letter-spacing: -0.05em;
@@ -1805,6 +1805,30 @@ a {
   .editorial-wordmark:hover {
     color: #f7f2ea;
     text-decoration: none;
+  }
+
+  .brand-script,
+  .brand-didot {
+    display: block;
+  }
+
+  .brand-script {
+    font-family: var(--font-script), "Snell Roundhand", cursive;
+    font-size: 0.84em;
+    font-weight: 400;
+    line-height: 0.74;
+    letter-spacing: 0.01em;
+    color: #f7f2ea;
+  }
+
+  .brand-didot {
+    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-size: 0.5em;
+    font-weight: 700;
+    line-height: 0.88;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(247, 242, 234, 0.98);
   }
 
   .editorial-masthead-copy {
@@ -1910,7 +1934,7 @@ a {
     width: fit-content;
     border: 1px solid rgba(242, 210, 139, 0.22);
     padding: 0.65rem 0.82rem;
-    font-family: var(--font-cormorant), Georgia, serif;
+    font-family: var(--font-bodoni), "Didot", Georgia, serif;
     font-size: 1.2rem;
     color: #f7f2ea;
   }
@@ -2081,8 +2105,10 @@ a {
 
   .editorial-classic-wordmark,
   .editorial-classic-footer-wordmark {
-    display: inline-block;
-    font-family: var(--font-cormorant), Georgia, serif;
+    display: inline-grid;
+    gap: 0.16rem;
+    justify-items: center;
+    font-family: var(--font-bodoni), "Didot", Georgia, serif;
     line-height: 0.9;
     letter-spacing: -0.05em;
     color: #f7f2ea;
@@ -2100,6 +2126,15 @@ a {
   .editorial-classic-footer-wordmark:hover {
     color: #f7f2ea;
     text-decoration: none;
+  }
+
+  .editorial-classic-wordmark .brand-script {
+    transform: translateY(0.18em);
+  }
+
+  .editorial-classic-wordmark .brand-didot,
+  .editorial-classic-footer-wordmark .brand-didot {
+    margin-left: 0.28em;
   }
 
   .editorial-classic-subtitle,
