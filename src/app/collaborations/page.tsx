@@ -23,6 +23,7 @@ export default function CollaborationsPage() {
         eyebrow="Collaborations"
         highlightWords={["premium", "brands", "media"]}
         image={editorialImages.hero}
+        imageMotionPreset="settle-right"
         imageLabel="Open portrait photography used to test brand-facing direction"
         noteText="Brands should understand Veronica's stature quickly. The page should feel commercially ready without losing the editorial identity of the site."
         noteTitle="Partner language"
@@ -33,7 +34,7 @@ export default function CollaborationsPage() {
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[1fr_1fr]">
-          <RevealBlock className="editorial-dark-panel">
+          <RevealBlock className="editorial-dark-panel" variant="left">
             <p className="section-label">Partnership tracks</p>
             <div className="mt-6 grid gap-3">
               {collaborationTracks.map((item) => (
@@ -51,10 +52,15 @@ export default function CollaborationsPage() {
             </div>
           </RevealBlock>
 
-          <RevealBlock className="editorial-photo-block editorial-photo-block--tall" delay={0.08}>
+          <RevealBlock
+            className="editorial-photo-block editorial-photo-block--tall"
+            delay={0.08}
+            variant="right"
+          >
             <EditorialImage
               className="editorial-photo-shell"
               image={editorialImages.stage}
+              motionPreset="from-left"
               sizes="(max-width: 1024px) 100vw, 40vw"
               strength={66}
             />
@@ -63,7 +69,7 @@ export default function CollaborationsPage() {
       </section>
 
       <section className="section-shell py-10">
-        <RevealBlock className="editorial-paper-panel">
+        <RevealBlock className="editorial-paper-panel" variant="scale">
           <p className="section-label">Activation formats</p>
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {partnershipFormats.map((item) => (

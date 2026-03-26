@@ -31,6 +31,7 @@ export default function AboutPage() {
         eyebrow="About Veronica"
         highlightWords={["purpose", "family", "identity"]}
         image={editorialImages.cliff}
+        imageMotionPreset="from-right"
         imageLabel="Open placeholder portrait used for editorial concepting"
         noteText="The biography should read with dignity and emotional weight, holding real milestones without turning the page into a resume."
         noteTitle="Biography standard"
@@ -70,6 +71,7 @@ export default function AboutPage() {
             <EditorialImage
               className="editorial-photo-shell"
               image={editorialImages.hero}
+              motionPreset="from-right"
               sizes="(max-width: 1024px) 100vw, 42vw"
               strength={66}
             />
@@ -115,6 +117,7 @@ export default function AboutPage() {
           <EditorialImage
             className="editorial-quote-media"
             image={editorialImages.stage}
+            motionPreset="settle-left"
             sizes="100vw"
             strength={78}
           />

@@ -12,6 +12,13 @@ type EditorialImageAsset = {
   placeholderHighlight?: string;
 };
 
+type ImageMotionPreset =
+  | "vertical"
+  | "from-left"
+  | "from-right"
+  | "settle-left"
+  | "settle-right";
+
 type EditorialImageProps = {
   image: EditorialImageAsset;
   sizes: string;
@@ -19,6 +26,7 @@ type EditorialImageProps = {
   priority?: boolean;
   strength?: number;
   overlayClassName?: string;
+  motionPreset?: ImageMotionPreset;
 };
 
 function createBlurDataURL(base: string, highlight: string) {
@@ -46,6 +54,7 @@ export function EditorialImage({
   priority = false,
   strength = 52,
   overlayClassName = "bg-gradient-to-t from-black/38 via-black/10 to-transparent",
+  motionPreset = "vertical",
 }: EditorialImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
@@ -55,16 +64,64 @@ export function EditorialImage({
     offset: ["start end", "end start"],
   });
 
+  const motionFrames = useMemo(() => {
+    if (reducedMotion) {
+      return {
+        x: [0, 0, 0],
+        y: [0, 0, 0],
+        scale: [1, 1, 1],
+        rotate: [0, 0, 0],
+      };
+    }
+
+    switch (motionPreset) {
+      case "from-left":
+        return {
+          x: [-strength * 1.4, 0, strength * 0.45],
+          y: [-strength * 0.3, 0, strength * 0.16],
+          scale: [1.18, 1.08, 1.02],
+          rotate: [-1.2, 0, 0.35],
+        };
+      case "from-right":
+        return {
+          x: [strength * 1.4, 0, -strength * 0.45],
+          y: [-strength * 0.3, 0, strength * 0.16],
+          scale: [1.18, 1.08, 1.02],
+          rotate: [1.2, 0, -0.35],
+        };
+      case "settle-left":
+        return {
+          x: [-strength * 0.8, 0, -strength * 0.18],
+          y: [-strength * 0.55, 0, strength * 0.22],
+          scale: [1.16, 1.06, 1.02],
+          rotate: [-0.55, 0, 0],
+        };
+      case "settle-right":
+        return {
+          x: [strength * 0.8, 0, strength * 0.18],
+          y: [-strength * 0.55, 0, strength * 0.22],
+          scale: [1.16, 1.06, 1.02],
+          rotate: [0.55, 0, 0],
+        };
+      case "vertical":
+      default:
+        return {
+          x: [0, 0, 0],
+          y: [-strength, 0, strength],
+          scale: [1.14, 1.08, 1.02],
+          rotate: [0, 0, 0],
+        };
+    }
+  }, [motionPreset, reducedMotion, strength]);
+
+  const x = useTransform(scrollYProgress, [0, 0.5, 1], motionFrames.x);
   const y = useTransform(
     scrollYProgress,
-    [0, 1],
-    reducedMotion ? [0, 0] : [-strength, strength],
+    [0, 0.5, 1],
+    motionFrames.y,
   );
-  const scale = useTransform(
-    scrollYProgress,
-    [0, 1],
-    reducedMotion ? [1, 1] : [1.12, 1.02],
-  );
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], motionFrames.scale);
+  const rotate = useTransform(scrollYProgress, [0, 0.5, 1], motionFrames.rotate);
   const blurDataURL = useMemo(
     () =>
       createBlurDataURL(
@@ -81,7 +138,7 @@ export function EditorialImage({
     >
       <motion.div
         className="editorial-image-canvas"
-        style={reducedMotion ? undefined : { y, scale }}
+        style={reducedMotion ? undefined : { x, y, scale, rotate }}
       >
         <Image
           alt={image.alt}

@@ -23,6 +23,7 @@ export default function Home() {
           <EditorialImage
             className="editorial-hero-media"
             image={editorialImages.hero}
+            motionPreset="settle-right"
             priority
             sizes="100vw"
             strength={84}
@@ -78,6 +79,7 @@ export default function Home() {
             <EditorialImage
               className="editorial-photo-shell"
               image={editorialImages.cliff}
+              motionPreset="from-left"
               sizes="(max-width: 1024px) 100vw, 40vw"
               strength={62}
             />
@@ -121,6 +123,7 @@ export default function Home() {
           <EditorialImage
             className="editorial-quote-media"
             image={editorialImages.stage}
+            motionPreset="settle-left"
             sizes="100vw"
             strength={76}
           />
@@ -156,6 +159,7 @@ export default function Home() {
             <EditorialImage
               className="editorial-photo-shell"
               image={editorialImages.microphone}
+              motionPreset="from-right"
               sizes="(max-width: 1024px) 100vw, 50vw"
               strength={58}
             />
@@ -194,6 +198,7 @@ export default function Home() {
               <EditorialImage
                 className="editorial-photo-shell"
                 image={editorialImages.crowd}
+                motionPreset="from-left"
                 sizes="(max-width: 1024px) 100vw, 22vw"
                 strength={54}
               />
@@ -202,6 +207,7 @@ export default function Home() {
               <EditorialImage
                 className="editorial-photo-shell"
                 image={editorialImages.aerialCrowd}
+                motionPreset="from-right"
                 sizes="(max-width: 1024px) 100vw, 38vw"
                 strength={54}
               />
@@ -232,6 +238,7 @@ export default function Home() {
             <EditorialImage
               className="editorial-film-media"
               image={editorialImages.stage}
+              motionPreset="from-left"
               sizes="(max-width: 1024px) 100vw, 34vw"
               strength={60}
             />
@@ -252,6 +259,7 @@ export default function Home() {
               <EditorialImage
                 className="editorial-photo-shell"
                 image={editorialImages.hero}
+                motionPreset="settle-right"
                 sizes="(max-width: 1024px) 100vw, 18vw"
                 strength={48}
               />
@@ -260,6 +268,7 @@ export default function Home() {
               <EditorialImage
                 className="editorial-photo-shell"
                 image={editorialImages.crowd}
+                motionPreset="from-left"
                 sizes="(max-width: 1024px) 100vw, 28vw"
                 strength={56}
               />

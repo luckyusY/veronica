@@ -23,6 +23,7 @@ export default function MediaPage() {
         eyebrow="Media & Press"
         highlightWords={["milestone", "trusted", "home"]}
         image={editorialImages.microphone}
+        imageMotionPreset="from-left"
         imageLabel="Open performance photography used to test press-page drama"
         noteText="A strong press page helps journalists verify the story quickly while still feeling clearly connected to the artist's broader visual identity."
         noteTitle="Press standard"
@@ -33,7 +34,7 @@ export default function MediaPage() {
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[1.04fr_0.96fr]">
-          <RevealBlock className="editorial-paper-panel">
+          <RevealBlock className="editorial-paper-panel" variant="left">
             <p className="section-label">Press highlights</p>
             <div className="mt-6 grid gap-4">
               {pressHighlights.map((item) => (
@@ -47,10 +48,15 @@ export default function MediaPage() {
             </div>
           </RevealBlock>
 
-          <RevealBlock className="editorial-photo-block editorial-photo-block--tall" delay={0.08}>
+          <RevealBlock
+            className="editorial-photo-block editorial-photo-block--tall"
+            delay={0.08}
+            variant="right"
+          >
             <EditorialImage
               className="editorial-photo-shell"
               image={editorialImages.hero}
+              motionPreset="from-right"
               sizes="(max-width: 1024px) 100vw, 40vw"
               strength={62}
             />
@@ -59,7 +65,7 @@ export default function MediaPage() {
       </section>
 
       <section className="section-shell py-10">
-        <RevealBlock className="editorial-dark-panel">
+        <RevealBlock className="editorial-dark-panel" variant="scale">
           <p className="section-label">Press kit structure</p>
           <h2 className="display-title mt-5 max-w-4xl text-4xl text-white sm:text-5xl">
             This archive should make media access simple without flattening the story into generic publicity language.

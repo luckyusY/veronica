@@ -23,6 +23,7 @@ export default function ShopPage() {
         eyebrow="Shop"
         highlightWords={["premium", "store", "era"]}
         image={editorialImages.hero}
+        imageMotionPreset="from-left"
         imageLabel="Open portrait photography used to test product-era mood"
         noteText="Commerce should feel considered and collectible, not crowded. The strongest version connects every product drop to a release era or live moment."
         noteTitle="Commerce direction"
@@ -33,16 +34,17 @@ export default function ShopPage() {
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.94fr_1.06fr]">
-          <RevealBlock className="editorial-photo-block editorial-photo-block--tall">
+          <RevealBlock className="editorial-photo-block editorial-photo-block--tall" variant="left">
             <EditorialImage
               className="editorial-photo-shell"
               image={editorialImages.cliff}
+              motionPreset="from-right"
               sizes="(max-width: 1024px) 100vw, 40vw"
               strength={64}
             />
           </RevealBlock>
 
-          <RevealBlock className="editorial-paper-panel" delay={0.08}>
+          <RevealBlock className="editorial-paper-panel" delay={0.08} variant="right">
             <p className="section-label">Collection layers</p>
             <div className="mt-8 grid gap-4 lg:grid-cols-3">
               {shopHighlights.map((item) => (
@@ -59,7 +61,7 @@ export default function ShopPage() {
       </section>
 
       <section className="section-shell py-10">
-        <RevealBlock className="editorial-dark-panel">
+        <RevealBlock className="editorial-dark-panel" variant="scale">
           <p className="section-label">Commerce foundation</p>
           <h2 className="display-title mt-5 max-w-4xl text-4xl text-white sm:text-5xl">
             The shop should be lean at launch, but structured for bigger drops and private access later.

@@ -23,6 +23,7 @@ export default function EventsPage() {
         eyebrow="Events"
         highlightWords={["electricity", "live", "checkout"]}
         image={editorialImages.aerialCrowd}
+        imageMotionPreset="settle-right"
         imageLabel="Open live-event photography used to test scale and movement"
         noteText="The events layer should translate live demand into a polished ticketing experience without losing the emotional charge of performance."
         noteTitle="Live system"
@@ -32,7 +33,7 @@ export default function EventsPage() {
       />
 
       <section className="section-shell py-10">
-        <RevealBlock className="editorial-paper-panel">
+        <RevealBlock className="editorial-paper-panel" variant="left">
           <p className="section-label">Tour map</p>
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {upcomingEvents.map((item) => (
@@ -52,16 +53,17 @@ export default function EventsPage() {
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
-          <RevealBlock className="editorial-photo-block editorial-photo-block--tall">
+          <RevealBlock className="editorial-photo-block editorial-photo-block--tall" variant="left">
             <EditorialImage
               className="editorial-photo-shell"
               image={editorialImages.crowd}
+              motionPreset="from-left"
               sizes="(max-width: 1024px) 100vw, 42vw"
               strength={72}
             />
           </RevealBlock>
 
-          <RevealBlock className="editorial-dark-panel" delay={0.08}>
+          <RevealBlock className="editorial-dark-panel" delay={0.08} variant="right">
             <p className="section-label">Ticketing flow</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
               Ticketing should feel premium, legible, and ready for real routing complexity.

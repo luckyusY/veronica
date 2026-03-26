@@ -27,6 +27,12 @@ type PageHeroProps = {
     label: string;
   };
   image: PageHeroImage;
+  imageMotionPreset?:
+    | "vertical"
+    | "from-left"
+    | "from-right"
+    | "settle-left"
+    | "settle-right";
   imageLabel?: string;
   noteTitle?: string;
   noteText?: string;
@@ -40,6 +46,7 @@ export function PageHero({
   primaryCta,
   secondaryCta,
   image,
+  imageMotionPreset = "settle-right",
   imageLabel = "Editorial placeholder photography",
   noteTitle = "Page direction",
   noteText = "Each public page is being rebuilt as part of one editorial world: stronger image hierarchy, less interface noise, and cleaner storytelling rhythm.",
@@ -88,6 +95,7 @@ export function PageHero({
           <EditorialImage
             className="editorial-page-media"
             image={image}
+            motionPreset={imageMotionPreset}
             priority
             sizes="(max-width: 1024px) 100vw, 42vw"
             strength={72}

@@ -1406,9 +1406,7 @@ a {
     position: relative;
     z-index: 30;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    background:
-      linear-gradient(180deg, rgba(8, 10, 13, 0.98) 0%, rgba(8, 10, 13, 0.94) 100%),
-      linear-gradient(90deg, rgba(212, 175, 106, 0.06), transparent 42%);
+    background: linear-gradient(180deg, rgba(6, 8, 11, 0.98) 0%, rgba(6, 8, 11, 0.96) 100%);
   }
 
   .editorial-headnote {
@@ -1533,7 +1531,7 @@ a {
     z-index: 40;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: #07090c;
+    background: rgba(7, 9, 12, 0.96);
   }
 
   .editorial-nav-bar {
@@ -1611,9 +1609,7 @@ a {
   .editorial-site-footer {
     margin-top: 6rem;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
-    background:
-      linear-gradient(180deg, #07090c 0%, #05070a 100%),
-      linear-gradient(90deg, rgba(212, 175, 106, 0.05), transparent 45%);
+    background: linear-gradient(180deg, #07090c 0%, #05070a 100%);
   }
 
   .editorial-footer-lead {
@@ -1694,6 +1690,174 @@ a {
     font-size: 0.66rem;
     font-weight: 700;
     letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(242, 239, 233, 0.54);
+  }
+
+  .editorial-classic-topline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.8rem;
+    border-top: 1px solid rgba(242, 210, 139, 0.18);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.75rem 0;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(242, 239, 233, 0.62);
+  }
+
+  .editorial-classic-brand {
+    display: grid;
+    justify-items: center;
+    gap: 0.8rem;
+    padding: 1.7rem 0 1.4rem;
+    text-align: center;
+  }
+
+  .editorial-classic-wordmark,
+  .editorial-classic-footer-wordmark {
+    display: inline-block;
+    font-family: var(--font-cormorant), Georgia, serif;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    color: #f7f2ea;
+  }
+
+  .editorial-classic-wordmark {
+    font-size: clamp(3.5rem, 9vw, 6rem);
+  }
+
+  .editorial-classic-footer-wordmark {
+    font-size: clamp(3rem, 6.5vw, 4.8rem);
+  }
+
+  .editorial-classic-wordmark:hover,
+  .editorial-classic-footer-wordmark:hover {
+    color: #f7f2ea;
+    text-decoration: none;
+  }
+
+  .editorial-classic-subtitle,
+  .editorial-classic-footer-copy {
+    max-width: 45rem;
+    font-size: 0.98rem;
+    line-height: 1.9;
+    color: rgba(242, 239, 233, 0.72);
+  }
+
+  .editorial-classic-nav {
+    display: grid;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.78rem 0;
+  }
+
+  .editorial-classic-nav-list {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .editorial-classic-nav-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #0f141a;
+    padding: 0.8rem 1rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(242, 239, 233, 0.72);
+  }
+
+  .editorial-classic-nav-link:hover,
+  .editorial-classic-nav-link.is-active {
+    border-color: rgba(242, 210, 139, 0.3);
+    background: #171d24;
+    color: white;
+    text-decoration: none;
+  }
+
+  .editorial-classic-nav-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    min-height: 2.95rem;
+    border: 1px solid rgba(242, 210, 139, 0.28);
+    background: #15120f;
+    padding: 0.8rem 1.1rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(242, 239, 233, 0.92);
+  }
+
+  .editorial-classic-nav-cta:hover {
+    color: white;
+    text-decoration: none;
+  }
+
+  .editorial-classic-footer-brand {
+    display: grid;
+    justify-items: center;
+    gap: 0.8rem;
+    padding-bottom: 2rem;
+    text-align: center;
+  }
+
+  .editorial-classic-footer-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .editorial-classic-footer-column {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 1.15rem;
+  }
+
+  .editorial-classic-footer-link,
+  .editorial-classic-footer-note {
+    font-size: 0.82rem;
+    line-height: 1.85;
+    color: rgba(242, 239, 233, 0.76);
+  }
+
+  .editorial-classic-footer-link {
+    display: block;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-bottom: 0.6rem;
+  }
+
+  .editorial-classic-footer-link:hover {
+    color: white;
+    text-decoration: none;
+  }
+
+  .editorial-classic-footer-note {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-bottom: 0.6rem;
+    margin: 0;
+  }
+
+  .editorial-classic-footer-base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(242, 210, 139, 0.18);
+    padding-top: 1rem;
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
     color: rgba(242, 239, 233, 0.54);
   }
@@ -1842,6 +2006,19 @@ a {
       grid-template-columns: minmax(0, 0.95fr) minmax(21rem, 1.05fr);
     }
 
+    .editorial-classic-nav {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .editorial-classic-nav-list {
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+    }
+
+    .editorial-classic-footer-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.4rem;
+    }
+
     .editorial-timeline-item,
     .editorial-release-row {
       grid-template-columns: auto minmax(0, 1fr);
@@ -1855,6 +2032,14 @@ a {
     }
 
     .editorial-nav-cta {
+      width: 100%;
+    }
+
+    .editorial-classic-nav-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .editorial-classic-nav-cta {
       width: 100%;
     }
   }
@@ -1890,6 +2075,11 @@ a {
       left: 1rem;
       right: 1rem;
       max-width: none;
+    }
+
+    .editorial-classic-topline,
+    .editorial-classic-footer-base {
+      letter-spacing: 0.14em;
     }
   }
 }

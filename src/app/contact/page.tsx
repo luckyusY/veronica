@@ -22,6 +22,7 @@ export default function ContactPage() {
         eyebrow="Contact"
         highlightWords={["booking", "media", "premium"]}
         image={editorialImages.cliff}
+        imageMotionPreset="settle-right"
         imageLabel="Open portrait photography used to test contact-page mood"
         noteText="Clarity matters here more than decoration. The experience should feel direct, elevated, and easy for management, promoters, and journalists to trust."
         noteTitle="Inquiry pathway"
@@ -31,7 +32,7 @@ export default function ContactPage() {
       />
 
       <section className="section-shell py-10">
-        <RevealBlock className="editorial-paper-panel">
+        <RevealBlock className="editorial-paper-panel" variant="left">
           <p className="section-label">Contact channels</p>
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {contactChannels.map((item) => (
@@ -47,7 +48,7 @@ export default function ContactPage() {
       </section>
 
       <section className="section-shell py-10">
-        <RevealBlock className="editorial-dark-panel">
+        <RevealBlock className="editorial-dark-panel" variant="right">
           <p className="section-label">Implementation notes</p>
           <h2 className="display-title mt-5 max-w-4xl text-4xl text-white sm:text-5xl">
             The next build layer can connect these pathways to stored inquiries, team routing, and faster follow-up.

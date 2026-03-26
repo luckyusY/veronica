@@ -23,6 +23,7 @@ export default function MusicPage() {
         eyebrow="Music & Videos"
         highlightWords={["immersive", "release", "space"]}
         image={editorialImages.stage}
+        imageMotionPreset="from-left"
         imageLabel="Open stage photography used to test the release atmosphere"
         noteText="Music pages should feel cinematic and editorial before a single embed appears. The frame sets the value of the release."
         noteTitle="Release experience"
@@ -33,7 +34,7 @@ export default function MusicPage() {
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-          <RevealBlock className="editorial-dark-panel">
+          <RevealBlock className="editorial-dark-panel" variant="left">
             <p className="section-label">Release shelves</p>
             <div className="mt-6 grid gap-3">
               {releaseHighlights.map((item) => (
@@ -52,10 +53,15 @@ export default function MusicPage() {
             </div>
           </RevealBlock>
 
-          <RevealBlock className="editorial-photo-block editorial-photo-block--tall" delay={0.08}>
+          <RevealBlock
+            className="editorial-photo-block editorial-photo-block--tall"
+            delay={0.08}
+            variant="right"
+          >
             <EditorialImage
               className="editorial-photo-shell"
               image={editorialImages.microphone}
+              motionPreset="from-right"
               sizes="(max-width: 1024px) 100vw, 40vw"
               strength={68}
             />
@@ -64,10 +70,11 @@ export default function MusicPage() {
       </section>
 
       <section className="section-shell py-10">
-        <RevealBlock className="editorial-quote-banner">
+        <RevealBlock className="editorial-quote-banner" variant="scale">
           <EditorialImage
             className="editorial-quote-media"
             image={editorialImages.aerialCrowd}
+            motionPreset="settle-left"
             sizes="100vw"
             strength={80}
           />
@@ -81,7 +88,7 @@ export default function MusicPage() {
       </section>
 
       <section className="section-shell py-10">
-        <RevealBlock className="editorial-paper-panel">
+        <RevealBlock className="editorial-paper-panel" variant="right">
           <p className="section-label">Experience layers</p>
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {musicExperiences.map((item) => (
