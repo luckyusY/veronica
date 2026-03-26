@@ -56,16 +56,22 @@ export default function Home() {
               </RevealBlock>
             </div>
 
-            <RevealBlock className="editorial-side-note" delay={0.32}>
-              <p className="section-label">Concept Direction</p>
-              <p className="mt-4 text-sm leading-7 text-white/72">
-                Placeholder editorial photography is being used for this pass so
-                we can judge the mood and structure before replacing it with
-                real Veronica imagery.
-              </p>
+            <RevealBlock className="editorial-side-note editorial-hero-video-panel" delay={0.32}>
+              <p className="section-label">Featured Video</p>
+              <div className="editorial-video-frame mt-4">
+                <iframe
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="editorial-video-embed"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  src="https://www.youtube.com/embed/ReUSSljekP0?si=qps2JuHV7lkQ3-ip"
+                  title="Veronica Adane featured video"
+                />
+              </div>
               <div className="luxury-divider my-5" />
-              <p className="text-sm uppercase tracking-[0.18em] text-[var(--gold-soft)]">
-                Minimal. Luxury. High contrast.
+              <p className="text-sm leading-7 text-white/72">
+                The hero now opens with Veronica in motion so the homepage feels
+                more like a premiere scene than a static landing page.
               </p>
             </RevealBlock>
           </div>
