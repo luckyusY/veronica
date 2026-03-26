@@ -1,15 +1,15 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { navigationItems } from "@/lib/site-data";
 import { Menu, X } from "lucide-react";
+import { navigationItems } from "@/lib/site-data";
 
 const topNotes = [
   "Official platform",
   "Addis Ababa, Ethiopia",
-  "Music / Tour / Press / Partnerships",
+  "Music / Press / Performance",
 ];
 
 export function SiteHeader() {
@@ -17,56 +17,50 @@ export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="editorial-site-header">
-      <div className="section-shell py-5 sm:py-6">
-        <div className="editorial-classic-topline editorial-classic-topline--header hidden sm:flex">
+    <header className="site-masthead">
+      <div className="section-shell py-4 sm:py-5">
+        <div className="site-masthead-top hidden sm:flex">
           {topNotes.map((item) => (
             <p key={item}>{item}</p>
           ))}
+          <Link className="site-masthead-top-link" href="/contact">
+            Management / Booking
+          </Link>
         </div>
 
-        <div className="editorial-brand-stage">
-          <p className="section-label editorial-brand-label">
-            Singer / Songwriter / Actress / Journalist
-          </p>
-          <Link className="editorial-classic-wordmark editorial-classic-wordmark--centered" href="/">
+        <div className="site-masthead-brand">
+          <p className="site-masthead-subtitle">Singer / Songwriter / Actress / Journalist</p>
+          <Link className="site-masthead-wordmark" href="/" onClick={() => setMenuOpen(false)}>
             <span className="brand-script">Veronica</span>
             <span className="brand-didot">ADANE</span>
           </Link>
-          <p className="editorial-brand-copy">
-            A classic editorial home for biography, releases, live
-            performance, and long-form cultural presence.
+          <p className="site-masthead-note">
+            Music, live performance, biography, and official artist storytelling.
           </p>
         </div>
       </div>
 
-      <div className="editorial-nav-dock">
-        <div className="section-shell py-4">
-          <div className="editorial-nav-shell">
-            <div className="flex items-center justify-between gap-3 sm:hidden">
-              <Link
-                aria-label="Veronica home"
-                className="brand-monogram"
-                href="/"
-                onClick={() => setMenuOpen(false)}
-              >
-                V
+      <div className="site-nav-wrap">
+        <div className="section-shell">
+          <div className="site-nav-bar">
+            <div className="site-nav-mobile sm:hidden">
+              <Link className="site-nav-mobile-brand" href="/" onClick={() => setMenuOpen(false)}>
+                <span className="brand-script">Veronica</span>
+                <span className="brand-didot">ADANE</span>
               </Link>
+
               <button
                 type="button"
                 aria-label={menuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={menuOpen}
-                className="editorial-nav-toggle"
-                onClick={() => setMenuOpen((v) => !v)}
+                className="site-nav-toggle"
+                onClick={() => setMenuOpen((value) => !value)}
               >
                 {menuOpen ? <X size={18} /> : <Menu size={18} />}
               </button>
             </div>
 
-            <nav
-              aria-label="Primary navigation"
-              className="editorial-nav-gridline hidden sm:grid"
-            >
+            <nav aria-label="Primary navigation" className="site-nav-list hidden sm:flex">
               {navigationItems.map((item) => {
                 const active =
                   item.href === "/"
@@ -75,7 +69,7 @@ export function SiteHeader() {
 
                 return (
                   <Link
-                    className={`editorial-nav-button ${active ? "is-active" : ""}`.trim()}
+                    className={`site-nav-link ${active ? "is-active" : ""}`.trim()}
                     href={item.href}
                     key={item.href}
                   >
@@ -83,94 +77,53 @@ export function SiteHeader() {
                   </Link>
                 );
               })}
-            </nav>
 
-            <div className="editorial-nav-utility hidden sm:flex">
-              <Link className="editorial-nav-button editorial-nav-button--accent" href="/shop">
+              <Link className="site-nav-link site-nav-link--accent" href="/shop">
                 Shop
               </Link>
-              <Link className="editorial-nav-button" href="/contact">
-                Management
-              </Link>
-            </div>
+            </nav>
           </div>
-        </div>
-      </div>
 
-      {menuOpen && (
-        <div
-          className="fixed inset-0 z-[70] sm:hidden"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Mobile navigation"
-        >
-          <button
-            type="button"
-            aria-label="Close menu overlay"
-            className="absolute inset-0 bg-black/70"
-            onClick={() => setMenuOpen(false)}
-          />
+          {menuOpen && (
+            <div className="site-nav-mobile-panel sm:hidden">
+              <nav aria-label="Mobile navigation" className="site-nav-mobile-list">
+                {navigationItems.map((item) => {
+                  const active =
+                    item.href === "/"
+                      ? pathname === item.href
+                      : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
-          <div className="absolute inset-y-3 left-3 right-3 overflow-auto chrome-shell rounded-2xl p-4">
-            <div className="flex items-center justify-between">
-              <Link
-                aria-label="Veronica home"
-                className="brand-monogram"
-                href="/"
-                onClick={() => setMenuOpen(false)}
-              >
-                V
-              </Link>
+                  return (
+                    <Link
+                      className={`site-nav-mobile-link ${active ? "is-active" : ""}`.trim()}
+                      href={item.href}
+                      key={item.href}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
 
-              <button
-                type="button"
-                aria-label="Close menu"
-                className="editorial-nav-toggle"
-                onClick={() => setMenuOpen(false)}
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            <nav className="mt-6 grid gap-3" aria-label="Mobile primary navigation">
-              {navigationItems.map((item) => {
-                const active =
-                  item.href === "/"
-                    ? pathname === item.href
-                    : pathname === item.href || pathname.startsWith(`${item.href}/`);
-
-                return (
-                  <Link
-                    className={`editorial-nav-button w-full ${active ? "is-active" : ""}`.trim()}
-                    href={item.href}
-                    key={item.href}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              })}
-
-              <div className="mt-2 grid gap-3">
                 <Link
-                  className="editorial-nav-button editorial-nav-button--accent w-full"
+                  className="site-nav-mobile-link site-nav-mobile-link--accent"
                   href="/shop"
                   onClick={() => setMenuOpen(false)}
                 >
                   Shop
                 </Link>
                 <Link
-                  className="editorial-nav-button w-full"
+                  className="site-nav-mobile-link"
                   href="/contact"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Management
+                  Management / Booking
                 </Link>
-              </div>
-            </nav>
-          </div>
+              </nav>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </header>
   );
 }
