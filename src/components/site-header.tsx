@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 import { navigationItems } from "@/lib/site-data";
 
 const topNotes = [
-  "Official website",
+  "Official platform",
   "Addis Ababa, Ethiopia",
-  "Music, tour, press, partnerships",
+  "Music / Tour / Press / Partnerships",
 ];
 
 export function SiteHeader() {
@@ -16,19 +16,21 @@ export function SiteHeader() {
   return (
     <header className="editorial-site-header">
       <div className="section-shell py-5 sm:py-6">
-        <div className="editorial-classic-topline">
+        <div className="editorial-classic-topline editorial-classic-topline--header">
           {topNotes.map((item) => (
             <p key={item}>{item}</p>
           ))}
         </div>
 
-        <div className="editorial-classic-brand">
-          <p className="section-label">Singer / Songwriter / Actress / Journalist</p>
-          <Link className="editorial-classic-wordmark" href="/">
+        <div className="editorial-brand-stage">
+          <p className="section-label editorial-brand-label">
+            Singer / Songwriter / Actress / Journalist
+          </p>
+          <Link className="editorial-classic-wordmark editorial-classic-wordmark--centered" href="/">
             <span className="brand-script">Veronica</span>
             <span className="brand-didot">ADANE</span>
           </Link>
-          <p className="editorial-classic-subtitle">
+          <p className="editorial-brand-copy">
             A classic editorial home for biography, releases, live
             performance, and long-form cultural presence.
           </p>
@@ -36,9 +38,9 @@ export function SiteHeader() {
       </div>
 
       <div className="editorial-nav-dock">
-        <div className="section-shell">
-          <div className="editorial-classic-nav">
-            <nav aria-label="Primary navigation" className="editorial-classic-nav-list">
+        <div className="section-shell py-4">
+          <div className="editorial-nav-shell">
+            <nav aria-label="Primary navigation" className="editorial-nav-gridline">
               {navigationItems.map((item) => {
                 const active =
                   item.href === "/"
@@ -47,7 +49,7 @@ export function SiteHeader() {
 
                 return (
                   <Link
-                    className={`editorial-classic-nav-link ${active ? "is-active" : ""}`.trim()}
+                    className={`editorial-nav-button ${active ? "is-active" : ""}`.trim()}
                     href={item.href}
                     key={item.href}
                   >
@@ -57,7 +59,7 @@ export function SiteHeader() {
               })}
             </nav>
 
-            <Link className="editorial-classic-nav-cta" href="/contact">
+            <Link className="editorial-nav-button editorial-nav-button--accent" href="/contact">
               Management
             </Link>
           </div>

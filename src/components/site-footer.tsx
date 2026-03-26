@@ -1,35 +1,54 @@
 import Link from "next/link";
 import { navigationItems } from "@/lib/site-data";
 
-const footerLinks = [
-  ...navigationItems.filter((item) => item.href !== "/collaborations").slice(0, 5),
-  { href: "/collaborations", label: "Partnerships" },
+const footerNotes = [
+  "Official platform",
+  "Biography / Music / Performance",
+  "Press / Partnerships",
 ];
 
 export function SiteFooter() {
   return (
     <footer className="editorial-site-footer">
-      <div className="section-shell py-8 sm:py-10">
-        <div className="editorial-mini-footer">
-          <Link className="editorial-mini-footer-brand" href="/">
-            <span className="brand-script">Veronica</span>
-            <span className="brand-didot">ADANE</span>
-          </Link>
-          <p className="editorial-mini-footer-copy">
-            Official platform for biography, music, live performance, press, and partnerships.
-          </p>
-          <nav aria-label="Footer navigation" className="editorial-mini-footer-nav">
-            {footerLinks.map((item) => (
-              <Link className="editorial-mini-footer-link" href={item.href} key={item.href}>
-                {item.label}
-              </Link>
+      <div className="section-shell py-10 sm:py-12">
+        <div className="editorial-footer-stage">
+          <div className="editorial-classic-topline editorial-classic-topline--footer">
+            {footerNotes.map((item) => (
+              <p key={item}>{item}</p>
             ))}
-          </nav>
+          </div>
+
+          <div className="editorial-brand-stage editorial-brand-stage--footer">
+            <p className="section-label editorial-brand-label">Veronica Adane</p>
+            <Link
+              className="editorial-classic-wordmark editorial-classic-wordmark--centered"
+              href="/"
+            >
+              <span className="brand-script">Veronica</span>
+              <span className="brand-didot">ADANE</span>
+            </Link>
+            <p className="editorial-brand-copy editorial-brand-copy--footer">
+              Official platform for biography, releases, live performance, press, and partnerships.
+            </p>
+          </div>
+
+          <div className="editorial-nav-shell editorial-nav-shell--footer">
+            <nav aria-label="Footer navigation" className="editorial-nav-gridline">
+              {navigationItems.map((item) => (
+                <Link className="editorial-nav-button" href={item.href} key={item.href}>
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+            <Link className="editorial-nav-button editorial-nav-button--accent" href="/contact">
+              Management
+            </Link>
+          </div>
         </div>
 
-        <div className="editorial-mini-footer-base">
-          <p>Addis Ababa, Ethiopia</p>
-          <p>Bookings and press via contact</p>
+        <div className="editorial-footer-markline">
+          <p>Official Veronica Adane platform.</p>
+          <p>Addis Ababa to global audiences.</p>
         </div>
       </div>
     </footer>

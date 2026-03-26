@@ -74,7 +74,7 @@ html.lenis body {
   }
 }
 
-/* ── Image animation keyframes ─────────────────────────────────────────── */
+/* â”€â”€ Image animation keyframes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 @keyframes shimmerScan {
   0% {
@@ -266,7 +266,16 @@ a {
 
 @layer base {
   * {
+    box-sizing: border-box;
     border-color: var(--line);
+  }
+
+  body {
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
   }
 }
 
@@ -1295,7 +1304,7 @@ a {
     background-size: 100% 100%, 0.75rem 0.75rem, 1rem 1rem, 1.2rem 1.2rem;
   }
 
-  /* Shimmer scan stripe — sweeps across once image has loaded */
+  /* Shimmer scan stripe â€” sweeps across once image has loaded */
   .editorial-image-shimmer {
     z-index: 5;
     inset: -10% 0;
