@@ -424,6 +424,12 @@ a {
     transform: translateX(110%);
   }
 
+  .primary-button:focus-visible,
+  .secondary-button:focus-visible {
+    outline: 2px solid rgba(242, 210, 139, 0.75);
+    outline-offset: 3px;
+  }
+
   .secondary-button {
     position: relative;
     display: inline-flex;
@@ -2453,6 +2459,14 @@ a {
       0 14px 28px rgba(0, 0, 0, 0.24);
     color: white;
     text-decoration: none;
+  }
+
+  .editorial-nav-button:focus-visible,
+  .editorial-classic-nav-link:focus-visible,
+  .editorial-classic-nav-cta:focus-visible,
+  .editorial-mini-footer-link:focus-visible {
+    outline: 2px solid rgba(242, 210, 139, 0.7);
+    outline-offset: 3px;
   }
 
   .editorial-nav-button--accent,

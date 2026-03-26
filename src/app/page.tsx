@@ -6,6 +6,7 @@ import {
   RevealBlock,
 } from "@/components/animated-text";
 import { EditorialImage } from "@/components/editorial-image";
+import { TestimonialsCarousel } from "@/components/testimonials-carousel";
 import {
   editorialCredits,
   editorialImages,
@@ -147,6 +148,8 @@ export default function Home() {
           </div>
         </RevealBlock>
       </section>
+
+      <TestimonialsCarousel />
 
       {/* ── Heritage ──────────────────────────────────────────────── */}
       <section className="section-shell py-10">

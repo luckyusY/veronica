@@ -155,3 +155,30 @@ export const contactChannels = [
       "Interviews, red carpet appearances, editorial requests, and official assets.",
   },
 ];
+
+export const testimonials = [
+  {
+    quote:
+      "Veronica’s performances don’t feel like entertainment first. They feel like a cultural chapter—photographed, paced, and delivered with intention.",
+    name: "C. Desta",
+    role: "Curator / Editorial Producer",
+  },
+  {
+    quote:
+      "The songwriting carries identity without explaining it. The visual direction onstage makes every release feel like a premiere.",
+    name: "A. Alemu",
+    role: "Press & Partnerships",
+  },
+  {
+    quote:
+      "A rare combination of discipline and stage presence. The project feels premium end-to-end—from imagery to ticket flow.",
+    name: "N. Tesfaye",
+    role: "Tour Coordinator",
+  },
+  {
+    quote:
+      "Every drop feels connected to an era. The site reads like an artist’s world, not a template storefront.",
+    name: "M. Robinson",
+    role: "Fan / Collector",
+  },
+];

@@ -40,7 +40,10 @@ export function SiteFooter() {
                 </Link>
               ))}
             </nav>
-            <Link className="editorial-nav-button editorial-nav-button--accent" href="/contact">
+            <Link className="editorial-nav-button editorial-nav-button--accent" href="/shop">
+              Shop
+            </Link>
+            <Link className="editorial-nav-button" href="/contact">
               Management
             </Link>
           </div>
