@@ -1,17 +1,16 @@
 import Link from "next/link";
-import {
-  AnimatedEyebrow,
-  AnimatedHeadline,
-  AnimatedParagraph,
-  RevealBlock,
-} from "@/components/animated-text";
+import { RevealBlock } from "@/components/animated-text";
+import { EditorialGallerySwiper } from "@/components/editorial-gallery-swiper";
 import { EditorialImage } from "@/components/editorial-image";
+import { HomeHeroSwiper } from "@/components/home-hero-swiper";
 import { TestimonialsCarousel } from "@/components/testimonials-carousel";
 import {
   editorialCredits,
+  editorialGalleryMoments,
+  editorialHeroMoments,
   editorialImages,
   editorialIntro,
-  editorialSections,
+  editorialPathways,
   editorialSignals,
   editorialStoryNotes,
 } from "@/lib/editorial-home";
@@ -19,69 +18,10 @@ import {
 export default function Home() {
   return (
     <main className="editorial-home pb-16 sm:pb-20">
-      {/* ── Hero ──────────────────────────────────────────────────── */}
-      <section className="section-shell py-5 sm:py-7">
-        <RevealBlock className="editorial-hero" variant="scale">
-          <EditorialImage
-            className="editorial-hero-media"
-            image={editorialImages.hero}
-            motionPreset="settle-right"
-            priority
-            sizes="100vw"
-            strength={112}
-            tilt
-          />
+      <HomeHeroSwiper slides={editorialHeroMoments} />
 
-          <div className="editorial-hero-content">
-            <div className="max-w-4xl">
-              <AnimatedEyebrow>Official homepage</AnimatedEyebrow>
-              <AnimatedHeadline
-                as="h1"
-                className="display-title mt-5 max-w-5xl text-5xl text-balance text-white sm:text-6xl xl:text-7xl"
-                highlightWords={["story", "legacy", "presence"]}
-                text="A homepage led by story, legacy, and stage presence."
-              />
-              <AnimatedParagraph
-                className="mt-5 max-w-2xl text-base leading-8 text-white/78 sm:text-lg"
-                delay={0.14}
-                text="This redesign shifts the homepage away from card-heavy layouts and toward an editorial rhythm inspired by luxury artist biography pages: larger photography, warmer contrast, restrained typography, and more composed storytelling."
-              />
-
-              <RevealBlock className="mt-7 flex flex-wrap gap-3" delay={0.22}>
-                <Link className="primary-button" href="/about">
-                  Read Biography
-                </Link>
-                <Link className="secondary-button" href="/music">
-                  Enter Music Archive
-                </Link>
-              </RevealBlock>
-            </div>
-
-            <RevealBlock className="editorial-side-note editorial-hero-video-panel" delay={0.32}>
-              <p className="section-label">Featured Video</p>
-              <div className="editorial-video-frame mt-4">
-                <iframe
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  className="editorial-video-embed"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  src="https://www.youtube.com/embed/ReUSSljekP0?si=qps2JuHV7lkQ3-ip"
-                  title="Veronica Adane featured video"
-                />
-              </div>
-              <div className="luxury-divider my-5" />
-              <p className="text-sm leading-7 text-white/72">
-                The hero now opens with Veronica in motion so the homepage feels
-                more like a premiere scene than a static landing page.
-              </p>
-            </RevealBlock>
-          </div>
-        </RevealBlock>
-      </section>
-
-      {/* ── Bio + Portrait ────────────────────────────────────────── */}
       <section className="section-shell py-10">
-        <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="grid gap-5 lg:grid-cols-[0.88fr_1.12fr]">
           <RevealBlock
             className="editorial-photo-block editorial-photo-block--tall image-hover-glow"
             variant="left"
@@ -98,9 +38,9 @@ export default function Home() {
           </RevealBlock>
 
           <RevealBlock className="editorial-paper-panel" delay={0.1} variant="right" distance={40}>
-            <p className="section-label">Official Biography</p>
+            <p className="section-label">Biography</p>
             <h2 className="display-title mt-5 max-w-4xl text-4xl text-[#1f1914] sm:text-5xl">
-              Veronica Adane should feel presented like an artist of lasting cultural weight.
+              A journey shaped by faith, study, sacrifice, and the courage to keep going.
             </h2>
 
             <div className="mt-6 grid gap-4 text-[#3a332d]">
@@ -130,28 +70,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Full-bleed Quote Banner ───────────────────────────────── */}
       <section className="section-shell py-10">
-        <RevealBlock className="editorial-quote-banner image-hover-glow" variant="scale">
-          <EditorialImage
-            className="editorial-quote-media"
-            image={editorialImages.stage}
-            motionPreset="diagonal"
-            sizes="100vw"
-            strength={98}
-          />
-          <div className="editorial-quote-copy">
-            <p className="section-label text-white/80">Story Rhythm</p>
-            <h2 className="display-title mt-4 max-w-4xl text-4xl text-white sm:text-5xl lg:text-6xl">
-              The homepage should move like a visual biography, not like a product landing page.
+        <div className="grid gap-5 lg:grid-cols-[0.78fr_1.22fr]">
+          <RevealBlock className="editorial-dark-panel" variant="left" distance={32}>
+            <p className="section-label">Visual Chapters</p>
+            <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
+              Real imagery now drives the homepage with more drama, elegance, and character.
             </h2>
-          </div>
-        </RevealBlock>
+            <p className="mt-6 max-w-2xl text-base leading-8 text-white/72">
+              Veronica&apos;s portraits move between black-tie studio clarity, gilded couture,
+              warm brown fashion, and scarlet campaign energy. The result feels more like
+              an artist world than a stack of generic modules.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-2">
+              {["Portraiture", "Release Eras", "Couture", "Stage Presence"].map((item) => (
+                <span className="meta-chip" key={item}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          </RevealBlock>
+
+          <RevealBlock delay={0.08} variant="right" distance={32}>
+            <EditorialGallerySwiper items={editorialGalleryMoments} />
+          </RevealBlock>
+        </div>
       </section>
 
       <TestimonialsCarousel />
 
-      {/* ── Heritage ──────────────────────────────────────────────── */}
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-2">
           <RevealBlock className="editorial-dark-panel" variant="left" distance={36}>
@@ -189,9 +136,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Rise + Mosaic ─────────────────────────────────────────── */}
       <section className="section-shell py-10">
-        <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="grid gap-5 lg:grid-cols-[0.92fr_1.08fr]">
           <RevealBlock className="editorial-paper-panel" variant="left" distance={32}>
             <p className="section-label">Rise</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
@@ -204,13 +150,15 @@ export default function Home() {
               <div className="editorial-note">
                 <p className="section-label">National</p>
                 <p className="mt-3 text-sm leading-7 text-[#4b4138]">
-                  Addis Ababa, Gondar, Hawassa, Harar, Dire Dawa, Bahir Dar and beyond.
+                  Addis Ababa, Gondar, Hawassa, Harar, Dire Dawa, Bahir Dar, Arba Minch,
+                  Dilla, and many more cities across Ethiopia.
                 </p>
               </div>
               <div className="editorial-note">
-                <p className="section-label">Diaspora</p>
+                <p className="section-label">International</p>
                 <p className="mt-3 text-sm leading-7 text-[#4b4138]">
-                  Atlanta, DMV, Los Angeles, Seattle, Denver, Oakland, Amsterdam, Paris, Frankfurt.
+                  Atlanta, DMV, Los Angeles, Seattle, Denver, Oakland, Amsterdam, Paris,
+                  Zurich, Oslo, Frankfurt, and Stockholm.
                 </p>
               </div>
             </div>
@@ -245,18 +193,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Film Strip ────────────────────────────────────────────── */}
       <section className="section-shell py-10">
         <div className="editorial-filmstrip">
           <RevealBlock className="editorial-film-panel editorial-film-panel--dark" variant="left" distance={44}>
-            <p className="section-label">Image rhythm</p>
+            <p className="section-label">Presence</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
-              What makes the reference page memorable is not fancy image delivery. It is sequencing.
+              Music, film, advocacy, and glamour now sit inside one unmistakable public identity.
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/72">
-              Large panels arrive with different motion languages, text sits
-              inside the image flow instead of underneath it, and every frame
-              feels like a chapter instead of a card.
+              Veronica moves easily between performance, screen presence, and cultural
+              advocacy. The home experience should carry that same range without losing
+              elegance or restraint.
             </p>
           </RevealBlock>
 
@@ -273,9 +220,9 @@ export default function Home() {
               strength={80}
             />
             <div className="editorial-film-copy">
-              <p className="section-label text-white/78">Campaign-led scene</p>
+              <p className="section-label text-white/78">Release Energy</p>
               <h3 className="display-title mt-4 max-w-2xl text-4xl text-white sm:text-5xl">
-                A homepage can speak through photography before the user reads a line.
+                Campaign imagery can be bold, romantic, and unmistakably her own.
               </h3>
             </div>
           </RevealBlock>
@@ -289,7 +236,7 @@ export default function Home() {
             <div className="editorial-film-double editorial-film-double--small image-hover-glow">
               <EditorialImage
                 className="editorial-photo-shell"
-                image={editorialImages.microphone}
+                image={editorialImages.stage}
                 motionPreset="settle-right"
                 sizes="(max-width: 1024px) 100vw, 18vw"
                 strength={68}
@@ -310,49 +257,57 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Sections Grid ─────────────────────────────────────────── */}
       <section className="section-shell py-10">
-        <div className="grid gap-5 lg:grid-cols-3">
-          {editorialSections.map((item, index) => (
-            <RevealBlock
-              className={index === 1 ? "editorial-dark-panel" : "editorial-paper-panel"}
-              delay={0.08 + index * 0.08}
-              variant={index === 0 ? "left" : index === 1 ? "scale" : "right"}
-              distance={30}
-              key={item.title}
-            >
-              <p className="section-label">{item.title}</p>
-              <h2
-                className={`display-title mt-5 text-4xl sm:text-5xl ${index === 1 ? "text-white" : "text-[#1f1914]"
-                  }`}
+        <div className="grid gap-5 lg:grid-cols-[0.82fr_1.18fr]">
+          <RevealBlock className="editorial-paper-panel" variant="left" distance={30}>
+            <p className="section-label">Explore</p>
+            <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
+              Step deeper into the catalogue, the stage world, and the public archive.
+            </h2>
+            <p className="mt-6 max-w-2xl text-base leading-8 text-[#3a332d]">
+              The strongest homepages do not stop at introduction. They guide people
+              cleanly into music, live performance, and the verified story behind the artist.
+            </p>
+          </RevealBlock>
+
+          <div className="grid gap-4 xl:grid-cols-3">
+            {editorialPathways.map((item, index) => (
+              <RevealBlock
+                delay={0.08 + index * 0.08}
+                distance={28}
+                key={item.title}
+                variant={index === 0 ? "left" : index === 1 ? "up" : "right"}
               >
-                {item.title}
-              </h2>
-              <p
-                className={`mt-6 text-base leading-8 ${index === 1 ? "text-white/72" : "text-[#3a332d]"
-                  }`}
-              >
-                {item.description}
-              </p>
-            </RevealBlock>
-          ))}
+                <Link className="editorial-route-link" href={item.href}>
+                  <span className="editorial-route-index">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <p className="section-label">{item.eyebrow}</p>
+                  <h3 className="display-title mt-4 text-4xl text-white">{item.title}</h3>
+                  <p className="mt-5 text-sm leading-7 text-white/72">{item.description}</p>
+                  <div className="editorial-route-footer">
+                    <span>{item.note}</span>
+                    <span>Open</span>
+                  </div>
+                </Link>
+              </RevealBlock>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ── Credits ───────────────────────────────────────────────── */}
       <section className="section-shell py-10">
         <RevealBlock className="editorial-paper-panel">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-4xl">
-              <p className="section-label">Visual Signature</p>
+              <p className="section-label">Official Image Archive</p>
               <h2 className="display-title mt-5 text-4xl text-[#1f1914] sm:text-5xl">
-                Official Veronica imagery now defines the mood, glamour, and rhythm of the homepage.
+                Veronica&apos;s own portrait library now gives the brand a clearer signature.
               </h2>
               <p className="mt-5 max-w-3xl text-base leading-8 text-[#3a332d]">
-                The image language now moves between signature black portraiture,
-                gilded couture, warm studio fashion, and scarlet campaign
-                moments. That gives the site a stronger sense of identity from
-                the first hero frame through the final editorial sections.
+                The world now moves through signature black portraiture, crystal couture,
+                warm studio fashion, and scarlet campaign imagery. That range gives the
+                homepage more authority, emotion, and memorability.
               </p>
             </div>
 
@@ -368,10 +323,7 @@ export default function Home() {
 
           <div className="mt-8 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {editorialCredits.map((item) => (
-              <article
-                className="editorial-credit-link"
-                key={item.label}
-              >
+              <article className="editorial-credit-link" key={item.label}>
                 <span>{item.label}</span>
                 <span className="text-[#7c6545]">{item.note}</span>
               </article>

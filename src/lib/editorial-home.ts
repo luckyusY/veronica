@@ -94,25 +94,25 @@ export const editorialImages = {
 
 export const editorialIntro = [
   "Veronica Adane is an Ethiopian singer, songwriter, actress, and journalist whose story is built on faith, discipline, sacrifice, and purpose.",
-  "The homepage should read more like an artist biography spread than a product grid: slower, more visual, more composed, and more emotionally led.",
-  "The visual direction now draws from Veronica's official portraits and campaign photography, giving the site a truer sense of glamour, intimacy, and stage-ready presence.",
+  "Born and raised in Addis Ababa, she rose from recording cover songs on a single phone to becoming one of Ethiopia's most influential female artists.",
+  "Her world now stretches across music, film, advocacy, and international stages while staying rooted in family, culture, and the pride of Azmari heritage.",
 ];
 
 export const editorialSignals = [
   {
     value: "41M+",
     label: "Album momentum",
-    detail: "Proof that the story can be carried through premium release-era framing.",
+    detail: "Meteriyaye reached more than 41 million YouTube views within one year.",
   },
   {
     value: "1.8M+",
     label: "Social reach",
-    detail: "A digital audience large enough to justify a strong editorial home.",
+    detail: "A fast-moving audience following her across TikTok, Instagram, Facebook, and beyond.",
   },
   {
     value: "Global",
     label: "Tour energy",
-    detail: "From Ethiopia to diaspora cities, the site should feel stage-ready.",
+    detail: "From Ethiopian cities to diaspora venues across the US, Europe, and the Middle East.",
   },
 ];
 
@@ -131,45 +131,139 @@ export const editorialStoryNotes = [
 
 export const editorialSections = [
   {
-    title: "Music",
+    title: "Music & Video",
     description:
-      "Release eras should feel like chapters with atmosphere, memory, and emotional weight rather than flat content blocks.",
+      "Albums, singles, live visuals, and standout records presented as eras with emotional weight and visual identity.",
   },
   {
-    title: "Live",
+    title: "Events & Tours",
     description:
-      "Tour destinations, ticketing, and routing need to feel active and prestigious, like entry points into a real performance world.",
+      "Tour dates, city routing, ticketing, and sold-out momentum shaped around Veronica's live-performance power.",
   },
   {
-    title: "Press",
+    title: "Media & Press",
     description:
-      "Recognition, advocacy, interviews, and acting milestones should sit inside a cleaner editorial archive built for trust.",
+      "Recognition, advocacy, interviews, film work, and official coverage collected in one trusted archive.",
   },
 ];
+
+export const editorialHeroMoments = [
+  {
+    eyebrow: "Global Stage",
+    title: "Faith, glamour, and a voice carrying Ethiopia far beyond its borders.",
+    copy:
+      "Veronica Adane stands at the meeting point of culture, discipline, and modern stardom. Her presence is cinematic, but the journey behind it is deeply earned.",
+    image: editorialImages.hero,
+    stat: "41M+ album views",
+    accent: "Meteriyaye era",
+  },
+  {
+    eyebrow: "Signature Portrait",
+    title: "A woman whose elegance is matched by conviction, discipline, and purpose.",
+    copy:
+      "From journalism and advocacy to sold-out live performance, Veronica's public image is built on both beauty and substance.",
+    image: editorialImages.cliff,
+    stat: "1.8M+ TikTok followers",
+    accent: "Official portraiture",
+  },
+  {
+    eyebrow: "Scarlet Campaign",
+    title: "Romance, spectacle, and release-era drama captured with confidence.",
+    copy:
+      "Her visual language can move from intimate portraiture to high-impact campaigns without losing the warmth and identity that make her recognisable.",
+    image: editorialImages.heartMid,
+    stat: "Multiple hit records",
+    accent: "Release campaign",
+  },
+  {
+    eyebrow: "Couture Studio",
+    title: "Rooted in heritage, styled with luxury, and ready for an international audience.",
+    copy:
+      "Every frame should feel like a chapter in a growing legacy: Ethiopian, contemporary, and unmistakably Veronica.",
+    image: editorialImages.furClose,
+    stat: "Africa to diaspora tours",
+    accent: "Brand-led imagery",
+  },
+] as const;
+
+export const editorialGalleryMoments = [
+  {
+    title: "Crystal Couture",
+    note: "A gilded portrait language for hero scenes and premiere moments.",
+    image: editorialImages.stage,
+  },
+  {
+    title: "Black Gown",
+    note: "Clean portraiture that feels timeless, composed, and immediate.",
+    image: editorialImages.microphone,
+  },
+  {
+    title: "Brown Studio",
+    note: "Warm tailoring and couture styling for commerce and partnerships.",
+    image: editorialImages.crowd,
+  },
+  {
+    title: "Scarlet Hearts",
+    note: "Release-ready visuals that bring energy, desire, and campaign colour.",
+    image: editorialImages.heartClose,
+  },
+  {
+    title: "Full Portrait",
+    note: "A modern icon framed with restraint and confidence.",
+    image: editorialImages.furSeated,
+  },
+] as const;
+
+export const editorialPathways = [
+  {
+    title: "Music & Videos",
+    href: "/music",
+    eyebrow: "Discography",
+    description:
+      "Enter the catalogue, watch featured visuals, and move through Veronica's major release eras.",
+    note: "Albums, singles, visuals",
+  },
+  {
+    title: "Events",
+    href: "/events",
+    eyebrow: "Live Performance",
+    description:
+      "Follow upcoming cities, tour momentum, and the performance world that made her one of Ethiopia's most in-demand live artists.",
+    note: "Tours, tickets, routing",
+  },
+  {
+    title: "Media & Press",
+    href: "/media",
+    eyebrow: "Recognition",
+    description:
+      "Open the archive of press, advocacy, interviews, awards, and official cultural milestones.",
+    note: "Press, awards, advocacy",
+  },
+] as const;
 
 export const editorialCredits = [
   {
     label: "Signature Black Portrait",
-    note: "Studio portraiture for biography, press, and brand-led pages.",
+    note: "Studio portraiture for biography, press, and timeless artist presentation.",
   },
   {
     label: "Crystal Couture Set",
-    note: "Luxury marble-and-gold images for hero scenes and cinematic banners.",
+    note: "Luxury marble-and-gold imagery for hero scenes and premiere moments.",
   },
   {
     label: "Fur Studio Series",
-    note: "Warm brown fashion portraits that support commerce and partnership pages.",
+    note: "Warm brown fashion portraits supporting partnerships, commerce, and editorial storytelling.",
   },
   {
     label: "Scarlet Campaign Series",
-    note: "High-saturation red visuals for stronger release and event storytelling.",
+    note: "High-saturation red visuals for releases, campaigns, and event storytelling.",
   },
   {
-    label: "Editorial Contrast",
-    note: "A mix of classic portraiture, glamour staging, and controlled studio texture.",
+    label: "Performance Presence",
+    note: "Imagery that balances glamour, stage energy, and emotional closeness.",
   },
   {
     label: "Official Veronica Imagery",
-    note: "The homepage and subpages now draw from Veronica's own photography library.",
+    note: "A consistent visual library built from Veronica's own portraits and campaign photography.",
   },
 ];
