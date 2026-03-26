@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { StaticImageData } from "next/image";
 import {
   AnimatedEyebrow,
   AnimatedHeadline,
@@ -8,7 +9,7 @@ import {
 import { EditorialImage } from "@/components/editorial-image";
 
 type PageHeroImage = {
-  src: string;
+  src: string | StaticImageData;
   alt: string;
   position?: string;
 };
@@ -47,7 +48,7 @@ export function PageHero({
   secondaryCta,
   image,
   imageMotionPreset = "settle-right",
-  imageLabel = "Editorial placeholder photography",
+  imageLabel = "Official Veronica Adane photography",
   noteTitle = "Page direction",
   noteText = "Each public page is being rebuilt as part of one editorial world: stronger image hierarchy, less interface noise, and cleaner storytelling rhythm.",
 }: PageHeroProps) {

@@ -221,7 +221,7 @@ export default function Home() {
               <div className="image-tilt-shell">
                 <EditorialImage
                   className="editorial-photo-shell"
-                  image={editorialImages.crowd}
+                  image={editorialImages.heartClose}
                   motionPreset="from-left"
                   sizes="(max-width: 1024px) 100vw, 22vw"
                   strength={78}
@@ -233,7 +233,7 @@ export default function Home() {
               <div className="image-tilt-shell">
                 <EditorialImage
                   className="editorial-photo-shell"
-                  image={editorialImages.aerialCrowd}
+                  image={editorialImages.crowd}
                   motionPreset="from-right"
                   sizes="(max-width: 1024px) 100vw, 38vw"
                   strength={78}
@@ -267,13 +267,13 @@ export default function Home() {
           >
             <EditorialImage
               className="editorial-film-media"
-              image={editorialImages.stage}
+              image={editorialImages.aerialCrowd}
               motionPreset="zoom-burst"
               sizes="(max-width: 1024px) 100vw, 34vw"
               strength={80}
             />
             <div className="editorial-film-copy">
-              <p className="section-label text-white/78">Stage-led scene</p>
+              <p className="section-label text-white/78">Campaign-led scene</p>
               <h3 className="display-title mt-4 max-w-2xl text-4xl text-white sm:text-5xl">
                 A homepage can speak through photography before the user reads a line.
               </h3>
@@ -289,7 +289,7 @@ export default function Home() {
             <div className="editorial-film-double editorial-film-double--small image-hover-glow">
               <EditorialImage
                 className="editorial-photo-shell"
-                image={editorialImages.hero}
+                image={editorialImages.microphone}
                 motionPreset="settle-right"
                 sizes="(max-width: 1024px) 100vw, 18vw"
                 strength={68}
@@ -299,7 +299,7 @@ export default function Home() {
             <div className="editorial-film-double editorial-film-double--large image-hover-glow">
               <EditorialImage
                 className="editorial-photo-shell"
-                image={editorialImages.crowd}
+                image={editorialImages.furSeated}
                 motionPreset="from-left"
                 sizes="(max-width: 1024px) 100vw, 28vw"
                 strength={78}
@@ -344,16 +344,15 @@ export default function Home() {
         <RevealBlock className="editorial-paper-panel">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-4xl">
-              <p className="section-label">Placeholder Credits</p>
+              <p className="section-label">Visual Signature</p>
               <h2 className="display-title mt-5 text-4xl text-[#1f1914] sm:text-5xl">
-                Open photography is being used for concept testing before real artist imagery is introduced.
+                Official Veronica imagery now defines the mood, glamour, and rhythm of the homepage.
               </h2>
               <p className="mt-5 max-w-3xl text-base leading-8 text-[#3a332d]">
-                The current homepage is intentionally being tested with open
-                placeholder photography to shape the editorial rhythm, image
-                density, and visual tone before we replace these frames with
-                Veronica&apos;s official portraits, performance photography, and
-                campaign assets.
+                The image language now moves between signature black portraiture,
+                gilded couture, warm studio fashion, and scarlet campaign
+                moments. That gives the site a stronger sense of identity from
+                the first hero frame through the final editorial sections.
               </p>
             </div>
 
@@ -361,24 +360,21 @@ export default function Home() {
               <Link className="primary-button" href="/media">
                 Open Press Archive
               </Link>
-              <Link className="secondary-button" href="/admin">
-                Review Admin
+              <Link className="secondary-button" href="/about">
+                Read Biography
               </Link>
             </div>
           </div>
 
           <div className="mt-8 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {editorialCredits.map((item) => (
-              <a
+              <article
                 className="editorial-credit-link"
-                href={item.source}
-                key={item.source}
-                rel="noreferrer"
-                target="_blank"
+                key={item.label}
               >
                 <span>{item.label}</span>
-                <span className="text-[#7c6545]">Pexels</span>
-              </a>
+                <span className="text-[#7c6545]">{item.note}</span>
+              </article>
             ))}
           </div>
         </RevealBlock>

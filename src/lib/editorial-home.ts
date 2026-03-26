@@ -1,64 +1,101 @@
+import img8027 from "../../assets/IMG_8027.JPG.jpeg";
+import img8029 from "../../assets/IMG_8029.JPG.jpeg";
+import img8077 from "../../assets/IMG_8077.JPG.jpeg";
+import img8078 from "../../assets/IMG_8078.JPG.jpeg";
+import img8079 from "../../assets/IMG_8079.JPG (1).jpeg";
+import img8080 from "../../assets/IMG_8080.JPG.jpeg";
+import img8081 from "../../assets/IMG_8081.JPG.jpeg";
+import img8094 from "../../assets/IMG_8094.JPG.jpeg";
+import img8095 from "../../assets/IMG_8095.JPG.jpeg";
+import img8096 from "../../assets/IMG_8096.JPG.jpeg";
+
 export const editorialImages = {
   hero: {
-    src: "https://images.pexels.com/photos/32207016/pexels-photo-32207016.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    alt: "Editorial placeholder portrait in a minimal black shirt against a light wall.",
-    source: "https://www.pexels.com/photo/portrait-of-woman-in-black-shirt-against-white-wall-32207016/",
-    label: "Portrait of Woman in Black Shirt Against White Wall",
+    src: img8078,
+    alt: "Veronica Adane reclining in a crystal-styled bath inside a gilded marble interior.",
+    label: "Crystal bath portrait",
     position: "center 24%",
-    placeholderBase: "#18120f",
-    placeholderHighlight: "#8d7454",
+    placeholderBase: "#20140f",
+    placeholderHighlight: "#d1b187",
   },
   cliff: {
-    src: "https://images.pexels.com/photos/30938750/pexels-photo-30938750.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    alt: "Editorial placeholder of a woman in a long white dress standing near a cliff at golden hour.",
-    source: "https://www.pexels.com/photo/woman-in-long-white-dress-standing-by-cliff-at-golden-hour-30938750/",
-    label: "Woman in Long White Dress Standing by Cliff at Golden Hour",
-    position: "center 20%",
-    placeholderBase: "#1a1511",
-    placeholderHighlight: "#b08d63",
+    src: img8029,
+    alt: "Veronica Adane standing in a black off-shoulder gown against a clean studio backdrop.",
+    label: "Signature black gown portrait",
+    position: "center 18%",
+    placeholderBase: "#161111",
+    placeholderHighlight: "#cbbfb3",
   },
   stage: {
-    src: "https://images.pexels.com/photos/7715650/pexels-photo-7715650.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    alt: "Editorial placeholder of a woman holding a microphone during a performance.",
-    source: "https://www.pexels.com/photo/woman-holding-a-microphone-7715650/",
-    label: "Woman Holding a Microphone",
-    position: "center 18%",
-    placeholderBase: "#120d0c",
-    placeholderHighlight: "#8d5339",
+    src: img8077,
+    alt: "Veronica Adane styled in crystal couture inside a marble-and-gold bath set.",
+    label: "Gilded couture portrait",
+    position: "center 30%",
+    placeholderBase: "#23160f",
+    placeholderHighlight: "#d7bf96",
   },
   microphone: {
-    src: "https://images.pexels.com/photos/1881773/pexels-photo-1881773.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    alt: "Editorial placeholder of a woman singing into a microphone on stage.",
-    source: "https://www.pexels.com/photo/woman-holding-microphone-on-stage-1881773/",
-    label: "Woman Holding Microphone on Stage",
-    position: "center 18%",
-    placeholderBase: "#120d0d",
-    placeholderHighlight: "#8d5a42",
+    src: img8027,
+    alt: "Close portrait of Veronica Adane in a black editorial look with feather trim.",
+    label: "Classic close-up portrait",
+    position: "center 14%",
+    placeholderBase: "#130f10",
+    placeholderHighlight: "#d7cdc5",
   },
   crowd: {
-    src: "https://images.pexels.com/photos/1387174/pexels-photo-1387174.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    alt: "Editorial placeholder of a concert crowd facing a lit stage at night.",
-    source: "https://www.pexels.com/photo/crowd-in-front-of-blue-and-orange-stage-during-a-concert-at-night-1387174/",
-    label: "Crowd in Front of Stage at Night",
-    position: "center 36%",
-    placeholderBase: "#0f1015",
-    placeholderHighlight: "#7e603e",
+    src: img8081,
+    alt: "Veronica Adane seated in a brown fur coat over black tailoring on a warm studio set.",
+    label: "Fur studio portrait",
+    position: "center 18%",
+    placeholderBase: "#1f130f",
+    placeholderHighlight: "#8f5d41",
   },
   aerialCrowd: {
-    src: "https://images.pexels.com/photos/3924174/pexels-photo-3924174.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    alt: "Editorial placeholder of an aerial view of a large concert crowd.",
-    source: "https://www.pexels.com/photo/aerial-shot-of-crowd-3924174/",
-    label: "Aerial Shot of Crowd",
-    position: "center 34%",
-    placeholderBase: "#101114",
-    placeholderHighlight: "#8b663d",
+    src: img8094,
+    alt: "Veronica Adane in a crimson gown with white opera gloves framed by red heart balloons.",
+    label: "Scarlet campaign portrait",
+    position: "center 24%",
+    placeholderBase: "#260909",
+    placeholderHighlight: "#b92324",
   },
-};
+  furSeated: {
+    src: img8079,
+    alt: "Veronica Adane posed in a deep brown fur coat with black tailoring against a caramel studio background.",
+    label: "Couture fur portrait",
+    position: "center 20%",
+    placeholderBase: "#251611",
+    placeholderHighlight: "#8a583e",
+  },
+  furClose: {
+    src: img8080,
+    alt: "Veronica Adane seated in a rich brown fur coat and black tailored look.",
+    label: "Winter couture close-up",
+    position: "center 18%",
+    placeholderBase: "#241510",
+    placeholderHighlight: "#8b5a40",
+  },
+  heartMid: {
+    src: img8095,
+    alt: "Veronica Adane in a red gown against a wall of red heart balloons.",
+    label: "Heart-wall glamour portrait",
+    position: "center 24%",
+    placeholderBase: "#2a090a",
+    placeholderHighlight: "#c22529",
+  },
+  heartClose: {
+    src: img8096,
+    alt: "Close glamour portrait of Veronica Adane in a red gown and white gloves framed by heart balloons.",
+    label: "Scarlet close-up portrait",
+    position: "center 22%",
+    placeholderBase: "#24090a",
+    placeholderHighlight: "#c02327",
+  },
+} as const;
 
 export const editorialIntro = [
   "Veronica Adane is an Ethiopian singer, songwriter, actress, and journalist whose story is built on faith, discipline, sacrifice, and purpose.",
   "The homepage should read more like an artist biography spread than a product grid: slower, more visual, more composed, and more emotionally led.",
-  "For this concept pass, placeholder editorial photography is used to test the mood, pacing, and hierarchy before real Veronica imagery is added.",
+  "The visual direction now draws from Veronica's official portraits and campaign photography, giving the site a truer sense of glamour, intimacy, and stage-ready presence.",
 ];
 
 export const editorialSignals = [
@@ -111,10 +148,28 @@ export const editorialSections = [
 ];
 
 export const editorialCredits = [
-  editorialImages.hero,
-  editorialImages.cliff,
-  editorialImages.stage,
-  editorialImages.microphone,
-  editorialImages.crowd,
-  editorialImages.aerialCrowd,
+  {
+    label: "Signature Black Portrait",
+    note: "Studio portraiture for biography, press, and brand-led pages.",
+  },
+  {
+    label: "Crystal Couture Set",
+    note: "Luxury marble-and-gold images for hero scenes and cinematic banners.",
+  },
+  {
+    label: "Fur Studio Series",
+    note: "Warm brown fashion portraits that support commerce and partnership pages.",
+  },
+  {
+    label: "Scarlet Campaign Series",
+    note: "High-saturation red visuals for stronger release and event storytelling.",
+  },
+  {
+    label: "Editorial Contrast",
+    note: "A mix of classic portraiture, glamour staging, and controlled studio texture.",
+  },
+  {
+    label: "Official Veronica Imagery",
+    note: "The homepage and subpages now draw from Veronica's own photography library.",
+  },
 ];

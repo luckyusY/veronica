@@ -22,9 +22,9 @@ export default function MusicPage() {
         description="This section should behave like a release archive with atmosphere: image-led, emotionally paced, and capable of holding albums, singles, videos, and future exclusive drops."
         eyebrow="Music & Videos"
         highlightWords={["immersive", "release", "space"]}
-        image={editorialImages.stage}
+        image={editorialImages.heartMid}
         imageMotionPreset="from-left"
-        imageLabel="Open stage photography used to test the release atmosphere"
+        imageLabel="Official scarlet campaign portrait"
         noteText="Music pages should feel cinematic and editorial before a single embed appears. The frame sets the value of the release."
         noteTitle="Release experience"
         primaryCta={{ href: "/events", label: "Pair releases with tour" }}
@@ -60,7 +60,7 @@ export default function MusicPage() {
           >
             <EditorialImage
               className="editorial-photo-shell"
-              image={editorialImages.microphone}
+              image={editorialImages.furClose}
               motionPreset="from-right"
               sizes="(max-width: 1024px) 100vw, 40vw"
               strength={68}

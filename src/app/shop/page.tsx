@@ -22,9 +22,9 @@ export default function ShopPage() {
         description="The store is being positioned as a selective extension of each music era: fewer generic storefront cues, more atmosphere, and a cleaner bridge between merchandise and identity."
         eyebrow="Shop"
         highlightWords={["premium", "store", "era"]}
-        image={editorialImages.hero}
+        image={editorialImages.crowd}
         imageMotionPreset="from-left"
-        imageLabel="Open portrait photography used to test product-era mood"
+        imageLabel="Official fashion image for the shop atmosphere"
         noteText="Commerce should feel considered and collectible, not crowded. The strongest version connects every product drop to a release era or live moment."
         noteTitle="Commerce direction"
         primaryCta={{ href: "/music", label: "Align with releases" }}
@@ -37,7 +37,7 @@ export default function ShopPage() {
           <RevealBlock className="editorial-photo-block editorial-photo-block--tall" variant="left">
             <EditorialImage
               className="editorial-photo-shell"
-              image={editorialImages.cliff}
+              image={editorialImages.furClose}
               motionPreset="from-right"
               sizes="(max-width: 1024px) 100vw, 40vw"
               strength={64}

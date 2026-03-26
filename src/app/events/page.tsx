@@ -24,7 +24,7 @@ export default function EventsPage() {
         highlightWords={["electricity", "live", "checkout"]}
         image={editorialImages.aerialCrowd}
         imageMotionPreset="settle-right"
-        imageLabel="Open live-event photography used to test scale and movement"
+        imageLabel="Official campaign image for live-show energy"
         noteText="The events layer should translate live demand into a polished ticketing experience without losing the emotional charge of performance."
         noteTitle="Live system"
         primaryCta={{ href: "/contact", label: "Book live performance" }}

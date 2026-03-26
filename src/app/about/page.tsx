@@ -32,7 +32,7 @@ export default function AboutPage() {
         highlightWords={["purpose", "family", "identity"]}
         image={editorialImages.cliff}
         imageMotionPreset="from-right"
-        imageLabel="Open placeholder portrait used for editorial concepting"
+        imageLabel="Official full-length studio portrait"
         noteText="The biography should read with dignity and emotional weight, holding real milestones without turning the page into a resume."
         noteTitle="Biography standard"
         primaryCta={{ href: "/media", label: "View press positioning" }}
@@ -70,7 +70,7 @@ export default function AboutPage() {
           >
             <EditorialImage
               className="editorial-photo-shell"
-              image={editorialImages.hero}
+              image={editorialImages.furSeated}
               motionPreset="from-right"
               sizes="(max-width: 1024px) 100vw, 42vw"
               strength={66}

@@ -23,7 +23,7 @@ export default function ContactPage() {
         highlightWords={["booking", "media", "premium"]}
         image={editorialImages.cliff}
         imageMotionPreset="settle-right"
-        imageLabel="Open portrait photography used to test contact-page mood"
+        imageLabel="Official Veronica studio portrait"
         noteText="Clarity matters here more than decoration. The experience should feel direct, elevated, and easy for management, promoters, and journalists to trust."
         noteTitle="Inquiry pathway"
         primaryCta={{ href: "/events", label: "See events direction" }}

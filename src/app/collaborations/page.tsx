@@ -22,9 +22,9 @@ export default function CollaborationsPage() {
         description="This page is being rebuilt for brand decision-makers: concise, elegant, and immediate enough to communicate audience value, public trust, and campaign flexibility in only a few screens."
         eyebrow="Collaborations"
         highlightWords={["premium", "brands", "media"]}
-        image={editorialImages.hero}
+        image={editorialImages.furSeated}
         imageMotionPreset="settle-right"
-        imageLabel="Open portrait photography used to test brand-facing direction"
+        imageLabel="Official fashion portrait for brand-facing pages"
         noteText="Brands should understand Veronica's stature quickly. The page should feel commercially ready without losing the editorial identity of the site."
         noteTitle="Partner language"
         primaryCta={{ href: "/contact", label: "Start partnership inquiry" }}

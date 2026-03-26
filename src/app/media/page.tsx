@@ -24,7 +24,7 @@ export default function MediaPage() {
         highlightWords={["milestone", "trusted", "home"]}
         image={editorialImages.microphone}
         imageMotionPreset="from-left"
-        imageLabel="Open performance photography used to test press-page drama"
+        imageLabel="Official editorial close-up portrait"
         noteText="A strong press page helps journalists verify the story quickly while still feeling clearly connected to the artist's broader visual identity."
         noteTitle="Press standard"
         primaryCta={{ href: "/contact", label: "Request media access" }}

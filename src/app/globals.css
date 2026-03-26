@@ -1697,10 +1697,9 @@ a {
   }
 
   .editorial-credit-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    display: grid;
+    gap: 0.45rem;
+    align-content: start;
     border-radius: 1rem;
     border: 1px solid rgba(123, 94, 51, 0.16);
     background: rgba(255, 251, 245, 0.5);
@@ -1710,6 +1709,14 @@ a {
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #342a21;
+  }
+
+  .editorial-credit-link span:last-child {
+    font-size: 0.64rem;
+    font-weight: 600;
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+    text-transform: none;
   }
 
   .editorial-credit-link:hover {

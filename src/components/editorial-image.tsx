@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState, type CSSProperties, type MouseEvent } from "react";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import {
   motion,
   useReducedMotion,
@@ -13,7 +13,7 @@ import {
 } from "motion/react";
 
 type EditorialImageAsset = {
-  src: string;
+  src: string | StaticImageData;
   alt: string;
   position?: string;
   placeholderBase?: string;
