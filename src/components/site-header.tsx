@@ -56,7 +56,7 @@ export function SiteHeader() {
                 type="button"
                 aria-label={menuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={menuOpen}
-                className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white shadow-sm"
+                className="editorial-nav-toggle"
                 onClick={() => setMenuOpen((v) => !v)}
               >
                 {menuOpen ? <X size={18} /> : <Menu size={18} />}
@@ -85,7 +85,7 @@ export function SiteHeader() {
               })}
             </nav>
 
-            <div className="hidden items-center gap-3 sm:flex sm:justify-end">
+            <div className="editorial-nav-utility hidden sm:flex">
               <Link className="editorial-nav-button editorial-nav-button--accent" href="/shop">
                 Shop
               </Link>
@@ -125,7 +125,7 @@ export function SiteHeader() {
               <button
                 type="button"
                 aria-label="Close menu"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white shadow-sm"
+                className="editorial-nav-toggle"
                 onClick={() => setMenuOpen(false)}
               >
                 <X size={18} />
@@ -174,4 +174,3 @@ export function SiteHeader() {
     </header>
   );
 }
-
