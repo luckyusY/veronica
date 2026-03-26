@@ -6,7 +6,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-white/6 bg-black/60 backdrop-blur-xl">
       <div className="section-shell flex items-center justify-between gap-6 py-4">
         <Link className="group flex flex-col" href="/">
-          <span className="text-xs uppercase tracking-[0.36em] text-[var(--gold-soft)]">
+          <span className="text-beam text-xs uppercase tracking-[0.36em]">
             Official Platform
           </span>
           <span className="font-[family-name:var(--font-cormorant)] text-xl tracking-[0.08em] text-white transition group-hover:text-[var(--accent)]">

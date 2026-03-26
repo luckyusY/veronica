@@ -17,6 +17,7 @@ export default function MediaPage() {
     <main className="pb-16 sm:pb-20">
       <PageHero
         eyebrow="Media & Press"
+        highlightWords={["milestone", "trusted", "home"]}
         title="A polished press environment gives every milestone a trusted home."
         description="This page is structured for interviews, photography, award highlights, advocacy moments, and fast media access. It should feel efficient for journalists while still carrying Veronica's signature visual identity."
         primaryCta={{ href: "/contact", label: "Request Media Access" }}

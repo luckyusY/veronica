@@ -19,6 +19,7 @@ export default function AboutPage() {
     <main className="pb-16 sm:pb-20">
       <PageHero
         eyebrow="About Veronica"
+        highlightWords={["purpose", "family", "identity"]}
         title="A biography rooted in purpose, discipline, family, and identity."
         description="This page is meant to carry Veronica's full story with dignity and emotional weight. It should read like an artist profile, not a résumé, while still preserving concrete milestones and cultural context."
         primaryCta={{ href: "/media", label: "View Press Positioning" }}

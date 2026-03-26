@@ -17,6 +17,7 @@ export default function CollaborationsPage() {
     <main className="pb-16 sm:pb-20">
       <PageHero
         eyebrow="Collaborations"
+        highlightWords={["premium", "brands", "media"]}
         title="A partnership page built for premium brands, event promoters, and media decision-makers."
         description="This section should help brands understand Veronica's audience, positioning, credibility, and campaign value in just a few scrolls. It is where storytelling meets commercial readiness."
         primaryCta={{ href: "/contact", label: "Start Partnership Inquiry" }}

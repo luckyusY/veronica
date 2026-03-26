@@ -17,6 +17,7 @@ export default function MusicPage() {
     <main className="pb-16 sm:pb-20">
       <PageHero
         eyebrow="Music & Videos"
+        highlightWords={["immersive", "release", "space"]}
         title="The music section should feel like an immersive release space, not a simple list of embeds."
         description="This structure supports album storytelling, featured tracks, video highlights, and future members-only drops. It gives room for both global polish and Ethiopian identity."
         primaryCta={{ href: "/events", label: "Pair Releases With Tour" }}

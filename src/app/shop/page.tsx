@@ -17,6 +17,7 @@ export default function ShopPage() {
     <main className="pb-16 sm:pb-20">
       <PageHero
         eyebrow="Shop"
+        highlightWords={["premium", "store", "era"]}
         title="The store should feel premium, selective, and connected to each music era."
         description="This commerce structure is designed for apparel, digital releases, and future exclusives. It is intentionally lean enough for launch and flexible enough for larger drops later."
         primaryCta={{ href: "/music", label: "Align With Releases" }}

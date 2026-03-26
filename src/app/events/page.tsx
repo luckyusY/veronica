@@ -17,6 +17,7 @@ export default function EventsPage() {
     <main className="pb-16 sm:pb-20">
       <PageHero
         eyebrow="Events"
+        highlightWords={["electricity", "live", "checkout"]}
         title="Tour pages should carry the electricity of the live show before checkout even begins."
         description="The events area is designed for flexible city listings, premium ticket tiers, QR validation, and sponsor-ready concert pages. It follows the strongest parts of entertainment templates without feeling generic."
         primaryCta={{ href: "/contact", label: "Book Live Performance" }}

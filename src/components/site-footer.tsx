@@ -7,7 +7,7 @@ export function SiteFooter() {
       <div className="panel rounded-[2rem] px-6 py-8 sm:px-8">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl space-y-3">
-            <p className="section-label">Veronica Adane</p>
+            <p className="section-label text-beam">Veronica Adane</p>
             <p className="display-title text-3xl sm:text-4xl">
               Heritage. Performance. Global African vision.
             </p>

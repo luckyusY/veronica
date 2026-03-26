@@ -17,6 +17,7 @@ export default function ContactPage() {
     <main className="pb-16 sm:pb-20">
       <PageHero
         eyebrow="Contact"
+        highlightWords={["booking", "media", "premium"]}
         title="Booking, management, and media pathways should feel premium and clear."
         description="This page is prepared to become the intake point for live shows, partnership outreach, and press coordination. The next phase can connect it to MongoDB-backed inquiries and notification workflows."
         primaryCta={{ href: "/events", label: "See Events Direction" }}
