@@ -42,7 +42,7 @@ export default function RootLayout({
       lang="en"
       className={`${bodoni.variable} ${greatVibes.variable} ${manrope.variable} h-full antialiased`}
     >
-      <body className="min-h-full">
+      <body className="min-h-full paper-canvas">
         <Providers>
           <AppShell footer={<SiteFooter />} header={<SiteHeader />}>
             {children}

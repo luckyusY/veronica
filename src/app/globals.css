@@ -16,6 +16,11 @@
   --surface-3: #141b23;
   --surface-4: #1a232d;
   --surface-5: #202b37;
+  --paper-base: #7f5c3f;
+  --paper-mid: #a37c56;
+  --paper-light: #d0af82;
+  --paper-deep: #24160f;
+  --paper-ink: #24180f;
   --shadow: 0 28px 70px rgba(0, 0, 0, 0.42);
 }
 
@@ -198,20 +203,22 @@ html.lenis body {
   }
 }
 
-body {
+.paper-canvas {
   min-height: 100vh;
   position: relative;
   background:
-    radial-gradient(circle at top center, rgba(212, 175, 106, 0.12), transparent 28%),
-    radial-gradient(circle at 84% 16%, rgba(217, 79, 43, 0.08), transparent 16%),
-    linear-gradient(180deg, #090b0f 0%, #05070a 46%, #030406 100%);
+    radial-gradient(circle at top center, rgba(240, 210, 166, 0.18), transparent 28%),
+    radial-gradient(circle at 84% 16%, rgba(124, 82, 46, 0.28), transparent 18%),
+    radial-gradient(circle at 14% 74%, rgba(214, 175, 116, 0.12), transparent 24%),
+    linear-gradient(180deg, rgba(101, 70, 46, 0.28) 0%, rgba(55, 35, 23, 0.26) 100%),
+    linear-gradient(180deg, #5c412d 0%, #332217 44%, #160d09 100%);
   color: var(--foreground);
   font-family: var(--font-manrope), "Segoe UI", sans-serif;
   color-scheme: dark;
 }
 
 /* Scroll progress bar */
-body::after {
+.paper-canvas::after {
   content: "";
   position: fixed;
   top: 0;
@@ -230,15 +237,21 @@ body::after {
   pointer-events: none;
 }
 
-body::before {
+.paper-canvas::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.018) 50%, transparent 100%),
-    radial-gradient(circle at 16% 82%, rgba(169, 113, 66, 0.08), transparent 22%);
-  opacity: 0.9;
+    repeating-linear-gradient(90deg,
+        rgba(255, 243, 224, 0.012) 0 1px,
+        rgba(44, 26, 16, 0.02) 1px 4px,
+        transparent 4px 9px),
+    linear-gradient(90deg, transparent 0%, rgba(255, 249, 240, 0.05) 50%, transparent 100%),
+    radial-gradient(circle at 16% 82%, rgba(169, 113, 66, 0.12), transparent 22%),
+    radial-gradient(circle at 78% 24%, rgba(245, 223, 181, 0.08), transparent 18%);
+  mix-blend-mode: soft-light;
+  opacity: 0.95;
   z-index: -1;
 }
 
@@ -1102,6 +1115,19 @@ a {
     position: relative;
   }
 
+  .editorial-home::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 14% 12%, rgba(255, 230, 190, 0.08), transparent 22%),
+      radial-gradient(circle at 82% 24%, rgba(116, 74, 42, 0.14), transparent 24%),
+      linear-gradient(180deg, transparent 0%, rgba(33, 21, 14, 0.12) 100%);
+    mix-blend-mode: soft-light;
+    opacity: 0.9;
+  }
+
   .editorial-hero {
     position: relative;
     overflow: hidden;
@@ -1423,11 +1449,13 @@ a {
     position: relative;
     overflow: hidden;
     border-radius: 2rem;
-    border: 1px solid rgba(133, 106, 69, 0.18);
+    border: 1px solid rgba(103, 74, 46, 0.28);
     background:
-      linear-gradient(180deg, rgba(250, 245, 236, 0.98), rgba(241, 234, 220, 0.98));
+      linear-gradient(180deg, rgba(220, 191, 149, 0.98), rgba(188, 151, 108, 0.98));
     padding: 1.4rem;
-    box-shadow: 0 28px 72px rgba(0, 0, 0, 0.18);
+    box-shadow:
+      0 28px 72px rgba(23, 13, 8, 0.22),
+      inset 0 1px 0 rgba(255, 241, 215, 0.38);
   }
 
   .editorial-paper-panel::before {
@@ -1435,9 +1463,14 @@ a {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.34), transparent 30%),
-      radial-gradient(circle at top right, rgba(212, 175, 106, 0.12), transparent 26%);
+      repeating-linear-gradient(90deg,
+          rgba(92, 62, 38, 0.04) 0 1px,
+          transparent 1px 5px),
+      linear-gradient(180deg, rgba(255, 246, 224, 0.3), transparent 30%),
+      radial-gradient(circle at top right, rgba(255, 228, 187, 0.18), transparent 24%),
+      radial-gradient(circle at 20% 82%, rgba(134, 91, 55, 0.12), transparent 20%);
     pointer-events: none;
+    mix-blend-mode: multiply;
   }
 
   .editorial-dark-panel {
@@ -1767,8 +1800,8 @@ a {
   .editorial-site-header {
     position: relative;
     z-index: 30;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    background: linear-gradient(180deg, rgba(6, 8, 11, 0.98) 0%, rgba(6, 8, 11, 0.96) 100%);
+    border-bottom: 1px solid rgba(240, 214, 172, 0.08);
+    background: linear-gradient(180deg, rgba(66, 45, 30, 0.96) 0%, rgba(18, 11, 8, 0.97) 100%);
   }
 
   .editorial-headnote {
@@ -1994,8 +2027,8 @@ a {
 
   .editorial-site-footer {
     margin-top: 6rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    background: linear-gradient(180deg, #07090c 0%, #05070a 100%);
+    border-top: 1px solid rgba(240, 214, 172, 0.12);
+    background: linear-gradient(180deg, #3a2619 0%, #120b07 100%);
   }
 
   .editorial-footer-lead {
@@ -2015,9 +2048,12 @@ a {
   .editorial-paper-panel,
   .editorial-route-card,
   .editorial-note {
-    border: 1px solid rgba(123, 94, 51, 0.18);
-    background: #efe4d6;
-    box-shadow: 0 22px 52px rgba(0, 0, 0, 0.14);
+    border: 1px solid rgba(103, 74, 46, 0.26);
+    background:
+      linear-gradient(180deg, rgba(218, 189, 148, 0.98), rgba(184, 148, 106, 0.98));
+    box-shadow:
+      0 22px 52px rgba(21, 12, 8, 0.18),
+      inset 0 1px 0 rgba(255, 241, 215, 0.34);
   }
 
   .editorial-footer-paper {
@@ -2027,14 +2063,14 @@ a {
   .editorial-paper-stamp {
     display: inline-flex;
     align-items: center;
-    border: 1px solid rgba(123, 94, 51, 0.18);
-    background: rgba(255, 251, 245, 0.72);
+    border: 1px solid rgba(103, 74, 46, 0.24);
+    background: rgba(240, 214, 172, 0.48);
     padding: 0.5rem 0.68rem;
     font-size: 0.62rem;
     font-weight: 800;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #4d3d2c;
+    color: #3d2a1d;
   }
 
   .editorial-footer-dark {
