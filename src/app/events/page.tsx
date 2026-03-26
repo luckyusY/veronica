@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { RevealBlock } from "@/components/animated-text";
+import { EditorialImage } from "@/components/editorial-image";
 import { PageHero } from "@/components/page-hero";
+import { editorialImages } from "@/lib/editorial-home";
 import { upcomingEvents } from "@/lib/site-data";
 
 export const metadata: Metadata = {
@@ -14,40 +17,68 @@ const ticketFlow = [
 
 export default function EventsPage() {
   return (
-    <main className="pb-16 sm:pb-20">
+    <main className="editorial-home pb-16 sm:pb-20">
       <PageHero
+        description="Tour pages should feel live before checkout even starts. This section is being shaped to hold city narratives, premium tiers, QR entry, and sponsor-ready show pages."
         eyebrow="Events"
         highlightWords={["electricity", "live", "checkout"]}
+        image={editorialImages.aerialCrowd}
+        imageLabel="Open live-event photography used to test scale and movement"
+        noteText="The events layer should translate live demand into a polished ticketing experience without losing the emotional charge of performance."
+        noteTitle="Live system"
+        primaryCta={{ href: "/contact", label: "Book live performance" }}
+        secondaryCta={{ href: "/shop", label: "Bundle merch strategy" }}
         title="Tour pages should carry the electricity of the live show before checkout even begins."
-        description="The events area is designed for flexible city listings, premium ticket tiers, QR validation, and sponsor-ready concert pages. It follows the strongest parts of entertainment templates without feeling generic."
-        primaryCta={{ href: "/contact", label: "Book Live Performance" }}
-        secondaryCta={{ href: "/shop", label: "Bundle Merch Strategy" }}
       />
 
       <section className="section-shell py-10">
-        <div className="grid gap-4 lg:grid-cols-3">
-          {upcomingEvents.map((item) => (
-            <article className="panel rounded-[1.75rem] p-6" key={item.region}>
-              <p className="section-label">{item.region}</p>
-              <h2 className="mt-4 text-2xl font-semibold text-white">
-                {item.cities}
-              </h2>
-              <p className="mt-4 text-sm leading-7 text-white/68">{item.note}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="section-shell py-10">
-        <div className="panel rounded-[2rem] px-6 py-8 sm:px-8">
-          <p className="section-label">Ticketing System</p>
+        <RevealBlock className="editorial-paper-panel">
+          <p className="section-label">Tour map</p>
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
-            {ticketFlow.map((item) => (
-              <article className="solid-note-card" key={item}>
-                <p className="text-sm leading-7 text-white/68">{item}</p>
+            {upcomingEvents.map((item) => (
+              <article className="editorial-route-card" key={item.region}>
+                <p className="section-label">{item.region}</p>
+                <h2 className="display-title mt-4 text-3xl text-[#1f1914] sm:text-4xl">
+                  {item.cities}
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-[#4b4138] sm:text-base">
+                  {item.note}
+                </p>
               </article>
             ))}
           </div>
+        </RevealBlock>
+      </section>
+
+      <section className="section-shell py-10">
+        <div className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+          <RevealBlock className="editorial-photo-block editorial-photo-block--tall">
+            <EditorialImage
+              className="editorial-photo-shell"
+              image={editorialImages.crowd}
+              sizes="(max-width: 1024px) 100vw, 42vw"
+              strength={72}
+            />
+          </RevealBlock>
+
+          <RevealBlock className="editorial-dark-panel" delay={0.08}>
+            <p className="section-label">Ticketing flow</p>
+            <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
+              Ticketing should feel premium, legible, and ready for real routing complexity.
+            </h2>
+            <div className="mt-8 grid gap-3">
+              {ticketFlow.map((item, index) => (
+                <article className="editorial-release-row" key={item}>
+                  <p className="editorial-timeline-index">
+                    {(index + 1).toString().padStart(2, "0")}
+                  </p>
+                  <p className="max-w-xl text-sm leading-7 text-white/70 sm:text-base">
+                    {item}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </RevealBlock>
         </div>
       </section>
     </main>

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { RevealBlock } from "@/components/animated-text";
+import { EditorialImage } from "@/components/editorial-image";
 import { PageHero } from "@/components/page-hero";
+import { editorialImages } from "@/lib/editorial-home";
 import { shopHighlights } from "@/lib/site-data";
 
 export const metadata: Metadata = {
@@ -14,40 +17,63 @@ const commerceStack = [
 
 export default function ShopPage() {
   return (
-    <main className="pb-16 sm:pb-20">
+    <main className="editorial-home pb-16 sm:pb-20">
       <PageHero
+        description="The store is being positioned as a selective extension of each music era: fewer generic storefront cues, more atmosphere, and a cleaner bridge between merchandise and identity."
         eyebrow="Shop"
         highlightWords={["premium", "store", "era"]}
+        image={editorialImages.hero}
+        imageLabel="Open portrait photography used to test product-era mood"
+        noteText="Commerce should feel considered and collectible, not crowded. The strongest version connects every product drop to a release era or live moment."
+        noteTitle="Commerce direction"
+        primaryCta={{ href: "/music", label: "Align with releases" }}
+        secondaryCta={{ href: "/events", label: "Bundle event offers" }}
         title="The store should feel premium, selective, and connected to each music era."
-        description="This commerce structure is designed for apparel, digital releases, and future exclusives. It is intentionally lean enough for launch and flexible enough for larger drops later."
-        primaryCta={{ href: "/music", label: "Align With Releases" }}
-        secondaryCta={{ href: "/events", label: "Bundle Event Offers" }}
       />
 
       <section className="section-shell py-10">
-        <div className="grid gap-4 lg:grid-cols-3">
-          {shopHighlights.map((item) => (
-            <article className="panel rounded-[1.75rem] p-6" key={item.title}>
-              <h2 className="text-2xl font-semibold text-white">{item.title}</h2>
-              <p className="mt-4 text-sm leading-7 text-white/68">
-                {item.description}
-              </p>
-            </article>
-          ))}
+        <div className="grid gap-5 lg:grid-cols-[0.94fr_1.06fr]">
+          <RevealBlock className="editorial-photo-block editorial-photo-block--tall">
+            <EditorialImage
+              className="editorial-photo-shell"
+              image={editorialImages.cliff}
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              strength={64}
+            />
+          </RevealBlock>
+
+          <RevealBlock className="editorial-paper-panel" delay={0.08}>
+            <p className="section-label">Collection layers</p>
+            <div className="mt-8 grid gap-4 lg:grid-cols-3">
+              {shopHighlights.map((item) => (
+                <article className="editorial-note" key={item.title}>
+                  <p className="section-label">{item.title}</p>
+                  <p className="mt-4 text-sm leading-7 text-[#4b4138] sm:text-base">
+                    {item.description}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </RevealBlock>
         </div>
       </section>
 
       <section className="section-shell py-10">
-        <div className="panel rounded-[2rem] px-6 py-8 sm:px-8">
-          <p className="section-label">Commerce Foundation</p>
-          <div className="mt-8 grid gap-4 lg:grid-cols-3">
+        <RevealBlock className="editorial-dark-panel">
+          <p className="section-label">Commerce foundation</p>
+          <h2 className="display-title mt-5 max-w-4xl text-4xl text-white sm:text-5xl">
+            The shop should be lean at launch, but structured for bigger drops and private access later.
+          </h2>
+          <div className="mt-8 grid gap-3 lg:grid-cols-3">
             {commerceStack.map((item) => (
-              <article className="solid-note-card" key={item}>
-                <p className="text-sm leading-7 text-white/68">{item}</p>
+              <article className="editorial-dark-note" key={item}>
+                <p className="text-sm leading-7 text-white/70 sm:text-base">
+                  {item}
+                </p>
               </article>
             ))}
           </div>
-        </div>
+        </RevealBlock>
       </section>
     </main>
   );

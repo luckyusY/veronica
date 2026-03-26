@@ -5,6 +5,13 @@ import {
   AnimatedParagraph,
   RevealBlock,
 } from "@/components/animated-text";
+import { EditorialImage } from "@/components/editorial-image";
+
+type PageHeroImage = {
+  src: string;
+  alt: string;
+  position?: string;
+};
 
 type PageHeroProps = {
   eyebrow: string;
@@ -19,6 +26,10 @@ type PageHeroProps = {
     href: string;
     label: string;
   };
+  image: PageHeroImage;
+  imageLabel?: string;
+  noteTitle?: string;
+  noteText?: string;
 };
 
 export function PageHero({
@@ -28,25 +39,30 @@ export function PageHero({
   highlightWords = [],
   primaryCta,
   secondaryCta,
+  image,
+  imageLabel = "Editorial placeholder photography",
+  noteTitle = "Page direction",
+  noteText = "Each public page is being rebuilt as part of one editorial world: stronger image hierarchy, less interface noise, and cleaner storytelling rhythm.",
 }: PageHeroProps) {
   return (
-    <section className="section-shell relative overflow-hidden py-14 sm:py-16 lg:py-20">
-      <div className="panel grid gap-8 rounded-[2rem] px-6 py-8 sm:px-10 sm:py-12 lg:grid-cols-[minmax(0,1.3fr)_18rem] lg:items-end">
-        <div className="space-y-5">
+    <section className="section-shell py-6 sm:py-8">
+      <div className="editorial-page-hero">
+        <div className="editorial-page-copy">
           <AnimatedEyebrow>{eyebrow}</AnimatedEyebrow>
           <AnimatedHeadline
             as="h1"
-            className="display-title max-w-4xl text-4xl text-balance sm:text-5xl lg:text-6xl"
+            className="display-title mt-5 max-w-4xl text-5xl text-balance text-white sm:text-6xl xl:text-7xl"
             highlightWords={highlightWords}
             text={title}
           />
           <AnimatedParagraph
-            className="max-w-3xl text-base leading-8 text-white/72 sm:text-lg"
+            className="mt-5 max-w-2xl text-base leading-8 text-white/76 sm:text-lg"
             delay={0.12}
             text={description}
           />
+
           {(primaryCta || secondaryCta) && (
-            <RevealBlock className="flex flex-wrap gap-3 pt-2" delay={0.2}>
+            <RevealBlock className="mt-7 flex flex-wrap gap-3" delay={0.18}>
               {primaryCta ? (
                 <Link className="primary-button" href={primaryCta.href}>
                   {primaryCta.label}
@@ -59,16 +75,26 @@ export function PageHero({
               ) : null}
             </RevealBlock>
           )}
+
+          <RevealBlock className="editorial-page-note" delay={0.22}>
+            <p className="section-label">{noteTitle}</p>
+            <p className="mt-4 max-w-xl text-sm leading-7 text-white/68 sm:text-base">
+              {noteText}
+            </p>
+          </RevealBlock>
         </div>
-        <RevealBlock className="solid-note-card text-sm text-white/65" delay={0.24}>
-          <p className="font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
-            Brand Standard
-          </p>
-          <p className="mt-4 leading-7">
-            A high-contrast luxury system built to hold story, live
-            performance, commerce, partnerships, and press within one polished
-            artist platform.
-          </p>
+
+        <RevealBlock className="editorial-page-visual" delay={0.1}>
+          <EditorialImage
+            className="editorial-page-media"
+            image={image}
+            priority
+            sizes="(max-width: 1024px) 100vw, 42vw"
+            strength={72}
+          />
+          <div className="editorial-media-caption">
+            <span className="section-label">{imageLabel}</span>
+          </div>
         </RevealBlock>
       </div>
     </section>

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   AnimatedEyebrow,
@@ -6,6 +5,7 @@ import {
   AnimatedParagraph,
   RevealBlock,
 } from "@/components/animated-text";
+import { EditorialImage } from "@/components/editorial-image";
 import {
   editorialCredits,
   editorialImages,
@@ -20,20 +20,17 @@ export default function Home() {
     <main className="editorial-home pb-16 sm:pb-20">
       <section className="section-shell py-5 sm:py-7">
         <RevealBlock className="editorial-hero">
-          <div className="editorial-hero-media">
-            <Image
-              alt={editorialImages.hero.alt}
-              className="object-cover object-center"
-              fill
-              priority
-              sizes="100vw"
-              src={editorialImages.hero.src}
-            />
-          </div>
+          <EditorialImage
+            className="editorial-hero-media"
+            image={editorialImages.hero}
+            priority
+            sizes="100vw"
+            strength={84}
+          />
 
           <div className="editorial-hero-content">
             <div className="max-w-4xl">
-              <AnimatedEyebrow>Editorial concept homepage</AnimatedEyebrow>
+              <AnimatedEyebrow>Official homepage</AnimatedEyebrow>
               <AnimatedHeadline
                 as="h1"
                 className="display-title mt-5 max-w-5xl text-5xl text-balance text-white sm:text-6xl xl:text-7xl"
@@ -75,15 +72,12 @@ export default function Home() {
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
           <RevealBlock className="editorial-photo-block editorial-photo-block--tall">
-            <div className="editorial-photo-shell">
-              <Image
-                alt={editorialImages.cliff.alt}
-                className="object-cover object-center"
-                fill
-                sizes="(max-width: 1024px) 100vw, 40vw"
-                src={editorialImages.cliff.src}
-              />
-            </div>
+            <EditorialImage
+              className="editorial-photo-shell"
+              image={editorialImages.cliff}
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              strength={62}
+            />
           </RevealBlock>
 
           <RevealBlock className="editorial-paper-panel" delay={0.08}>
@@ -121,15 +115,12 @@ export default function Home() {
 
       <section className="section-shell py-10">
         <RevealBlock className="editorial-quote-banner">
-          <div className="editorial-quote-media">
-            <Image
-              alt={editorialImages.stage.alt}
-              className="object-cover object-center"
-              fill
-              sizes="100vw"
-              src={editorialImages.stage.src}
-            />
-          </div>
+          <EditorialImage
+            className="editorial-quote-media"
+            image={editorialImages.stage}
+            sizes="100vw"
+            strength={76}
+          />
           <div className="editorial-quote-copy">
             <p className="section-label text-white/80">Story Rhythm</p>
             <h2 className="display-title mt-4 max-w-4xl text-4xl text-white sm:text-5xl lg:text-6xl">
@@ -159,15 +150,12 @@ export default function Home() {
           </RevealBlock>
 
           <RevealBlock className="editorial-photo-block" delay={0.08}>
-            <div className="editorial-photo-shell">
-              <Image
-                alt={editorialImages.microphone.alt}
-                className="object-cover object-center"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                src={editorialImages.microphone.src}
-              />
-            </div>
+            <EditorialImage
+              className="editorial-photo-shell"
+              image={editorialImages.microphone}
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              strength={58}
+            />
           </RevealBlock>
         </div>
       </section>
@@ -200,26 +188,20 @@ export default function Home() {
 
           <RevealBlock className="editorial-mosaic" delay={0.08}>
             <div className="editorial-mosaic-narrow">
-              <div className="editorial-photo-shell">
-                <Image
-                  alt={editorialImages.crowd.alt}
-                  className="object-cover object-center"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 22vw"
-                  src={editorialImages.crowd.src}
-                />
-              </div>
+              <EditorialImage
+                className="editorial-photo-shell"
+                image={editorialImages.crowd}
+                sizes="(max-width: 1024px) 100vw, 22vw"
+                strength={54}
+              />
             </div>
             <div className="editorial-mosaic-wide">
-              <div className="editorial-photo-shell">
-                <Image
-                  alt={editorialImages.aerialCrowd.alt}
-                  className="object-cover object-center"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 38vw"
-                  src={editorialImages.aerialCrowd.src}
-                />
-              </div>
+              <EditorialImage
+                className="editorial-photo-shell"
+                image={editorialImages.aerialCrowd}
+                sizes="(max-width: 1024px) 100vw, 38vw"
+                strength={54}
+              />
             </div>
           </RevealBlock>
         </div>

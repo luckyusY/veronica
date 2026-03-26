@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { RevealBlock } from "@/components/animated-text";
+import { EditorialImage } from "@/components/editorial-image";
 import { PageHero } from "@/components/page-hero";
+import { editorialImages } from "@/lib/editorial-home";
 import { collaborationTracks } from "@/lib/site-data";
 
 export const metadata: Metadata = {
@@ -14,40 +17,64 @@ const partnershipFormats = [
 
 export default function CollaborationsPage() {
   return (
-    <main className="pb-16 sm:pb-20">
+    <main className="editorial-home pb-16 sm:pb-20">
       <PageHero
+        description="This page is being rebuilt for brand decision-makers: concise, elegant, and immediate enough to communicate audience value, public trust, and campaign flexibility in only a few screens."
         eyebrow="Collaborations"
         highlightWords={["premium", "brands", "media"]}
+        image={editorialImages.hero}
+        imageLabel="Open portrait photography used to test brand-facing direction"
+        noteText="Brands should understand Veronica's stature quickly. The page should feel commercially ready without losing the editorial identity of the site."
+        noteTitle="Partner language"
+        primaryCta={{ href: "/contact", label: "Start partnership inquiry" }}
+        secondaryCta={{ href: "/media", label: "Open media & press" }}
         title="A partnership page built for premium brands, event promoters, and media decision-makers."
-        description="This section should help brands understand Veronica's audience, positioning, credibility, and campaign value in just a few scrolls. It is where storytelling meets commercial readiness."
-        primaryCta={{ href: "/contact", label: "Start Partnership Inquiry" }}
-        secondaryCta={{ href: "/media", label: "Open Media & Press" }}
       />
 
       <section className="section-shell py-10">
-        <div className="grid gap-4 lg:grid-cols-3">
-          {collaborationTracks.map((item) => (
-            <article className="panel rounded-[1.75rem] p-6" key={item.title}>
-              <h2 className="text-2xl font-semibold text-white">{item.title}</h2>
-              <p className="mt-4 text-sm leading-7 text-white/68">
-                {item.description}
-              </p>
-            </article>
-          ))}
+        <div className="grid gap-5 lg:grid-cols-[1fr_1fr]">
+          <RevealBlock className="editorial-dark-panel">
+            <p className="section-label">Partnership tracks</p>
+            <div className="mt-6 grid gap-3">
+              {collaborationTracks.map((item) => (
+                <article className="editorial-release-row" key={item.title}>
+                  <div>
+                    <h2 className="display-title text-3xl text-white sm:text-4xl">
+                      {item.title}
+                    </h2>
+                    <p className="mt-4 max-w-xl text-sm leading-7 text-white/70 sm:text-base">
+                      {item.description}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </RevealBlock>
+
+          <RevealBlock className="editorial-photo-block editorial-photo-block--tall" delay={0.08}>
+            <EditorialImage
+              className="editorial-photo-shell"
+              image={editorialImages.stage}
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              strength={66}
+            />
+          </RevealBlock>
         </div>
       </section>
 
       <section className="section-shell py-10">
-        <div className="panel rounded-[2rem] px-6 py-8 sm:px-8">
-          <p className="section-label">Activation Formats</p>
+        <RevealBlock className="editorial-paper-panel">
+          <p className="section-label">Activation formats</p>
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {partnershipFormats.map((item) => (
-              <article className="solid-note-card" key={item}>
-                <p className="text-sm leading-7 text-white/68">{item}</p>
+              <article className="editorial-note" key={item}>
+                <p className="text-sm leading-7 text-[#4b4138] sm:text-base">
+                  {item}
+                </p>
               </article>
             ))}
           </div>
-        </div>
+        </RevealBlock>
       </section>
     </main>
   );
