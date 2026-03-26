@@ -50,7 +50,7 @@ export default function AboutPage() {
                 className="rounded-[1.5rem] border border-white/8 bg-black/20 p-5"
                 key={item}
               >
-                <p className="text-sm font-semibold text-[var(--gold-soft)]">
+                <p className="text-sm font-semibold text-[var(--accent)]">
                   0{index + 1}
                 </p>
                 <p className="mt-4 text-sm leading-7 text-white/68">{item}</p>

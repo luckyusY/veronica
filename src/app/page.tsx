@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <main className="pb-16 sm:pb-20">
       <section className="section-shell relative overflow-hidden py-10 sm:py-14 lg:py-20">
-        <div className="pointer-events-none absolute inset-x-10 top-4 -z-10 h-[26rem] rounded-[2.5rem] bg-[radial-gradient(circle_at_top,_rgba(200,162,90,0.2),_transparent_64%)] blur-2xl" />
+        <div className="pointer-events-none absolute inset-x-10 top-4 -z-10 h-[26rem] rounded-[2.5rem] bg-[radial-gradient(circle_at_top,_rgba(212,175,106,0.22),_rgba(217,79,43,0.12),_transparent_66%)] blur-2xl" />
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_22rem] lg:items-end">
           <div className="space-y-6">
             <p className="section-label">Luxury artist platform</p>
@@ -56,8 +56,8 @@ export default function Home() {
           <aside className="panel rounded-[2rem] p-6 sm:p-7">
             <p className="section-label">Artist Snapshot</p>
             <div className="mt-5 space-y-5">
-              <div className="rounded-[1.5rem] border border-[rgba(200,162,90,0.24)] bg-[rgba(200,162,90,0.08)] p-5">
-                <p className="text-sm uppercase tracking-[0.24em] text-[var(--gold-soft)]">
+              <div className="rounded-[1.5rem] border border-[rgba(217,79,43,0.34)] bg-[linear-gradient(135deg,rgba(217,79,43,0.14),rgba(212,175,106,0.08))] p-5">
+                <p className="text-sm uppercase tracking-[0.24em] text-[var(--accent)]">
                   Current direction
                 </p>
                 <p className="mt-3 text-sm leading-7 text-white/72">
@@ -99,7 +99,7 @@ export default function Home() {
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {featuredStats.map((item) => (
             <article className="panel rounded-[1.75rem] px-5 py-6" key={item.label}>
-              <p className="display-title text-4xl text-[var(--gold-soft)]">
+              <p className="display-title text-4xl text-[var(--gold)]">
                 {item.value}
               </p>
               <p className="mt-3 text-sm leading-7 text-white/68">{item.label}</p>
@@ -117,7 +117,7 @@ export default function Home() {
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {journeyMoments.map((item) => (
             <article className="panel rounded-[1.75rem] p-6" key={item.title}>
-              <p className="text-sm uppercase tracking-[0.24em] text-[var(--gold-soft)]">
+              <p className="text-sm uppercase tracking-[0.24em] text-[var(--accent)]">
                 Core Chapter
               </p>
               <h3 className="mt-4 text-2xl font-semibold text-white">

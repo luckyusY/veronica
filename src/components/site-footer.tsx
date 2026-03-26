@@ -19,7 +19,7 @@ export function SiteFooter() {
           <div className="flex flex-wrap gap-3 text-sm text-white/65">
             {navigationItems.map((item) => (
               <Link
-                className="rounded-full border border-white/10 px-4 py-2 transition hover:border-[var(--gold)] hover:text-white"
+                className="rounded-full border border-white/10 px-4 py-2 transition hover:border-[var(--accent)] hover:text-[var(--gold-soft)]"
                 href={item.href}
                 key={item.href}
               >

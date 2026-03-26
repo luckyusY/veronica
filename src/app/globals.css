@@ -1,12 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #060606;
-  --foreground: #f8f3ea;
-  --muted: #c3b08a;
+  --background: #05070A;
+  --foreground: #EAEAEA;
+  --muted: #D4AF6A;
   --line: rgba(255, 255, 255, 0.08);
-  --gold: #c8a25a;
-  --gold-soft: #f1ddae;
+  --gold: #D4AF6A;
+  --gold-soft: #F2D28B;
+  --bronze: #A97142;
+  --accent: #D94F2B;
+  --accent-soft: rgba(217, 79, 43, 0.16);
   --shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
 }
 
@@ -24,15 +27,16 @@ html {
 body {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top, rgba(200, 162, 90, 0.16), transparent 34%),
-    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.03), transparent 20%),
-    linear-gradient(180deg, #0a0a0a 0%, #050505 50%, #030303 100%);
+    radial-gradient(circle at top, rgba(212, 175, 106, 0.18), transparent 34%),
+    radial-gradient(circle at 82% 14%, rgba(217, 79, 43, 0.12), transparent 22%),
+    radial-gradient(circle at 15% 84%, rgba(169, 113, 66, 0.08), transparent 26%),
+    linear-gradient(180deg, #080A0D 0%, #05070A 52%, #030406 100%);
   color: var(--foreground);
   font-family: var(--font-manrope), "Segoe UI", sans-serif;
 }
 
 ::selection {
-  background: rgba(200, 162, 90, 0.28);
+  background: rgba(217, 79, 43, 0.34);
   color: white;
 }
 
@@ -55,6 +59,8 @@ a {
   .panel {
     border: 1px solid var(--line);
     background:
+      radial-gradient(circle at top left, rgba(212, 175, 106, 0.08), transparent 32%),
+      radial-gradient(circle at bottom right, rgba(217, 79, 43, 0.08), transparent 28%),
       linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
       rgba(255, 255, 255, 0.02);
     box-shadow: var(--shadow);
@@ -80,22 +86,25 @@ a {
     align-items: center;
     justify-content: center;
     border-radius: 999px;
-    border: 1px solid rgba(200, 162, 90, 0.48);
-    background: linear-gradient(135deg, rgba(200, 162, 90, 0.28), rgba(200, 162, 90, 0.14));
+    border: 1px solid rgba(212, 175, 106, 0.55);
+    background: linear-gradient(135deg, rgba(212, 175, 106, 0.92), rgba(217, 79, 43, 0.9));
     padding: 0.88rem 1.35rem;
     font-size: 0.94rem;
     font-weight: 600;
-    color: white;
+    color: #05070A;
+    box-shadow: 0 12px 32px rgba(217, 79, 43, 0.2);
     transition:
       transform 180ms ease,
       border-color 180ms ease,
-      background 180ms ease;
+      background 180ms ease,
+      box-shadow 180ms ease;
   }
 
   .primary-button:hover {
     transform: translateY(-1px);
-    border-color: rgba(241, 221, 174, 0.72);
-    background: linear-gradient(135deg, rgba(200, 162, 90, 0.34), rgba(200, 162, 90, 0.16));
+    border-color: rgba(242, 210, 139, 0.78);
+    background: linear-gradient(135deg, rgba(242, 210, 139, 0.95), rgba(217, 79, 43, 0.95));
+    box-shadow: 0 16px 38px rgba(217, 79, 43, 0.28);
   }
 
   .secondary-button {
@@ -116,7 +125,8 @@ a {
 
   .secondary-button:hover {
     transform: translateY(-1px);
-    border-color: rgba(200, 162, 90, 0.36);
-    color: white;
+    border-color: rgba(217, 79, 43, 0.48);
+    background: var(--accent-soft);
+    color: var(--gold-soft);
   }
 }

@@ -9,14 +9,14 @@ export function SiteHeader() {
           <span className="text-xs uppercase tracking-[0.36em] text-[var(--gold-soft)]">
             Official Platform
           </span>
-          <span className="font-[family-name:var(--font-cormorant)] text-xl tracking-[0.08em] text-white transition group-hover:text-[var(--gold-soft)]">
+          <span className="font-[family-name:var(--font-cormorant)] text-xl tracking-[0.08em] text-white transition group-hover:text-[var(--accent)]">
             Veronica Adane
           </span>
         </Link>
         <nav className="hidden items-center gap-5 text-sm text-white/72 lg:flex">
           {navigationItems.map((item) => (
             <Link
-              className="transition hover:text-white"
+              className="transition hover:text-[var(--gold-soft)]"
               href={item.href}
               key={item.href}
             >
