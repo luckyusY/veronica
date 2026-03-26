@@ -13,6 +13,12 @@ const toneClassMap: Record<CardTone, string> = {
   bronze: "tone-bronze",
 };
 
+const toneLabelMap: Record<CardTone, string> = {
+  gold: "Signature",
+  accent: "Spotlight",
+  bronze: "Legacy",
+};
+
 type CinematicCardProps = {
   eyebrow: string;
   title: string;
@@ -44,6 +50,7 @@ export function CinematicCard({
         size === "feature" ? "cinema-card--feature" : ""
       } ${className}`.trim()}
     >
+      <div aria-hidden="true" className="card-grid" />
       {rank ? (
         <span aria-hidden="true" className="card-rank">
           {rank}
@@ -53,7 +60,10 @@ export function CinematicCard({
       <div className="relative flex h-full flex-col justify-between gap-10">
         <RevealBlock className="flex items-start justify-between gap-3">
           <span className="card-kicker">{eyebrow}</span>
-          {badge ? <span className="meta-chip meta-chip--accent">{badge}</span> : null}
+          <div className="flex items-center gap-2">
+            <span className="card-corner-tag">{toneLabelMap[tone]}</span>
+            {badge ? <span className="meta-chip meta-chip--accent">{badge}</span> : null}
+          </div>
         </RevealBlock>
 
         <div className="space-y-4">
@@ -81,6 +91,11 @@ export function CinematicCard({
               ))}
             </RevealBlock>
           ) : null}
+
+          <RevealBlock className="card-footer" delay={0.24}>
+            <span className="card-footer-label">{toneLabelMap[tone]} frame</span>
+            <span className="card-footer-arrow">Open Detail</span>
+          </RevealBlock>
         </div>
       </div>
     </article>

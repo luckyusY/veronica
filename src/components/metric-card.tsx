@@ -24,6 +24,7 @@ export function MetricCard({
           <AnimatedEyebrow className="text-[0.64rem]" delay={0.02}>
             Audience Signal
           </AnimatedEyebrow>
+          <div className="metric-badge mt-4">Live Metric</div>
           <AnimatedParagraph
             className="mt-4 text-sm leading-7 text-white/68"
             delay={0.1}

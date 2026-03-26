@@ -1,5 +1,7 @@
+"use client";
+
 import type { ReactNode } from "react";
-import * as motion from "motion/react-client";
+import { motion, useReducedMotion } from "motion/react";
 
 type HeadingTag = "h1" | "h2" | "h3";
 
@@ -9,18 +11,25 @@ const headingMap: Record<HeadingTag, typeof motion.h1> = {
   h3: motion.h3,
 };
 
-const containerTransition = {
-  duration: 0.8,
-  ease: [0.22, 1, 0.36, 1] as const,
-};
-
 const viewport = {
   once: true,
-  amount: 0.45,
+  amount: 0.18,
 };
 
 function normalizeWord(word: string) {
   return word.replace(/[^a-z0-9]/gi, "").toLowerCase();
+}
+
+function getRevealState(reducedMotion: boolean, y = 22) {
+  return reducedMotion
+    ? {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+      }
+    : {
+        initial: { opacity: 0, y },
+        animate: { opacity: 1, y: 0 },
+      };
 }
 
 type AnimatedEyebrowProps = {
@@ -34,13 +43,16 @@ export function AnimatedEyebrow({
   className = "",
   delay = 0,
 }: AnimatedEyebrowProps) {
+  const reducedMotion = useReducedMotion();
+  const state = getRevealState(!!reducedMotion, 16);
+
   return (
     <motion.p
-      className={`section-label text-beam ${className}`.trim()}
-      initial={{ opacity: 0, y: 16, filter: "blur(10px)" }}
-      transition={{ ...containerTransition, delay }}
+      className={`section-label text-beam will-change-transform ${className}`.trim()}
+      initial={state.initial}
+      transition={{ duration: 0.56, ease: [0.22, 1, 0.36, 1], delay }}
       viewport={viewport}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      whileInView={state.animate}
     >
       {children}
     </motion.p>
@@ -63,41 +75,37 @@ export function AnimatedHeadline({
   delay = 0,
 }: AnimatedHeadlineProps) {
   const MotionTag = headingMap[as];
+  const reducedMotion = useReducedMotion();
   const normalizedHighlights = new Set(highlightWords.map(normalizeWord));
   const words = text.split(" ");
 
   return (
     <MotionTag
-      className={className}
-      initial="hidden"
-      transition={{
-        delayChildren: delay,
-        staggerChildren: 0.045,
-      }}
+      className={`will-change-transform ${className}`.trim()}
+      initial={
+        reducedMotion
+          ? { opacity: 0 }
+          : { opacity: 0, y: 24, clipPath: "inset(0 0 100% 0 round 0.8rem)" }
+      }
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay }}
       viewport={viewport}
-      whileInView="visible"
+      whileInView={
+        reducedMotion
+          ? { opacity: 1 }
+          : { opacity: 1, y: 0, clipPath: "inset(0 0 0% 0 round 0.8rem)" }
+      }
     >
       {words.map((word, index) => {
         const normalized = normalizeWord(word);
         const highlighted = normalizedHighlights.has(normalized);
 
         return (
-          <span className="inline-block overflow-hidden align-top" key={`${word}-${index}`}>
-            <motion.span
-              className={`inline-block ${highlighted ? "text-gradient-brand" : ""}`.trim()}
-              variants={{
-                hidden: { y: "0.95em", opacity: 0, filter: "blur(10px)" },
-                visible: {
-                  y: "0em",
-                  opacity: 1,
-                  filter: "blur(0px)",
-                  transition: containerTransition,
-                },
-              }}
-            >
-              {word}
-            </motion.span>
-            {index < words.length - 1 ? <span>&nbsp;</span> : null}
+          <span
+            className={`inline ${highlighted ? "text-gradient-brand" : ""}`.trim()}
+            key={`${word}-${index}`}
+          >
+            {word}
+            {index < words.length - 1 ? " " : ""}
           </span>
         );
       })}
@@ -116,13 +124,16 @@ export function AnimatedParagraph({
   className = "",
   delay = 0,
 }: AnimatedParagraphProps) {
+  const reducedMotion = useReducedMotion();
+  const state = getRevealState(!!reducedMotion, 22);
+
   return (
     <motion.p
-      className={className}
-      initial={{ opacity: 0, y: 24, filter: "blur(12px)" }}
-      transition={{ ...containerTransition, delay }}
+      className={`will-change-transform ${className}`.trim()}
+      initial={state.initial}
+      transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1], delay }}
       viewport={viewport}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      whileInView={state.animate}
     >
       {text}
     </motion.p>
@@ -133,20 +144,26 @@ type RevealBlockProps = {
   children: ReactNode;
   className?: string;
   delay?: number;
+  lenisPrevent?: boolean;
 };
 
 export function RevealBlock({
   children,
   className = "",
   delay = 0,
+  lenisPrevent = false,
 }: RevealBlockProps) {
+  const reducedMotion = useReducedMotion();
+  const state = getRevealState(!!reducedMotion, 24);
+
   return (
     <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 26, filter: "blur(10px)" }}
-      transition={{ ...containerTransition, delay }}
+      className={`will-change-transform ${className}`.trim()}
+      data-lenis-prevent={lenisPrevent ? "true" : undefined}
+      initial={state.initial}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay }}
       viewport={viewport}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      whileInView={state.animate}
     >
       {children}
     </motion.div>

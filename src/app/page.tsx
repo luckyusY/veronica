@@ -239,7 +239,7 @@ export default function Home() {
           title="This section now behaves like a release rail instead of a flat archive."
         />
 
-        <RevealBlock className="rail-scroll mt-8" delay={0.08}>
+        <RevealBlock className="rail-scroll mt-8" delay={0.08} lenisPrevent>
           <div className="flex gap-4 pb-3">
             {releaseHighlights.map((item, index) => (
               <CinematicCard

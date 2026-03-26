@@ -1,3 +1,4 @@
+@import "lenis/dist/lenis.css";
 @import "tailwindcss";
 
 :root {
@@ -24,6 +25,19 @@ html {
   scroll-behavior: smooth;
 }
 
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
 @keyframes beamShift {
   0% {
     background-position: 0% 50%;
@@ -46,6 +60,16 @@ html {
 
   50% {
     text-shadow: 0 0 20px rgba(242, 210, 139, 0.16);
+  }
+}
+
+@keyframes tickerFlow {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
@@ -145,15 +169,21 @@ a {
   }
 
   .primary-button {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 999px;
+    gap: 0.85rem;
     border: 1px solid rgba(212, 175, 106, 0.55);
     background: linear-gradient(135deg, rgba(212, 175, 106, 0.92), rgba(217, 79, 43, 0.9));
-    padding: 0.88rem 1.35rem;
-    font-size: 0.94rem;
-    font-weight: 600;
+    padding: 0.98rem 3.4rem 0.98rem 1.3rem;
+    clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 50%, calc(100% - 1rem) 100%, 0 100%, 0 0);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
     color: #05070A;
     box-shadow: 0 12px 32px rgba(217, 79, 43, 0.2);
     transition:
@@ -163,6 +193,28 @@ a {
       box-shadow 180ms ease;
   }
 
+  .primary-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(110deg, transparent 26%, rgba(255, 255, 255, 0.34) 50%, transparent 74%);
+    transform: translateX(-130%);
+    transition: transform 420ms ease;
+    z-index: -1;
+  }
+
+  .primary-button::after {
+    content: "↗";
+    position: absolute;
+    right: 1.05rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    font-weight: 700;
+    color: rgba(5, 7, 10, 0.82);
+  }
+
   .primary-button:hover {
     transform: translateY(-1px);
     border-color: rgba(242, 210, 139, 0.78);
@@ -170,20 +222,53 @@ a {
     box-shadow: 0 16px 38px rgba(217, 79, 43, 0.28);
   }
 
+  .primary-button:hover::before {
+    transform: translateX(120%);
+  }
+
   .secondary-button {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 999px;
+    gap: 0.75rem;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    padding: 0.88rem 1.35rem;
-    font-size: 0.94rem;
-    font-weight: 600;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
+      rgba(255, 255, 255, 0.02);
+    padding: 0.95rem 3.1rem 0.95rem 1.2rem;
+    clip-path: polygon(0.9rem 0, 100% 0, 100% 100%, 0 100%, 0 0.9rem);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     color: rgba(255, 255, 255, 0.84);
     transition:
       transform 180ms ease,
       border-color 180ms ease,
-      color 180ms ease;
+      color 180ms ease,
+      background 180ms ease;
+  }
+
+  .secondary-button::before {
+    content: "";
+    position: absolute;
+    inset: 0.3rem;
+    border: 1px solid rgba(242, 210, 139, 0.12);
+    clip-path: polygon(0.75rem 0, 100% 0, 100% 100%, 0 100%, 0 0.75rem);
+    pointer-events: none;
+  }
+
+  .secondary-button::after {
+    content: "+";
+    position: absolute;
+    right: 1.15rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: var(--accent);
   }
 
   .secondary-button:hover {
@@ -235,9 +320,9 @@ a {
     isolation: isolate;
     overflow: hidden;
     min-height: 18rem;
-    border-radius: 1.85rem;
+    border-radius: 0.9rem 2.1rem 0.9rem 2.1rem;
     border: 1px solid rgba(255, 255, 255, 0.09);
-    padding: 1.4rem;
+    padding: 1.45rem;
     box-shadow: 0 26px 62px rgba(0, 0, 0, 0.4);
     transition:
       transform 260ms ease,
@@ -277,6 +362,58 @@ a {
   .cinema-card--feature {
     min-height: 23rem;
     padding: 1.7rem;
+  }
+
+  .card-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 100% 2.8rem, 2.8rem 100%;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5), transparent 75%);
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .card-corner-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4.4rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(5, 7, 10, 0.34);
+    padding: 0.45rem 0.8rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(234, 234, 234, 0.66);
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 0.9rem;
+  }
+
+  .card-footer-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+  }
+
+  .card-footer-arrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(234, 234, 234, 0.54);
   }
 
   .tone-gold {
@@ -321,7 +458,7 @@ a {
   .metric-card {
     position: relative;
     overflow: hidden;
-    border-radius: 1.75rem;
+    border-radius: 1rem 1.9rem 1rem 1.9rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
     padding: 1.4rem;
     background:
@@ -356,6 +493,29 @@ a {
     color: rgba(255, 255, 255, 0.16);
   }
 
+  .metric-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.35rem 0.7rem;
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(234, 234, 234, 0.7);
+  }
+
+  .metric-badge::before {
+    content: "";
+    height: 0.38rem;
+    width: 0.38rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--gold-soft), var(--accent));
+  }
+
   .rail-scroll {
     overflow-x: auto;
     padding-bottom: 0.5rem;
@@ -379,7 +539,7 @@ a {
   .signal-tile {
     position: relative;
     overflow: hidden;
-    border-radius: 1.4rem;
+    border-radius: 1rem 1.6rem 1rem 1.6rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
@@ -393,5 +553,278 @@ a {
   .signal-tile:hover {
     transform: translateY(-4px);
     border-color: rgba(217, 79, 43, 0.22);
+  }
+
+  .chrome-shell {
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+      radial-gradient(circle at top, rgba(212, 175, 106, 0.12), transparent 32%),
+      radial-gradient(circle at 85% 20%, rgba(217, 79, 43, 0.12), transparent 22%),
+      linear-gradient(180deg, rgba(10, 12, 16, 0.88), rgba(5, 7, 10, 0.78));
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+    backdrop-filter: blur(20px);
+  }
+
+  .chrome-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+      linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+    opacity: 0.22;
+    pointer-events: none;
+  }
+
+  .ticker-wrap {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  }
+
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    gap: 0.9rem;
+    animation: tickerFlow 28s linear infinite;
+    will-change: transform;
+  }
+
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    white-space: nowrap;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.35rem 0.7rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(234, 234, 234, 0.74);
+  }
+
+  .ticker-dot {
+    height: 0.42rem;
+    width: 0.42rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--gold-soft), var(--accent));
+    box-shadow: 0 0 14px rgba(217, 79, 43, 0.35);
+  }
+
+  .header-stage {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+      radial-gradient(circle at top left, rgba(212, 175, 106, 0.16), transparent 34%),
+      radial-gradient(circle at bottom right, rgba(217, 79, 43, 0.14), transparent 28%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
+      rgba(255, 255, 255, 0.015);
+    padding: 1rem;
+    box-shadow: 0 22px 62px rgba(0, 0, 0, 0.36);
+  }
+
+  .header-stage::after {
+    content: "";
+    position: absolute;
+    inset: auto 1.1rem 0 1.1rem;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      rgba(212, 175, 106, 0.12),
+      rgba(242, 210, 139, 0.95),
+      rgba(217, 79, 43, 0.85),
+      rgba(212, 175, 106, 0.12)
+    );
+    opacity: 0.95;
+  }
+
+  .brand-monogram {
+    display: inline-flex;
+    height: 4.5rem;
+    width: 4.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.4rem;
+    border: 1px solid rgba(242, 210, 139, 0.22);
+    background:
+      radial-gradient(circle at 30% 20%, rgba(242, 210, 139, 0.28), transparent 32%),
+      linear-gradient(145deg, rgba(212, 175, 106, 0.22), rgba(217, 79, 43, 0.24));
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: white;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .brand-crest {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(234, 234, 234, 0.78);
+  }
+
+  .brand-crest::before {
+    content: "";
+    height: 0.45rem;
+    width: 0.45rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--gold-soft), var(--accent));
+  }
+
+  .nav-rail {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+    scrollbar-width: none;
+  }
+
+  .nav-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-rail-link {
+    display: inline-flex;
+    min-width: 10rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+      rgba(255, 255, 255, 0.015);
+    padding: 0.85rem 1rem;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease;
+  }
+
+  .nav-rail-link:hover {
+    transform: translateY(-2px);
+    border-color: rgba(217, 79, 43, 0.4);
+    background:
+      linear-gradient(180deg, rgba(217, 79, 43, 0.12), rgba(242, 210, 139, 0.04)),
+      rgba(255, 255, 255, 0.025);
+  }
+
+  .nav-rail-index {
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-size: 1.8rem;
+    line-height: 0.9;
+    color: rgba(255, 255, 255, 0.14);
+  }
+
+  .nav-rail-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(234, 234, 234, 0.84);
+  }
+
+  .nav-rail-sub {
+    margin-top: 0.2rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(234, 234, 234, 0.5);
+  }
+
+  .chrome-mini-card {
+    border-radius: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+      rgba(255, 255, 255, 0.02);
+    padding: 0.9rem 1rem;
+  }
+
+  .footer-stage {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+      radial-gradient(circle at top left, rgba(212, 175, 106, 0.18), transparent 32%),
+      radial-gradient(circle at 90% 15%, rgba(217, 79, 43, 0.14), transparent 22%),
+      radial-gradient(circle at 20% 90%, rgba(169, 113, 66, 0.14), transparent 28%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
+      rgba(255, 255, 255, 0.018);
+    padding: 1.2rem;
+    box-shadow: 0 28px 84px rgba(0, 0, 0, 0.46);
+  }
+
+  .footer-stage::before {
+    content: "";
+    position: absolute;
+    inset: auto 1.2rem 0 1.2rem;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      rgba(212, 175, 106, 0.08),
+      rgba(242, 210, 139, 0.95),
+      rgba(217, 79, 43, 0.82),
+      rgba(212, 175, 106, 0.08)
+    );
+  }
+
+  .footer-grid-card {
+    border-radius: 1.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
+      rgba(255, 255, 255, 0.016);
+    padding: 1.25rem;
+  }
+
+  .footer-link-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: 1.15rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.95rem 1rem;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease;
+  }
+
+  .footer-link-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(217, 79, 43, 0.36);
+  }
+
+  .footer-link-index {
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-size: 1.7rem;
+    line-height: 0.9;
+    color: rgba(255, 255, 255, 0.14);
+  }
+
+  .footer-stat {
+    border-radius: 1.15rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.9rem 1rem;
   }
 }
