@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { AppShell } from "@/components/app-shell";
 import { Providers } from "@/components/providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -37,11 +38,9 @@ export default function RootLayout({
     >
       <body className="min-h-full">
         <Providers>
-          <div className="flex min-h-screen flex-col">
-            <SiteHeader />
-            <div className="flex-1">{children}</div>
-            <SiteFooter />
-          </div>
+          <AppShell footer={<SiteFooter />} header={<SiteHeader />}>
+            {children}
+          </AppShell>
         </Providers>
       </body>
     </html>

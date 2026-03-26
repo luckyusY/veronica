@@ -20,19 +20,19 @@ import {
 
 const heroSignals = [
   {
-    title: "Story-first design",
+    title: "Heritage first",
     description:
-      "The interface leads with mood, narrative, and visual hierarchy before it asks for any action.",
+      "The platform leads with identity, family legacy, and a clearer sense of Veronica's artistic world.",
   },
   {
-    title: "Entertainment rails",
+    title: "Luxury contrast",
     description:
-      "Key sections now behave more like curated streaming collections than static content blocks.",
+      "Darker surfaces, brighter typography, and quieter accents create a more premium visual standard.",
   },
   {
-    title: "Luxury interaction",
+    title: "Operationally ready",
     description:
-      "Hover depth, layered gradients, and richer contrast make the platform feel more premium on desktop and mobile.",
+      "The site is positioned to support releases, events, merchandise, press, and management workflows together.",
   },
 ];
 
@@ -94,9 +94,9 @@ const pressMeta = [
 ];
 
 const streamingSignals = [
-  "Featured release rails that can later pull from MongoDB data models.",
-  "Poster-style cards that work for songs, videos, tours, and merch drops.",
-  "A stronger visual language for premieres, countdowns, and future membership content.",
+  "Release shelves can evolve into live collections powered by MongoDB-backed content.",
+  "Poster-style framing works for songs, films, tours, collaborations, and collector products.",
+  "The new system is strong enough for premieres, campaigns, VIP drops, and future membership layers.",
 ];
 
 export default function Home() {
@@ -105,17 +105,17 @@ export default function Home() {
       <section className="section-shell relative overflow-hidden py-10 sm:py-14 lg:py-20">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.02fr)_24rem] lg:items-start">
           <div className="space-y-6">
-            <AnimatedEyebrow>Cinematic artist platform</AnimatedEyebrow>
+            <AnimatedEyebrow>Official digital house</AnimatedEyebrow>
             <AnimatedHeadline
               as="h1"
               className="display-title max-w-5xl text-5xl text-balance sm:text-6xl xl:text-7xl"
-              highlightWords={["cinematic", "premium", "entertainment"]}
-              text="Veronica Adane deserves a homepage that feels curated like premium entertainment."
+              highlightWords={["luxury", "music", "legacy"]}
+              text="A luxury digital house for music, stage, press, and legacy."
             />
             <AnimatedParagraph
               className="max-w-3xl text-base leading-8 text-white/72 sm:text-lg"
               delay={0.14}
-              text="The layout now leans harder into a streaming-inspired rhythm: stronger feature cards, more visual hierarchy, and sections that feel selected rather than simply stacked. It keeps the black and gold identity, but gives the experience more tension, depth, and motion."
+              text="Built around Veronica Adane's voice, heritage, and global ambition, the platform now carries a sharper, more elegant standard across releases, live routing, partnerships, and media presentation."
             />
 
             <RevealBlock className="flex flex-wrap gap-3" delay={0.2}>
@@ -158,12 +158,12 @@ export default function Home() {
             <RevealBlock delay={0.22}>
               <CinematicCard
                 badge="Launch Layer"
-                description="A stronger landing experience for new fans, partners, and diaspora audiences arriving from video, social, or press."
-                eyebrow="Featured Mood"
-                highlightWords={["cinematic", "era"]}
+                description="A premium introduction for new listeners, promoters, diaspora audiences, and brand partners arriving from stage, social, or press."
+                eyebrow="Featured Frame"
+                highlightWords={["luxury", "presence"]}
                 meta={["Hero trailers", "Live show feel", "Premium storytelling"]}
                 size="feature"
-                title="Now entering a more cinematic visual era."
+                title="A more refined and luxurious digital era begins here."
                 tone="gold"
               />
             </RevealBlock>
@@ -171,19 +171,19 @@ export default function Home() {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
               <RevealBlock delay={0.28}>
                 <article className="signal-tile">
-                  <p className="meta-chip meta-chip--accent">Burnt Orange Focus</p>
+                  <p className="meta-chip meta-chip--accent">Burnt Orange Accent</p>
                   <p className="mt-4 text-sm leading-7 text-white/68">
-                    Used for urgency, hover states, featured badges, and
-                    directional attention instead of random decoration.
+                    Reserved for urgency, action, and featured emphasis so the
+                    palette stays elegant rather than over-decorated.
                   </p>
                 </article>
               </RevealBlock>
               <RevealBlock delay={0.34}>
                 <article className="signal-tile">
-                  <p className="meta-chip">Netflix-style rhythm</p>
+                  <p className="meta-chip">Classy visual rhythm</p>
                   <p className="mt-4 text-sm leading-7 text-white/68">
-                    Bigger hero cards, cinematic rails, and cleaner content
-                    grouping create a stronger premium entertainment flow.
+                    Cleaner spacing, more deliberate cards, and stronger contrast
+                    give the site a calmer luxury feel.
                   </p>
                 </article>
               </RevealBlock>
@@ -208,10 +208,10 @@ export default function Home() {
 
       <section className="section-shell py-12">
         <SectionHeading
-          description="The biography area now aims to behave more like a premium editorial shelf. Each chapter gets more weight, mood, and visual identity while keeping the storytelling readable."
+          description="Each chapter of Veronica's story now sits in a more editorial presentation so heritage, discipline, and growth feel worthy of the legacy they represent."
           eyebrow="Biography"
-          highlightWords={["featured", "chapters"]}
-          title="Story sections should feel like featured chapters, not generic content cards."
+          highlightWords={["story", "chapters"]}
+          title="Featured chapters from a journey built on faith, identity, and discipline."
         />
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {journeyMoments.map((item, index) => (
@@ -232,10 +232,10 @@ export default function Home() {
 
       <section className="section-shell py-12">
         <SectionHeading
-          description="The first card takes the role of a featured title, while the rest act like a curated shelf. It is a much closer fit to the streaming-inspired feel you asked for."
+          description="The release floor is structured to spotlight major songs, visual eras, and audience favorites with a more elegant rhythm."
           eyebrow="Music & Video"
-          highlightWords={["release", "rail", "archive"]}
-          title="This section now behaves like a release rail instead of a flat archive."
+          highlightWords={["release", "era", "archive"]}
+          title="A release archive that feels curated, elevated, and ready for the next era."
         />
 
         <RevealBlock className="rail-scroll mt-8" delay={0.08} lenisPrevent>
@@ -269,8 +269,8 @@ export default function Home() {
               <AnimatedHeadline
                 as="h3"
                 className="mt-4 text-3xl font-semibold text-white"
-                highlightWords={["releases", "poster", "art"]}
-                text="The card language is ready for real releases, previews, and poster art."
+                highlightWords={["releases", "visuals", "campaigns"]}
+                text="The platform is ready for real releases, launch visuals, and campaign storytelling."
               />
             </div>
             <div className="flex flex-wrap gap-2">
@@ -295,10 +295,10 @@ export default function Home() {
 
       <section className="section-shell py-12">
         <SectionHeading
-          description="Each region now reads more like a featured tile. That creates better energy for tickets, routing, and premium event presentation."
+          description="Tour destinations now carry more atmosphere and hierarchy so ticketing, routing, and VIP presentation feel worthy of the live experience."
           eyebrow="Tour & Tickets"
-          highlightWords={["destinations", "clicking"]}
-          title="Event cards should feel like destinations worth clicking."
+          highlightWords={["tour", "destinations"]}
+          title="Tour destinations designed to feel prestigious, active, and worth entering."
         />
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {upcomingEvents.map((item, index) => (
@@ -319,10 +319,10 @@ export default function Home() {
 
       <section className="section-shell py-12">
         <SectionHeading
-          description="The store cards now take cues from streaming and fashion drops: cleaner emphasis, better hierarchy, and stronger product mood without needing real inventory yet."
+          description="The commerce layer now feels closer to a premium artist boutique with room for apparel, collector products, and exclusive digital releases."
           eyebrow="Shop"
-          highlightWords={["collectible", "catalog-heavy"]}
-          title="Commerce tiles should feel collectible, not catalog-heavy."
+          highlightWords={["premium", "collectible"]}
+          title="A premium commerce floor for apparel, exclusives, and collector releases."
         />
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {shopHighlights.map((item, index) => (
@@ -345,10 +345,10 @@ export default function Home() {
         <div className="grid gap-8 lg:grid-cols-2">
           <div>
             <SectionHeading
-              description="This side now frames campaigns and brand work through stronger hero treatment and cleaner supporting cards."
+              description="Campaigns, sponsorships, and ambassador work now sit inside a cleaner and more partner-ready visual frame."
               eyebrow="Collaborations"
               highlightWords={["premium", "fan-facing"]}
-              title="Partner-facing content should feel as premium as fan-facing content."
+              title="Partner-facing storytelling deserves the same premium standard as fan-facing pages."
             />
             <div className="mt-8 space-y-4">
               <CinematicCard
@@ -385,10 +385,10 @@ export default function Home() {
 
           <div>
             <SectionHeading
-              description="Awards, advocacy, interviews, and film work now sit in a presentation style that feels closer to featured titles than simple notes."
+              description="Awards, advocacy, interviews, and film work are presented with more editorial dignity and stronger visual order."
               eyebrow="Media & Press"
-              highlightWords={["cinematic", "shelf"]}
-              title="Press highlights deserve a more cinematic shelf too."
+              highlightWords={["press", "shelf"]}
+              title="A press and recognition shelf built for trust, visibility, and long-term archive value."
             />
             <div className="mt-8 space-y-4">
               <CinematicCard
@@ -433,21 +433,21 @@ export default function Home() {
               <AnimatedHeadline
                 as="h2"
                 className="display-title mt-4 text-4xl text-balance sm:text-5xl"
-                highlightWords={["premium", "content", "data"]}
-                text="The UI now has a clearer premium direction, and it is ready for real content, posters, and commerce data."
+                highlightWords={["luxury", "content", "control"]}
+                text="The platform now holds a stronger luxury standard and a clearer operational backbone."
               />
               <AnimatedParagraph
                 className="mt-4 text-base leading-8 text-white/72"
                 delay={0.14}
-                text="From here we can replace gradient placeholders with real artist photography, wire MongoDB collections, and build an admin layer that controls these shelves and feature cards dynamically."
+                text="From here, real photography, live collections, and content operations can be managed through the new admin layer while the public site stays elegant and high-contrast."
               />
             </div>
             <RevealBlock className="flex flex-wrap gap-3" delay={0.2}>
               <Link className="primary-button" href="/about">
                 Review Story Structure
               </Link>
-              <Link className="secondary-button" href="/contact">
-                Open Booking Flow
+              <Link className="secondary-button" href="/admin">
+                Enter Admin Suite
               </Link>
             </RevealBlock>
           </div>

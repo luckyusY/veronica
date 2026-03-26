@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CalendarRange, MicVocal, Newspaper, Sparkles } from "lucide-react";
 import { navigationItems } from "@/lib/site-data";
 
 const navDescriptions: Record<string, string> = {
@@ -14,14 +15,18 @@ const navDescriptions: Record<string, string> = {
 
 const quickPanels = [
   {
-    title: "Booking Open",
-    detail: "Concerts, festivals, private events, and routing requests.",
+    title: "Booking Concierge",
+    detail: "Concerts, festival offers, private performances, and routing requests.",
+    icon: CalendarRange,
   },
   {
-    title: "Media Ready",
-    detail: "Press kits, interviews, sponsor requests, and visibility assets.",
+    title: "Press Concierge",
+    detail: "Press kits, editorial requests, sponsor visibility, and media assets.",
+    icon: Newspaper,
   },
 ];
+
+const brandSignals = ["Singer", "Songwriter", "Actress", "Journalist"];
 
 export function SiteHeader() {
   return (
@@ -36,7 +41,10 @@ export function SiteHeader() {
                 </Link>
 
                 <div className="space-y-3">
-                  <span className="brand-crest">Official Digital House</span>
+                  <span className="brand-crest">
+                    <Sparkles size={14} strokeWidth={1.8} />
+                    Official Digital House
+                  </span>
                   <div>
                     <Link
                       className="display-title text-4xl text-white transition hover:text-[var(--gold-soft)] sm:text-5xl"
@@ -45,25 +53,41 @@ export function SiteHeader() {
                       Veronica Adane
                     </Link>
                     <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68 sm:text-base">
-                      A solid, cinematic home for releases, performances,
-                      partnerships, and press. The brand header stays expressive,
-                      while the scrolling navigation below stays compact and clean.
+                      A luxury digital house for music, live performance, press,
+                      and partnerships shaped with stronger contrast, quieter
+                      details, and a more elegant rhythm.
                     </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {brandSignals.map((item) => (
+                        <span className="meta-chip" key={item}>
+                          {item}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-                {quickPanels.map((panel) => (
+                {quickPanels.map((panel) => {
+                  const Icon = panel.icon;
+
+                  return (
                   <div className="chrome-mini-card" key={panel.title}>
-                    <p className="text-xs uppercase tracking-[0.24em] text-[var(--accent)]">
-                      {panel.title}
-                    </p>
+                    <div className="flex items-center gap-3">
+                      <span className="admin-nav-icon">
+                        <Icon size={16} strokeWidth={1.8} />
+                      </span>
+                      <p className="text-xs uppercase tracking-[0.24em] text-[var(--accent)]">
+                        {panel.title}
+                      </p>
+                    </div>
                     <p className="mt-3 text-sm leading-7 text-white/66">
                       {panel.detail}
                     </p>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -83,6 +107,10 @@ export function SiteHeader() {
               >
                 Veronica Adane
               </Link>
+              <div className="mt-3 flex items-center gap-2 text-[0.68rem] uppercase tracking-[0.18em] text-white/52">
+                <MicVocal size={14} strokeWidth={1.8} />
+                Global Artist Platform
+              </div>
             </div>
 
             <nav aria-label="Primary" className="nav-rail flex-1" data-lenis-prevent="true">

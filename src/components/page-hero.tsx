@@ -62,12 +62,12 @@ export function PageHero({
         </div>
         <RevealBlock className="solid-note-card text-sm text-white/65" delay={0.24}>
           <p className="font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
-            Build Direction
+            Brand Standard
           </p>
           <p className="mt-4 leading-7">
-            The site is being shaped as a cinematic artist platform with strong
-            storytelling, merch, ticketing, and media-ready sections for a
-            Vercel deployment workflow.
+            A high-contrast luxury system built to hold story, live
+            performance, commerce, partnerships, and press within one polished
+            artist platform.
           </p>
         </RevealBlock>
       </div>
