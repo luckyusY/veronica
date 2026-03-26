@@ -18,6 +18,7 @@ import {
 export default function Home() {
   return (
     <main className="editorial-home pb-16 sm:pb-20">
+      {/* ── Hero ──────────────────────────────────────────────────── */}
       <section className="section-shell py-5 sm:py-7">
         <RevealBlock className="editorial-hero" variant="scale">
           <EditorialImage
@@ -26,7 +27,8 @@ export default function Home() {
             motionPreset="settle-right"
             priority
             sizes="100vw"
-            strength={84}
+            strength={112}
+            tilt
           />
 
           <div className="editorial-hero-content">
@@ -44,7 +46,7 @@ export default function Home() {
                 text="This redesign shifts the homepage away from card-heavy layouts and toward an editorial rhythm inspired by luxury artist biography pages: larger photography, warmer contrast, restrained typography, and more composed storytelling."
               />
 
-              <RevealBlock className="mt-7 flex flex-wrap gap-3" delay={0.2}>
+              <RevealBlock className="mt-7 flex flex-wrap gap-3" delay={0.22}>
                 <Link className="primary-button" href="/about">
                   Read Biography
                 </Link>
@@ -54,7 +56,7 @@ export default function Home() {
               </RevealBlock>
             </div>
 
-            <RevealBlock className="editorial-side-note" delay={0.24}>
+            <RevealBlock className="editorial-side-note" delay={0.32}>
               <p className="section-label">Concept Direction</p>
               <p className="mt-4 text-sm leading-7 text-white/72">
                 Placeholder editorial photography is being used for this pass so
@@ -70,22 +72,25 @@ export default function Home() {
         </RevealBlock>
       </section>
 
+      {/* ── Bio + Portrait ────────────────────────────────────────── */}
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
           <RevealBlock
-            className="editorial-photo-block editorial-photo-block--tall"
+            className="editorial-photo-block editorial-photo-block--tall image-hover-glow"
             variant="left"
+            distance={40}
           >
             <EditorialImage
               className="editorial-photo-shell"
               image={editorialImages.cliff}
               motionPreset="from-left"
               sizes="(max-width: 1024px) 100vw, 40vw"
-              strength={62}
+              strength={88}
+              tilt
             />
           </RevealBlock>
 
-          <RevealBlock className="editorial-paper-panel" delay={0.08} variant="right">
+          <RevealBlock className="editorial-paper-panel" delay={0.1} variant="right" distance={40}>
             <p className="section-label">Official Biography</p>
             <h2 className="display-title mt-5 max-w-4xl text-4xl text-[#1f1914] sm:text-5xl">
               Veronica Adane should feel presented like an artist of lasting cultural weight.
@@ -118,14 +123,15 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Full-bleed Quote Banner ───────────────────────────────── */}
       <section className="section-shell py-10">
-        <RevealBlock className="editorial-quote-banner" variant="scale">
+        <RevealBlock className="editorial-quote-banner image-hover-glow" variant="scale">
           <EditorialImage
             className="editorial-quote-media"
             image={editorialImages.stage}
-            motionPreset="settle-left"
+            motionPreset="diagonal"
             sizes="100vw"
-            strength={76}
+            strength={98}
           />
           <div className="editorial-quote-copy">
             <p className="section-label text-white/80">Story Rhythm</p>
@@ -136,9 +142,10 @@ export default function Home() {
         </RevealBlock>
       </section>
 
+      {/* ── Heritage ──────────────────────────────────────────────── */}
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-2">
-          <RevealBlock className="editorial-dark-panel" variant="left">
+          <RevealBlock className="editorial-dark-panel" variant="left" distance={36}>
             <p className="section-label">Heritage</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
               {editorialStoryNotes[0].title}
@@ -155,21 +162,28 @@ export default function Home() {
             </div>
           </RevealBlock>
 
-          <RevealBlock className="editorial-photo-block" delay={0.08} variant="right">
+          <RevealBlock
+            className="editorial-photo-block image-hover-glow"
+            delay={0.1}
+            variant="right"
+            distance={36}
+          >
             <EditorialImage
               className="editorial-photo-shell"
               image={editorialImages.microphone}
               motionPreset="from-right"
               sizes="(max-width: 1024px) 100vw, 50vw"
-              strength={58}
+              strength={82}
+              tilt
             />
           </RevealBlock>
         </div>
       </section>
 
+      {/* ── Rise + Mosaic ─────────────────────────────────────────── */}
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-          <RevealBlock className="editorial-paper-panel" variant="left">
+          <RevealBlock className="editorial-paper-panel" variant="left" distance={32}>
             <p className="section-label">Rise</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
               {editorialStoryNotes[1].title}
@@ -193,32 +207,39 @@ export default function Home() {
             </div>
           </RevealBlock>
 
-          <RevealBlock className="editorial-mosaic" delay={0.08} variant="right">
-            <div className="editorial-mosaic-narrow">
-              <EditorialImage
-                className="editorial-photo-shell"
-                image={editorialImages.crowd}
-                motionPreset="from-left"
-                sizes="(max-width: 1024px) 100vw, 22vw"
-                strength={54}
-              />
+          <RevealBlock className="editorial-mosaic" delay={0.1} variant="right" distance={32}>
+            <div className="editorial-mosaic-narrow image-hover-glow">
+              <div className="image-tilt-shell">
+                <EditorialImage
+                  className="editorial-photo-shell"
+                  image={editorialImages.crowd}
+                  motionPreset="from-left"
+                  sizes="(max-width: 1024px) 100vw, 22vw"
+                  strength={78}
+                  tilt
+                />
+              </div>
             </div>
-            <div className="editorial-mosaic-wide">
-              <EditorialImage
-                className="editorial-photo-shell"
-                image={editorialImages.aerialCrowd}
-                motionPreset="from-right"
-                sizes="(max-width: 1024px) 100vw, 38vw"
-                strength={54}
-              />
+            <div className="editorial-mosaic-wide image-hover-glow">
+              <div className="image-tilt-shell">
+                <EditorialImage
+                  className="editorial-photo-shell"
+                  image={editorialImages.aerialCrowd}
+                  motionPreset="from-right"
+                  sizes="(max-width: 1024px) 100vw, 38vw"
+                  strength={78}
+                  tilt
+                />
+              </div>
             </div>
           </RevealBlock>
         </div>
       </section>
 
+      {/* ── Film Strip ────────────────────────────────────────────── */}
       <section className="section-shell py-10">
         <div className="editorial-filmstrip">
-          <RevealBlock className="editorial-film-panel editorial-film-panel--dark" variant="left">
+          <RevealBlock className="editorial-film-panel editorial-film-panel--dark" variant="left" distance={44}>
             <p className="section-label">Image rhythm</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
               What makes the reference page memorable is not fancy image delivery. It is sequencing.
@@ -231,16 +252,16 @@ export default function Home() {
           </RevealBlock>
 
           <RevealBlock
-            className="editorial-film-panel editorial-film-panel--stacked"
-            delay={0.08}
+            className="editorial-film-panel editorial-film-panel--stacked image-hover-glow"
+            delay={0.1}
             variant="scale"
           >
             <EditorialImage
               className="editorial-film-media"
               image={editorialImages.stage}
-              motionPreset="from-left"
+              motionPreset="zoom-burst"
               sizes="(max-width: 1024px) 100vw, 34vw"
-              strength={60}
+              strength={80}
             />
             <div className="editorial-film-copy">
               <p className="section-label text-white/78">Stage-led scene</p>
@@ -252,52 +273,55 @@ export default function Home() {
 
           <RevealBlock
             className="editorial-film-panel editorial-film-panel--double"
-            delay={0.12}
+            delay={0.18}
             variant="right"
+            distance={44}
           >
-            <div className="editorial-film-double editorial-film-double--small">
+            <div className="editorial-film-double editorial-film-double--small image-hover-glow">
               <EditorialImage
                 className="editorial-photo-shell"
                 image={editorialImages.hero}
                 motionPreset="settle-right"
                 sizes="(max-width: 1024px) 100vw, 18vw"
-                strength={48}
+                strength={68}
+                tilt
               />
             </div>
-            <div className="editorial-film-double editorial-film-double--large">
+            <div className="editorial-film-double editorial-film-double--large image-hover-glow">
               <EditorialImage
                 className="editorial-photo-shell"
                 image={editorialImages.crowd}
                 motionPreset="from-left"
                 sizes="(max-width: 1024px) 100vw, 28vw"
-                strength={56}
+                strength={78}
+                tilt
               />
             </div>
           </RevealBlock>
         </div>
       </section>
 
+      {/* ── Sections Grid ─────────────────────────────────────────── */}
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-3">
           {editorialSections.map((item, index) => (
             <RevealBlock
               className={index === 1 ? "editorial-dark-panel" : "editorial-paper-panel"}
-              delay={0.08 + index * 0.06}
+              delay={0.08 + index * 0.08}
               variant={index === 0 ? "left" : index === 1 ? "scale" : "right"}
+              distance={30}
               key={item.title}
             >
               <p className="section-label">{item.title}</p>
               <h2
-                className={`display-title mt-5 text-4xl sm:text-5xl ${
-                  index === 1 ? "text-white" : "text-[#1f1914]"
-                }`}
+                className={`display-title mt-5 text-4xl sm:text-5xl ${index === 1 ? "text-white" : "text-[#1f1914]"
+                  }`}
               >
                 {item.title}
               </h2>
               <p
-                className={`mt-6 text-base leading-8 ${
-                  index === 1 ? "text-white/72" : "text-[#3a332d]"
-                }`}
+                className={`mt-6 text-base leading-8 ${index === 1 ? "text-white/72" : "text-[#3a332d]"
+                  }`}
               >
                 {item.description}
               </p>
@@ -306,6 +330,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Credits ───────────────────────────────────────────────── */}
       <section className="section-shell py-10">
         <RevealBlock className="editorial-paper-panel">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">

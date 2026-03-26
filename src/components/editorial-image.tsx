@@ -1,8 +1,16 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  useInView,
+  type Variants,
+} from "motion/react";
 
 type EditorialImageAsset = {
   src: string;
@@ -17,7 +25,9 @@ type ImageMotionPreset =
   | "from-left"
   | "from-right"
   | "settle-left"
-  | "settle-right";
+  | "settle-right"
+  | "zoom-burst"
+  | "diagonal";
 
 type EditorialImageProps = {
   image: EditorialImageAsset;
@@ -27,6 +37,10 @@ type EditorialImageProps = {
   strength?: number;
   overlayClassName?: string;
   motionPreset?: ImageMotionPreset;
+  /** Enable 3-D tilt on pointer hover */
+  tilt?: boolean;
+  /** Strength of the shimmer scan (0 = off) */
+  shimmer?: boolean;
 };
 
 function createBlurDataURL(base: string, highlight: string) {
@@ -34,8 +48,8 @@ function createBlurDataURL(base: string, highlight: string) {
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" preserveAspectRatio="none">
       <defs>
         <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="${base}" />
-          <stop offset="55%" stop-color="${highlight}" />
+          <stop offset="0%"   stop-color="${base}" />
+          <stop offset="55%"  stop-color="${highlight}" />
           <stop offset="100%" stop-color="${base}" />
         </linearGradient>
       </defs>
@@ -55,10 +69,14 @@ export function EditorialImage({
   strength = 52,
   overlayClassName = "bg-gradient-to-t from-black/38 via-black/10 to-transparent",
   motionPreset = "vertical",
+  tilt = false,
+  shimmer = true,
 }: EditorialImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // -- Scroll-based parallax --------------------------------------------------
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
@@ -66,62 +84,78 @@ export function EditorialImage({
 
   const motionFrames = useMemo(() => {
     if (reducedMotion) {
-      return {
-        x: [0, 0, 0],
-        y: [0, 0, 0],
-        scale: [1, 1, 1],
-        rotate: [0, 0, 0],
-      };
+      return { x: [0, 0, 0], y: [0, 0, 0], scale: [1, 1, 1], rotate: [0, 0, 0] };
     }
 
     switch (motionPreset) {
       case "from-left":
         return {
-          x: [-strength * 1.4, 0, strength * 0.45],
-          y: [-strength * 0.3, 0, strength * 0.16],
-          scale: [1.18, 1.08, 1.02],
-          rotate: [-1.2, 0, 0.35],
+          x: [-strength * 1.6, 0, strength * 0.5],
+          y: [-strength * 0.35, 0, strength * 0.2],
+          scale: [1.22, 1.1, 1.02],
+          rotate: [-1.6, 0, 0.5],
         };
       case "from-right":
         return {
-          x: [strength * 1.4, 0, -strength * 0.45],
-          y: [-strength * 0.3, 0, strength * 0.16],
-          scale: [1.18, 1.08, 1.02],
-          rotate: [1.2, 0, -0.35],
+          x: [strength * 1.6, 0, -strength * 0.5],
+          y: [-strength * 0.35, 0, strength * 0.2],
+          scale: [1.22, 1.1, 1.02],
+          rotate: [1.6, 0, -0.5],
         };
       case "settle-left":
         return {
-          x: [-strength * 0.8, 0, -strength * 0.18],
-          y: [-strength * 0.55, 0, strength * 0.22],
-          scale: [1.16, 1.06, 1.02],
-          rotate: [-0.55, 0, 0],
+          x: [-strength * 1.0, 0, -strength * 0.22],
+          y: [-strength * 0.6, 0, strength * 0.28],
+          scale: [1.2, 1.08, 1.02],
+          rotate: [-0.8, 0, 0],
         };
       case "settle-right":
         return {
-          x: [strength * 0.8, 0, strength * 0.18],
-          y: [-strength * 0.55, 0, strength * 0.22],
-          scale: [1.16, 1.06, 1.02],
-          rotate: [0.55, 0, 0],
+          x: [strength * 1.0, 0, strength * 0.22],
+          y: [-strength * 0.6, 0, strength * 0.28],
+          scale: [1.2, 1.08, 1.02],
+          rotate: [0.8, 0, 0],
+        };
+      case "zoom-burst":
+        return {
+          x: [0, 0, 0],
+          y: [0, 0, 0],
+          scale: [1.4, 1.1, 1.0],
+          rotate: [0, 0, 0],
+        };
+      case "diagonal":
+        return {
+          x: [-strength * 0.9, 0, strength * 0.35],
+          y: [-strength * 0.9, 0, strength * 0.35],
+          scale: [1.28, 1.1, 1.02],
+          rotate: [-1.1, 0, 0.4],
         };
       case "vertical":
       default:
         return {
           x: [0, 0, 0],
-          y: [-strength, 0, strength],
-          scale: [1.14, 1.08, 1.02],
+          y: [-strength * 1.1, 0, strength * 1.1],
+          scale: [1.18, 1.1, 1.02],
           rotate: [0, 0, 0],
         };
     }
   }, [motionPreset, reducedMotion, strength]);
 
-  const x = useTransform(scrollYProgress, [0, 0.5, 1], motionFrames.x);
-  const y = useTransform(
-    scrollYProgress,
-    [0, 0.5, 1],
-    motionFrames.y,
-  );
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], motionFrames.scale);
-  const rotate = useTransform(scrollYProgress, [0, 0.5, 1], motionFrames.rotate);
+  // Spring-smoothed transforms for buttery parallax
+  const rawX = useTransform(scrollYProgress, [0, 0.5, 1], motionFrames.x);
+  const rawY = useTransform(scrollYProgress, [0, 0.5, 1], motionFrames.y);
+  const rawScale = useTransform(scrollYProgress, [0, 0.5, 1], motionFrames.scale);
+  const rawRotate = useTransform(scrollYProgress, [0, 0.5, 1], motionFrames.rotate);
+
+  const springCfg = { stiffness: 60, damping: 22, mass: 0.6 };
+  const x = useSpring(rawX, springCfg);
+  const y = useSpring(rawY, springCfg);
+  const scale = useSpring(rawScale, springCfg);
+  const rotate = useSpring(rawRotate, springCfg);
+
+  // -- Viewport entrance (diagonal clip-path wipe) ----------------------------
+  const inView = useInView(containerRef, { once: true, amount: 0.12 });
+
   const blurDataURL = useMemo(
     () =>
       createBlurDataURL(
@@ -131,10 +165,67 @@ export function EditorialImage({
     [image.placeholderBase, image.placeholderHighlight],
   );
 
+  const shimmerActive = shimmer && isLoaded && inView;
+
+  // -- 3-D tilt state ---------------------------------------------------------
+  const [tiltStyle, setTiltStyle] = useState<CSSProperties>({});
+
+  function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
+    if (!tilt || reducedMotion) return;
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = ((e.clientX - cx) / rect.width) * 2;   // -1 to 1
+    const dy = ((e.clientY - cy) / rect.height) * 2;  // -1 to 1
+    setTiltStyle({
+      transform: `perspective(1100px) rotateY(${dx * 6}deg) rotateX(${-dy * 5}deg) scale(1.018)`,
+    });
+  }
+
+  function handleMouseLeave() {
+    setTiltStyle({});
+  }
+
+  const entranceVariants: Variants | undefined = reducedMotion
+    ? undefined
+    : {
+        hidden: {
+          clipPath: "polygon(0 100%, 44% 100%, 0 56%, 0 100%)",
+          opacity: 0,
+          scale: 0.97,
+        },
+        visible: {
+          clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+          opacity: 1,
+          scale: 1,
+          transition: {
+            clipPath: { duration: 1.05, ease: [0.16, 1, 0.3, 1] },
+            opacity: { duration: 0.55, ease: "easeOut" },
+            scale: { duration: 0.82, ease: [0.16, 1, 0.3, 1] },
+          },
+        },
+      };
+
   return (
-    <div
-      className={`editorial-image-shell ${isLoaded ? "is-loaded" : ""} ${className}`.trim()}
+    <motion.div
+      className={`editorial-image-shell editorial-scroll-reveal${isLoaded ? " is-loaded" : ""}${inView ? " img-in-view" : ""}${tilt ? " image-hover-glow" : ""} ${className}`.trim()}
       ref={containerRef}
+      style={
+        tilt
+          ? {
+              ...tiltStyle,
+              transition: tiltStyle.transform
+                ? "none"
+                : "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
+            }
+          : undefined
+      }
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      variants={entranceVariants}
+      initial={reducedMotion ? { opacity: 0 } : "hidden"}
+      animate={reducedMotion ? { opacity: 1 } : inView ? "visible" : "hidden"}
     >
       <motion.div
         className="editorial-image-canvas"
@@ -149,15 +240,19 @@ export function EditorialImage({
           onLoad={() => setIsLoaded(true)}
           placeholder="blur"
           priority={priority}
-          quality={90}
+          quality={92}
           sizes={sizes}
           src={image.src}
           style={{ objectFit: "cover", objectPosition: image.position ?? "center" }}
         />
       </motion.div>
+
+      {/* Shimmer scan stripe — sweeps left-to-right once on load */}
+      {shimmer && <div className={`editorial-image-shimmer${shimmerActive ? " run" : ""}`} />}
+
       <div className={`editorial-image-overlay ${overlayClassName}`.trim()} />
       <div className="editorial-image-matte" />
       <div className="editorial-image-grain" />
-    </div>
+    </motion.div>
   );
 }
