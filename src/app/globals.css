@@ -306,17 +306,20 @@ a {
   }
 
   .section-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.34em;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
     color: rgba(242, 210, 139, 0.88);
   }
 
   .display-title {
     font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-optical-sizing: auto;
+    font-feature-settings: "liga" 1, "kern" 1, "pnum" 1;
     line-height: 0.92;
     letter-spacing: -0.04em;
+    text-rendering: optimizeLegibility;
   }
 
   .text-beam {
@@ -1856,6 +1859,7 @@ a {
 
   .brand-didot {
     font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-feature-settings: "liga" 1, "kern" 1, "pnum" 1;
     font-size: 0.5em;
     font-weight: 700;
     line-height: 0.88;
@@ -2026,9 +2030,91 @@ a {
   }
 
   .editorial-site-footer {
-    margin-top: 6rem;
+    margin-top: 3.5rem;
     border-top: 1px solid rgba(240, 214, 172, 0.12);
     background: linear-gradient(180deg, #3a2619 0%, #120b07 100%);
+  }
+
+  .editorial-mini-footer {
+    display: grid;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .editorial-mini-footer-brand {
+    display: inline-grid;
+    gap: 0.12rem;
+    justify-items: start;
+    width: fit-content;
+  }
+
+  .editorial-mini-footer-brand:hover {
+    text-decoration: none;
+  }
+
+  .editorial-mini-footer-brand .brand-script {
+    transform: translateY(0.16em);
+  }
+
+  .editorial-mini-footer-brand .brand-didot {
+    margin-left: 0.28em;
+    font-size: 0.44em;
+  }
+
+  .editorial-mini-footer-copy {
+    max-width: 36rem;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: rgba(242, 239, 233, 0.68);
+  }
+
+  .editorial-mini-footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .editorial-mini-footer-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.35rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(13, 17, 21, 0.42);
+    padding: 0.55rem 0.78rem;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(242, 239, 233, 0.74);
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .editorial-mini-footer-link:hover {
+    transform: translateY(-1px);
+    border-color: rgba(242, 210, 139, 0.24);
+    background: rgba(20, 25, 30, 0.6);
+    color: white;
+    text-decoration: none;
+  }
+
+  .editorial-mini-footer-base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 1.2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 0.9rem;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(242, 239, 233, 0.5);
   }
 
   .editorial-footer-lead {
@@ -2398,6 +2484,26 @@ a {
     padding: 1.2rem;
   }
 
+  .editorial-paper-panel,
+  .editorial-route-card,
+  .editorial-note,
+  .editorial-footer-paper {
+    color: var(--paper-ink);
+  }
+
+  .editorial-paper-panel .section-label,
+  .editorial-route-card .section-label,
+  .editorial-note .section-label,
+  .editorial-footer-paper .section-label {
+    color: rgba(70, 45, 26, 0.82);
+  }
+
+  .editorial-paper-panel .display-title,
+  .editorial-route-card .display-title,
+  .editorial-note .display-title {
+    color: #20150d;
+  }
+
   .editorial-dark-panel {
     background: #0d1218;
   }
@@ -2433,6 +2539,12 @@ a {
 
     .editorial-footer-grid {
       grid-template-columns: 1.1fr 0.9fr 1fr;
+    }
+
+    .editorial-mini-footer {
+      grid-template-columns: auto minmax(18rem, 1fr) auto;
+      justify-content: space-between;
+      gap: 1.5rem;
     }
 
     .editorial-page-hero {
@@ -2514,6 +2626,16 @@ a {
     .editorial-classic-topline,
     .editorial-classic-footer-base {
       letter-spacing: 0.14em;
+    }
+
+    .editorial-mini-footer-link {
+      min-height: 2.2rem;
+      padding-inline: 0.68rem;
+      font-size: 0.58rem;
+    }
+
+    .editorial-mini-footer-base {
+      letter-spacing: 0.16em;
     }
   }
 }
