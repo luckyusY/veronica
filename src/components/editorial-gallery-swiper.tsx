@@ -1,10 +1,9 @@
 "use client";
 
-import type { StaticImageData } from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { useReducedMotion } from "motion/react";
-import { Autoplay, FreeMode, Mousewheel } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { EditorialImage } from "@/components/editorial-image";
 
 type GalleryItem = {
   title: string;
@@ -23,44 +22,52 @@ type EditorialGallerySwiperProps = {
   items: readonly GalleryItem[];
 };
 
-const motionPresets = ["from-left", "diagonal", "from-right", "settle-left", "zoom-burst"] as const;
-
 export function EditorialGallerySwiper({ items }: EditorialGallerySwiperProps) {
   const reducedMotion = useReducedMotion();
-  const galleryItems = items.length < 8 ? [...items, ...items] : [...items];
 
   return (
     <div className="editorial-gallery-shell" data-lenis-prevent="true">
       <Swiper
-        className="editorial-gallery-swiper"
-        freeMode={{ enabled: true, momentumVelocityRatio: 0.8 }}
-        loop
-        modules={[Autoplay, FreeMode, Mousewheel]}
-        mousewheel={{ forceToAxis: true }}
-        slidesPerView="auto"
-        spaceBetween={16}
-        speed={950}
         autoplay={
           reducedMotion
             ? false
             : {
-                delay: 2200,
+                delay: 3200,
                 disableOnInteraction: false,
                 pauseOnMouseEnter: true,
               }
         }
+        breakpoints={{
+          640: { slidesPerView: 1.2 },
+          1024: { slidesPerView: 1.35 },
+          1280: { slidesPerView: 1.7 },
+        }}
+        className="editorial-gallery-swiper"
+        grabCursor
+        modules={[Autoplay]}
+        rewind
+        slidesPerView={1.04}
+        spaceBetween={16}
+        speed={850}
       >
-        {galleryItems.map((item, index) => (
-          <SwiperSlide className="editorial-gallery-slide" key={`${item.title}-${index}`}>
+        {items.map((item, index) => (
+          <SwiperSlide className="editorial-gallery-slide" key={item.title}>
             <article className="editorial-gallery-card image-hover-glow">
-              <EditorialImage
-                className="editorial-gallery-media"
-                image={item.image}
-                motionPreset={motionPresets[index % motionPresets.length]}
-                sizes="(max-width: 768px) 80vw, (max-width: 1280px) 44vw, 26vw"
-                strength={88}
-                tilt
-              />
+              <div className="editorial-gallery-media">
+                <Image
+                  alt={item.image.alt}
+                  className="editorial-gallery-image"
+                  fill
+                  priority={index < 2}
+                  sizes="(max-width: 640px) 82vw, (max-width: 1200px) 46vw, 28vw"
+                  src={item.image.src}
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: item.image.position ?? "center",
+                  }}
+                />
+              </div>
+
               <div className="editorial-gallery-copy">
                 <p className="section-label text-white/76">{item.image.label ?? item.title}</p>
                 <h3 className="display-title mt-4 text-3xl text-white sm:text-4xl">
