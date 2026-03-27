@@ -42,18 +42,19 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
           reducedMotion
             ? false
             : {
-                delay: 10000,
+                delay: 7200,
                 disableOnInteraction: false,
-                pauseOnMouseEnter: true,
+                pauseOnMouseEnter: false,
+                waitForTransition: false,
               }
         }
         className="home-hero-swiper"
         effect="fade"
         fadeEffect={{ crossFade: true }}
         modules={[Autoplay, EffectFade, Pagination]}
-        onSlideChange={(instance) => setActiveIndex(instance.activeIndex)}
+        loop={slides.length > 1}
+        onRealIndexChange={(instance) => setActiveIndex(instance.realIndex)}
         pagination={{ clickable: true }}
-        rewind
         speed={1600}
       >
         {slides.map((slide, index) => (

@@ -32,8 +32,8 @@
 
 .home-hero-section {
   position: relative;
-  height: min(40rem, calc(100svh - 0.4rem));
-  min-height: 31rem;
+  height: min(41.5rem, calc(100svh - 0.25rem));
+  min-height: 33rem;
   overflow: clip;
 }
 
@@ -106,8 +106,8 @@
   grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: 2rem;
-  padding-top: clamp(5.6rem, 8vw, 6.5rem);
-  padding-bottom: clamp(1.4rem, 2.2vw, 2rem);
+  padding-top: clamp(5rem, 7vw, 5.9rem);
+  padding-bottom: clamp(1.7rem, 2.8vw, 2.45rem);
 }
 
 .home-hero-vertical {
@@ -128,9 +128,9 @@
 
 .home-hero-copy {
   align-self: center;
-  max-width: min(33rem, calc(100% - 4rem));
+  max-width: min(34rem, calc(100% - 4rem));
   padding-left: clamp(2rem, 4.2vw, 3.75rem);
-  padding-bottom: 0.35rem;
+  padding-bottom: 0.55rem;
   pointer-events: none;
 }
 
@@ -163,7 +163,7 @@
 .home-hero-headline-bottom {
   display: block;
   max-width: 8.2ch;
-  font-size: clamp(2.85rem, 4.65vw, 4.5rem);
+  font-size: clamp(2.7rem, 4.35vw, 4.15rem);
   font-style: italic;
   font-weight: 600;
   line-height: 0.92;
@@ -177,10 +177,10 @@
 }
 
 .home-hero-description {
-  max-width: 22.5rem;
-  margin: 1.1rem 0 0;
+  max-width: 24rem;
+  margin: 0.95rem 0 0;
   font-size: 0.86rem;
-  line-height: 1.72;
+  line-height: 1.64;
   color: rgba(245, 242, 236, 0.78);
 }
 
@@ -188,7 +188,7 @@
   display: block;
   width: 60px;
   height: 1px;
-  margin-top: 1rem;
+  margin-top: 0.85rem;
   background: var(--gold);
 }
 
@@ -196,7 +196,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.82rem;
-  margin-top: 0.85rem;
+  margin-top: 0.72rem;
   pointer-events: auto;
 }
 
@@ -1041,13 +1041,13 @@
   .home-hero-slide,
   .home-hero-slide-media,
   .home-hero-overlay {
-    height: min(34rem, calc(100svh - 0.35rem));
+    height: min(35rem, calc(100svh - 0.25rem));
   }
 
   .home-hero-overlay-inner {
     align-items: center;
-    padding-top: clamp(5.25rem, 9vw, 6rem);
-    padding-bottom: 1rem;
+    padding-top: clamp(5.15rem, 8.5vw, 5.85rem);
+    padding-bottom: 1.2rem;
   }
 
   .home-hero-copy {
@@ -1066,7 +1066,7 @@
   .home-hero-slide,
   .home-hero-slide-media,
   .home-hero-overlay {
-    height: min(31rem, calc(100svh - 0.25rem));
+    height: min(31.5rem, calc(100svh - 0.2rem));
   }
 
   .page-hero-section {
