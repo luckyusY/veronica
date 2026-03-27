@@ -37,6 +37,15 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
   return (
     <section className="home-hero-section">
       <Swiper
+        autoplay={
+          reducedMotion
+            ? false
+            : {
+                delay: 10000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }
+        }
         className="home-hero-swiper"
         effect="fade"
         fadeEffect={{ crossFade: true }}
@@ -45,15 +54,6 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
         pagination={{ clickable: true }}
         rewind
         speed={1800}
-        autoplay={
-          reducedMotion
-            ? false
-            : {
-              delay: 10000,
-              disableOnInteraction: false,
-              pauseOnMouseEnter: true,
-            }
-        }
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={slide.title}>
@@ -76,17 +76,19 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
       </Swiper>
 
       <div className="home-hero-overlay">
-        <div className="home-hero-vertical">VERONICA ADANE · OFFICIAL</div>
+        <div className="home-hero-vertical">
+          VERONICA ADANE <span aria-hidden="true">·</span> OFFICIAL
+        </div>
 
         <div className="section-shell home-hero-overlay-inner">
           <motion.div
             animate={{ opacity: 1, y: 0 }}
             className="home-hero-copy"
-            initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 26 }}
+            initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
             transition={
               reducedMotion
                 ? { duration: 0.24 }
-                : { duration: 0.72, delay: 0.12, ease: itemEase }
+                : { duration: 0.62, delay: 0.08, ease: itemEase }
             }
           >
             <AnimatePresence mode="wait">
@@ -105,7 +107,9 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
             <h1 className="display-title home-hero-headline">
               <span className="home-hero-headline-top">Faith, glamour, and a voice</span>
               <span className="home-hero-headline-bottom">
-                carrying Ethiopia far beyond its borders
+                <span className="home-hero-headline-line">carrying Ethiopia</span>
+                <span className="home-hero-headline-line">far beyond</span>
+                <span className="home-hero-headline-line">its borders</span>
               </span>
             </h1>
 
@@ -113,10 +117,10 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
               <motion.p
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 className="home-hero-description"
-                exit={{ opacity: 0, y: -14, filter: "blur(8px)" }}
-                initial={{ opacity: 0, y: 16, filter: "blur(10px)" }}
+                exit={{ opacity: 0, y: -12, filter: "blur(8px)" }}
+                initial={{ opacity: 0, y: 14, filter: "blur(8px)" }}
                 key={`${activeIndex}-copy`}
-                transition={{ duration: 0.5, ease: itemEase }}
+                transition={{ duration: 0.42, ease: itemEase }}
               >
                 {activeSlide.copy}
               </motion.p>
@@ -127,8 +131,8 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
             <motion.div
               animate={{ opacity: 1, y: 0 }}
               className="home-hero-actions"
-              initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
-              transition={{ duration: 0.46, delay: 0.28, ease: itemEase }}
+              initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+              transition={{ duration: 0.38, delay: 0.2, ease: itemEase }}
             >
               <Link className="home-hero-button" href="/about">
                 Read Biography
@@ -143,10 +147,10 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
             <motion.div
               animate={{ opacity: 1, y: 0 }}
               className="home-hero-meta"
-              exit={{ opacity: 0, y: 14 }}
-              initial={{ opacity: 0, y: 18 }}
+              exit={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 14 }}
               key={`${activeIndex}-meta`}
-              transition={{ duration: 0.46, delay: 0.22, ease: itemEase }}
+              transition={{ duration: 0.4, delay: 0.16, ease: itemEase }}
             >
               <p className="home-hero-meta-label">{activeSlide.eyebrow}</p>
               <p className="home-hero-meta-value">{activeSlide.stat}</p>
