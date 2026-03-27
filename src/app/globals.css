@@ -300,18 +300,21 @@
 }
 
 .editorial-gallery-swiper {
+  min-width: 0;
   overflow: hidden;
   padding-bottom: 0.2rem;
 }
 
 .editorial-gallery-slide {
+  min-width: 0;
   height: auto;
 }
 
 .editorial-gallery-card {
   position: relative;
   overflow: hidden;
-  min-height: 31rem;
+  min-width: 0;
+  min-height: 30rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 2.1rem;
   background: #0b0f14;
@@ -337,9 +340,11 @@
 
 .visual-chapters-panel {
   display: flex;
+  min-width: 0;
   min-height: 31rem;
   flex-direction: column;
   justify-content: center;
+  padding: 1.85rem;
 }
 
 .visual-chapters-chip-list {
@@ -384,10 +389,21 @@
   position: relative;
   z-index: 2;
   display: flex;
-  min-height: 31rem;
+  min-height: 30rem;
   flex-direction: column;
   justify-content: end;
-  padding: 1.2rem;
+  padding: 1.35rem;
+}
+
+@media only screen and (min-width: 1024px) {
+  .visual-chapters-panel {
+    padding: 2rem;
+  }
+
+  .editorial-gallery-card,
+  .editorial-gallery-copy {
+    min-height: 31rem;
+  }
 }
 
 .testimonial-swiper-shell {

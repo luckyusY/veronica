@@ -71,8 +71,12 @@ export default function Home() {
       </section>
 
       <section className="section-shell py-10">
-        <div className="grid gap-5 lg:grid-cols-[0.78fr_1.22fr]">
-          <RevealBlock className="editorial-dark-panel visual-chapters-panel" variant="left" distance={32}>
+        <div className="grid gap-5 lg:grid-cols-[0.86fr_1.14fr]">
+          <RevealBlock
+            className="min-w-0 editorial-dark-panel visual-chapters-panel"
+            variant="left"
+            distance={32}
+          >
             <p className="section-label">Visual Chapters</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
               Real imagery now drives the homepage with more drama, elegance, and character.
@@ -91,7 +95,7 @@ export default function Home() {
             </div>
           </RevealBlock>
 
-          <RevealBlock delay={0.08} variant="right" distance={32}>
+          <RevealBlock className="min-w-0" delay={0.08} variant="right" distance={32}>
             <EditorialGallerySwiper items={editorialGalleryMoments} />
           </RevealBlock>
         </div>

@@ -38,16 +38,16 @@ export function EditorialGallerySwiper({ items }: EditorialGallerySwiperProps) {
               }
         }
         breakpoints={{
-          640: { slidesPerView: 1.2 },
-          1024: { slidesPerView: 1.35 },
-          1280: { slidesPerView: 1.7 },
+          640: { slidesPerView: 1.12 },
+          1024: { slidesPerView: 1.08 },
+          1280: { slidesPerView: 1.16 },
         }}
         className="editorial-gallery-swiper"
         grabCursor
         modules={[Autoplay]}
         rewind
-        slidesPerView={1.04}
-        spaceBetween={16}
+        slidesPerView={1.02}
+        spaceBetween={18}
         speed={850}
       >
         {items.map((item, index) => (
