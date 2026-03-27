@@ -38,7 +38,7 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
   const activeSlide = slides[activeIndex] ?? slides[0];
 
   return (
-    <section className="section-shell py-5 sm:py-7">
+    <section className="section-shell home-hero-section py-5 sm:py-7">
       <div className="home-hero-shell">
         <div className="home-hero-copy">
           <motion.div

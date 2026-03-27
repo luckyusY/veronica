@@ -53,7 +53,7 @@ export function PageHero({
   noteText = "Each public page is being rebuilt as part of one editorial world: stronger image hierarchy, less interface noise, and cleaner storytelling rhythm.",
 }: PageHeroProps) {
   return (
-    <section className="section-shell py-6 sm:py-8">
+    <section className="section-shell page-hero-section py-6 sm:py-8">
       <div className="editorial-page-hero">
         <div className="editorial-page-copy">
           <AnimatedEyebrow>{eyebrow}</AnimatedEyebrow>

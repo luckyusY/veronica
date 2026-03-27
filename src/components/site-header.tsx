@@ -1,151 +1,220 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { navigationItems } from "@/lib/site-data";
 
-const topNotes = [
-  "Official platform",
-  "Addis Ababa, Ethiopia",
-  "Music / Press / Performance",
+const primaryNavigation = navigationItems.filter(
+  (item) => item.href !== "/shop" && item.href !== "/contact",
+);
+
+const actionNavigation = [
+  { href: "/contact", label: "Booking" },
+  { href: "/shop", label: "Shop" },
 ];
+
+const itemEase = [0.22, 1, 0.36, 1] as const;
+
+function isActivePath(pathname: string, href: string) {
+  return href === "/" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export function SiteHeader() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 32);
+    let frame = 0;
+
+    const updateScrollState = () => {
+      frame = 0;
+      setScrollProgress(Math.min(window.scrollY / 160, 1));
     };
 
-    handleScroll();
+    const handleScroll = () => {
+      if (frame !== 0) {
+        return;
+      }
+
+      frame = window.requestAnimationFrame(updateScrollState);
+    };
+
+    updateScrollState();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+
+      if (frame !== 0) {
+        window.cancelAnimationFrame(frame);
+      }
+    };
   }, []);
 
-  return (
-    <>
-      <header className="site-masthead">
-        <div className="section-shell py-4 sm:py-5">
-          <div className="site-masthead-top hidden sm:flex">
-            {topNotes.map((item) => (
-              <p key={item}>{item}</p>
-            ))}
-            <Link className="site-masthead-top-link" href="/contact">
-              Management / Booking
-            </Link>
-          </div>
+  const isScrolled = scrollProgress > 0.08;
+  const headerStyle: CSSProperties = {
+    backgroundColor: `rgba(13, 9, 7, ${(scrollProgress * 0.85).toFixed(3)})`,
+    backdropFilter: `blur(${(scrollProgress * 18).toFixed(2)}px) saturate(${(
+      100 +
+      scrollProgress * 24
+    ).toFixed(0)}%)`,
+    WebkitBackdropFilter: `blur(${(scrollProgress * 18).toFixed(2)}px) saturate(${(
+      100 +
+      scrollProgress * 24
+    ).toFixed(0)}%)`,
+    boxShadow:
+      scrollProgress > 0
+        ? `0 14px 40px rgba(0, 0, 0, ${(scrollProgress * 0.18).toFixed(3)})`
+        : "none",
+  };
 
-          <div className="site-masthead-brand">
-            <p className="site-masthead-subtitle">Singer / Songwriter / Actress / Journalist</p>
-            <Link className="site-masthead-wordmark" href="/" onClick={() => setMenuOpen(false)}>
+  return (
+    <header
+      className={`site-header-shell ${isScrolled ? "is-scrolled" : ""}`.trim()}
+      style={headerStyle}
+    >
+      <div className="section-shell">
+        <div className="site-header-inner">
+          <nav aria-label="Primary navigation" className="site-header-left hidden xl:flex">
+            {primaryNavigation.map((item, index) => (
+              <motion.div
+                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: -12 }}
+                key={item.href}
+                transition={{ duration: 0.58, delay: 0.12 + index * 0.1, ease: itemEase }}
+              >
+                <Link
+                  className={`site-header-link ${
+                    isActivePath(pathname, item.href) ? "is-active" : ""
+                  }`.trim()}
+                  href={item.href}
+                >
+                  {item.label}
+                </Link>
+              </motion.div>
+            ))}
+          </nav>
+
+          <motion.div
+            animate={{ opacity: 1, y: 0 }}
+            className="site-header-center"
+            initial={{ opacity: 0, y: -14 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: itemEase }}
+          >
+            <Link className="site-header-logo" href="/" onClick={() => setMenuOpen(false)}>
               <span className="brand-script">Veronica</span>
               <span className="brand-didot">ADANE</span>
             </Link>
-            <p className="site-masthead-note">
-              Music, live performance, biography, and official artist storytelling.
-            </p>
-          </div>
-        </div>
-      </header>
+          </motion.div>
 
-      <div className={`site-nav-wrap ${isScrolled ? "is-scrolled" : ""}`.trim()}>
-        <div className="section-shell">
-          <div className="site-nav-bar">
-            <div className="site-nav-mobile sm:hidden">
-              <Link className="site-nav-mobile-brand" href="/" onClick={() => setMenuOpen(false)}>
-                <span className="brand-script">Veronica</span>
-                <span className="brand-didot">ADANE</span>
-              </Link>
-
-              <button
-                type="button"
-                aria-label={menuOpen ? "Close menu" : "Open menu"}
-                aria-expanded={menuOpen}
-                className="site-nav-toggle"
-                onClick={() => setMenuOpen((value) => !value)}
-              >
-                {menuOpen ? <X size={18} /> : <Menu size={18} />}
-              </button>
-            </div>
-
-            <nav aria-label="Primary navigation" className="site-nav-list hidden sm:flex">
-              {navigationItems.map((item) => {
-                const active =
-                  item.href === "/"
-                    ? pathname === item.href
-                    : pathname === item.href || pathname.startsWith(`${item.href}/`);
-
-                return (
-                  <Link
-                    className={`site-nav-link ${active ? "is-active" : ""}`.trim()}
-                    href={item.href}
-                    key={item.href}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              })}
-
-              <Link className="site-nav-link site-nav-link--accent" href="/shop">
-                Shop
-              </Link>
-            </nav>
-          </div>
-
-          <AnimatePresence initial={false}>
-            {menuOpen ? (
+          <div className="site-header-right hidden xl:flex">
+            {actionNavigation.map((item, index) => (
               <motion.div
                 animate={{ opacity: 1, y: 0 }}
-                className="site-nav-mobile-panel sm:hidden"
-                exit={{ opacity: 0, y: -14 }}
-                initial={{ opacity: 0, y: -18 }}
-                transition={{ duration: 0.26, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: 0, y: -12 }}
+                key={item.href}
+                transition={{ duration: 0.58, delay: 0.74 + index * 0.1, ease: itemEase }}
               >
-                <nav aria-label="Mobile navigation" className="site-nav-mobile-list">
-                  {navigationItems.map((item) => {
-                    const active =
-                      item.href === "/"
-                        ? pathname === item.href
-                        : pathname === item.href || pathname.startsWith(`${item.href}/`);
-
-                    return (
-                      <Link
-                        className={`site-nav-mobile-link ${active ? "is-active" : ""}`.trim()}
-                        href={item.href}
-                        key={item.href}
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    );
-                  })}
-
-                  <Link
-                    className="site-nav-mobile-link site-nav-mobile-link--accent"
-                    href="/shop"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Shop
-                  </Link>
-                  <Link
-                    className="site-nav-mobile-link"
-                    href="/contact"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Management / Booking
-                  </Link>
-                </nav>
+                <Link
+                  className={`site-header-action ${
+                    item.href === "/shop" ? "site-header-action--accent" : ""
+                  } ${isActivePath(pathname, item.href) ? "is-active" : ""}`.trim()}
+                  href={item.href}
+                >
+                  {item.label}
+                </Link>
               </motion.div>
-            ) : null}
-          </AnimatePresence>
+            ))}
+          </div>
+
+          <div className="site-header-mobile xl:hidden">
+            <span aria-hidden="true" className="site-header-mobile-spacer" />
+
+            <Link className="site-header-mobile-logo" href="/" onClick={() => setMenuOpen(false)}>
+              <span className="brand-script">Veronica</span>
+              <span className="brand-didot">ADANE</span>
+            </Link>
+
+            <button
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              className="site-header-menu-button"
+              onClick={() => setMenuOpen((value) => !value)}
+              type="button"
+            >
+              {menuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
         </div>
       </div>
-    </>
+
+      <AnimatePresence initial={false}>
+        {menuOpen ? (
+          <motion.div
+            animate={{ opacity: 1, y: 0 }}
+            className="site-header-mobile-panel xl:hidden"
+            exit={{ opacity: 0, y: -18 }}
+            initial={{ opacity: 0, y: -24 }}
+            transition={{ duration: 0.34, ease: itemEase }}
+          >
+            <div className="section-shell">
+              <nav aria-label="Mobile navigation" className="site-header-mobile-list">
+                {primaryNavigation.map((item, index) => (
+                  <motion.div
+                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, x: -12 }}
+                    key={item.href}
+                    transition={{
+                      duration: 0.34,
+                      delay: 0.06 + index * 0.05,
+                      ease: itemEase,
+                    }}
+                  >
+                    <Link
+                      className={`site-header-mobile-link ${
+                        isActivePath(pathname, item.href) ? "is-active" : ""
+                      }`.trim()}
+                      href={item.href}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
+
+              <div className="site-header-mobile-actions">
+                {actionNavigation.map((item, index) => (
+                  <motion.div
+                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, x: -12 }}
+                    key={item.href}
+                    transition={{
+                      duration: 0.34,
+                      delay: 0.28 + index * 0.06,
+                      ease: itemEase,
+                    }}
+                  >
+                    <Link
+                      className={`site-header-mobile-link site-header-mobile-link--action ${
+                        item.href === "/shop" ? "site-header-mobile-link--accent" : ""
+                      } ${isActivePath(pathname, item.href) ? "is-active" : ""}`.trim()}
+                      href={item.href}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </header>
   );
 }
