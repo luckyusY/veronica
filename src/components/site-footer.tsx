@@ -7,7 +7,11 @@ const footerNotes = [
   "Press / Partnerships",
 ];
 
+const socialSignals = ["Instagram 800K+", "TikTok 1.8M+", "Facebook 500K+"];
+
 export function SiteFooter() {
+  const year = new Date().getFullYear();
+
   return (
     <footer className="editorial-site-footer">
       <div className="section-shell py-10 sm:py-12">
@@ -30,7 +34,31 @@ export function SiteFooter() {
             <p className="editorial-brand-copy editorial-brand-copy--footer">
               Official platform for biography, releases, live performance, press, and partnerships.
             </p>
+
+            <div className="site-footer-cta-row">
+              <div className="site-footer-social-row" aria-label="Social reach">
+                {socialSignals.map((item) => (
+                  <span className="site-footer-social-chip" key={item}>
+                    {item}
+                  </span>
+                ))}
+              </div>
+
+              <div className="site-footer-utility-row">
+                <Link className="site-footer-utility-link" href="/contact">
+                  Bookings
+                </Link>
+                <Link className="site-footer-utility-link" href="/media">
+                  Press Kit
+                </Link>
+                <Link className="site-footer-utility-link" href="/events">
+                  Event Inquiries
+                </Link>
+              </div>
+            </div>
           </div>
+
+          <div className="site-footer-divider" aria-hidden="true" />
 
           <div className="editorial-nav-shell editorial-nav-shell--footer">
             <nav aria-label="Footer navigation" className="editorial-nav-gridline">
@@ -52,7 +80,7 @@ export function SiteFooter() {
         </div>
 
         <div className="editorial-footer-markline">
-          <p>Official Veronica Adane platform.</p>
+          <p>&copy; {year} Veronica Adane.</p>
           <p>Addis Ababa to global audiences.</p>
         </div>
       </div>

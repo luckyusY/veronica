@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { navigationItems } from "@/lib/site-data";
 
@@ -15,6 +16,17 @@ const topNotes = [
 export function SiteHeader() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 32);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
@@ -42,7 +54,7 @@ export function SiteHeader() {
         </div>
       </header>
 
-      <div className="site-nav-wrap">
+      <div className={`site-nav-wrap ${isScrolled ? "is-scrolled" : ""}`.trim()}>
         <div className="section-shell">
           <div className="site-nav-bar">
             <div className="site-nav-mobile sm:hidden">
@@ -86,44 +98,52 @@ export function SiteHeader() {
             </nav>
           </div>
 
-          {menuOpen && (
-            <div className="site-nav-mobile-panel sm:hidden">
-              <nav aria-label="Mobile navigation" className="site-nav-mobile-list">
-                {navigationItems.map((item) => {
-                  const active =
-                    item.href === "/"
-                      ? pathname === item.href
-                      : pathname === item.href || pathname.startsWith(`${item.href}/`);
+          <AnimatePresence initial={false}>
+            {menuOpen ? (
+              <motion.div
+                animate={{ opacity: 1, y: 0 }}
+                className="site-nav-mobile-panel sm:hidden"
+                exit={{ opacity: 0, y: -14 }}
+                initial={{ opacity: 0, y: -18 }}
+                transition={{ duration: 0.26, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <nav aria-label="Mobile navigation" className="site-nav-mobile-list">
+                  {navigationItems.map((item) => {
+                    const active =
+                      item.href === "/"
+                        ? pathname === item.href
+                        : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
-                  return (
-                    <Link
-                      className={`site-nav-mobile-link ${active ? "is-active" : ""}`.trim()}
-                      href={item.href}
-                      key={item.href}
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                })}
+                    return (
+                      <Link
+                        className={`site-nav-mobile-link ${active ? "is-active" : ""}`.trim()}
+                        href={item.href}
+                        key={item.href}
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    );
+                  })}
 
-                <Link
-                  className="site-nav-mobile-link site-nav-mobile-link--accent"
-                  href="/shop"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Shop
-                </Link>
-                <Link
-                  className="site-nav-mobile-link"
-                  href="/contact"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Management / Booking
-                </Link>
-              </nav>
-            </div>
-          )}
+                  <Link
+                    className="site-nav-mobile-link site-nav-mobile-link--accent"
+                    href="/shop"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Shop
+                  </Link>
+                  <Link
+                    className="site-nav-mobile-link"
+                    href="/contact"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Management / Booking
+                  </Link>
+                </nav>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
         </div>
       </div>
     </>
