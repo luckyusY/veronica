@@ -1,9 +1,41 @@
 @import "lenis/dist/lenis.css";
+@import "tailwindcss";
 @import "swiper/css";
 @import "swiper/css/effect-fade";
 @import "swiper/css/free-mode";
 @import "swiper/css/pagination";
-@import "tailwindcss";
+
+/* Swiper override: prevent Tailwind preflight from breaking slider layout */
+.swiper {
+  display: block !important;
+  position: relative !important;
+  overflow: hidden !important;
+  list-style: none !important;
+  padding: 0 !important;
+  z-index: 1 !important;
+}
+
+.swiper-wrapper {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1 !important;
+  display: flex !important;
+  transition-property: transform !important;
+  box-sizing: content-box !important;
+}
+
+.swiper-slide {
+  flex-shrink: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  position: relative !important;
+  transition-property: transform !important;
+}
+
+.swiper-slide-invisible-blank {
+  visibility: hidden !important;
+}
 
 :root {
   --background: #05070a;
