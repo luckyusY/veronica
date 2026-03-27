@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { RevealBlock } from "@/components/animated-text";
-import { EditorialGallerySwiper } from "@/components/editorial-gallery-swiper";
 import { EditorialImage } from "@/components/editorial-image";
 import { HomeHeroSwiper } from "@/components/home-hero-swiper";
 import { TestimonialsCarousel } from "@/components/testimonials-carousel";
@@ -16,6 +15,12 @@ import {
 } from "@/lib/editorial-home";
 
 export default function Home() {
+  const visualChaptersSet = [
+    { ...editorialGalleryMoments[4], era: "Official Portraiture" },
+    { ...editorialGalleryMoments[0], era: "Meteriyaye Era" },
+    { ...editorialGalleryMoments[3], era: "Release Campaign" },
+  ];
+
   return (
     <main className="editorial-home pb-16 sm:pb-20">
       <HomeHeroSwiper slides={editorialHeroMoments} />
@@ -70,38 +75,87 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-shell py-10">
-        <div className="grid gap-5 lg:grid-cols-[0.86fr_1.14fr]">
+      <section className="editorial-section-opener-shell">
+        <RevealBlock className="editorial-section-opener" variant="up" distance={28}>
+          <p className="section-label">Visual Chapters</p>
+          <div className="editorial-section-opener-row">
+            <h2 className="display-title editorial-section-opener-title">Meteriyaye</h2>
+            <span aria-hidden="true" className="editorial-section-opener-rule" />
+          </div>
+          <p className="editorial-section-opener-copy">
+            Real imagery now drives the homepage with more drama, elegance, and
+            character. Veronica&apos;s portraits move between black-tie studio clarity,
+            gilded couture, warm brown fashion, and scarlet campaign energy.
+          </p>
+          <div className="visual-chapters-chip-list">
+            {["Portraiture", "Release Eras", "Couture", "Stage Presence"].map((item) => (
+              <span className="visual-chapters-chip" key={item}>
+                {item}
+              </span>
+            ))}
+          </div>
+        </RevealBlock>
+      </section>
+
+      <section className="section-shell pb-10">
+        <div className="editorial-asymmetric-gallery">
           <RevealBlock
-            className="min-w-0 editorial-dark-panel visual-chapters-panel"
+            className="editorial-bleed-tile editorial-bleed-tile--portrait"
             variant="left"
-            distance={32}
+            distance={34}
           >
-            <p className="section-label">Visual Chapters</p>
-            <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
-              Real imagery now drives the homepage with more drama, elegance, and character.
-            </h2>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-white/72">
-              Veronica&apos;s portraits move between black-tie studio clarity, gilded couture,
-              warm brown fashion, and scarlet campaign energy. The result feels more like
-              an artist world than a stack of generic modules.
-            </p>
-            <div className="visual-chapters-chip-list mt-8">
-              {["Portraiture", "Release Eras", "Couture", "Stage Presence"].map((item) => (
-                <span className="visual-chapters-chip" key={item}>
-                  {item}
-                </span>
-              ))}
+            <EditorialImage
+              className="editorial-bleed-image editorial-parallax-portrait"
+              image={visualChaptersSet[0].image}
+              motionPreset="settle-left"
+              overlayClassName="bg-transparent"
+              sizes="(max-width: 1024px) 100vw, 44vw"
+              strength={132}
+            />
+            <div className="editorial-bleed-hover">
+              <p className="editorial-bleed-caption">{visualChaptersSet[0].title}</p>
+              <p className="editorial-bleed-era">{visualChaptersSet[0].era}</p>
             </div>
           </RevealBlock>
 
-          <RevealBlock className="min-w-0" delay={0.08} variant="right" distance={32}>
-            <EditorialGallerySwiper items={editorialGalleryMoments} />
-          </RevealBlock>
+          {visualChaptersSet.slice(1).map((item, index) => (
+            <RevealBlock
+              className="editorial-bleed-tile editorial-bleed-tile--landscape"
+              delay={0.08 + index * 0.08}
+              distance={30}
+              key={item.title}
+              variant="right"
+            >
+              <EditorialImage
+                className="editorial-bleed-image"
+                image={item.image}
+                motionPreset={index === 0 ? "from-right" : "diagonal"}
+                overlayClassName="bg-transparent"
+                sizes="(max-width: 1024px) 100vw, 34vw"
+                strength={92}
+              />
+              <div className="editorial-bleed-hover">
+                <p className="editorial-bleed-caption">{item.title}</p>
+                <p className="editorial-bleed-era">{item.era}</p>
+              </div>
+            </RevealBlock>
+          ))}
         </div>
       </section>
 
       <TestimonialsCarousel />
+
+      <section className="editorial-section-opener-shell editorial-section-opener-shell--compact">
+        <RevealBlock className="editorial-section-opener" variant="up" distance={24}>
+          <p className="section-label">Tour Studies</p>
+          <div className="editorial-section-opener-row">
+            <h2 className="display-title editorial-section-opener-title editorial-section-opener-title--small">
+              Across Ethiopia
+            </h2>
+            <span aria-hidden="true" className="editorial-section-opener-rule" />
+          </div>
+        </RevealBlock>
+      </section>
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-2">
@@ -195,6 +249,18 @@ export default function Home() {
             </div>
           </RevealBlock>
         </div>
+      </section>
+
+      <section className="editorial-section-opener-shell editorial-section-opener-shell--compact">
+        <RevealBlock className="editorial-section-opener" variant="up" distance={24}>
+          <p className="section-label">Campaign Editions</p>
+          <div className="editorial-section-opener-row">
+            <h2 className="display-title editorial-section-opener-title editorial-section-opener-title--small">
+              Release Energy
+            </h2>
+            <span aria-hidden="true" className="editorial-section-opener-rule" />
+          </div>
+        </RevealBlock>
       </section>
 
       <section className="section-shell py-10">
