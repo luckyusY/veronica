@@ -2481,6 +2481,210 @@ a {
     padding: 1rem 1.05rem;
   }
 
+  .admin-stack {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .admin-panel-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .admin-panel-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .admin-form,
+  .admin-record-grid,
+  .admin-edit-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .admin-form-grid {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .admin-form-grid--wide {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-field {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .admin-field label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(242, 210, 139, 0.84);
+  }
+
+  .admin-input,
+  .admin-textarea {
+    width: 100%;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(18, 25, 32, 0.96);
+    padding: 0.92rem 1rem;
+    font-size: 0.94rem;
+    line-height: 1.5;
+    color: white;
+  }
+
+  .admin-input::placeholder,
+  .admin-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.32);
+  }
+
+  .admin-input:focus,
+  .admin-textarea:focus {
+    outline: none;
+    border-color: rgba(242, 210, 139, 0.32);
+    box-shadow: 0 0 0 1px rgba(242, 210, 139, 0.18);
+  }
+
+  .admin-textarea {
+    min-height: 7.5rem;
+    resize: vertical;
+  }
+
+  .admin-button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .admin-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    min-height: 2.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(242, 210, 139, 0.22);
+    background: linear-gradient(180deg, rgba(58, 45, 34, 0.98), rgba(33, 25, 19, 0.98));
+    padding: 0 1rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(245, 242, 236, 0.92);
+  }
+
+  .admin-button:hover {
+    transform: translateY(-1px);
+    border-color: rgba(242, 210, 139, 0.34);
+    background: linear-gradient(180deg, rgba(75, 56, 42, 0.98), rgba(40, 30, 22, 0.98));
+  }
+
+  .admin-button:disabled {
+    cursor: wait;
+    opacity: 0.72;
+  }
+
+  .admin-button--secondary,
+  .admin-button--ghost {
+    background: rgba(18, 25, 32, 0.96);
+  }
+
+  .admin-button--secondary {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .admin-button--ghost {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .admin-record-card {
+    display: grid;
+    gap: 1rem;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(18, 25, 32, 0.96);
+    padding: 1.15rem;
+  }
+
+  .admin-record-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .admin-record-copy {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .admin-note {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.74);
+  }
+
+  .admin-empty {
+    border-radius: 1.2rem;
+    border: 1px dashed rgba(242, 210, 139, 0.22);
+    background: rgba(18, 25, 32, 0.55);
+    padding: 1rem 1.1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.56);
+  }
+
+  .admin-feedback {
+    border-radius: 1.35rem;
+    padding: 0.95rem 1.1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .admin-feedback--ok {
+    border: 1px solid rgba(111, 187, 138, 0.24);
+    background: rgba(28, 44, 34, 0.96);
+    color: #cbe8ca;
+  }
+
+  .admin-feedback--error {
+    border: 1px solid rgba(194, 92, 92, 0.24);
+    background: rgba(53, 23, 19, 0.96);
+    color: #f3c3bf;
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .admin-form-grid--wide {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media only screen and (max-width: 1023px) {
+    .admin-form-grid--wide {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media only screen and (max-width: 640px) {
+    .admin-form-grid--wide {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .admin-progress {
     overflow: hidden;
     border-radius: 999px;

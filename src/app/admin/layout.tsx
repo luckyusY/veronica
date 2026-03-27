@@ -15,11 +15,11 @@ export const metadata: Metadata = {
 };
 
 const adminNav = [
-  { href: "/admin", label: "Overview", icon: LayoutDashboard },
-  { href: "/music", label: "Release Floor", icon: Disc3 },
-  { href: "/events", label: "Event Routing", icon: CalendarRange },
-  { href: "/shop", label: "Commerce", icon: ShoppingBag },
-  { href: "/media", label: "Press Assets", icon: Newspaper },
+  { href: "/admin#overview", label: "Overview", icon: LayoutDashboard },
+  { href: "/admin#releases", label: "Release Floor", icon: Disc3 },
+  { href: "/admin#events", label: "Event Routing", icon: CalendarRange },
+  { href: "/admin#products", label: "Commerce", icon: ShoppingBag },
+  { href: "/admin#inquiries", label: "Press & Booking", icon: Newspaper },
 ];
 
 export default function AdminLayout({
