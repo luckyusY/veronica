@@ -130,9 +130,9 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
               className="home-hero-swiper"
               effect="fade"
               fadeEffect={{ crossFade: true }}
-              loop
+              rewind={true}
               modules={[Autoplay, EffectFade, Pagination]}
-              onSlideChange={(instance) => setActiveIndex(instance.realIndex)}
+              onSlideChange={(instance) => setActiveIndex(instance.activeIndex)}
               onSwiper={setSwiper}
               pagination={{ clickable: true }}
               speed={1200}
@@ -140,10 +140,10 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
                 reducedMotion
                   ? false
                   : {
-                      delay: 4200,
-                      disableOnInteraction: false,
-                      pauseOnMouseEnter: true,
-                    }
+                    delay: 4200,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                  }
               }
             >
               {slides.map((slide, index) => (
@@ -195,7 +195,7 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
                 <SwiperSlide className="home-hero-thumb-slide" key={`${slide.title}-thumb`}>
                   <button
                     className={`home-hero-thumb${index === activeIndex ? " is-active" : ""}`}
-                    onClick={() => swiper?.slideToLoop(index)}
+                    onClick={() => swiper?.slideTo(index)}
                     type="button"
                   >
                     <span className="home-hero-thumb-index">
