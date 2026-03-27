@@ -72,7 +72,7 @@ export default function Home() {
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.78fr_1.22fr]">
-          <RevealBlock className="editorial-dark-panel" variant="left" distance={32}>
+          <RevealBlock className="editorial-dark-panel visual-chapters-panel" variant="left" distance={32}>
             <p className="section-label">Visual Chapters</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
               Real imagery now drives the homepage with more drama, elegance, and character.
@@ -82,9 +82,9 @@ export default function Home() {
               warm brown fashion, and scarlet campaign energy. The result feels more like
               an artist world than a stack of generic modules.
             </p>
-            <div className="mt-8 flex flex-wrap gap-2">
+            <div className="visual-chapters-chip-list mt-8">
               {["Portraiture", "Release Eras", "Couture", "Stage Presence"].map((item) => (
-                <span className="meta-chip" key={item}>
+                <span className="visual-chapters-chip" key={item}>
                   {item}
                 </span>
               ))}

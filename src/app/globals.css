@@ -282,14 +282,17 @@
 
 .editorial-gallery-shell {
   min-width: 0;
+  overflow: hidden;
+  border-radius: 2.15rem;
 }
 
 .editorial-gallery-swiper {
-  overflow: visible;
+  overflow: hidden;
+  padding-bottom: 0.2rem;
 }
 
 .editorial-gallery-slide {
-  width: min(80vw, 23rem) !important;
+  width: clamp(17rem, 29vw, 22rem) !important;
 }
 
 .editorial-gallery-card {
@@ -300,6 +303,36 @@
   border-radius: 2.1rem;
   background: #0b0f14;
   box-shadow: 0 28px 72px rgba(0, 0, 0, 0.28);
+}
+
+.visual-chapters-panel {
+  display: flex;
+  min-height: 31rem;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.visual-chapters-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.visual-chapters-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  border: 1px solid rgba(242, 210, 139, 0.14);
+  border-radius: 999px;
+  background: rgba(14, 18, 24, 0.9);
+  padding: 0.6rem 0.95rem;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.82);
 }
 
 .editorial-gallery-card::after {
@@ -858,7 +891,7 @@
   }
 
   .editorial-gallery-slide {
-    width: min(34vw, 24rem) !important;
+    width: clamp(18rem, 27vw, 21.5rem) !important;
   }
 }
 
@@ -913,12 +946,27 @@
   }
 
   .editorial-gallery-slide {
-    width: 84vw !important;
+    width: 80vw !important;
   }
 
   .editorial-gallery-card,
   .editorial-gallery-copy {
     min-height: 27rem;
+  }
+
+  .visual-chapters-panel {
+    min-height: auto;
+  }
+
+  .visual-chapters-chip-list {
+    gap: 0.5rem;
+  }
+
+  .visual-chapters-chip {
+    min-height: 2.35rem;
+    padding: 0.56rem 0.82rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
   }
 
   .testimonial-slide {
