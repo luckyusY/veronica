@@ -55,6 +55,14 @@ export function SiteHeader() {
     };
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
   const isScrolled = scrollProgress > 0.08;
   const headerStyle: CSSProperties = {
     backgroundColor: `rgba(13, 9, 7, ${(scrollProgress * 0.85).toFixed(3)})`,
@@ -79,13 +87,33 @@ export function SiteHeader() {
     >
       <div className="section-shell">
         <div className="site-header-inner">
-          <nav aria-label="Primary navigation" className="site-header-left">
+          <motion.div
+            animate={{ opacity: 1, y: 0 }}
+            className="site-header-brand"
+            initial={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.68, delay: 0.08, ease: itemEase }}
+          >
+            <Link className="site-header-logo" href="/" onClick={() => setMenuOpen(false)}>
+              <span aria-hidden="true" className="site-header-logo-mark">
+                VA
+              </span>
+              <span className="site-header-logo-copy">
+                <span className="site-header-logo-kicker">Official Artist House</span>
+                <span className="site-header-logo-name">
+                  <span className="brand-script">Veronica</span>
+                  <span className="brand-didot">ADANE</span>
+                </span>
+              </span>
+            </Link>
+          </motion.div>
+
+          <nav aria-label="Primary navigation" className="site-header-nav">
             {primaryNavigation.map((item, index) => (
               <motion.div
                 animate={{ opacity: 1, y: 0 }}
                 initial={{ opacity: 0, y: -12 }}
                 key={item.href}
-                transition={{ duration: 0.58, delay: 0.12 + index * 0.1, ease: itemEase }}
+                transition={{ duration: 0.58, delay: 0.16 + index * 0.08, ease: itemEase }}
               >
                 <Link
                   className={`site-header-link ${
@@ -99,25 +127,13 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          <motion.div
-            animate={{ opacity: 1, y: 0 }}
-            className="site-header-center"
-            initial={{ opacity: 0, y: -14 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: itemEase }}
-          >
-            <Link className="site-header-logo" href="/" onClick={() => setMenuOpen(false)}>
-              <span className="brand-script">Veronica</span>
-              <span className="brand-didot">ADANE</span>
-            </Link>
-          </motion.div>
-
           <div className="site-header-right">
             {actionNavigation.map((item, index) => (
               <motion.div
                 animate={{ opacity: 1, y: 0 }}
                 initial={{ opacity: 0, y: -12 }}
                 key={item.href}
-                transition={{ duration: 0.58, delay: 0.74 + index * 0.1, ease: itemEase }}
+                transition={{ duration: 0.58, delay: 0.7 + index * 0.08, ease: itemEase }}
               >
                 <Link
                   className={`site-header-action ${
@@ -132,11 +148,14 @@ export function SiteHeader() {
           </div>
 
           <div className="site-header-mobile">
-            <span aria-hidden="true" className="site-header-mobile-spacer" />
-
             <Link className="site-header-mobile-logo" href="/" onClick={() => setMenuOpen(false)}>
-              <span className="brand-script">Veronica</span>
-              <span className="brand-didot">ADANE</span>
+              <span aria-hidden="true" className="site-header-mobile-mark">
+                VA
+              </span>
+              <span className="site-header-mobile-logo-copy">
+                <span className="brand-script">Veronica</span>
+                <span className="brand-didot">ADANE</span>
+              </span>
             </Link>
 
             <button
