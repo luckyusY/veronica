@@ -79,7 +79,7 @@ export function SiteHeader() {
     >
       <div className="section-shell">
         <div className="site-header-inner">
-          <nav aria-label="Primary navigation" className="site-header-left hidden xl:flex">
+          <nav aria-label="Primary navigation" className="site-header-left">
             {primaryNavigation.map((item, index) => (
               <motion.div
                 animate={{ opacity: 1, y: 0 }}
@@ -111,7 +111,7 @@ export function SiteHeader() {
             </Link>
           </motion.div>
 
-          <div className="site-header-right hidden xl:flex">
+          <div className="site-header-right">
             {actionNavigation.map((item, index) => (
               <motion.div
                 animate={{ opacity: 1, y: 0 }}
@@ -131,7 +131,7 @@ export function SiteHeader() {
             ))}
           </div>
 
-          <div className="site-header-mobile xl:hidden">
+          <div className="site-header-mobile">
             <span aria-hidden="true" className="site-header-mobile-spacer" />
 
             <Link className="site-header-mobile-logo" href="/" onClick={() => setMenuOpen(false)}>
@@ -156,7 +156,7 @@ export function SiteHeader() {
         {menuOpen ? (
           <motion.div
             animate={{ opacity: 1, y: 0 }}
-            className="site-header-mobile-panel xl:hidden"
+            className="site-header-mobile-panel"
             exit={{ opacity: 0, y: -18 }}
             initial={{ opacity: 0, y: -24 }}
             transition={{ duration: 0.34, ease: itemEase }}

@@ -561,25 +561,21 @@
   position: relative;
   z-index: 1;
   flex: 1 1 0;
-  display: flex;
+  display: none;
   align-items: center;
 }
 
 .site-header-left {
-  gap: clamp(0.6rem, 0.92vw, 1.05rem);
+  gap: clamp(0.48rem, 0.7vw, 0.78rem);
 }
 
 .site-header-right {
   justify-content: flex-end;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
 .site-header-center {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
+  display: none;
   z-index: 2;
 }
 
@@ -619,7 +615,7 @@
   align-items: center;
   min-height: 2.8rem;
   padding: 0.35rem 0;
-  font-size: 0.72rem;
+  font-size: 0.67rem;
   font-weight: 500;
   letter-spacing: 0.18em;
   line-height: 1;
@@ -663,12 +659,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.7rem;
-  padding: 0.78rem 1.2rem;
+  min-height: 2.55rem;
+  padding: 0.72rem 1.02rem;
   border: 1px solid rgba(201, 169, 110, 0.22);
   border-radius: 999px;
   background: rgba(18, 12, 10, 0.24);
-  font-size: 0.72rem;
+  font-size: 0.67rem;
   font-weight: 500;
   letter-spacing: 0.18em;
   line-height: 1;
@@ -744,6 +740,7 @@
 .site-header-mobile-panel {
   position: absolute;
   inset: 100% 0 auto;
+  z-index: 50;
   padding: 0 0 1rem;
   background: linear-gradient(180deg, rgba(17, 11, 9, 0.96), rgba(10, 7, 6, 0.94));
   border-top: 1px solid rgba(201, 169, 110, 0.14);
@@ -816,6 +813,44 @@
 .site-header-mobile-logo:focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px rgba(201, 169, 110, 0.48);
+}
+
+@media only screen and (min-width: 1280px) {
+  .site-header-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .site-header-left,
+  .site-header-right {
+    display: flex;
+  }
+
+  .site-header-left {
+    grid-column: 1;
+    min-width: 0;
+    flex-wrap: wrap;
+  }
+
+  .site-header-center {
+    position: static;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    pointer-events: auto;
+  }
+
+  .site-header-right {
+    grid-column: 3;
+    justify-self: end;
+    flex: 0 0 auto;
+  }
+
+  .site-header-mobile,
+  .site-header-mobile-panel {
+    display: none;
+  }
 }
 
 .site-footer-cta-row {
