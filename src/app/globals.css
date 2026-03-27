@@ -32,7 +32,8 @@
 
 .home-hero-section {
   position: relative;
-  min-height: min(78svh, 48rem);
+  height: min(40rem, calc(100svh - 0.4rem));
+  min-height: 31rem;
   overflow: clip;
 }
 
@@ -55,15 +56,22 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  min-height: min(78svh, 48rem);
   background: var(--background);
+  touch-action: pan-y;
 }
 
-.home-hero-slide,
+.home-hero-swiper .swiper-wrapper,
+.home-hero-swiper .swiper-slide,
+.home-hero-slide {
+  position: relative;
+  height: 100%;
+}
+
 .home-hero-slide-media {
   position: relative;
   width: 100%;
-  min-height: min(78svh, 48rem);
+  height: 100%;
+  overflow: hidden;
 }
 
 .home-hero-slide-image {
@@ -76,52 +84,58 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 52% 42%, rgba(15, 14, 12, 0.02) 0%, rgba(15, 14, 12, 0.16) 34%, rgba(15, 14, 12, 0.54) 68%, rgba(15, 14, 12, 0.9) 100%),
-    linear-gradient(90deg, rgba(12, 11, 9, 0.82) 0%, rgba(12, 11, 9, 0.28) 36%, rgba(12, 11, 9, 0.62) 100%),
-    linear-gradient(180deg, rgba(15, 14, 12, 0.3) 0%, rgba(15, 14, 12, 0.12) 46%, rgba(15, 14, 12, 0.72) 100%);
+    radial-gradient(circle at 52% 42%, rgba(15, 14, 12, 0.08) 0%, rgba(15, 14, 12, 0.26) 28%, rgba(15, 14, 12, 0.68) 68%, rgba(15, 14, 12, 0.96) 100%),
+    linear-gradient(90deg, rgba(12, 11, 9, 0.9) 0%, rgba(12, 11, 9, 0.42) 42%, rgba(12, 11, 9, 0.82) 100%),
+    linear-gradient(180deg, rgba(15, 14, 12, 0.32) 0%, rgba(15, 14, 12, 0.22) 46%, rgba(15, 14, 12, 0.9) 100%);
+  box-shadow: inset 0 0 12rem rgba(8, 7, 5, 0.34);
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
 .home-hero-overlay {
-  position: relative;
-  z-index: 3;
-  min-height: min(78svh, 48rem);
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
 }
 
 .home-hero-overlay-inner {
-  position: relative;
-  display: flex;
-  min-height: min(78svh, 48rem);
-  align-items: flex-end;
-  justify-content: space-between;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
   gap: 2rem;
-  padding-top: clamp(5.8rem, 7vh, 6.9rem);
-  padding-bottom: clamp(1.2rem, 2.2vh, 2rem);
+  padding-top: clamp(5.6rem, 8vw, 6.5rem);
+  padding-bottom: clamp(1.4rem, 2.2vw, 2rem);
 }
 
 .home-hero-vertical {
   position: absolute;
   top: 50%;
-  left: clamp(0.9rem, 1.5vw, 1.4rem);
-  transform: translateY(-50%) rotate(-90deg);
+  left: 0.95rem;
+  transform: rotate(-90deg) translateY(-50%);
   transform-origin: left top;
-  font-size: 0.6rem;
+  font-size: 0.56rem;
   font-weight: 600;
   letter-spacing: 0.34em;
   text-transform: uppercase;
   color: rgba(245, 242, 236, 0.58);
   z-index: 5;
   pointer-events: none;
+  white-space: nowrap;
 }
 
 .home-hero-copy {
-  max-width: min(33rem, calc(100% - 5rem));
-  padding-left: clamp(1.6rem, 4vw, 3.25rem);
+  align-self: center;
+  max-width: min(33rem, calc(100% - 4rem));
+  padding-left: clamp(2rem, 4.2vw, 3.75rem);
+  padding-bottom: 0.35rem;
+  pointer-events: none;
 }
 
 .home-hero-kicker {
-  margin: 0 0 0.85rem;
+  margin: 0 0 1rem;
   font-size: 0.64rem;
   font-weight: 700;
   letter-spacing: 0.24em;
@@ -131,28 +145,29 @@
 
 .home-hero-headline {
   display: grid;
-  gap: 0.4rem;
+  gap: 0.65rem;
   max-width: 100%;
 }
 
 .home-hero-headline-top {
   display: block;
-  max-width: 15ch;
-  font-size: clamp(0.9rem, 1.18vw, 1.08rem);
+  max-width: 18ch;
+  font-size: clamp(0.86rem, 1vw, 1rem);
   font-weight: 600;
   letter-spacing: 0.22em;
-  line-height: 1.2;
+  line-height: 1.26;
   text-transform: uppercase;
   color: var(--warm-white);
 }
 
 .home-hero-headline-bottom {
   display: block;
-  font-size: clamp(3rem, 5.4vw, 4.7rem);
+  max-width: 8.2ch;
+  font-size: clamp(2.85rem, 4.65vw, 4.5rem);
   font-style: italic;
   font-weight: 600;
-  line-height: 0.88;
-  letter-spacing: -0.045em;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
   color: var(--warm-white);
 }
 
@@ -162,10 +177,10 @@
 }
 
 .home-hero-description {
-  max-width: 26rem;
-  margin: 0.9rem 0 0;
-  font-size: 0.9rem;
-  line-height: 1.68;
+  max-width: 22.5rem;
+  margin: 1.1rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.72;
   color: rgba(245, 242, 236, 0.78);
 }
 
@@ -182,6 +197,7 @@
   flex-wrap: wrap;
   gap: 0.82rem;
   margin-top: 0.85rem;
+  pointer-events: auto;
 }
 
 .home-hero-button {
@@ -215,13 +231,15 @@
 }
 
 .home-hero-meta {
+  position: absolute;
+  right: clamp(1rem, 1.8vw, 1.8rem);
+  bottom: clamp(1.25rem, 2.1vw, 1.95rem);
   display: grid;
   gap: 0.4rem;
   max-width: 12rem;
-  align-self: flex-end;
   justify-items: end;
-  padding-bottom: 0.1rem;
   text-align: right;
+  pointer-events: none;
 }
 
 .home-hero-meta-label {
@@ -1022,19 +1040,18 @@
   .home-hero-swiper,
   .home-hero-slide,
   .home-hero-slide-media,
-  .home-hero-overlay,
-  .home-hero-overlay-inner {
-    min-height: min(72svh, 38rem);
+  .home-hero-overlay {
+    height: min(34rem, calc(100svh - 0.35rem));
   }
 
   .home-hero-overlay-inner {
-    align-items: flex-end;
-    padding-top: clamp(5.4rem, 7vh, 6.1rem);
-    padding-bottom: 1.2rem;
+    align-items: center;
+    padding-top: clamp(5.25rem, 9vw, 6rem);
+    padding-bottom: 1rem;
   }
 
   .home-hero-copy {
-    max-width: min(28rem, calc(100% - 1rem));
+    max-width: min(29rem, calc(100% - 1rem));
     padding-left: 0;
   }
 
@@ -1048,9 +1065,8 @@
   .home-hero-swiper,
   .home-hero-slide,
   .home-hero-slide-media,
-  .home-hero-overlay,
-  .home-hero-overlay-inner {
-    min-height: min(68svh, 34rem);
+  .home-hero-overlay {
+    height: min(31rem, calc(100svh - 0.25rem));
   }
 
   .page-hero-section {
@@ -1083,12 +1099,13 @@
   }
 
   .home-hero-overlay-inner {
-    padding-top: 5.15rem;
-    padding-bottom: 1rem;
+    align-items: center;
+    padding-top: 5rem;
+    padding-bottom: 1.15rem;
   }
 
   .home-hero-description {
-    max-width: 21rem;
+    max-width: 19rem;
     font-size: 0.84rem;
     line-height: 1.62;
   }
@@ -1103,12 +1120,17 @@
 
   .home-hero-headline-top {
     max-width: 17ch;
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     letter-spacing: 0.18em;
   }
 
   .home-hero-headline-bottom {
-    font-size: clamp(2.45rem, 9.5vw, 3.55rem);
+    max-width: 7.1ch;
+    font-size: clamp(2.45rem, 11.6vw, 3.55rem);
+  }
+
+  .home-hero-headline-line {
+    text-wrap: balance;
   }
 
   .home-hero-actions {
