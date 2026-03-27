@@ -28,8 +28,6 @@ type HomeHeroSwiperProps = {
 };
 
 const itemEase = [0.22, 1, 0.36, 1] as const;
-const heroDescription =
-  "Every frame should feel like a chapter in a growing legacy: Ethiopian, contemporary, and unmistakably Veronica.";
 
 export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
   const reducedMotion = useReducedMotion();
@@ -92,7 +90,18 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
                 : { duration: 0.56, delay: 0.08, ease: itemEase }
             }
           >
-            <p className="home-hero-kicker">Official Portraiture</p>
+            <AnimatePresence mode="wait">
+              <motion.p
+                animate={{ opacity: 1, y: 0 }}
+                className="home-hero-kicker"
+                exit={{ opacity: 0, y: -8 }}
+                initial={{ opacity: 0, y: 8 }}
+                key={`${activeIndex}-accent`}
+                transition={{ duration: 0.3, ease: itemEase }}
+              >
+                {activeSlide.accent}
+              </motion.p>
+            </AnimatePresence>
 
             <h1 className="display-title home-hero-headline">
               <span className="home-hero-headline-top">Faith, glamour, and a voice</span>
@@ -102,7 +111,18 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
               </span>
             </h1>
 
-            <p className="home-hero-description">{heroDescription}</p>
+            <AnimatePresence mode="wait">
+              <motion.p
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                className="home-hero-description"
+                exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
+                initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
+                key={`${activeIndex}-copy`}
+                transition={{ duration: 0.34, ease: itemEase }}
+              >
+                {activeSlide.copy}
+              </motion.p>
+            </AnimatePresence>
 
             <span aria-hidden="true" className="home-hero-rule" />
 
