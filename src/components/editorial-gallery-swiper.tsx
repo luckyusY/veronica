@@ -28,6 +28,9 @@ const motionPresets = ["from-left", "diagonal", "from-right", "settle-left", "zo
 export function EditorialGallerySwiper({ items }: EditorialGallerySwiperProps) {
   const reducedMotion = useReducedMotion();
 
+  // Duplicate items to ensure smooth infinite loop on wide screens
+  const loopedItems = [...items, ...items, ...items];
+
   return (
     <div className="editorial-gallery-shell" data-lenis-prevent="true">
       <Swiper
@@ -43,14 +46,14 @@ export function EditorialGallerySwiper({ items }: EditorialGallerySwiperProps) {
           reducedMotion
             ? false
             : {
-                delay: 2200,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true,
-              }
+              delay: 2200,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }
         }
       >
-        {items.map((item, index) => (
-          <SwiperSlide className="editorial-gallery-slide" key={item.title}>
+        {loopedItems.map((item, index) => (
+          <SwiperSlide className="editorial-gallery-slide" key={`${item.title}-${index}`}>
             <article className="editorial-gallery-card image-hover-glow">
               <EditorialImage
                 className="editorial-gallery-media"
