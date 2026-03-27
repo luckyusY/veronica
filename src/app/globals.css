@@ -6,23 +6,25 @@
 @import "swiper/css/pagination";
 
 :root {
-  --background: #05070a;
-  --foreground: #f2efe9;
-  --muted: #d4af6a;
-  --gold: #d4af6a;
-  --gold-soft: #f2d28b;
+  --background: #0f0e0c;
+  --foreground: #f5f2ec;
+  --muted: #c9a96e;
+  --gold: #c9a96e;
+  --gold-soft: #dcc08d;
   --bronze: #a97142;
-  --accent: #d94f2b;
-  --line: rgba(255, 255, 255, 0.09);
-  --line-strong: rgba(242, 210, 139, 0.2);
-  --surface-1: #0a0d11;
-  --surface-2: #0f141a;
-  --surface-3: #141b23;
-  --surface-4: #1a232d;
-  --surface-5: #202b37;
+  --accent: #a31f1f;
+  --accent-soft: #8b1a1a;
+  --warm-white: #f5f2ec;
+  --line: rgba(245, 242, 236, 0.09);
+  --line-strong: rgba(201, 169, 110, 0.24);
+  --surface-1: #12100d;
+  --surface-2: #171411;
+  --surface-3: #1d1915;
+  --surface-4: #241f1a;
+  --surface-5: #2d2721;
   --paper-base: #7f5c3f;
   --paper-mid: #a37c56;
-  --paper-light: #d0af82;
+  --paper-light: #f5f2ec;
   --paper-deep: #24160f;
   --paper-ink: #24180f;
   --shadow: 0 28px 70px rgba(0, 0, 0, 0.42);
@@ -535,9 +537,9 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(201, 169, 110, 0.18) 16%,
-    rgba(201, 169, 110, 0.88) 50%,
-    rgba(201, 169, 110, 0.18) 84%,
+    rgba(201, 169, 110, 0.14) 16%,
+    rgba(201, 169, 110, 0.92) 50%,
+    rgba(201, 169, 110, 0.14) 84%,
     transparent 100%
   );
   transition: opacity 260ms ease;
@@ -586,11 +588,11 @@
 .site-header-mobile-mark {
   display: grid;
   place-items: center;
-  border: 1px solid rgba(201, 169, 110, 0.28);
+  border: 1px solid rgba(201, 169, 110, 0.34);
   border-radius: 999px;
   background:
-    radial-gradient(circle at 35% 30%, rgba(242, 210, 139, 0.2), transparent 64%),
-    linear-gradient(145deg, rgba(77, 52, 35, 0.78), rgba(30, 19, 14, 0.92));
+    radial-gradient(circle at 35% 30%, rgba(201, 169, 110, 0.22), transparent 64%),
+    linear-gradient(145deg, rgba(92, 63, 40, 0.8), rgba(25, 19, 16, 0.94));
   font-family: var(--font-bodoni), "Didot", Georgia, serif;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -618,7 +620,7 @@
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(242, 210, 139, 0.74);
+  color: rgba(201, 169, 110, 0.84);
 }
 
 .site-header-logo-name,
@@ -683,7 +685,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(201, 169, 110, 0.9) 50%,
+    rgba(201, 169, 110, 0.92) 50%,
     transparent 100%
   );
   transition: transform 220ms ease;
@@ -735,7 +737,9 @@
 }
 
 .site-header-action--accent {
-  background: rgba(97, 66, 38, 0.38);
+  border-color: rgba(163, 31, 31, 0.34);
+  background: linear-gradient(135deg, rgba(62, 18, 18, 0.92), rgba(121, 30, 30, 0.72));
+  color: var(--warm-white);
 }
 
 .site-header-mobile {
@@ -858,7 +862,9 @@
 }
 
 .site-header-mobile-link--accent {
-  background: rgba(96, 67, 40, 0.48);
+  border-color: rgba(163, 31, 31, 0.34);
+  background: linear-gradient(135deg, rgba(62, 18, 18, 0.92), rgba(121, 30, 30, 0.72));
+  color: var(--warm-white);
 }
 
 .site-header-link:focus-visible,
@@ -931,7 +937,7 @@
   padding: 0.7rem 0.95rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-  background: rgba(11, 15, 20, 0.48);
+  background: rgba(19, 16, 13, 0.56);
   font-size: 0.64rem;
   font-weight: 800;
   letter-spacing: 0.18em;
@@ -939,7 +945,7 @@
 }
 
 .site-footer-social-chip {
-  color: rgba(242, 239, 233, 0.62);
+  color: rgba(245, 242, 236, 0.68);
 }
 
 .site-footer-utility-link {
@@ -971,10 +977,10 @@
 
 .site-footer-utility-link:hover {
   transform: translateY(-2px);
-  border-color: rgba(242, 210, 139, 0.3);
-  background: rgba(18, 24, 31, 0.78);
+  border-color: rgba(201, 169, 110, 0.34);
+  background: rgba(35, 22, 19, 0.82);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-  color: #fff;
+  color: var(--warm-white);
   text-decoration: none;
 }
 
@@ -1324,11 +1330,11 @@ html.lenis body {
   min-height: 100vh;
   position: relative;
   background:
-    radial-gradient(circle at top center, rgba(240, 210, 166, 0.18), transparent 28%),
-    radial-gradient(circle at 84% 16%, rgba(124, 82, 46, 0.28), transparent 18%),
-    radial-gradient(circle at 14% 74%, rgba(214, 175, 116, 0.12), transparent 24%),
-    linear-gradient(180deg, rgba(101, 70, 46, 0.28) 0%, rgba(55, 35, 23, 0.26) 100%),
-    linear-gradient(180deg, #5c412d 0%, #332217 44%, #160d09 100%);
+    radial-gradient(circle at top center, rgba(201, 169, 110, 0.18), transparent 28%),
+    radial-gradient(circle at 84% 16%, rgba(163, 31, 31, 0.14), transparent 18%),
+    radial-gradient(circle at 14% 74%, rgba(169, 113, 66, 0.14), transparent 24%),
+    linear-gradient(180deg, rgba(108, 75, 48, 0.24) 0%, rgba(43, 29, 20, 0.22) 100%),
+    linear-gradient(180deg, #473225 0%, #221813 42%, #0f0e0c 100%);
   color: var(--foreground);
   font-family: var(--font-manrope), "Segoe UI", sans-serif;
   font-weight: 300;
@@ -1346,9 +1352,9 @@ html.lenis body {
   height: 3px;
   z-index: 9999;
   background: linear-gradient(90deg,
-      rgba(242, 210, 139, 1) 0%,
-      rgba(217, 79, 43, 0.9) 60%,
-      rgba(242, 210, 139, 0.7) 100%);
+      rgba(201, 169, 110, 1) 0%,
+      rgba(163, 31, 31, 0.92) 58%,
+      rgba(201, 169, 110, 0.72) 100%);
   transform: scaleX(0);
   transform-origin: left center;
   animation: scrollProgressFill linear both;
@@ -1375,8 +1381,8 @@ html.lenis body {
 }
 
 ::selection {
-  background: rgba(217, 79, 43, 0.28);
-  color: white;
+  background: rgba(163, 31, 31, 0.34);
+  color: var(--warm-white);
 }
 
 a {
@@ -1449,7 +1455,7 @@ a {
     font-weight: 800;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: rgba(242, 210, 139, 0.88);
+    color: rgba(201, 169, 110, 0.9);
   }
 
   .display-title {
@@ -1513,15 +1519,15 @@ a {
     gap: 0.75rem;
     overflow: hidden;
     border-radius: 999px;
-    border: 1px solid rgba(242, 210, 139, 0.48);
-    background: linear-gradient(135deg, rgba(242, 210, 139, 1), rgba(212, 175, 106, 0.96));
+    border: 1px solid rgba(201, 169, 110, 0.48);
+    background: linear-gradient(135deg, rgba(201, 169, 110, 1), rgba(221, 192, 141, 0.96));
     padding: 0.9rem 3.1rem 0.9rem 1.2rem;
     font-size: 0.76rem;
     font-weight: 800;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #05070a;
-    box-shadow: 0 14px 36px rgba(212, 175, 106, 0.16);
+    color: #0f0e0c;
+    box-shadow: 0 14px 36px rgba(201, 169, 110, 0.18);
   }
 
   .primary-button::before {
@@ -1542,13 +1548,13 @@ a {
     transform: translateY(-50%);
     font-size: 0.82rem;
     font-weight: 800;
-    color: rgba(5, 7, 10, 0.8);
+    color: rgba(15, 14, 12, 0.84);
   }
 
   .primary-button:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.44);
-    box-shadow: 0 18px 44px rgba(212, 175, 106, 0.24);
+    border-color: rgba(201, 169, 110, 0.68);
+    box-shadow: 0 18px 44px rgba(201, 169, 110, 0.24);
   }
 
   .primary-button:hover::before {
@@ -1557,7 +1563,7 @@ a {
 
   .primary-button:focus-visible,
   .secondary-button:focus-visible {
-    outline: 2px solid rgba(242, 210, 139, 0.75);
+    outline: 2px solid rgba(201, 169, 110, 0.75);
     outline-offset: 3px;
   }
 
@@ -1568,14 +1574,14 @@ a {
     justify-content: center;
     gap: 0.7rem;
     border-radius: 999px;
-    border: 1px solid rgba(242, 210, 139, 0.18);
-    background: linear-gradient(180deg, rgba(26, 35, 45, 0.96), rgba(15, 20, 26, 0.98));
+    border: 1px solid rgba(201, 169, 110, 0.18);
+    background: linear-gradient(180deg, rgba(30, 24, 19, 0.96), rgba(20, 17, 14, 0.98));
     padding: 0.9rem 3rem 0.9rem 1.2rem;
     font-size: 0.76rem;
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(245, 242, 236, 0.92);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
@@ -1591,9 +1597,9 @@ a {
 
   .secondary-button:hover {
     transform: translateY(-2px);
-    border-color: rgba(242, 210, 139, 0.3);
-    background: linear-gradient(180deg, rgba(31, 43, 55, 0.98), rgba(18, 25, 32, 0.98));
-    color: white;
+    border-color: rgba(163, 31, 31, 0.42);
+    background: linear-gradient(180deg, rgba(48, 23, 21, 0.98), rgba(27, 15, 14, 0.98));
+    color: var(--warm-white);
   }
 
   .meta-chip {
@@ -1613,8 +1619,8 @@ a {
   }
 
   .meta-chip--accent {
-    border-color: rgba(217, 79, 43, 0.36);
-    background: rgba(54, 23, 17, 0.92);
+    border-color: rgba(163, 31, 31, 0.38);
+    background: rgba(60, 19, 19, 0.92);
     color: var(--gold-soft);
   }
 
@@ -2058,8 +2064,9 @@ a {
   .admin-layout {
     min-height: 100vh;
     background:
-      radial-gradient(circle at top, rgba(242, 210, 139, 0.09), transparent 24%),
-      linear-gradient(180deg, #080a0d 0%, #05070a 46%, #030406 100%);
+      radial-gradient(circle at top, rgba(201, 169, 110, 0.1), transparent 24%),
+      radial-gradient(circle at 82% 12%, rgba(163, 31, 31, 0.1), transparent 16%),
+      linear-gradient(180deg, #171411 0%, #0f0e0c 46%, #0c0b09 100%);
   }
 
   .admin-sidebar {
@@ -2068,7 +2075,7 @@ a {
     align-self: start;
     border-radius: 2rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    background: linear-gradient(180deg, rgba(20, 27, 35, 0.98), rgba(11, 15, 20, 0.98));
+    background: linear-gradient(180deg, rgba(31, 26, 22, 0.98), rgba(15, 14, 12, 0.98));
     padding: 1.15rem;
     box-shadow: 0 26px 64px rgba(0, 0, 0, 0.34);
   }
@@ -2082,7 +2089,7 @@ a {
   .admin-surface {
     border-radius: 1.85rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    background: linear-gradient(180deg, rgba(20, 27, 35, 0.98), rgba(12, 16, 21, 0.98));
+    background: linear-gradient(180deg, rgba(31, 26, 22, 0.98), rgba(15, 14, 12, 0.98));
     padding: 1.35rem;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.04),
@@ -2099,19 +2106,19 @@ a {
     gap: 0.8rem;
     border-radius: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(17, 23, 30, 0.92);
+    background: rgba(24, 19, 16, 0.94);
     padding: 0.9rem 1rem;
     font-size: 0.74rem;
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.82);
+    color: rgba(245, 242, 236, 0.84);
   }
 
   .admin-nav-link:hover {
     transform: translateY(-2px);
-    border-color: rgba(242, 210, 139, 0.2);
-    background: rgba(24, 33, 43, 0.98);
+    border-color: rgba(201, 169, 110, 0.24);
+    background: rgba(39, 28, 23, 0.98);
   }
 
   .admin-nav-icon {
@@ -2638,7 +2645,7 @@ a {
     border-radius: 2rem;
     border: 1px solid rgba(103, 74, 46, 0.28);
     background:
-      linear-gradient(180deg, rgba(220, 191, 149, 0.98), rgba(188, 151, 108, 0.98));
+      linear-gradient(180deg, rgba(245, 242, 236, 0.98), rgba(224, 210, 192, 0.98));
     padding: 1.4rem;
     box-shadow:
       0 28px 72px rgba(23, 13, 8, 0.22),
@@ -2676,7 +2683,7 @@ a {
     border-radius: 2rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
     background:
-      linear-gradient(180deg, rgba(24, 32, 42, 0.98), rgba(11, 15, 20, 0.98));
+      linear-gradient(180deg, rgba(31, 26, 22, 0.98), rgba(15, 14, 12, 0.98));
     padding: 1.4rem;
     box-shadow: 0 28px 72px rgba(0, 0, 0, 0.28);
   }
@@ -3355,7 +3362,7 @@ a {
   .editorial-note {
     border: 1px solid rgba(103, 74, 46, 0.26);
     background:
-      linear-gradient(180deg, rgba(218, 189, 148, 0.98), rgba(184, 148, 106, 0.98));
+      linear-gradient(180deg, rgba(245, 242, 236, 0.98), rgba(224, 210, 192, 0.98));
     box-shadow:
       0 22px 52px rgba(21, 12, 8, 0.18),
       inset 0 1px 0 rgba(255, 241, 215, 0.34);
