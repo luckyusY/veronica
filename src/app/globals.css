@@ -3731,8 +3731,8 @@ a {
 
   .editorial-site-footer {
     margin-top: 3.5rem;
-    border-top: 0;
-    background: #0e0d0b;
+    border-top: 1px solid rgba(240, 214, 172, 0.12);
+    background: linear-gradient(180deg, #3a2619 0%, #120b07 100%);
   }
 
   .editorial-footer-stage {
@@ -3751,134 +3751,6 @@ a {
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: rgba(242, 239, 233, 0.52);
-  }
-
-  .site-footer-curtain {
-    padding-top: clamp(3rem, 6vw, 4.75rem);
-    padding-bottom: clamp(1rem, 3vw, 1.6rem);
-  }
-
-  .site-footer-logotype-wrap {
-    width: 100%;
-  }
-
-  .site-footer-logotype {
-    display: block;
-    width: 100%;
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
-    font-size: clamp(5rem, 8.6vw, 7.5rem);
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    line-height: 0.92;
-    text-transform: uppercase;
-    color: var(--warm-white);
-    text-wrap: balance;
-  }
-
-  .site-footer-logotype:hover {
-    color: var(--warm-white);
-    text-decoration: none;
-  }
-
-  .site-footer-gold-rule {
-    height: 1px;
-    margin-top: 1.55rem;
-    margin-bottom: 1.55rem;
-    background: linear-gradient(90deg, rgba(201, 169, 110, 0.62), rgba(201, 169, 110, 0.24));
-    transform: scaleY(0.5);
-    transform-origin: center;
-  }
-
-  .site-footer-nav-columns {
-    display: grid;
-    gap: 1.2rem;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: start;
-  }
-
-  .site-footer-nav-column {
-    display: grid;
-    gap: 1rem;
-    min-width: 0;
-  }
-
-  .site-footer-nav-heading {
-    margin: 0;
-    font-size: 0.58rem;
-    font-weight: 800;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: rgba(201, 169, 110, 0.84);
-  }
-
-  .site-footer-nav-list {
-    display: grid;
-    gap: 0.72rem;
-  }
-
-  .site-footer-nav-link {
-    width: fit-content;
-    font-size: 0.76rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(245, 242, 236, 0.76);
-  }
-
-  .site-footer-nav-link:hover {
-    color: var(--warm-white);
-    text-decoration: none;
-  }
-
-  .site-footer-meta-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .site-footer-social-icons {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
-  .site-footer-social-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(245, 242, 236, 0.72);
-    transition: color 220ms ease;
-  }
-
-  .site-footer-social-link:hover {
-    color: rgba(201, 169, 110, 0.96);
-    text-decoration: none;
-  }
-
-  .site-footer-social-svg {
-    width: 1rem;
-    height: 1rem;
-    display: block;
-  }
-
-  .site-footer-copyright {
-    margin: 0;
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(245, 242, 236, 0.5);
-  }
-
-  .site-footer-management {
-    margin: 0;
-    font-size: 0.625rem;
-    font-weight: 700;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: rgba(245, 242, 236, 0.58);
   }
 
   .editorial-mini-footer {
@@ -4752,7 +4624,17 @@ a:not([class]):hover {
 /* ── Footer glow divider ────────────────────────────────────────────── */
 
 .editorial-site-footer::before {
-  display: none;
+  content: "";
+  display: block;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(242, 210, 139, 0.5) 30%,
+    rgba(217, 79, 43, 0.4) 50%,
+    rgba(242, 210, 139, 0.5) 70%,
+    transparent 100%
+  );
 }
 
 /* ── Footer nav button gold hover glow ──────────────────────────────── */
@@ -4798,41 +4680,6 @@ a:not([class]):hover {
 
   .editorial-site-footer {
     padding-bottom: env(safe-area-inset-bottom);
-  }
-
-  .site-footer-curtain {
-    padding-top: 2.45rem;
-    padding-bottom: 1.15rem;
-  }
-
-  .site-footer-logotype {
-    font-size: clamp(2.8rem, 14vw, 4.2rem);
-    letter-spacing: 0.08em;
-    line-height: 0.96;
-  }
-
-  .site-footer-nav-columns {
-    grid-template-columns: 1fr;
-    gap: 1.4rem;
-  }
-
-  .site-footer-nav-link {
-    width: fit-content;
-    font-size: 0.72rem;
-  }
-
-  .site-footer-meta-row {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .site-footer-social-icons {
-    gap: 1.25rem;
-  }
-
-  .site-footer-management {
-    font-size: 0.58rem;
-    line-height: 1.8;
   }
 
   /* Route cards full-width stack */
