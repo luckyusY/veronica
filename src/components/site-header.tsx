@@ -17,28 +17,30 @@ export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="site-masthead">
-      <div className="section-shell py-4 sm:py-5">
-        <div className="site-masthead-top hidden sm:flex">
-          {topNotes.map((item) => (
-            <p key={item}>{item}</p>
-          ))}
-          <Link className="site-masthead-top-link" href="/contact">
-            Management / Booking
-          </Link>
-        </div>
+    <>
+      <header className="site-masthead">
+        <div className="section-shell py-4 sm:py-5">
+          <div className="site-masthead-top hidden sm:flex">
+            {topNotes.map((item) => (
+              <p key={item}>{item}</p>
+            ))}
+            <Link className="site-masthead-top-link" href="/contact">
+              Management / Booking
+            </Link>
+          </div>
 
-        <div className="site-masthead-brand">
-          <p className="site-masthead-subtitle">Singer / Songwriter / Actress / Journalist</p>
-          <Link className="site-masthead-wordmark" href="/" onClick={() => setMenuOpen(false)}>
-            <span className="brand-script">Veronica</span>
-            <span className="brand-didot">ADANE</span>
-          </Link>
-          <p className="site-masthead-note">
-            Music, live performance, biography, and official artist storytelling.
-          </p>
+          <div className="site-masthead-brand">
+            <p className="site-masthead-subtitle">Singer / Songwriter / Actress / Journalist</p>
+            <Link className="site-masthead-wordmark" href="/" onClick={() => setMenuOpen(false)}>
+              <span className="brand-script">Veronica</span>
+              <span className="brand-didot">ADANE</span>
+            </Link>
+            <p className="site-masthead-note">
+              Music, live performance, biography, and official artist storytelling.
+            </p>
+          </div>
         </div>
-      </div>
+      </header>
 
       <div className="site-nav-wrap">
         <div className="section-shell">
@@ -124,6 +126,6 @@ export function SiteHeader() {
           )}
         </div>
       </div>
-    </header>
+    </>
   );
 }
