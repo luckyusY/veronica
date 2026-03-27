@@ -58,8 +58,10 @@
 }
 
 .home-hero-title {
-  max-width: 12.5ch;
-  font-size: clamp(4.25rem, 8vw, 7.25rem);
+  max-width: 10.5ch;
+  font-size: clamp(4.75rem, 7.8vw, 6rem);
+  line-height: 0.88;
+  letter-spacing: -0.045em;
   color: #f7f2ea;
 }
 
@@ -97,8 +99,11 @@
 }
 
 .home-hero-stat strong {
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   color: #f7f2ea;
 }
 
@@ -966,7 +971,7 @@
   }
 
   .home-hero-title {
-    font-size: clamp(3.2rem, 15vw, 4.85rem);
+    font-size: clamp(3.75rem, 13vw, 5rem);
   }
 
   .home-hero-swiper,
@@ -1202,6 +1207,8 @@ html.lenis body {
     linear-gradient(180deg, #5c412d 0%, #332217 44%, #160d09 100%);
   color: var(--foreground);
   font-family: var(--font-manrope), "Segoe UI", sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.01em;
   color-scheme: dark;
 }
 
@@ -1260,10 +1267,21 @@ a {
 
   body {
     margin: 0;
+    font-weight: 300;
   }
 
   a {
     color: inherit;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 0.94;
+    text-rendering: optimizeLegibility;
   }
 }
 
@@ -1305,7 +1323,7 @@ a {
   .section-label {
     font-size: 0.68rem;
     font-weight: 800;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
     color: rgba(242, 210, 139, 0.88);
   }
@@ -1314,8 +1332,9 @@ a {
     font-family: var(--font-bodoni), "Didot", Georgia, serif;
     font-optical-sizing: auto;
     font-feature-settings: "liga" 1, "kern" 1, "pnum" 1;
-    line-height: 0.92;
-    letter-spacing: -0.04em;
+    font-weight: 600;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
     text-rendering: optimizeLegibility;
   }
 
@@ -3945,6 +3964,16 @@ a:not([class]):hover {
 
 .editorial-stat {
   position: relative;
+}
+
+.editorial-stat .display-title {
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+
+.editorial-stat-label {
+  letter-spacing: 0.22em;
 }
 
 .editorial-stat::after {

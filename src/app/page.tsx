@@ -57,7 +57,7 @@ export default function Home() {
                   <p className="display-title text-4xl text-[#18120d] sm:text-5xl">
                     {item.value}
                   </p>
-                  <p className="mt-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#6d5738]">
+                  <p className="editorial-stat-label mt-3 text-sm font-semibold uppercase text-[#6d5738]">
                     {item.label}
                   </p>
                   <p className="mt-3 text-sm leading-7 text-[#4b4138]">

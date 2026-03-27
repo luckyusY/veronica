@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Great_Vibes, Manrope } from "next/font/google";
+import { Cormorant_Garamond, Great_Vibes, Jost } from "next/font/google";
 import { AppShell } from "@/components/app-shell";
 import { Providers } from "@/components/providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
-const bodoni = Bodoni_Moda({
+const displaySerif = Cormorant_Garamond({
   variable: "--font-bodoni",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 const greatVibes = Great_Vibes({
@@ -18,9 +19,10 @@ const greatVibes = Great_Vibes({
   weight: ["400"],
 });
 
-const manrope = Manrope({
+const bodySans = Jost({
   variable: "--font-manrope",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -40,7 +42,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bodoni.variable} ${greatVibes.variable} ${manrope.variable} h-full antialiased`}
+      className={`${displaySerif.variable} ${greatVibes.variable} ${bodySans.variable} h-full antialiased`}
     >
       <body className="min-h-full paper-canvas">
         <Providers>
