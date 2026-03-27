@@ -4705,24 +4705,110 @@ a:not([class]):hover {
     padding: 0.82rem 0.9rem;
   }
 
-  /* Mobile footer nav stacking */
+  /* Footer density and mobile layout */
+  .editorial-classic-topline--footer {
+    gap: 0.45rem 1rem;
+    padding: 0.62rem 0;
+    font-size: 0.52rem;
+    letter-spacing: 0.14em;
+  }
+
+  .editorial-classic-topline--footer p:not(:first-child)::before {
+    left: -0.62rem;
+    height: 0.16rem;
+    width: 0.16rem;
+  }
+
+  .editorial-brand-stage--footer {
+    gap: 0.65rem;
+    padding-bottom: 0.95rem;
+  }
+
+  .editorial-brand-copy--footer {
+    max-width: 22rem;
+    font-size: 0.74rem;
+    line-height: 1.6;
+  }
+
+  .site-footer-cta-row {
+    gap: 0.7rem;
+    margin-top: 0.4rem;
+  }
+
+  .site-footer-social-row,
+  .site-footer-utility-row {
+    gap: 0.45rem;
+  }
+
+  .site-footer-social-chip,
+  .site-footer-utility-link {
+    min-height: 2.3rem;
+    padding: 0.55rem 0.78rem;
+    font-size: 0.55rem;
+    letter-spacing: 0.14em;
+  }
+
+  .site-footer-utility-row {
+    justify-content: center;
+  }
+
+  .site-footer-utility-link {
+    flex: 1 1 9.5rem;
+    max-width: 12rem;
+  }
+
+  .site-footer-divider {
+    margin: 0.2rem 0 0.95rem;
+  }
+
   .editorial-nav-shell {
     padding: 0.6rem;
   }
 
-  .editorial-nav-gridline {
-    grid-template-columns: 1fr !important;
+  .editorial-nav-shell--footer {
+    padding: 0.1rem 0 0;
+  }
+
+  .editorial-nav-shell--footer .editorial-nav-gridline {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.5rem;
   }
 
-  .editorial-nav-shell--footer .editorial-nav-button {
-    min-height: 2.55rem;
-    padding: 0.58rem 0.85rem;
-    font-size: 0.54rem;
+  .editorial-nav-shell--footer .editorial-nav-gridline .editorial-nav-button:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
   }
 
-  .site-footer-utility-row {
-    flex-direction: column;
+  .editorial-nav-shell--footer .editorial-nav-utility {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .editorial-nav-shell--footer .editorial-nav-button {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    min-height: 2.4rem;
+    padding: 0.56rem 0.72rem;
+    border-radius: 1rem;
+    font-size: 0.5rem;
+    letter-spacing: 0.16em;
+    line-height: 1.08;
+  }
+
+  .editorial-nav-shell--footer .editorial-nav-button--accent {
+    width: 100%;
+  }
+
+  .editorial-footer-markline {
+    justify-content: center;
+    gap: 0.4rem 0.8rem;
+    margin-top: 0.8rem;
+    font-size: 0.54rem;
+    letter-spacing: 0.16em;
+    text-align: center;
   }
 
   .editorial-nav-button,
