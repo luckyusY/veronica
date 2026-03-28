@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X } from "lucide-react";
+import { useMotionLite } from "@/components/providers";
+import type { CmsSiteSettings } from "@/lib/cms-types";
 import { navigationItems } from "@/lib/site-data";
 
 const primaryNavigation = navigationItems.filter(
@@ -22,8 +24,13 @@ function isActivePath(pathname: string, href: string) {
   return href === "/" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function SiteHeader() {
+type SiteHeaderProps = {
+  settings: CmsSiteSettings["header"];
+};
+
+export function SiteHeader({ settings }: SiteHeaderProps) {
   const pathname = usePathname();
+  const motionLite = useMotionLite();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -65,15 +72,21 @@ export function SiteHeader() {
 
   const isScrolled = scrollProgress > 0.08;
   const headerStyle: CSSProperties = {
-    backgroundColor: `rgba(13, 9, 7, ${(scrollProgress * 0.85).toFixed(3)})`,
-    backdropFilter: `blur(${(scrollProgress * 18).toFixed(2)}px) saturate(${(
-      100 +
-      scrollProgress * 24
-    ).toFixed(0)}%)`,
-    WebkitBackdropFilter: `blur(${(scrollProgress * 18).toFixed(2)}px) saturate(${(
-      100 +
-      scrollProgress * 24
-    ).toFixed(0)}%)`,
+    backgroundColor: motionLite
+      ? `rgba(13, 9, 7, ${(0.78 + scrollProgress * 0.16).toFixed(3)})`
+      : `rgba(13, 9, 7, ${(scrollProgress * 0.85).toFixed(3)})`,
+    backdropFilter: motionLite
+      ? "none"
+      : `blur(${(scrollProgress * 18).toFixed(2)}px) saturate(${(
+          100 +
+          scrollProgress * 24
+        ).toFixed(0)}%)`,
+    WebkitBackdropFilter: motionLite
+      ? "none"
+      : `blur(${(scrollProgress * 18).toFixed(2)}px) saturate(${(
+          100 +
+          scrollProgress * 24
+        ).toFixed(0)}%)`,
     boxShadow:
       scrollProgress > 0
         ? `0 14px 40px rgba(0, 0, 0, ${(scrollProgress * 0.18).toFixed(3)})`
@@ -98,7 +111,7 @@ export function SiteHeader() {
                 VA
               </span>
               <span className="site-header-logo-copy">
-                <span className="site-header-logo-kicker">Official Artist House</span>
+                <span className="site-header-logo-kicker">{settings.brandKicker}</span>
                 <span className="site-header-logo-name">
                   <span className="brand-script">Veronica</span>
                   <span className="brand-didot">ADANE</span>
@@ -128,7 +141,11 @@ export function SiteHeader() {
           </nav>
 
           <div className="site-header-right">
-            {actionNavigation.map((item, index) => (
+            {actionNavigation.map((item, index) => {
+              const label =
+                item.href === "/contact" ? settings.bookingLabel : settings.shopLabel;
+
+              return (
               <motion.div
                 animate={{ opacity: 1, y: 0 }}
                 initial={{ opacity: 0, y: -12 }}
@@ -141,10 +158,11 @@ export function SiteHeader() {
                   } ${isActivePath(pathname, item.href) ? "is-active" : ""}`.trim()}
                   href={item.href}
                 >
-                  {item.label}
+                  {label}
                 </Link>
               </motion.div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="site-header-mobile">
@@ -207,7 +225,11 @@ export function SiteHeader() {
               </nav>
 
               <div className="site-header-mobile-actions">
-                {actionNavigation.map((item, index) => (
+                {actionNavigation.map((item, index) => {
+                  const label =
+                    item.href === "/contact" ? settings.bookingLabel : settings.shopLabel;
+
+                  return (
                   <motion.div
                     animate={{ opacity: 1, x: 0 }}
                     initial={{ opacity: 0, x: -12 }}
@@ -225,10 +247,11 @@ export function SiteHeader() {
                       href={item.href}
                       onClick={() => setMenuOpen(false)}
                     >
-                      {item.label}
+                      {label}
                     </Link>
                   </motion.div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </motion.div>

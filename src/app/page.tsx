@@ -3,27 +3,24 @@ import { RevealBlock } from "@/components/animated-text";
 import { EditorialImage } from "@/components/editorial-image";
 import { HomeHeroSwiper } from "@/components/home-hero-swiper";
 import { TestimonialsCarousel } from "@/components/testimonials-carousel";
-import {
-  editorialCredits,
-  editorialGalleryMoments,
-  editorialHeroMoments,
-  editorialImages,
-  editorialIntro,
-  editorialPathways,
-  editorialSignals,
-  editorialStoryNotes,
-} from "@/lib/editorial-home";
+import { getCmsPage } from "@/lib/cms-store";
+import type { HomePageContent } from "@/lib/cms-types";
 
-export default function Home() {
-  const visualChaptersSet = [
-    { ...editorialGalleryMoments[4], era: "Official Portraiture" },
-    { ...editorialGalleryMoments[0], era: "Meteriyaye Era" },
-    { ...editorialGalleryMoments[3], era: "Release Campaign" },
-  ];
+export default async function Home() {
+  const page = await getCmsPage("home");
+  const content = page.content as HomePageContent;
+  const visualChaptersSet = content.visualChapters.items;
 
   return (
     <main className="editorial-home pb-16 sm:pb-20">
-      <HomeHeroSwiper slides={editorialHeroMoments} />
+      <HomeHeroSwiper
+        headlineLines={content.hero.headlineLines}
+        headlineTop={content.hero.headlineTop}
+        primaryAction={content.hero.primaryAction}
+        secondaryAction={content.hero.secondaryAction}
+        slides={content.hero.slides}
+        verticalLabel={content.hero.verticalLabel}
+      />
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.88fr_1.12fr]">
@@ -34,7 +31,7 @@ export default function Home() {
           >
             <EditorialImage
               className="editorial-photo-shell"
-              image={editorialImages.cliff}
+              image={content.intro.image}
               motionPreset="from-left"
               sizes="(max-width: 1024px) 100vw, 40vw"
               strength={88}
@@ -43,13 +40,13 @@ export default function Home() {
           </RevealBlock>
 
           <RevealBlock className="editorial-paper-panel" delay={0.1} variant="right" distance={40}>
-            <p className="section-label">Biography</p>
+            <p className="section-label">{content.intro.eyebrow}</p>
             <h2 className="display-title mt-5 max-w-4xl text-4xl text-[#1f1914] sm:text-5xl">
-              A journey shaped by faith, study, sacrifice, and the courage to keep going.
+              {content.intro.title}
             </h2>
 
             <div className="mt-6 grid gap-4 text-[#3a332d]">
-              {editorialIntro.map((paragraph) => (
+              {content.intro.paragraphs.map((paragraph) => (
                 <p className="max-w-3xl text-base leading-8" key={paragraph}>
                   {paragraph}
                 </p>
@@ -57,7 +54,7 @@ export default function Home() {
             </div>
 
             <div className="mt-8 grid gap-4 md:grid-cols-3">
-              {editorialSignals.map((item) => (
+              {content.intro.stats.map((item) => (
                 <article className="editorial-stat" key={item.label}>
                   <p className="display-title text-4xl text-[#18120d] sm:text-5xl">
                     {item.value}
@@ -77,18 +74,16 @@ export default function Home() {
 
       <section className="editorial-section-opener-shell">
         <RevealBlock className="editorial-section-opener" variant="up" distance={28}>
-          <p className="section-label">Visual Chapters</p>
+          <p className="section-label">{content.visualChapters.eyebrow}</p>
           <div className="editorial-section-opener-row">
-            <h2 className="display-title editorial-section-opener-title">Meteriyaye</h2>
+            <h2 className="display-title editorial-section-opener-title">
+              {content.visualChapters.title}
+            </h2>
             <span aria-hidden="true" className="editorial-section-opener-rule" />
           </div>
-          <p className="editorial-section-opener-copy">
-            Real imagery now drives the homepage with more drama, elegance, and
-            character. Veronica&apos;s portraits move between black-tie studio clarity,
-            gilded couture, warm brown fashion, and scarlet campaign energy.
-          </p>
+          <p className="editorial-section-opener-copy">{content.visualChapters.description}</p>
           <div className="visual-chapters-chip-list">
-            {["Portraiture", "Release Eras", "Couture", "Stage Presence"].map((item) => (
+            {content.visualChapters.chips.map((item) => (
               <span className="visual-chapters-chip" key={item}>
                 {item}
               </span>
@@ -143,7 +138,12 @@ export default function Home() {
         </div>
       </section>
 
-      <TestimonialsCarousel />
+      <TestimonialsCarousel
+        description={content.testimonials.description}
+        eyebrow={content.testimonials.eyebrow}
+        items={content.testimonials.items}
+        title={content.testimonials.title}
+      />
 
       <section className="editorial-section-opener-shell editorial-section-opener-shell--compact">
         <RevealBlock className="editorial-section-opener" variant="up" distance={24}>
@@ -160,15 +160,15 @@ export default function Home() {
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-2">
           <RevealBlock className="editorial-dark-panel" variant="left" distance={36}>
-            <p className="section-label">Heritage</p>
+            <p className="section-label">{content.heritage.eyebrow}</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
-              {editorialStoryNotes[0].title}
+              {content.heritage.title}
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/72">
-              {editorialStoryNotes[0].copy}
+              {content.heritage.description}
             </p>
             <div className="mt-8 flex flex-wrap gap-2">
-              {["Azmari", "Family Legacy", "Faith", "Identity"].map((item) => (
+              {content.heritage.tags.map((item) => (
                 <span className="meta-chip" key={item}>
                   {item}
                 </span>
@@ -184,7 +184,7 @@ export default function Home() {
           >
             <EditorialImage
               className="editorial-photo-shell"
-              image={editorialImages.microphone}
+              image={content.heritage.image}
               motionPreset="from-right"
               sizes="(max-width: 1024px) 100vw, 50vw"
               strength={82}
@@ -197,27 +197,21 @@ export default function Home() {
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.92fr_1.08fr]">
           <RevealBlock className="editorial-paper-panel" variant="left" distance={32}>
-            <p className="section-label">Rise</p>
+            <p className="section-label">{content.rise.eyebrow}</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
-              {editorialStoryNotes[1].title}
+              {content.rise.title}
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-8 text-[#3a332d]">
-              {editorialStoryNotes[1].copy}
+              {content.rise.description}
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               <div className="editorial-note">
                 <p className="section-label">National</p>
-                <p className="mt-3 text-sm leading-7 text-[#4b4138]">
-                  Addis Ababa, Gondar, Hawassa, Harar, Dire Dawa, Bahir Dar, Arba Minch,
-                  Dilla, and many more cities across Ethiopia.
-                </p>
+                <p className="mt-3 text-sm leading-7 text-[#4b4138]">{content.rise.nationalNote}</p>
               </div>
               <div className="editorial-note">
                 <p className="section-label">International</p>
-                <p className="mt-3 text-sm leading-7 text-[#4b4138]">
-                  Atlanta, DMV, Los Angeles, Seattle, Denver, Oakland, Amsterdam, Paris,
-                  Zurich, Oslo, Frankfurt, and Stockholm.
-                </p>
+                <p className="mt-3 text-sm leading-7 text-[#4b4138]">{content.rise.internationalNote}</p>
               </div>
             </div>
           </RevealBlock>
@@ -227,7 +221,7 @@ export default function Home() {
               <div className="image-tilt-shell">
                 <EditorialImage
                   className="editorial-photo-shell"
-                  image={editorialImages.heartClose}
+                  image={content.rise.images[0]}
                   motionPreset="from-left"
                   sizes="(max-width: 1024px) 100vw, 22vw"
                   strength={78}
@@ -239,7 +233,7 @@ export default function Home() {
               <div className="image-tilt-shell">
                 <EditorialImage
                   className="editorial-photo-shell"
-                  image={editorialImages.crowd}
+                  image={content.rise.images[1]}
                   motionPreset="from-right"
                   sizes="(max-width: 1024px) 100vw, 38vw"
                   strength={78}
@@ -253,7 +247,7 @@ export default function Home() {
 
       <section className="editorial-section-opener-shell editorial-section-opener-shell--compact">
         <RevealBlock className="editorial-section-opener" variant="up" distance={24}>
-          <p className="section-label">Campaign Editions</p>
+          <p className="section-label">{content.campaign.eyebrow}</p>
           <div className="editorial-section-opener-row">
             <h2 className="display-title editorial-section-opener-title editorial-section-opener-title--small">
               Release Energy
@@ -266,14 +260,12 @@ export default function Home() {
       <section className="section-shell py-10">
         <div className="editorial-filmstrip">
           <RevealBlock className="editorial-film-panel editorial-film-panel--dark" variant="left" distance={44}>
-            <p className="section-label">Presence</p>
+            <p className="section-label">{content.campaign.eyebrow}</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
-              Music, film, advocacy, and glamour now sit inside one unmistakable public identity.
+              {content.campaign.title}
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/72">
-              Veronica moves easily between performance, screen presence, and cultural
-              advocacy. The home experience should carry that same range without losing
-              elegance or restraint.
+              {content.campaign.description}
             </p>
           </RevealBlock>
 
@@ -284,7 +276,7 @@ export default function Home() {
           >
             <EditorialImage
               className="editorial-film-media"
-              image={editorialImages.aerialCrowd}
+              image={content.campaign.featureImage}
               motionPreset="zoom-burst"
               sizes="(max-width: 1024px) 100vw, 34vw"
               strength={80}
@@ -304,22 +296,22 @@ export default function Home() {
             distance={44}
           >
             <div className="editorial-film-double editorial-film-double--small image-hover-glow">
-              <EditorialImage
-                className="editorial-photo-shell"
-                image={editorialImages.stage}
-                motionPreset="settle-right"
-                sizes="(max-width: 1024px) 100vw, 18vw"
-                strength={68}
+                <EditorialImage
+                  className="editorial-photo-shell"
+                  image={content.campaign.supportingImages[0]}
+                  motionPreset="settle-right"
+                  sizes="(max-width: 1024px) 100vw, 18vw"
+                  strength={68}
                 tilt
               />
             </div>
             <div className="editorial-film-double editorial-film-double--large image-hover-glow">
-              <EditorialImage
-                className="editorial-photo-shell"
-                image={editorialImages.furSeated}
-                motionPreset="from-left"
-                sizes="(max-width: 1024px) 100vw, 28vw"
-                strength={78}
+                <EditorialImage
+                  className="editorial-photo-shell"
+                  image={content.campaign.supportingImages[1]}
+                  motionPreset="from-left"
+                  sizes="(max-width: 1024px) 100vw, 28vw"
+                  strength={78}
                 tilt
               />
             </div>
@@ -330,29 +322,28 @@ export default function Home() {
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.82fr_1.18fr]">
           <RevealBlock className="editorial-paper-panel" variant="left" distance={30}>
-            <p className="section-label">Explore</p>
+            <p className="section-label">{content.pathways.eyebrow}</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
-              Step deeper into the catalogue, the stage world, and the public archive.
+              {content.pathways.title}
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-8 text-[#3a332d]">
-              The strongest homepages do not stop at introduction. They guide people
-              cleanly into music, live performance, and the verified story behind the artist.
+              {content.pathways.description}
             </p>
           </RevealBlock>
 
           <div className="grid gap-4 xl:grid-cols-3">
-            {editorialPathways.map((item, index) => (
+            {content.pathways.items.map((item, index) => (
               <RevealBlock
                 delay={0.08 + index * 0.08}
                 distance={28}
                 key={item.title}
                 variant={index === 0 ? "left" : index === 1 ? "up" : "right"}
               >
-                <Link className="editorial-route-link" href={item.href}>
+                <Link className="editorial-route-link" href={item.href ?? "#"}>
                   <span className="editorial-route-index">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <p className="section-label">{item.eyebrow}</p>
+                  <p className="section-label">{item.accent}</p>
                   <h3 className="display-title mt-4 text-4xl text-white">{item.title}</h3>
                   <p className="mt-5 text-sm leading-7 text-white/72">{item.description}</p>
                   <div className="editorial-route-footer">
@@ -370,29 +361,27 @@ export default function Home() {
         <RevealBlock className="editorial-paper-panel">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-4xl">
-              <p className="section-label">Official Image Archive</p>
+              <p className="section-label">{content.archive.eyebrow}</p>
               <h2 className="display-title mt-5 text-4xl text-[#1f1914] sm:text-5xl">
-                Veronica&apos;s own portrait library now gives the brand a clearer signature.
+                {content.archive.title}
               </h2>
               <p className="mt-5 max-w-3xl text-base leading-8 text-[#3a332d]">
-                The world now moves through signature black portraiture, crystal couture,
-                warm studio fashion, and scarlet campaign imagery. That range gives the
-                homepage more authority, emotion, and memorability.
+                {content.archive.description}
               </p>
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <Link className="primary-button" href="/media">
-                Open Press Archive
+              <Link className="primary-button" href={content.archive.primaryAction.href}>
+                {content.archive.primaryAction.label}
               </Link>
-              <Link className="secondary-button" href="/about">
-                Read Biography
+              <Link className="secondary-button" href={content.archive.secondaryAction.href}>
+                {content.archive.secondaryAction.label}
               </Link>
             </div>
           </div>
 
           <div className="mt-8 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-            {editorialCredits.map((item) => (
+            {content.archive.credits.map((item) => (
               <article className="editorial-credit-link" key={item.label}>
                 <span>{item.label}</span>
                 <span className="text-[#7c6545]">{item.note}</span>

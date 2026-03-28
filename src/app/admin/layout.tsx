@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   CalendarRange,
+  CloudUpload,
   Disc3,
+  FileJson,
   LayoutDashboard,
   Newspaper,
   ShoppingBag,
@@ -16,6 +18,8 @@ export const metadata: Metadata = {
 
 const adminNav = [
   { href: "/admin#overview", label: "Overview", icon: LayoutDashboard },
+  { href: "/admin#content", label: "Page CMS", icon: FileJson },
+  { href: "/admin#media-library", label: "Media Library", icon: CloudUpload },
   { href: "/admin#releases", label: "Release Floor", icon: Disc3 },
   { href: "/admin#events", label: "Event Routing", icon: CalendarRange },
   { href: "/admin#products", label: "Commerce", icon: ShoppingBag },
@@ -39,8 +43,8 @@ export default function AdminLayout({
                 <div>
                   <p className="display-title text-3xl text-white">Admin Suite</p>
                   <p className="mt-2 text-sm leading-7 text-white/66">
-                    A premium workspace for releases, commerce, events, and
-                    press operations.
+                    A premium workspace for content, media, releases, commerce,
+                    events, and press operations.
                   </p>
                 </div>
               </div>
@@ -69,8 +73,8 @@ export default function AdminLayout({
               <div className="admin-surface">
                 <p className="section-label">Workspace Standard</p>
                 <p className="mt-4 text-sm leading-7 text-white/72">
-                  Minimal, high-contrast, and operationally clear with the same
-                  luxury tone as the public-facing brand.
+                  Editorial on the public side, operational on the inside,
+                  with content, media, and live business data in one place.
                 </p>
               </div>
 

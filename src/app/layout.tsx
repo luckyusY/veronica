@@ -4,6 +4,7 @@ import { AppShell } from "@/components/app-shell";
 import { Providers } from "@/components/providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { getCmsSiteSettings } from "@/lib/cms-store";
 import "./globals.css";
 
 const displaySerif = Cormorant_Garamond({
@@ -34,11 +35,13 @@ export const metadata: Metadata = {
     "Official digital platform for Veronica Adane featuring music, videos, events, merchandise, press, and brand collaborations.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteSettings = await getCmsSiteSettings();
+
   return (
     <html
       lang="en"
@@ -46,7 +49,10 @@ export default function RootLayout({
     >
       <body className="min-h-full paper-canvas">
         <Providers>
-          <AppShell footer={<SiteFooter />} header={<SiteHeader />}>
+          <AppShell
+            footer={<SiteFooter settings={siteSettings.footer} />}
+            header={<SiteHeader settings={siteSettings.header} />}
+          >
             {children}
           </AppShell>
         </Providers>

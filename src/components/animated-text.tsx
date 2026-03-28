@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { motion, useReducedMotion, type Transition } from "motion/react";
+import { useMotionLite } from "@/components/providers";
 
 type HeadingTag = "h1" | "h2" | "h3";
 
@@ -143,7 +144,9 @@ export function AnimatedEyebrow({
   delay = 0,
   distance = 18,
 }: AnimatedEyebrowProps) {
-  const reducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  const motionLite = useMotionLite();
+  const reducedMotion = Boolean(prefersReducedMotion || motionLite);
   const state = getRevealState(!!reducedMotion, "up", distance);
 
   return (
@@ -177,7 +180,9 @@ export function AnimatedHeadline({
   distance = 36,
 }: AnimatedHeadlineProps) {
   const MotionTag = headingMap[as];
-  const reducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  const motionLite = useMotionLite();
+  const reducedMotion = Boolean(prefersReducedMotion || motionLite);
   const normalizedHighlights = new Set(highlightWords.map(normalizeWord));
   const words = text.split(" ");
 
@@ -246,7 +251,9 @@ export function AnimatedParagraph({
   delay = 0,
   distance = 26,
 }: AnimatedParagraphProps) {
-  const reducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  const motionLite = useMotionLite();
+  const reducedMotion = Boolean(prefersReducedMotion || motionLite);
   const state = getRevealState(!!reducedMotion, "up", distance);
 
   return (
@@ -279,7 +286,9 @@ export function RevealBlock({
   variant = "up",
   distance = 32,
 }: RevealBlockProps) {
-  const reducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  const motionLite = useMotionLite();
+  const reducedMotion = Boolean(prefersReducedMotion || motionLite);
   const state = getRevealState(!!reducedMotion, variant, distance);
 
   return (

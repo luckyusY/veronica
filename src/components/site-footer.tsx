@@ -1,15 +1,12 @@
 import Link from "next/link";
+import type { CmsSiteSettings } from "@/lib/cms-types";
 import { navigationItems } from "@/lib/site-data";
 
-const footerNotes = [
-  "Official platform",
-  "Biography / Music / Performance",
-  "Press / Partnerships",
-];
+type SiteFooterProps = {
+  settings: CmsSiteSettings["footer"];
+};
 
-const socialSignals = ["Instagram 800K+", "TikTok 1.8M+", "Facebook 500K+"];
-
-export function SiteFooter() {
+export function SiteFooter({ settings }: SiteFooterProps) {
   const year = new Date().getFullYear();
 
   return (
@@ -17,7 +14,7 @@ export function SiteFooter() {
       <div className="section-shell py-10 sm:py-12">
         <div className="editorial-footer-stage">
           <div className="editorial-classic-topline editorial-classic-topline--footer">
-            {footerNotes.map((item) => (
+            {settings.notes.map((item) => (
               <p key={item}>{item}</p>
             ))}
           </div>
@@ -32,12 +29,12 @@ export function SiteFooter() {
               <span className="brand-didot">ADANE</span>
             </Link>
             <p className="editorial-brand-copy editorial-brand-copy--footer">
-              Official platform for biography, releases, live performance, press, and partnerships.
+              {settings.description}
             </p>
 
             <div className="site-footer-cta-row">
               <div className="site-footer-social-row" aria-label="Social reach">
-                {socialSignals.map((item) => (
+                {settings.socialSignals.map((item) => (
                   <span className="site-footer-social-chip" key={item}>
                     {item}
                   </span>
@@ -45,15 +42,11 @@ export function SiteFooter() {
               </div>
 
               <div className="site-footer-utility-row">
-                <Link className="site-footer-utility-link" href="/contact">
-                  Bookings
-                </Link>
-                <Link className="site-footer-utility-link" href="/media">
-                  Press Kit
-                </Link>
-                <Link className="site-footer-utility-link" href="/events">
-                  Event Inquiries
-                </Link>
+                {settings.utilityLinks.map((item) => (
+                  <Link className="site-footer-utility-link" href={item.href} key={item.href}>
+                    {item.label}
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
@@ -81,7 +74,7 @@ export function SiteFooter() {
 
         <div className="editorial-footer-markline">
           <p>&copy; {year} Veronica Adane.</p>
-          <p>Addis Ababa to global audiences.</p>
+          <p>{settings.copyrightTagline}</p>
         </div>
       </div>
     </footer>

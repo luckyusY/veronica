@@ -9,7 +9,8 @@ import {
 import { EditorialImage } from "@/components/editorial-image";
 
 type PageHeroImage = {
-  src: string | StaticImageData;
+  src?: string | StaticImageData;
+  url?: string;
   alt: string;
   position?: string;
 };

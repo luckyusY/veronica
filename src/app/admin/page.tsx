@@ -1,7 +1,10 @@
 import { CalendarClock, Mic2, Package, ShieldCheck, Sparkles } from "lucide-react";
 import { AdminConsole } from "@/components/admin-console";
+import { AdminWorkspace } from "@/components/admin-workspace";
 import { adminCollectionConfig } from "@/lib/admin-schema";
 import { getAdminDashboardData } from "@/lib/admin-store";
+import { getCloudinaryStatus } from "@/lib/cloudinary";
+import { getCmsSiteSettings, listCmsMediaAssets, listCmsPages } from "@/lib/cms-store";
 import { pingDatabase } from "@/lib/mongodb";
 
 export const dynamic = "force-dynamic";
@@ -27,35 +30,42 @@ async function getDatabaseStatus() {
 }
 
 export default async function AdminPage() {
-  const [{ counts, sections }, databaseStatus] = await Promise.all([
+  const [{ counts, sections }, databaseStatus, cmsPages, siteSettings, mediaAssets] = await Promise.all([
     getAdminDashboardData(),
     getDatabaseStatus(),
+    listCmsPages(),
+    getCmsSiteSettings(),
+    listCmsMediaAssets(),
   ]);
+
+  const cloudinaryReady = getCloudinaryStatus();
 
   const adminKpis = [
     {
       icon: Mic2,
-      label: adminCollectionConfig.releases.label,
-      value: counts.releases.toString().padStart(2, "0"),
-      detail: "Songs, videos, and release-era records now editable from one place.",
+      label: "CMS Pages",
+      value: cmsPages.length.toString().padStart(2, "0"),
+      detail: "Every public page now saves editable JSON content in MongoDB.",
     },
     {
       icon: CalendarClock,
-      label: adminCollectionConfig.events.label,
-      value: counts.events.toString().padStart(2, "0"),
-      detail: "Routing, city planning, and ticket-ready event records available to the team.",
+      label: "Media Library",
+      value: mediaAssets.length.toString().padStart(2, "0"),
+      detail: "Cloudinary-backed image and video assets ready for direct page usage.",
     },
     {
       icon: Package,
       label: adminCollectionConfig.products.label,
       value: counts.products.toString().padStart(2, "0"),
-      detail: "Merch, bundles, and storefront offers can now be managed inside the admin.",
+      detail: "Commerce records remain editable alongside the new CMS workspace.",
     },
     {
       icon: Sparkles,
-      label: adminCollectionConfig.inquiries.label,
-      value: counts.inquiries.toString().padStart(2, "0"),
-      detail: "Brand, press, and booking conversations can be tracked operationally.",
+      label: cloudinaryReady ? "Cloudinary" : "Cloudinary Missing",
+      value: cloudinaryReady ? "LIVE" : "ENV",
+      detail: cloudinaryReady
+        ? "Uploads are ready for the media library and page content workflows."
+        : "Add Cloudinary environment variables before using media uploads in admin.",
     },
   ];
 
@@ -67,11 +77,11 @@ export default async function AdminPage() {
             <p className="section-label">Live Control Room</p>
             <div>
               <h1 className="display-title text-4xl text-white sm:text-5xl lg:text-6xl">
-                Functional admin for releases, events, products, and inquiries.
+                Full content workspace for pages, media, releases, events, products, and inquiries.
               </h1>
               <p className="mt-4 max-w-3xl text-sm leading-8 text-white/68 sm:text-base">
-                This dashboard is now backed by MongoDB. The team can create, edit,
-                and delete operational records instead of working from placeholder cards.
+                This dashboard now combines a CMS, Cloudinary media library, and the
+                operational collections already backed by MongoDB.
               </p>
             </div>
           </div>
@@ -107,6 +117,13 @@ export default async function AdminPage() {
           })}
         </div>
       </section>
+
+      <AdminWorkspace
+        cloudinaryReady={cloudinaryReady}
+        initialMediaAssets={mediaAssets}
+        initialPages={cmsPages}
+        initialSiteSettings={siteSettings}
+      />
 
       <AdminConsole initialSections={sections} />
     </div>

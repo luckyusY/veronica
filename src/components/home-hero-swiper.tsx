@@ -6,6 +6,7 @@ import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Autoplay, EffectFade, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useMotionLite } from "@/components/providers";
 
 type HeroSlide = {
   eyebrow: string;
@@ -14,7 +15,8 @@ type HeroSlide = {
   stat: string;
   accent: string;
   image: {
-    src: string | StaticImageData;
+    src?: string | StaticImageData;
+    url?: string;
     alt: string;
     position?: string;
     placeholderBase?: string;
@@ -24,13 +26,32 @@ type HeroSlide = {
 };
 
 type HomeHeroSwiperProps = {
+  verticalLabel: string;
+  headlineTop: string;
+  headlineLines: string[];
+  primaryAction: {
+    href: string;
+    label: string;
+  };
+  secondaryAction: {
+    href: string;
+    label: string;
+  };
   slides: readonly HeroSlide[];
 };
 
 const itemEase = [0.22, 1, 0.36, 1] as const;
 
-export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
-  const reducedMotion = useReducedMotion();
+export function HomeHeroSwiper({
+  verticalLabel,
+  headlineTop,
+  headlineLines,
+  primaryAction,
+  secondaryAction,
+  slides,
+}: HomeHeroSwiperProps) {
+  const userReducedMotion = Boolean(useReducedMotion());
+  const liteMotion = Boolean(useMotionLite() || userReducedMotion);
   const [activeIndex, setActiveIndex] = useState(0);
   const activeSlide = slides[activeIndex] ?? slides[0];
 
@@ -39,7 +60,7 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
       <Swiper
         allowTouchMove={false}
         autoplay={
-          reducedMotion
+          userReducedMotion
             ? false
             : {
                 delay: 7200,
@@ -67,7 +88,7 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
                   fill
                   priority={index === 0}
                   sizes="100vw"
-                  src={slide.image.src}
+                  src={slide.image.src ?? slide.image.url ?? ""}
                   style={{ objectPosition: slide.image.position ?? "center center" }}
                 />
               </div>
@@ -78,15 +99,15 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
       </Swiper>
 
       <div className="home-hero-overlay">
-        <p className="home-hero-vertical">VERONICA ADANE / OFFICIAL</p>
+        <p className="home-hero-vertical">{verticalLabel}</p>
 
         <div className="section-shell home-hero-overlay-inner">
           <motion.div
             animate={{ opacity: 1, y: 0 }}
             className="home-hero-copy"
-            initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
+            initial={liteMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
             transition={
-              reducedMotion
+              liteMotion
                 ? { duration: 0.24 }
                 : { duration: 0.56, delay: 0.08, ease: itemEase }
             }
@@ -105,10 +126,13 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
             </AnimatePresence>
 
             <h1 className="display-title home-hero-headline">
-              <span className="home-hero-headline-top">Faith, glamour, and a voice</span>
+              <span className="home-hero-headline-top">{headlineTop}</span>
               <span className="home-hero-headline-bottom">
-                <span className="home-hero-headline-line">carrying Ethiopia</span>
-                <span className="home-hero-headline-line">far beyond its borders</span>
+                {headlineLines.map((line) => (
+                  <span className="home-hero-headline-line" key={line}>
+                    {line}
+                  </span>
+                ))}
               </span>
             </h1>
 
@@ -130,14 +154,14 @@ export function HomeHeroSwiper({ slides }: HomeHeroSwiperProps) {
             <motion.div
               animate={{ opacity: 1, y: 0 }}
               className="home-hero-actions"
-              initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
+              initial={liteMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
               transition={{ duration: 0.34, delay: 0.18, ease: itemEase }}
             >
-              <Link className="home-hero-button" href="/about">
-                Read Biography
+              <Link className="home-hero-button" href={primaryAction.href}>
+                {primaryAction.label}
               </Link>
-              <Link className="home-hero-button" href="/music">
-                Enter Music Archive
+              <Link className="home-hero-button" href={secondaryAction.href}>
+                {secondaryAction.label}
               </Link>
             </motion.div>
           </motion.div>

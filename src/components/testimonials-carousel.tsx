@@ -3,22 +3,33 @@
 import { useReducedMotion } from "motion/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { testimonials } from "@/lib/site-data";
+import type { CmsTestimonial } from "@/lib/cms-types";
 
-export function TestimonialsCarousel() {
+type TestimonialsCarouselProps = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  items: CmsTestimonial[];
+};
+
+export function TestimonialsCarousel({
+  eyebrow,
+  title,
+  description,
+  items,
+}: TestimonialsCarouselProps) {
   const reducedMotion = useReducedMotion();
 
   return (
     <section className="section-shell py-10">
       <div className="testimonial-swiper-shell">
         <div className="max-w-3xl">
-          <p className="section-label">Testimonials</p>
+          <p className="section-label">{eyebrow}</p>
           <h2 className="display-title mt-5 max-w-4xl text-4xl text-white sm:text-5xl">
-            Press, producers, and audiences speak about the same thing: presence.
+            {title}
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-8 text-white/72">
-            Veronica&apos;s work lands through voice, image, discipline, and the feeling
-            that every release belongs to a larger era.
+            {description}
           </p>
         </div>
 
@@ -37,7 +48,7 @@ export function TestimonialsCarousel() {
                 }
           }
         >
-          {testimonials.map((testimonial) => (
+          {items.map((testimonial) => (
             <SwiperSlide key={testimonial.name}>
               <article className="testimonial-slide">
                 <p className="testimonial-mark">&ldquo;</p>

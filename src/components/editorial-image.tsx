@@ -4,16 +4,18 @@ import { useMemo, useRef, useState, type CSSProperties, type MouseEvent } from "
 import Image, { type StaticImageData } from "next/image";
 import {
   motion,
+  useInView,
   useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
-  useInView,
   type Variants,
 } from "motion/react";
+import { useMotionLite } from "@/components/providers";
 
 type EditorialImageAsset = {
-  src: string | StaticImageData;
+  src?: string | StaticImageData;
+  url?: string;
   alt: string;
   position?: string;
   placeholderBase?: string;
@@ -73,7 +75,9 @@ export function EditorialImage({
   shimmer = true,
 }: EditorialImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const reducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  const motionLite = useMotionLite();
+  const reducedMotion = Boolean(prefersReducedMotion || motionLite);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // -- Scroll-based parallax --------------------------------------------------
@@ -165,7 +169,8 @@ export function EditorialImage({
     [image.placeholderBase, image.placeholderHighlight],
   );
 
-  const shimmerActive = shimmer && isLoaded && inView;
+  const shimmerActive = !reducedMotion && shimmer && isLoaded && inView;
+  const imageSrc = image.src ?? image.url ?? "";
 
   // -- 3-D tilt state ---------------------------------------------------------
   const [tiltStyle, setTiltStyle] = useState<CSSProperties>({});
@@ -209,10 +214,10 @@ export function EditorialImage({
 
   return (
     <motion.div
-      className={`editorial-image-shell editorial-scroll-reveal${isLoaded ? " is-loaded" : ""}${inView ? " img-in-view" : ""}${tilt ? " image-hover-glow" : ""} ${className}`.trim()}
+      className={`editorial-image-shell editorial-scroll-reveal${isLoaded ? " is-loaded" : ""}${inView ? " img-in-view" : ""}${tilt && !reducedMotion ? " image-hover-glow" : ""} ${className}`.trim()}
       ref={containerRef}
       style={
-        tilt
+        tilt && !reducedMotion
           ? {
               ...tiltStyle,
               transition: tiltStyle.transform
@@ -242,13 +247,15 @@ export function EditorialImage({
           priority={priority}
           quality={92}
           sizes={sizes}
-          src={image.src}
+          src={imageSrc}
           style={{ objectFit: "cover", objectPosition: image.position ?? "center" }}
         />
       </motion.div>
 
       {/* Shimmer scan stripe — sweeps left-to-right once on load */}
-      {shimmer && <div className={`editorial-image-shimmer${shimmerActive ? " run" : ""}`} />}
+      {shimmer && !reducedMotion ? (
+        <div className={`editorial-image-shimmer${shimmerActive ? " run" : ""}`} />
+      ) : null}
 
       <div className={`editorial-image-overlay ${overlayClassName}`.trim()} />
       <div className="editorial-image-matte" />
