@@ -167,7 +167,9 @@ export function HomeHeroSwiper({
                 {secondaryAction.label}
               </Link>
             </motion.div>
+          </motion.div>
 
+          <div className="home-hero-side">
             <AnimatePresence mode="wait">
               <motion.div
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -177,6 +179,7 @@ export function HomeHeroSwiper({
                 key={`${activeIndex}-scene`}
                 transition={{ duration: 0.34, delay: 0.24, ease: itemEase }}
               >
+                <p className="home-hero-side-label">Current scene</p>
                 <div className="home-hero-slide-card-topline">
                   <span className="home-hero-slide-card-count">
                     {String(activeIndex + 1).padStart(2, "0")}
@@ -192,24 +195,24 @@ export function HomeHeroSwiper({
                 </p>
               </motion.div>
             </AnimatePresence>
-          </motion.div>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              animate={{ opacity: 1, y: 0 }}
-              className="home-hero-meta"
-              exit={{ opacity: 0, y: 10 }}
-              initial={{ opacity: 0, y: 12 }}
-              key={`${activeIndex}-meta`}
-              transition={{ duration: 0.34, ease: itemEase }}
-            >
-              <p className="home-hero-meta-label">{activeSlide.accent}</p>
-              <p className="home-hero-meta-value">{activeSlide.stat}</p>
-              <p className="home-hero-meta-note">
-                {activeSlide.image.label ?? activeSlide.eyebrow}
-              </p>
-            </motion.div>
-          </AnimatePresence>
+            <AnimatePresence mode="wait">
+              <motion.div
+                animate={{ opacity: 1, y: 0 }}
+                className="home-hero-meta"
+                exit={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 12 }}
+                key={`${activeIndex}-meta`}
+                transition={{ duration: 0.34, ease: itemEase }}
+              >
+                <p className="home-hero-meta-label">{activeSlide.accent}</p>
+                <p className="home-hero-meta-value">{activeSlide.stat}</p>
+                <p className="home-hero-meta-note">
+                  {activeSlide.image.label ?? activeSlide.eyebrow}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </section>

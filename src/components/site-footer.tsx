@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { VeronicaWordmark } from "@/components/veronica-wordmark";
 import type { CmsSiteSettings } from "@/lib/cms-types";
 import { navigationItems } from "@/lib/site-data";
 
@@ -20,13 +21,9 @@ export function SiteFooter({ settings }: SiteFooterProps) {
           </div>
 
           <div className="editorial-brand-stage editorial-brand-stage--footer">
-            <p className="section-label editorial-brand-label">Veronica Adane</p>
-            <Link
-              className="editorial-classic-wordmark editorial-classic-wordmark--centered"
-              href="/"
-            >
-              <span className="brand-script">Veronica</span>
-              <span className="brand-didot">ADANE</span>
+            <p className="site-footer-overline">Official Veronica Adane platform</p>
+            <Link className="editorial-classic-wordmark editorial-classic-wordmark--centered" href="/">
+              <VeronicaWordmark className="site-footer-wordmark" />
             </Link>
             <p className="editorial-brand-copy editorial-brand-copy--footer">
               {settings.description}
@@ -75,6 +72,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
         <div className="editorial-footer-markline">
           <p>&copy; {year} Veronica Adane.</p>
           <p>{settings.copyrightTagline}</p>
+          <p>Management &amp; Booking curated through the official site.</p>
         </div>
       </div>
     </footer>

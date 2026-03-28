@@ -6693,3 +6693,332 @@ a:not([class]):hover {
     max-width: none;
   }
 }
+
+.veronica-wordmark {
+  display: inline-grid;
+  justify-items: start;
+  gap: 0.02rem;
+  line-height: 1;
+}
+
+.veronica-wordmark-script {
+  display: block;
+  font-family: var(--font-script), "Snell Roundhand", cursive;
+  font-size: 1.7rem;
+  font-weight: 400;
+  line-height: 0.76;
+  letter-spacing: 0.01em;
+  color: #f7f2ea;
+  transform: translateY(0.14em);
+}
+
+.veronica-wordmark-didot {
+  display: block;
+  margin-left: 0.3em;
+  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.site-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background:
+    radial-gradient(circle at 50% 32%, rgba(176, 141, 87, 0.18), transparent 24%),
+    linear-gradient(180deg, #1c1c1c 0%, #121212 100%);
+}
+
+.site-preloader-panel {
+  display: grid;
+  justify-items: center;
+  gap: 0.9rem;
+  min-width: min(100%, 26rem);
+  padding: 2rem 1.5rem;
+}
+
+.site-preloader-label,
+.site-preloader-note {
+  margin: 0;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(237, 237, 237, 0.58);
+}
+
+.site-preloader-wordmark {
+  justify-items: center;
+  animation: sitePreloaderFloat 1.8s ease-in-out infinite alternate;
+}
+
+.site-preloader-wordmark .veronica-wordmark-script {
+  font-size: clamp(2.8rem, 7vw, 4.2rem);
+}
+
+.site-preloader-wordmark .veronica-wordmark-didot {
+  margin-left: 0.36em;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  letter-spacing: 0.42em;
+}
+
+.site-preloader-rule {
+  width: min(12rem, 56vw);
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(176, 141, 87, 0.88) 50%, transparent 100%);
+  animation: sitePreloaderSweep 1.8s ease-in-out infinite;
+}
+
+@keyframes sitePreloaderFloat {
+  from {
+    transform: translateY(0);
+    opacity: 0.94;
+  }
+
+  to {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+@keyframes sitePreloaderSweep {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scaleX(0.82);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+.site-header-shell {
+  border-bottom: 1px solid rgba(176, 141, 87, 0.08);
+}
+
+.site-header-inner {
+  min-height: clamp(5.2rem, 7vw, 6rem);
+}
+
+.site-header-logo {
+  gap: 1rem;
+}
+
+.site-header-logo-copy--stacked {
+  gap: 0.3rem;
+}
+
+.site-header-logo-rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.85rem;
+}
+
+.site-header-logo-note,
+.site-header-mobile-kicker {
+  font-size: 0.54rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(237, 237, 237, 0.52);
+}
+
+.site-header-wordmark .veronica-wordmark-script {
+  font-size: 1.72rem;
+}
+
+.site-header-wordmark .veronica-wordmark-didot {
+  font-size: 0.9rem;
+}
+
+.site-header-mobile-logo-copy {
+  gap: 0.18rem;
+}
+
+.site-header-mobile-wordmark .veronica-wordmark-script {
+  font-size: 1.34rem;
+}
+
+.site-header-mobile-wordmark .veronica-wordmark-didot {
+  font-size: 0.74rem;
+  letter-spacing: 0.3em;
+}
+
+.home-hero-section {
+  height: min(43rem, calc(100svh - 0.15rem));
+  min-height: 34rem;
+}
+
+.home-hero-vignette {
+  background:
+    radial-gradient(circle at 54% 40%, rgba(15, 14, 12, 0.06) 0%, rgba(15, 14, 12, 0.2) 24%, rgba(15, 14, 12, 0.7) 68%, rgba(15, 14, 12, 0.98) 100%),
+    linear-gradient(90deg, rgba(8, 8, 8, 0.92) 0%, rgba(8, 8, 8, 0.34) 42%, rgba(8, 8, 8, 0.84) 100%),
+    linear-gradient(180deg, rgba(15, 14, 12, 0.36) 0%, rgba(15, 14, 12, 0.18) 42%, rgba(15, 14, 12, 0.92) 100%);
+}
+
+.home-hero-overlay-inner {
+  gap: 1.4rem;
+}
+
+.home-hero-copy {
+  max-width: min(36rem, calc(100% - 2rem));
+}
+
+.home-hero-side {
+  display: grid;
+  align-content: end;
+  justify-items: end;
+  gap: 0.85rem;
+  padding-right: clamp(0.5rem, 1.3vw, 1.3rem);
+  padding-bottom: clamp(0.5rem, 1.6vw, 1.35rem);
+}
+
+.home-hero-side-label {
+  margin: 0 0 0.15rem;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(237, 237, 237, 0.56);
+}
+
+.home-hero-slide-card {
+  width: min(18.2rem, 100%);
+  margin-top: 0;
+}
+
+.home-hero-meta {
+  position: static;
+  right: auto;
+  bottom: auto;
+  justify-items: start;
+  text-align: left;
+  width: min(15rem, 100%);
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(176, 141, 87, 0.18);
+  border-radius: 1.25rem;
+  background:
+    linear-gradient(180deg, rgba(21, 21, 21, 0.72), rgba(10, 10, 10, 0.78)),
+    radial-gradient(circle at top left, rgba(255, 111, 97, 0.1), transparent 60%);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(12px);
+}
+
+.editorial-site-footer {
+  margin-top: 4rem;
+  border-top: 1px solid rgba(176, 141, 87, 0.14);
+  background:
+    radial-gradient(circle at top, rgba(176, 141, 87, 0.08), transparent 28%),
+    linear-gradient(180deg, #26201b 0%, #15110e 100%);
+}
+
+.editorial-footer-stage {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.site-footer-overline {
+  margin: 0;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(237, 237, 237, 0.56);
+}
+
+.site-footer-wordmark {
+  justify-items: center;
+}
+
+.site-footer-wordmark .veronica-wordmark-script {
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
+}
+
+.site-footer-wordmark .veronica-wordmark-didot {
+  font-size: clamp(0.98rem, 1.8vw, 1.2rem);
+  letter-spacing: 0.42em;
+}
+
+.editorial-brand-copy--footer {
+  max-width: 36rem;
+}
+
+.site-footer-cta-row {
+  gap: 0.85rem;
+}
+
+.editorial-footer-markline {
+  padding-top: 1rem;
+  border-top: 1px solid rgba(176, 141, 87, 0.12);
+}
+
+@media only screen and (min-width: 1024px) {
+  .home-hero-overlay-inner {
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 18.2rem);
+    align-items: end;
+  }
+}
+
+@media only screen and (max-width: 1023px) {
+  .home-hero-side {
+    justify-items: start;
+    padding-right: 0;
+    padding-bottom: 0;
+  }
+
+  .home-hero-meta {
+    display: grid;
+    width: min(16rem, 100%);
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .site-preloader-panel {
+    padding: 1.5rem 1rem;
+  }
+
+  .site-preloader-wordmark .veronica-wordmark-script {
+    font-size: clamp(2.4rem, 13vw, 3.2rem);
+  }
+
+  .site-preloader-wordmark .veronica-wordmark-didot {
+    font-size: 0.92rem;
+    letter-spacing: 0.34em;
+  }
+
+  .site-header-logo-note {
+    display: none;
+  }
+
+  .home-hero-section {
+    height: min(35.5rem, calc(100svh - 0.2rem));
+  }
+
+  .home-hero-side {
+    gap: 0.7rem;
+  }
+
+  .home-hero-slide-card,
+  .home-hero-meta {
+    width: min(100%, 15.4rem);
+    backdrop-filter: none;
+  }
+
+  .site-footer-wordmark .veronica-wordmark-script {
+    font-size: clamp(2.1rem, 12vw, 2.8rem);
+  }
+
+  .site-footer-wordmark .veronica-wordmark-didot {
+    font-size: 0.84rem;
+    letter-spacing: 0.32em;
+  }
+}

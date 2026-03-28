@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useMotionLite } from "@/components/providers";
+import { VeronicaWordmark } from "@/components/veronica-wordmark";
 import type { CmsSiteSettings } from "@/lib/cms-types";
 import { navigationItems } from "@/lib/site-data";
 
@@ -110,12 +111,12 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               <span aria-hidden="true" className="site-header-logo-mark">
                 VA
               </span>
-              <span className="site-header-logo-copy">
-                <span className="site-header-logo-kicker">{settings.brandKicker}</span>
-                <span className="site-header-logo-name">
-                  <span className="brand-script">Veronica</span>
-                  <span className="brand-didot">ADANE</span>
+              <span className="site-header-logo-copy site-header-logo-copy--stacked">
+                <span className="site-header-logo-rail">
+                  <span className="site-header-logo-kicker">{settings.brandKicker}</span>
+                  <span className="site-header-logo-note">Addis Ababa • Global stage</span>
                 </span>
+                <VeronicaWordmark className="site-header-wordmark" />
               </span>
             </Link>
           </motion.div>
@@ -171,8 +172,8 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                 VA
               </span>
               <span className="site-header-mobile-logo-copy">
-                <span className="brand-script">Veronica</span>
-                <span className="brand-didot">ADANE</span>
+                <span className="site-header-mobile-kicker">{settings.brandKicker}</span>
+                <VeronicaWordmark className="site-header-mobile-wordmark" />
               </span>
             </Link>
 
