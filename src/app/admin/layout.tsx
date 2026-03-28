@@ -1,30 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  CalendarRange,
-  CloudUpload,
-  Disc3,
-  FileJson,
-  LayoutDashboard,
-  Newspaper,
-  ShoppingBag,
-  Sparkles,
-  Users,
-} from "lucide-react";
+import { Sparkles, Users } from "lucide-react";
+import { AdminSidebarNav } from "@/components/admin-sidebar-nav";
 
 export const metadata: Metadata = {
   title: "Admin",
 };
-
-const adminNav = [
-  { href: "/admin#overview", label: "Overview", icon: LayoutDashboard },
-  { href: "/admin#content", label: "Page CMS", icon: FileJson },
-  { href: "/admin#media-library", label: "Media Library", icon: CloudUpload },
-  { href: "/admin#releases", label: "Release Floor", icon: Disc3 },
-  { href: "/admin#events", label: "Event Routing", icon: CalendarRange },
-  { href: "/admin#products", label: "Commerce", icon: ShoppingBag },
-  { href: "/admin#inquiries", label: "Press & Booking", icon: Newspaper },
-];
 
 export default function AdminLayout({
   children,
@@ -43,8 +24,8 @@ export default function AdminLayout({
                 <div>
                   <p className="display-title text-3xl text-white">Admin Suite</p>
                   <p className="mt-2 text-sm leading-7 text-white/66">
-                    A premium workspace for content, media, releases, commerce,
-                    events, and press operations.
+                    A structured publishing and operations workspace for pages, media,
+                    releases, events, commerce, and inquiries.
                   </p>
                 </div>
               </div>
@@ -52,20 +33,7 @@ export default function AdminLayout({
 
             <div className="luxury-divider my-5" />
 
-            <nav className="space-y-2" aria-label="Admin">
-              {adminNav.map((item) => {
-                const Icon = item.icon;
-
-                return (
-                  <Link className="admin-nav-link" href={item.href} key={item.href}>
-                    <span className="admin-nav-icon">
-                      <Icon size={16} strokeWidth={1.8} />
-                    </span>
-                    <span>{item.label}</span>
-                  </Link>
-                );
-              })}
-            </nav>
+            <AdminSidebarNav />
 
             <div className="luxury-divider my-5" />
 
@@ -73,8 +41,8 @@ export default function AdminLayout({
               <div className="admin-surface">
                 <p className="section-label">Workspace Standard</p>
                 <p className="mt-4 text-sm leading-7 text-white/72">
-                  Editorial on the public side, operational on the inside,
-                  with content, media, and live business data in one place.
+                  Keep publishing tasks separate from day-to-day operations so the
+                  team can manage the site faster and with less clutter.
                 </p>
               </div>
 
@@ -85,11 +53,11 @@ export default function AdminLayout({
                   </span>
                   <div>
                     <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--gold-soft)]">
-                      Brand Integrity
+                      Publishing Flow
                     </p>
                     <p className="mt-2 text-sm leading-7 text-white/68">
-                      Keep release art, press copy, partnerships, and commerce
-                      consistent across every page.
+                      Update page content, global settings, and media from dedicated
+                      screens instead of one oversized dashboard.
                     </p>
                   </div>
                 </div>
@@ -105,8 +73,8 @@ export default function AdminLayout({
                       Team Access
                     </p>
                     <p className="mt-2 text-sm leading-7 text-white/68">
-                      Booking, management, content, and media teams can all work
-                      from one dashboard standard.
+                      Booking, management, content, and media teams can move through
+                      their own sections without stepping on each other.
                     </p>
                   </div>
                 </div>

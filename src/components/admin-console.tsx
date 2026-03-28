@@ -12,6 +12,7 @@ import {
 
 type AdminConsoleProps = {
   initialSections: Record<AdminCollectionKey, AdminRecord[]>;
+  collections?: readonly AdminCollectionKey[];
 };
 
 type FeedbackState = {
@@ -53,7 +54,7 @@ async function readApiError(response: Response) {
   }
 }
 
-export function AdminConsole({ initialSections }: AdminConsoleProps) {
+export function AdminConsole({ initialSections, collections }: AdminConsoleProps) {
   const [sections, setSections] = useState(initialSections);
   const [forms, setForms] = useState<Record<AdminCollectionKey, AdminRecordInput>>({
     releases: createBlankRecord("releases"),
@@ -87,6 +88,7 @@ export function AdminConsole({ initialSections }: AdminConsoleProps) {
       ),
     [sections],
   );
+  const visibleCollections = collections ?? adminCollectionOrder;
 
   function updateForm(
     collection: AdminCollectionKey,
@@ -261,7 +263,7 @@ export function AdminConsole({ initialSections }: AdminConsoleProps) {
         </div>
       ) : null}
 
-      {adminCollectionOrder.map((collection) => {
+      {visibleCollections.map((collection) => {
         const config = adminCollectionConfig[collection];
         const records = sections[collection];
 
