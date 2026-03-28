@@ -117,7 +117,7 @@ function renderCard(item: CmsTextCard, variant: CmsCardVariant, theme: "paper" |
 
   if (variant === "release") {
     return (
-      <article className="editorial-release-row" key={key}>
+      <article className="editorial-release-card" key={key}>
         <div>
           {item.accent ? <p className="section-label">{item.accent}</p> : null}
           <h3 className="display-title mt-3 text-3xl text-white sm:text-4xl">{item.title}</h3>
@@ -316,7 +316,11 @@ function renderSection(section: StandardSection, index: number) {
       {section.cards?.length ? (
         <div
           className={`mt-8 grid gap-4 ${
-            section.cards.length === 2 ? "md:grid-cols-2" : "lg:grid-cols-3"
+            section.cardVariant === "release"
+              ? "xl:grid-cols-2"
+              : section.cards.length === 2
+                ? "md:grid-cols-2"
+                : "lg:grid-cols-3"
           }`}
         >
           {section.cards.map((item) => renderCard(item, section.cardVariant, section.theme))}
