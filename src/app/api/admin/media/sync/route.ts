@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import { NextResponse } from "next/server";
+import { requireAdminAccess } from "@/lib/admin-guard";
 import { getCloudinary } from "@/lib/cloudinary";
 import {
   bundledCloudinaryAssets,
@@ -49,6 +50,12 @@ async function uploadBundledAsset(asset: (typeof bundledCloudinaryAssets)[number
 
 export async function POST() {
   try {
+    const access = await requireAdminAccess(["owner", "content", "media"]);
+
+    if (access.response) {
+      return access.response;
+    }
+
     const synced = [];
     const skipped: Array<{ filename: string; reason: string }> = [];
 
@@ -71,6 +78,7 @@ export async function POST() {
     }
 
     return NextResponse.json({
+      success: true,
       count: synced.length,
       items: synced,
       skipped,
@@ -78,6 +86,7 @@ export async function POST() {
   } catch (error) {
     return NextResponse.json(
       {
+        success: false,
         error: error instanceof Error ? error.message : "Unable to sync bundled media.",
       },
       { status: 500 },

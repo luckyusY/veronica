@@ -1,6 +1,7 @@
 import type {
   CmsPageContentMap,
   CmsPageDocument,
+  CmsPageWorkspaceDocument,
   CmsPageSlug,
 } from "@/lib/cms-types";
 import { defaultHomePageContent } from "@/lib/cms-defaults/home";
@@ -40,5 +41,26 @@ export function buildDefaultCmsPage<TSlug extends CmsPageSlug>(
     summary: summary.summary,
     content: defaultCmsPageContent[slug],
     updatedAt: new Date(0).toISOString(),
+  };
+}
+
+export function buildDefaultCmsPageWorkspace<TSlug extends CmsPageSlug>(
+  slug: TSlug,
+): CmsPageWorkspaceDocument<CmsPageContentMap[TSlug]> {
+  const page = buildDefaultCmsPage(slug);
+
+  return {
+    ...page,
+    published: {
+      content: page.content,
+      publishedAt: null,
+      publishedBy: null,
+    },
+    draft: {
+      content: null,
+      savedAt: null,
+      savedBy: null,
+    },
+    status: "never-published",
   };
 }

@@ -1,13 +1,20 @@
 "use client";
 
-import Image from "next/image";
 import { useMemo, useState } from "react";
-import { CloudUpload, Copy, ImageIcon, LoaderCircle, RefreshCcw, Sparkles, Video } from "lucide-react";
-import type { CmsMediaAsset } from "@/lib/cms-types";
+import { AlertTriangle, CloudUpload, LoaderCircle, RefreshCcw } from "lucide-react";
+import { AssetCard } from "@/components/admin/media/AssetCard";
+import { SearchBar } from "@/components/admin/media/SearchBar";
+import { UploadZone } from "@/components/admin/media/UploadZone";
+import { UsagePopover } from "@/components/admin/media/UsagePopover";
+import type {
+  CmsMediaAsset,
+  CmsMediaUsageRecord,
+} from "@/lib/cms-types";
 
 type AdminMediaLibraryPanelProps = {
   cloudinaryReady: boolean;
   initialMediaAssets: CmsMediaAsset[];
+  initialMediaUsage: CmsMediaUsageRecord[];
 };
 
 type FeedbackState = {
@@ -16,6 +23,7 @@ type FeedbackState = {
 } | null;
 
 type MediaFilter = "all" | "image" | "video";
+type MediaSort = "newest" | "oldest" | "name";
 
 async function readApiError(response: Response) {
   try {
@@ -38,22 +46,49 @@ function mergeMediaAssets(current: CmsMediaAsset[], incoming: CmsMediaAsset[]) {
   );
 }
 
+function createUsageMap(items: CmsMediaUsageRecord[]) {
+  return new Map(items.map((item) => [item.publicId, item] as const));
+}
+
 export function AdminMediaLibraryPanel({
   cloudinaryReady,
   initialMediaAssets,
+  initialMediaUsage,
 }: AdminMediaLibraryPanelProps) {
   const [mediaAssets, setMediaAssets] = useState(initialMediaAssets);
+  const [usageMap, setUsageMap] = useState(() => createUsageMap(initialMediaUsage));
   const [mediaFilter, setMediaFilter] = useState<MediaFilter>("all");
+  const [mediaSort, setMediaSort] = useState<MediaSort>("newest");
+  const [searchQuery, setSearchQuery] = useState("");
   const [feedback, setFeedback] = useState<FeedbackState>(null);
   const [busyKey, setBusyKey] = useState<string | null>(null);
+  const [usageItem, setUsageItem] = useState<CmsMediaUsageRecord | null>(null);
+  const [deleteCandidate, setDeleteCandidate] = useState<CmsMediaAsset | null>(null);
 
   const visibleMedia = useMemo(() => {
-    if (mediaFilter === "all") {
-      return mediaAssets;
-    }
+    const normalizedQuery = searchQuery.trim().toLowerCase();
 
-    return mediaAssets.filter((asset) => asset.resourceType === mediaFilter);
-  }, [mediaAssets, mediaFilter]);
+    const filtered = mediaAssets.filter((asset) => {
+      const matchesType = mediaFilter === "all" || asset.resourceType === mediaFilter;
+      const matchesQuery =
+        !normalizedQuery ||
+        [asset.title, asset.alt, asset.publicId].some((value) =>
+          value.toLowerCase().includes(normalizedQuery),
+        );
+
+      return matchesType && matchesQuery;
+    });
+
+    return filtered.sort((left, right) => {
+      if (mediaSort === "name") {
+        return left.title.localeCompare(right.title);
+      }
+
+      const leftTime = new Date(left.updatedAt).getTime();
+      const rightTime = new Date(right.updatedAt).getTime();
+      return mediaSort === "oldest" ? leftTime - rightTime : rightTime - leftTime;
+    });
+  }, [mediaAssets, mediaFilter, mediaSort, searchQuery]);
 
   async function syncBundledAssets() {
     setBusyKey("sync-library");
@@ -67,47 +102,19 @@ export function AdminMediaLibraryPanel({
       return;
     }
 
-    const payload = (await response.json()) as { count: number; items: CmsMediaAsset[]; skipped?: unknown[] };
+    const payload = (await response.json()) as {
+      count: number;
+      items: CmsMediaAsset[];
+      skipped?: Array<{ filename: string; reason: string }>;
+    };
+
     setMediaAssets((current) => mergeMediaAssets(current, payload.items));
     setBusyKey(null);
     setFeedback({
       tone: "ok",
-      message: `${payload.count} bundled asset${payload.count === 1 ? "" : "s"} synced to Cloudinary.`,
-    });
-  }
-
-  async function uploadFiles(fileList: FileList | null) {
-    if (!fileList?.length) return;
-
-    setBusyKey("upload");
-    setFeedback(null);
-
-    const uploaded: CmsMediaAsset[] = [];
-
-    for (const file of Array.from(fileList)) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", file.type.startsWith("video/") ? "veronica/videos" : "veronica/images");
-      formData.append("title", file.name.replace(/\.[^.]+$/, ""));
-      formData.append("alt", file.name.replace(/\.[^.]+$/, ""));
-
-      const response = await fetch("/api/admin/upload", { method: "POST", body: formData });
-
-      if (!response.ok) {
-        setBusyKey(null);
-        setFeedback({ tone: "error", message: await readApiError(response) });
-        return;
-      }
-
-      const payload = (await response.json()) as { item: CmsMediaAsset };
-      uploaded.push(payload.item);
-    }
-
-    setMediaAssets((current) => mergeMediaAssets(current, uploaded));
-    setBusyKey(null);
-    setFeedback({
-      tone: "ok",
-      message: `${uploaded.length} media asset${uploaded.length > 1 ? "s" : ""} uploaded.`,
+      message: `${payload.count} asset${payload.count === 1 ? "" : "s"} synced, ${
+        payload.skipped?.length ?? 0
+      } skipped.`,
     });
   }
 
@@ -119,6 +126,48 @@ export function AdminMediaLibraryPanel({
       setFeedback({ tone: "error", message: `Unable to copy ${label.toLowerCase()}.` });
     }
   }
+
+  async function deleteAsset() {
+    if (!deleteCandidate) {
+      return;
+    }
+
+    setBusyKey(`delete:${deleteCandidate.id}`);
+    setFeedback(null);
+
+    const response = await fetch(`/api/admin/media?id=${encodeURIComponent(deleteCandidate.id)}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      setBusyKey(null);
+      setFeedback({ tone: "error", message: await readApiError(response) });
+      return;
+    }
+
+    const payload = (await response.json()) as {
+      item: CmsMediaAsset;
+      usage?: CmsMediaUsageRecord | null;
+      message?: string;
+    };
+
+    setMediaAssets((current) =>
+      current.filter((asset) => asset.id !== payload.item.id),
+    );
+    setUsageMap((current) => {
+      const next = new Map(current);
+      next.delete(payload.item.publicId);
+      return next;
+    });
+    setDeleteCandidate(null);
+    setBusyKey(null);
+    setFeedback({
+      tone: "ok",
+      message: payload.message ?? `${payload.item.title} deleted.`,
+    });
+  }
+
+  const deleteUsage = deleteCandidate ? usageMap.get(deleteCandidate.publicId) ?? null : null;
 
   return (
     <div className="admin-stack">
@@ -149,8 +198,8 @@ export function AdminMediaLibraryPanel({
                 Manage the full Veronica media library.
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                Sync the bundled project library, upload new assets, and reuse direct delivery URLs
-                across the site.
+                Search the library, track where assets are being used, upload in batches, and
+                avoid deleting media that is already live on the site.
               </p>
             </div>
           </div>
@@ -168,7 +217,8 @@ export function AdminMediaLibraryPanel({
                 </span>
               </div>
               <p className="admin-note mt-4">
-                Sync the real Veronica images and videos already bundled with the project.
+                Sync the real Veronica images and videos already bundled with the project and add
+                them to the library index.
               </p>
               <div className="admin-button-row mt-4">
                 <button
@@ -190,117 +240,124 @@ export function AdminMediaLibraryPanel({
             <article className="admin-upload-panel">
               <div className="admin-panel-meta">
                 <span className="admin-badge">
-                  <Sparkles size={15} />
-                  <span>Fresh upload</span>
+                  <CloudUpload size={15} />
+                  <span>Upload queue</span>
                 </span>
               </div>
               <p className="admin-note mt-4">
-                Add new photos, posters, and videos directly into Cloudinary from the admin.
+                Drag files in, edit the suggested title and alt text, then upload them with
+                progress tracking.
               </p>
-              <div className="admin-button-row mt-4">
-                <label className="admin-button cursor-pointer">
-                  {busyKey === "upload" ? (
-                    <LoaderCircle className="animate-spin" size={15} />
-                  ) : (
-                    <CloudUpload size={15} />
-                  )}
-                  <span>{busyKey === "upload" ? "Uploading..." : "Upload media"}</span>
-                  <input
-                    accept="image/*,video/*"
-                    className="sr-only"
-                    disabled={!cloudinaryReady || busyKey === "upload"}
-                    multiple
-                    onChange={(event) => void uploadFiles(event.target.files)}
-                    type="file"
-                  />
-                </label>
+              <div className="mt-4">
+                <UploadZone
+                  cloudinaryReady={cloudinaryReady}
+                  onNotice={setFeedback}
+                  onUploaded={(items) => {
+                    setMediaAssets((current) => mergeMediaAssets(current, items));
+                  }}
+                />
               </div>
             </article>
           </div>
 
-          <div className="admin-filter-row">
-            {(["all", "image", "video"] as const).map((item) => (
-              <button
-                className={`admin-filter-pill ${mediaFilter === item ? "is-active" : ""}`.trim()}
-                key={item}
-                onClick={() => setMediaFilter(item)}
-                type="button"
-              >
-                {item === "all" ? "All assets" : `${item}s`}
-              </button>
-            ))}
-            <span className="status-pill status-pill--ok">
-              {visibleMedia.length} visible asset{visibleMedia.length === 1 ? "" : "s"}
-            </span>
-          </div>
+          <SearchBar
+            filter={mediaFilter}
+            onFilterChange={setMediaFilter}
+            onQueryChange={setSearchQuery}
+            onSortChange={setMediaSort}
+            query={searchQuery}
+            resultCount={visibleMedia.length}
+            sort={mediaSort}
+          />
 
           <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
             {visibleMedia.map((asset) => (
-              <article className="admin-record-card" key={asset.publicId}>
-                <div className="overflow-hidden rounded-[1.15rem] border border-white/8 bg-black/30">
-                  {asset.resourceType === "video" ? (
-                    <video
-                      className="aspect-[4/5] h-full w-full object-cover"
-                      controls
-                      preload="metadata"
-                      src={asset.secureUrl}
-                    />
-                  ) : (
-                    <Image
-                      alt={asset.alt}
-                      className="aspect-[4/5] h-full w-full object-cover"
-                      height={asset.height ?? 1200}
-                      loading="lazy"
-                      src={asset.secureUrl}
-                      unoptimized
-                      width={asset.width ?? 960}
-                    />
-                  )}
-                </div>
-
-                <div className="admin-record-copy">
-                  <div className="admin-panel-meta">
-                    <span className="admin-badge">
-                      {asset.resourceType === "video" ? <Video size={15} /> : <ImageIcon size={15} />}
-                      <span>{asset.resourceType}</span>
-                    </span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-white">{asset.title}</h3>
-                    <p className="mt-2 text-sm leading-7 text-white/60">{asset.alt}</p>
-                  </div>
-                  <div className="admin-key-list">
-                    <span className="admin-key-chip">{asset.publicId}</span>
-                  </div>
-                </div>
-
-                <div className="grid gap-2">
-                  <button
-                    className="admin-button admin-button--ghost"
-                    onClick={() => void copyValue(asset.secureUrl, "Asset URL")}
-                    type="button"
-                  >
-                    <Copy size={15} />
-                    <span>Copy URL</span>
-                  </button>
-                  <button
-                    className="admin-button admin-button--ghost"
-                    onClick={() => void copyValue(asset.publicId, "Public ID")}
-                    type="button"
-                  >
-                    <Copy size={15} />
-                    <span>Copy public ID</span>
-                  </button>
-                </div>
-              </article>
+              <AssetCard
+                asset={asset}
+                key={asset.publicId}
+                onCopyId={(value) => void copyValue(value, "Public ID")}
+                onCopyUrl={(value) => void copyValue(value, "Asset URL")}
+                onDelete={setDeleteCandidate}
+                onViewUsage={setUsageItem}
+                usage={usageMap.get(asset.publicId) ?? null}
+              />
             ))}
 
             {visibleMedia.length === 0 ? (
-              <div className="admin-empty">No assets match the current media filter.</div>
+              <div className="admin-empty">No assets match the current filters.</div>
             ) : null}
           </div>
         </div>
       </section>
+
+      {usageItem ? <UsagePopover item={usageItem} onClose={() => setUsageItem(null)} /> : null}
+
+      {deleteCandidate ? (
+        <div className="admin-modal-overlay" role="presentation">
+          <div className="admin-modal">
+            <div className="admin-panel-header">
+              <div>
+                <p className="section-label">Delete media</p>
+                <h3 className="display-title mt-3 text-3xl text-white">
+                  Delete {deleteCandidate.title}?
+                </h3>
+              </div>
+            </div>
+
+            <div className="admin-validation-list mt-5">
+              {deleteUsage?.usedIn.length ? (
+                <>
+                  <article className="admin-validation-item">
+                    <strong>This asset is currently in use</strong>
+                    <span>
+                      Deleting it will break {deleteUsage.pageCount} page
+                      {deleteUsage.pageCount === 1 ? "" : "s"} until those sections are updated.
+                    </span>
+                  </article>
+                  {deleteUsage.usedIn.map((usage, index) => (
+                    <article className="admin-validation-item" key={`${usage.field}-${index}`}>
+                      <strong>
+                        {usage.route} / {usage.section}
+                      </strong>
+                      <span>
+                        {usage.field} {usage.isDraft ? "(draft)" : "(published)"}
+                      </span>
+                    </article>
+                  ))}
+                </>
+              ) : (
+                <article className="admin-validation-item">
+                  <strong>Unused asset</strong>
+                  <span>This asset is not currently referenced by any page content.</span>
+                </article>
+              )}
+            </div>
+
+            <div className="admin-button-row mt-5">
+              <button
+                className="admin-button admin-button--ghost"
+                onClick={() => setDeleteCandidate(null)}
+                type="button"
+              >
+                <span>Cancel</span>
+              </button>
+              <button
+                className="admin-button"
+                disabled={busyKey === `delete:${deleteCandidate.id}`}
+                onClick={() => void deleteAsset()}
+                type="button"
+              >
+                {busyKey === `delete:${deleteCandidate.id}` ? (
+                  <LoaderCircle className="animate-spin" size={15} />
+                ) : (
+                  <AlertTriangle size={15} />
+                )}
+                <span>Delete asset</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

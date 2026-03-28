@@ -2,6 +2,7 @@ import "server-only";
 
 import { getAdminDashboardData } from "@/lib/admin-store";
 import { getCloudinaryStatus } from "@/lib/cloudinary";
+import { listMediaUsageIndex } from "@/lib/db/media-usage";
 import { getCmsSiteSettings, listCmsMediaAssets, listCmsPages } from "@/lib/cms-store";
 import { pingDatabase } from "@/lib/mongodb";
 
@@ -43,16 +44,18 @@ export async function getAdminOverviewData() {
 }
 
 export async function getAdminWorkspaceData() {
-  const [cmsPages, siteSettings, mediaAssets] = await Promise.all([
+  const [cmsPages, siteSettings, mediaAssets, mediaUsage] = await Promise.all([
     listCmsPages(),
     getCmsSiteSettings(),
     listCmsMediaAssets(),
+    listMediaUsageIndex(),
   ]);
 
   return {
     cmsPages,
     siteSettings,
     mediaAssets,
+    mediaUsage,
     cloudinaryReady: getCloudinaryStatus(),
   };
 }

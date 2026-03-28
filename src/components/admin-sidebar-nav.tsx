@@ -12,43 +12,43 @@ import {
   Settings2,
   ShoppingBag,
 } from "lucide-react";
+import {
+  getVisibleAdminNavGroups,
+  type AdminNavIconKey,
+  type AdminRole,
+} from "@/lib/admin-access";
 
-const adminNavGroups = [
-  {
-    label: "Publishing",
-    items: [
-      { href: "/admin", label: "Overview", icon: LayoutDashboard },
-      { href: "/admin/content", label: "Page Content", icon: FileJson },
-      { href: "/admin/settings", label: "Global Settings", icon: Settings2 },
-      { href: "/admin/media", label: "Media Library", icon: CloudUpload },
-    ],
-  },
-  {
-    label: "Operations",
-    items: [
-      { href: "/admin/releases", label: "Releases", icon: Disc3 },
-      { href: "/admin/events", label: "Events", icon: CalendarRange },
-      { href: "/admin/products", label: "Products", icon: ShoppingBag },
-      { href: "/admin/inquiries", label: "Inquiries", icon: Newspaper },
-    ],
-  },
-] as const;
+const iconMap: Record<AdminNavIconKey, typeof LayoutDashboard> = {
+  overview: LayoutDashboard,
+  content: FileJson,
+  settings: Settings2,
+  media: CloudUpload,
+  releases: Disc3,
+  events: CalendarRange,
+  products: ShoppingBag,
+  inquiries: Newspaper,
+};
 
 function isActivePath(pathname: string, href: string) {
   return href === "/admin" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function AdminSidebarNav() {
+type AdminSidebarNavProps = {
+  role: AdminRole;
+};
+
+export function AdminSidebarNav({ role }: AdminSidebarNavProps) {
   const pathname = usePathname();
+  const visibleGroups = getVisibleAdminNavGroups(role);
 
   return (
     <div className="admin-nav-groups">
-      {adminNavGroups.map((group) => (
+      {visibleGroups.map((group) => (
         <div className="admin-nav-group" key={group.label}>
           <p className="admin-nav-group-title">{group.label}</p>
           <nav aria-label={group.label} className="space-y-2">
             {group.items.map((item) => {
-              const Icon = item.icon;
+              const Icon = iconMap[item.iconKey];
 
               return (
                 <Link

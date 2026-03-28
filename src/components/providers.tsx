@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import Lenis from "lenis";
 import { MotionConfig } from "motion/react";
+import { Toaster } from "sonner";
 
 type ProvidersProps = {
   children: ReactNode;
@@ -61,7 +62,23 @@ export function Providers({ children }: ProvidersProps) {
 
   return (
     <MotionLiteContext.Provider value={motionLite}>
-      <MotionConfig reducedMotion={motionLite ? "always" : "user"}>{children}</MotionConfig>
+      <MotionConfig reducedMotion={motionLite ? "always" : "user"}>
+        {children}
+        <Toaster
+          closeButton
+          position="top-right"
+          richColors
+          theme="dark"
+          toastOptions={{
+            classNames: {
+              toast:
+                "!border !border-[rgba(201,169,110,0.16)] !bg-[#1a1916] !text-[#f0ece4]",
+              description: "!text-[#c1b8ab]",
+              closeButton: "!border !border-[rgba(201,169,110,0.16)] !bg-[#151411] !text-[#f0ece4]",
+            },
+          }}
+        />
+      </MotionConfig>
     </MotionLiteContext.Provider>
   );
 }

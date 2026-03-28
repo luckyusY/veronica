@@ -35,3 +35,14 @@ export function getCloudinaryStatus() {
       process.env.CLOUDINARY_API_SECRET,
   );
 }
+
+export async function deleteCloudinaryAsset(options: {
+  publicId: string;
+  resourceType?: "image" | "video";
+}) {
+  const client = getCloudinary();
+  return client.uploader.destroy(options.publicId, {
+    resource_type: options.resourceType ?? "image",
+    invalidate: true,
+  });
+}

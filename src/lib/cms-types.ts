@@ -234,6 +234,32 @@ export type CmsPageDocument<TContent = unknown> = {
   updatedAt: string;
 };
 
+export type CmsPageStatus = "published" | "draft-pending" | "never-published";
+
+export type CmsPagePublishedSnapshot<TContent = unknown> = {
+  content: TContent | null;
+  publishedAt: string | null;
+  publishedBy: string | null;
+};
+
+export type CmsPageDraftSnapshot<TContent = unknown> = {
+  content: TContent | null;
+  savedAt: string | null;
+  savedBy: string | null;
+};
+
+export type CmsPageWorkspaceDocument<TContent = unknown> = {
+  slug: CmsPageSlug;
+  name: string;
+  summary: string;
+  route: string;
+  content: TContent;
+  published: CmsPagePublishedSnapshot<TContent>;
+  draft: CmsPageDraftSnapshot<TContent>;
+  status: CmsPageStatus;
+  updatedAt: string;
+};
+
 export type CmsPageEditorInput<TContent = unknown> = {
   name: string;
   summary: string;
@@ -268,5 +294,19 @@ export type CmsMediaAsset = {
   height?: number;
   duration?: number;
   createdAt: string;
+  updatedAt: string;
+};
+
+export type CmsMediaUsageEntry = {
+  route: CmsPageSlug;
+  section: string;
+  field: string;
+  isDraft: boolean;
+};
+
+export type CmsMediaUsageRecord = {
+  publicId: string;
+  usedIn: CmsMediaUsageEntry[];
+  pageCount: number;
   updatedAt: string;
 };

@@ -2,24 +2,60 @@ import "server-only";
 
 import { type WithId, ObjectId } from "mongodb";
 import { unstable_noStore as noStore } from "next/cache";
-import { buildDefaultCmsPage, defaultSiteSettings } from "@/lib/cms-defaults";
+import {
+  buildDefaultCmsPage,
+  buildDefaultCmsPageWorkspace,
+  defaultCmsPageContent,
+  defaultSiteSettings,
+} from "@/lib/cms-defaults";
 import {
   type CmsMediaAsset,
   type CmsPageContentMap,
   type CmsPageDocument,
+  type CmsPageDraftSnapshot,
   type CmsPageEditorInput,
+  type CmsPagePublishedSnapshot,
   type CmsPageSlug,
+  type CmsPageWorkspaceDocument,
   type CmsSiteSettings,
 } from "@/lib/cms-types";
+import { rebuildMediaUsageIndex } from "@/lib/db/media-usage";
 import { getDatabase } from "@/lib/mongodb";
+import { getCmsPageEditorSchema } from "@/lib/schemas/cms-pages";
+
+type CmsPagePublishedDbDocument = {
+  content: unknown | null;
+  publishedAt: Date | null;
+  publishedBy: string | null;
+};
+
+type CmsPageDraftDbDocument = {
+  content: unknown | null;
+  savedAt: Date | null;
+  savedBy: string | null;
+};
 
 type CmsPageDbDocument = {
   slug: CmsPageSlug;
   name: string;
   route: string;
   summary: string;
-  content: unknown;
+  published: CmsPagePublishedDbDocument;
+  draft: CmsPageDraftDbDocument;
+  createdAt: Date;
   updatedAt: Date;
+};
+
+type CmsLegacyPageDbDocument = {
+  slug: CmsPageSlug;
+  name?: string;
+  route?: string;
+  summary?: string;
+  content?: unknown;
+  published?: CmsPagePublishedDbDocument;
+  draft?: CmsPageDraftDbDocument;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 type CmsSiteSettingsDocument = {
@@ -55,6 +91,7 @@ const cmsPageSlugs = [
 ] as const satisfies readonly CmsPageSlug[];
 
 const SITE_SETTINGS_KEY = "site-settings" as const;
+const SYSTEM_MIGRATION_USER = "system-migration";
 
 let cmsSetupPromise: Promise<void> | null = null;
 
@@ -66,16 +103,88 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === "object" && !Array.isArray(value);
 }
 
-function serializePage<TContent>(
-  document: CmsPageDbDocument | (Omit<CmsPageDbDocument, "updatedAt"> & { updatedAt: Date }),
-): CmsPageDocument<TContent> {
+function isDate(value: unknown): value is Date {
+  return value instanceof Date && !Number.isNaN(value.getTime());
+}
+
+function getDefaultPageContent<TSlug extends CmsPageSlug>(slug: TSlug) {
+  return defaultCmsPageContent[slug];
+}
+
+function areContentsEqual(left: unknown, right: unknown) {
+  return JSON.stringify(left ?? null) === JSON.stringify(right ?? null);
+}
+
+function serializePublishedSnapshot<TContent>(
+  snapshot: CmsPagePublishedDbDocument | undefined,
+): CmsPagePublishedSnapshot<TContent> {
+  return {
+    content: (snapshot?.content ?? null) as TContent | null,
+    publishedAt: snapshot?.publishedAt ? snapshot.publishedAt.toISOString() : null,
+    publishedBy: snapshot?.publishedBy ?? null,
+  };
+}
+
+function serializeDraftSnapshot<TContent>(
+  snapshot: CmsPageDraftDbDocument | undefined,
+): CmsPageDraftSnapshot<TContent> {
+  return {
+    content: (snapshot?.content ?? null) as TContent | null,
+    savedAt: snapshot?.savedAt ? snapshot.savedAt.toISOString() : null,
+    savedBy: snapshot?.savedBy ?? null,
+  };
+}
+
+function getWorkspaceStatus(document: CmsPageDbDocument) {
+  if (
+    document.draft.content &&
+    !areContentsEqual(document.draft.content, document.published.content)
+  ) {
+    return "draft-pending" as const;
+  }
+
+  if (document.published.publishedAt || document.published.publishedBy) {
+    return "published" as const;
+  }
+
+  return "never-published" as const;
+}
+
+function serializeWorkspacePage<TContent>(
+  document: CmsPageDbDocument,
+): CmsPageWorkspaceDocument<TContent> {
+  const defaultPage = buildDefaultCmsPageWorkspace(document.slug);
+  const publishedContent =
+    (document.published.content as TContent | null) ?? defaultPage.published.content;
+  const draftContent = (document.draft.content as TContent | null) ?? null;
+  const activeContent = draftContent ?? publishedContent;
+
   return {
     slug: document.slug,
     name: document.name,
     route: document.route,
     summary: document.summary,
-    content: document.content as TContent,
+    content: activeContent as TContent,
+    published: serializePublishedSnapshot<TContent>(document.published),
+    draft: serializeDraftSnapshot<TContent>(document.draft),
+    status: getWorkspaceStatus(document),
     updatedAt: document.updatedAt.toISOString(),
+  };
+}
+
+function serializePublicPage<TContent>(document: CmsPageDbDocument): CmsPageDocument<TContent> {
+  const defaultPage = buildDefaultCmsPage(document.slug);
+  const publishedContent =
+    ((document.published.content as TContent | null) ?? defaultPage.content) as TContent;
+
+  return {
+    slug: document.slug,
+    name: document.name,
+    route: document.route,
+    summary: document.summary,
+    content: publishedContent,
+    updatedAt:
+      document.published.publishedAt?.toISOString() ?? document.updatedAt.toISOString(),
   };
 }
 
@@ -121,11 +230,17 @@ function validatePageUpdate(
     throw new Error(`Content for ${slug} must be a JSON object.`);
   }
 
-  return {
+  const validationResult = getCmsPageEditorSchema(slug).safeParse({
     name,
     summary,
-    content: content as CmsPageContentMap[CmsPageSlug],
-  };
+    content,
+  });
+
+  if (!validationResult.success) {
+    throw new Error(validationResult.error.issues[0]?.message ?? "Page content is invalid.");
+  }
+
+  return validationResult.data as CmsPageEditorInput<CmsPageContentMap[CmsPageSlug]>;
 }
 
 function validateSiteSettings(payload: unknown): CmsSiteSettings {
@@ -239,6 +354,81 @@ async function removeDuplicateMediaAssets() {
   }
 }
 
+async function migrateLegacyPages() {
+  const pagesCollection = await getCmsPagesCollection();
+  const documents = await pagesCollection.find({}).toArray();
+
+  for (const document of documents as Array<WithId<CmsLegacyPageDbDocument>>) {
+    const legacyContent = "content" in document ? document.content : undefined;
+    const hasLegacyShape = legacyContent !== undefined;
+    const hasPublishedShape = isPlainObject(document.published);
+    const hasDraftShape = isPlainObject(document.draft);
+    const needsMigration =
+      hasLegacyShape ||
+      !hasPublishedShape ||
+      !hasDraftShape ||
+      !isDate(document.createdAt) ||
+      !isDate(document.updatedAt);
+
+    if (!needsMigration) {
+      continue;
+    }
+
+    const defaultPage = buildDefaultCmsPage(document.slug);
+    const updatedAt = isDate(document.updatedAt) ? document.updatedAt : new Date();
+    const createdAt = isDate(document.createdAt) ? document.createdAt : updatedAt;
+    const nextPublished: CmsPagePublishedDbDocument = hasPublishedShape
+      ? {
+          content:
+            document.published?.content ??
+            (legacyContent ?? getDefaultPageContent(document.slug)),
+          publishedAt: isDate(document.published?.publishedAt)
+            ? document.published?.publishedAt ?? null
+            : legacyContent !== undefined
+              ? updatedAt
+              : null,
+          publishedBy:
+            sanitizeText(document.published?.publishedBy) ||
+            (legacyContent !== undefined ? SYSTEM_MIGRATION_USER : null),
+        }
+      : {
+          content: legacyContent ?? getDefaultPageContent(document.slug),
+          publishedAt: legacyContent !== undefined ? updatedAt : null,
+          publishedBy: legacyContent !== undefined ? SYSTEM_MIGRATION_USER : null,
+        };
+    const nextDraft: CmsPageDraftDbDocument = hasDraftShape
+      ? {
+          content: document.draft?.content ?? null,
+          savedAt: isDate(document.draft?.savedAt) ? document.draft?.savedAt ?? null : null,
+          savedBy: sanitizeText(document.draft?.savedBy) || null,
+        }
+      : {
+          content: null,
+          savedAt: null,
+          savedBy: null,
+        };
+
+    await pagesCollection.updateOne(
+      { _id: document._id },
+      {
+        $set: {
+          slug: document.slug,
+          name: sanitizeText(document.name) || defaultPage.name,
+          route: sanitizeText(document.route) || defaultPage.route,
+          summary: sanitizeText(document.summary) || defaultPage.summary,
+          published: nextPublished,
+          draft: nextDraft,
+          createdAt,
+          updatedAt,
+        },
+        $unset: {
+          content: "",
+        },
+      },
+    );
+  }
+}
+
 async function ensureCmsCollectionsReady() {
   if (!cmsSetupPromise) {
     cmsSetupPromise = (async () => {
@@ -254,6 +444,8 @@ async function ensureCmsCollectionsReady() {
         removeDuplicateMediaAssets(),
       ]);
 
+      await migrateLegacyPages();
+
       await Promise.all([
         pagesCollection.createIndex({ slug: 1 }, { unique: true }),
         siteSettingsCollection.createIndex({ key: 1 }, { unique: true }),
@@ -263,6 +455,7 @@ async function ensureCmsCollectionsReady() {
       await Promise.all(
         cmsPageSlugs.map(async (slug) => {
           const page = buildDefaultCmsPage(slug);
+          const now = new Date();
 
           await pagesCollection.updateOne(
             { slug },
@@ -272,8 +465,18 @@ async function ensureCmsCollectionsReady() {
                 name: page.name,
                 route: page.route,
                 summary: page.summary,
-                content: page.content,
-                updatedAt: new Date(),
+                published: {
+                  content: page.content,
+                  publishedAt: null,
+                  publishedBy: null,
+                },
+                draft: {
+                  content: null,
+                  savedAt: null,
+                  savedBy: null,
+                },
+                createdAt: now,
+                updatedAt: now,
               },
             },
             { upsert: true },
@@ -301,6 +504,18 @@ async function ensureCmsCollectionsReady() {
   await cmsSetupPromise;
 }
 
+async function getPageDocument(slug: CmsPageSlug) {
+  await ensureCmsCollectionsReady();
+  const pagesCollection = await getCmsPagesCollection();
+  const document = await pagesCollection.findOne({ slug });
+
+  if (document) {
+    return document;
+  }
+
+  return null;
+}
+
 export function isCmsPageSlug(value: string): value is CmsPageSlug {
   return cmsPageSlugs.includes(value as CmsPageSlug);
 }
@@ -318,7 +533,7 @@ export async function listCmsPages() {
 
   return cmsPageSlugs.map((slug) => {
     const page = pagesBySlug.get(slug);
-    return page ? serializePage(page) : buildDefaultCmsPage(slug);
+    return page ? serializeWorkspacePage(page) : buildDefaultCmsPageWorkspace(slug);
   });
 }
 
@@ -326,28 +541,51 @@ export async function getCmsPage<TSlug extends CmsPageSlug>(
   slug: TSlug,
 ): Promise<CmsPageDocument<CmsPageContentMap[TSlug]>> {
   noStore();
+
   try {
-    await ensureCmsSeedData();
-    const pagesCollection = await getCmsPagesCollection();
-    const page = await pagesCollection.findOne({ slug });
+    const page = await getPageDocument(slug);
 
     if (!page) {
       return buildDefaultCmsPage(slug);
     }
 
-    return serializePage<CmsPageContentMap[TSlug]>(page);
+    return serializePublicPage<CmsPageContentMap[TSlug]>(page);
   } catch {
     return buildDefaultCmsPage(slug);
   }
 }
 
-export async function updateCmsPage(
+export async function getCmsWorkspacePage<TSlug extends CmsPageSlug>(
+  slug: TSlug,
+): Promise<CmsPageWorkspaceDocument<CmsPageContentMap[TSlug]>> {
+  noStore();
+  const page = await getPageDocument(slug);
+
+  if (!page) {
+    return buildDefaultCmsPageWorkspace(slug);
+  }
+
+  return serializeWorkspacePage<CmsPageContentMap[TSlug]>(page);
+}
+
+export async function saveCmsPageDraft(
   slug: CmsPageSlug,
   payload: unknown,
-): Promise<CmsPageDocument<CmsPageContentMap[CmsPageSlug]>> {
+  savedBy: string,
+): Promise<CmsPageWorkspaceDocument<CmsPageContentMap[CmsPageSlug]>> {
   const input = validatePageUpdate(slug, payload);
   await ensureCmsCollectionsReady();
   const pagesCollection = await getCmsPagesCollection();
+  const existingPage = await pagesCollection.findOne({ slug });
+
+  if (!existingPage) {
+    throw new Error("Unknown CMS page.");
+  }
+
+  const now = new Date();
+  const nextDraftContent = areContentsEqual(input.content, existingPage.published.content)
+    ? null
+    : input.content;
 
   await pagesCollection.updateOne(
     { slug },
@@ -355,20 +593,105 @@ export async function updateCmsPage(
       $set: {
         name: input.name,
         summary: input.summary,
-        content: input.content,
-        updatedAt: new Date(),
+        "draft.content": nextDraftContent,
+        "draft.savedAt": nextDraftContent ? now : null,
+        "draft.savedBy": nextDraftContent ? savedBy : null,
+        updatedAt: now,
       },
     },
-    { upsert: true },
+    { upsert: false },
   );
 
   const updated = await pagesCollection.findOne({ slug });
 
   if (!updated) {
-    throw new Error("Unable to update page content.");
+    throw new Error("Unable to save page draft.");
   }
 
-  return serializePage(updated);
+  await rebuildMediaUsageIndex();
+
+  return serializeWorkspacePage(updated);
+}
+
+export async function publishCmsPageDraft(
+  slug: CmsPageSlug,
+  publishedBy: string,
+): Promise<CmsPageWorkspaceDocument<CmsPageContentMap[CmsPageSlug]>> {
+  await ensureCmsCollectionsReady();
+  const pagesCollection = await getCmsPagesCollection();
+  const page = await pagesCollection.findOne({ slug });
+
+  if (!page) {
+    throw new Error("Unknown CMS page.");
+  }
+
+  const draftContent = page.draft.content;
+
+  if (!draftContent) {
+    throw new Error("There is no draft to publish.");
+  }
+
+  const now = new Date();
+
+  await pagesCollection.updateOne(
+    { slug },
+    {
+      $set: {
+        published: {
+          content: draftContent,
+          publishedAt: now,
+          publishedBy,
+        },
+        draft: {
+          content: null,
+          savedAt: null,
+          savedBy: null,
+        },
+        updatedAt: now,
+      },
+    },
+  );
+
+  const updated = await pagesCollection.findOne({ slug });
+
+  if (!updated) {
+    throw new Error("Unable to publish page draft.");
+  }
+
+  await rebuildMediaUsageIndex();
+
+  return serializeWorkspacePage(updated);
+}
+
+export async function discardCmsPageDraft(
+  slug: CmsPageSlug,
+): Promise<CmsPageWorkspaceDocument<CmsPageContentMap[CmsPageSlug]>> {
+  await ensureCmsCollectionsReady();
+  const pagesCollection = await getCmsPagesCollection();
+
+  await pagesCollection.updateOne(
+    { slug },
+    {
+      $set: {
+        draft: {
+          content: null,
+          savedAt: null,
+          savedBy: null,
+        },
+        updatedAt: new Date(),
+      },
+    },
+  );
+
+  const updated = await pagesCollection.findOne({ slug });
+
+  if (!updated) {
+    throw new Error("Unable to discard page draft.");
+  }
+
+  await rebuildMediaUsageIndex();
+
+  return serializeWorkspacePage(updated);
 }
 
 export async function getCmsSiteSettings() {
@@ -479,5 +802,28 @@ export async function deleteCmsMediaAsset(id: string) {
 
   await ensureCmsCollectionsReady();
   const mediaCollection = await getMediaCollection();
-  await mediaCollection.deleteOne({ _id: new ObjectId(id) });
+  const existing = await mediaCollection.findOne({ _id: new ObjectId(id) });
+
+  if (!existing) {
+    throw new Error("Media asset not found.");
+  }
+
+  await mediaCollection.deleteOne({ _id: existing._id });
+  return serializeMediaAsset(existing);
+}
+
+export async function getCmsMediaAsset(id: string) {
+  if (!ObjectId.isValid(id)) {
+    throw new Error("Invalid media asset id.");
+  }
+
+  await ensureCmsCollectionsReady();
+  const mediaCollection = await getMediaCollection();
+  const asset = await mediaCollection.findOne({ _id: new ObjectId(id) });
+
+  if (!asset) {
+    return null;
+  }
+
+  return serializeMediaAsset(asset);
 }

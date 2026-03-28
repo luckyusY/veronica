@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdminAccess } from "@/lib/admin-guard";
 import { getCloudinary } from "@/lib/cloudinary";
 import { createCmsMediaAsset } from "@/lib/cms-store";
 
@@ -55,11 +56,20 @@ async function uploadToCloudinary(
 
 export async function POST(request: Request) {
   try {
+    const access = await requireAdminAccess(["owner", "content", "media"]);
+
+    if (access.response) {
+      return access.response;
+    }
+
     const formData = await request.formData();
     const file = formData.get("file");
 
     if (!(file instanceof File)) {
-      return NextResponse.json({ error: "A file is required." }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: "A file is required." },
+        { status: 400 },
+      );
     }
 
     const folder = sanitizeText(formData.get("folder")) || "veronica/uploads";
@@ -88,10 +98,11 @@ export async function POST(request: Request) {
       duration: uploaded.duration,
     });
 
-    return NextResponse.json({ item: asset }, { status: 201 });
+    return NextResponse.json({ success: true, item: asset }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       {
+        success: false,
         error: error instanceof Error ? error.message : "Unable to upload media.",
       },
       { status: 400 },
