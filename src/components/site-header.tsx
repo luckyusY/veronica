@@ -73,26 +73,23 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
   const isScrolled = scrollProgress > 0.08;
   const headerStyle: CSSProperties = {
     backgroundColor: motionLite
-      ? `rgba(10, 10, 10, ${(0.85 + scrollProgress * 0.10).toFixed(3)})`
-      : `rgba(10, 10, 10, ${(scrollProgress * 0.88).toFixed(3)})`,
+      ? `rgba(13, 9, 7, ${(0.78 + scrollProgress * 0.16).toFixed(3)})`
+      : `rgba(13, 9, 7, ${(scrollProgress * 0.85).toFixed(3)})`,
     backdropFilter: motionLite
       ? "none"
-      : `blur(${(scrollProgress * 24).toFixed(2)}px) saturate(${(
-        100 +
-        scrollProgress * 30
-      ).toFixed(0)}%)`,
+      : `blur(${(scrollProgress * 18).toFixed(2)}px) saturate(${(
+          100 +
+          scrollProgress * 24
+        ).toFixed(0)}%)`,
     WebkitBackdropFilter: motionLite
       ? "none"
-      : `blur(${(scrollProgress * 24).toFixed(2)}px) saturate(${(
-        100 +
-        scrollProgress * 30
-      ).toFixed(0)}%)`,
-    borderBottom: scrollProgress > 0
-      ? `1px solid rgba(255, 255, 255, ${(scrollProgress * 0.08).toFixed(3)})`
-      : "1px solid transparent",
+      : `blur(${(scrollProgress * 18).toFixed(2)}px) saturate(${(
+          100 +
+          scrollProgress * 24
+        ).toFixed(0)}%)`,
     boxShadow:
       scrollProgress > 0
-        ? `0 14px 60px rgba(0, 0, 0, ${(scrollProgress * 0.3).toFixed(3)})`
+        ? `0 14px 40px rgba(0, 0, 0, ${(scrollProgress * 0.18).toFixed(3)})`
         : "none",
   };
 
@@ -132,8 +129,9 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                 transition={{ duration: 0.58, delay: 0.16 + index * 0.08, ease: itemEase }}
               >
                 <Link
-                  className={`site-header-link ${isActivePath(pathname, item.href) ? "is-active" : ""
-                    }`.trim()}
+                  className={`site-header-link ${
+                    isActivePath(pathname, item.href) ? "is-active" : ""
+                  }`.trim()}
                   href={item.href}
                 >
                   {item.label}
@@ -148,20 +146,21 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                 item.href === "/contact" ? settings.bookingLabel : settings.shopLabel;
 
               return (
-                <motion.div
-                  animate={{ opacity: 1, y: 0 }}
-                  initial={{ opacity: 0, y: -12 }}
-                  key={item.href}
-                  transition={{ duration: 0.58, delay: 0.7 + index * 0.08, ease: itemEase }}
+              <motion.div
+                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: -12 }}
+                key={item.href}
+                transition={{ duration: 0.58, delay: 0.7 + index * 0.08, ease: itemEase }}
+              >
+                <Link
+                  className={`site-header-action ${
+                    item.href === "/shop" ? "site-header-action--accent" : ""
+                  } ${isActivePath(pathname, item.href) ? "is-active" : ""}`.trim()}
+                  href={item.href}
                 >
-                  <Link
-                    className={`site-header-action ${item.href === "/shop" ? "site-header-action--accent" : ""
-                      } ${isActivePath(pathname, item.href) ? "is-active" : ""}`.trim()}
-                    href={item.href}
-                  >
-                    {label}
-                  </Link>
-                </motion.div>
+                  {label}
+                </Link>
+              </motion.div>
               );
             })}
           </div>
@@ -213,8 +212,9 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                     }}
                   >
                     <Link
-                      className={`site-header-mobile-link ${isActivePath(pathname, item.href) ? "is-active" : ""
-                        }`.trim()}
+                      className={`site-header-mobile-link ${
+                        isActivePath(pathname, item.href) ? "is-active" : ""
+                      }`.trim()}
                       href={item.href}
                       onClick={() => setMenuOpen(false)}
                     >
@@ -230,25 +230,26 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                     item.href === "/contact" ? settings.bookingLabel : settings.shopLabel;
 
                   return (
-                    <motion.div
-                      animate={{ opacity: 1, x: 0 }}
-                      initial={{ opacity: 0, x: -12 }}
-                      key={item.href}
-                      transition={{
-                        duration: 0.34,
-                        delay: 0.28 + index * 0.06,
-                        ease: itemEase,
-                      }}
+                  <motion.div
+                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, x: -12 }}
+                    key={item.href}
+                    transition={{
+                      duration: 0.34,
+                      delay: 0.28 + index * 0.06,
+                      ease: itemEase,
+                    }}
+                  >
+                    <Link
+                      className={`site-header-mobile-link site-header-mobile-link--action ${
+                        item.href === "/shop" ? "site-header-mobile-link--accent" : ""
+                      } ${isActivePath(pathname, item.href) ? "is-active" : ""}`.trim()}
+                      href={item.href}
+                      onClick={() => setMenuOpen(false)}
                     >
-                      <Link
-                        className={`site-header-mobile-link site-header-mobile-link--action ${item.href === "/shop" ? "site-header-mobile-link--accent" : ""
-                          } ${isActivePath(pathname, item.href) ? "is-active" : ""}`.trim()}
-                        href={item.href}
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        {label}
-                      </Link>
-                    </motion.div>
+                      {label}
+                    </Link>
+                  </motion.div>
                   );
                 })}
               </div>

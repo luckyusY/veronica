@@ -23,7 +23,6 @@
 # misc
 .DS_Store
 *.pem
-assets/*.mp4
 
 # debug
 npm-debug.log*

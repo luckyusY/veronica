@@ -6,82 +6,37 @@
 @import "swiper/css/pagination";
 
 :root {
-  --color-bg-primary: #0a0a0a;
-  --color-text-primary: #f5f2eb;
-  --color-accent: #c8a97e;
-  --color-cta: #e6d5b8;
-  --color-link: #c8a97e;
-  --color-bg-section: #121212;
-  --color-text-on-light: #0a0a0a;
+  --color-bg-primary: #1c1c1c;
+  --color-text-primary: #ededed;
+  --color-accent: #b08d57;
+  --color-cta: #ff6f61;
+  --color-link: #4dd0e1;
+  --color-bg-section: #f5f5f5;
+  --color-text-on-light: #1c1c1c;
   --background: var(--color-bg-primary);
   --foreground: var(--color-text-primary);
   --muted: var(--color-accent);
   --gold: var(--color-accent);
-  --gold-soft: #e3d3b6;
-  --bronze: #ab8d6b;
+  --gold-soft: #c4a16c;
+  --bronze: var(--color-accent);
   --accent: var(--color-cta);
-  --accent-soft: #f2e7d5;
+  --accent-soft: #f9867b;
   --link-accent: var(--color-link);
   --warm-white: var(--color-text-primary);
-  --line: rgba(200, 169, 126, 0.16);
-  --line-strong: rgba(200, 169, 126, 0.32);
-  --surface-1: #111111;
-  --surface-2: #161616;
-  --surface-3: #1a1a1a;
-  --surface-4: #222222;
-  --surface-5: #2a2a2a;
+  --line: rgba(176, 141, 87, 0.16);
+  --line-strong: rgba(176, 141, 87, 0.32);
+  --surface-1: #181818;
+  --surface-2: #202020;
+  --surface-3: #262626;
+  --surface-4: #2d2b28;
+  --surface-5: #37332e;
   --paper-base: #dbd7cf;
   --paper-mid: #e8e3db;
   --paper-light: var(--color-bg-section);
   --paper-deep: #d8d2c8;
   --paper-ink: var(--color-text-on-light);
-  --shadow: 0 28px 70px rgba(0, 0, 0, 0.6);
+  --shadow: 0 28px 70px rgba(0, 0, 0, 0.42);
 }
-
-.home-hero-section {
-  position: relative;
-  height: min(41.5rem, calc(100svh - 0.25rem));
-  min-height: 33rem;
-  overflow: clip;
-}
-
-.page-hero-section {
-  padding-top: clamp(6.75rem, 10vw, 8.75rem);
-}
-
-@keyframes homeHeroKenBurns {
-  from {
-    transform: scale(1);
-  }
-
-  to {
-    transform: scale(1.04);
-  }
-}
-
-.home-hero-swiper {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--background);
-  touch-action: pan-y;
-}
-
-.home-hero-swiper .swiper-wrapper,
-.home-hero-swiper .swiper-slide,
-.home-hero-slide {
-  position: relative;
-  height: 100%;
-}
-
-.home-hero-slide-media {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
 
 .home-hero-section {
   position: relative;
@@ -137,10 +92,10 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 52% 42%, rgba(10, 10, 10, 0.08) 0%, rgba(10, 10, 10, 0.3) 28%, rgba(10, 10, 10, 0.72) 68%, rgba(10, 10, 10, 0.98) 100%),
-    linear-gradient(90deg, rgba(8, 8, 8, 0.95) 0%, rgba(8, 8, 8, 0.5) 42%, rgba(8, 8, 8, 0.88) 100%),
-    linear-gradient(180deg, rgba(10, 10, 10, 0.35) 0%, rgba(10, 10, 10, 0.25) 46%, rgba(10, 10, 10, 0.96) 100%);
-  box-shadow: inset 0 0 14rem rgba(0, 0, 0, 0.5);
+    radial-gradient(circle at 52% 42%, rgba(15, 14, 12, 0.08) 0%, rgba(15, 14, 12, 0.26) 28%, rgba(15, 14, 12, 0.68) 68%, rgba(15, 14, 12, 0.96) 100%),
+    linear-gradient(90deg, rgba(12, 11, 9, 0.9) 0%, rgba(12, 11, 9, 0.42) 42%, rgba(12, 11, 9, 0.82) 100%),
+    linear-gradient(180deg, rgba(15, 14, 12, 0.32) 0%, rgba(15, 14, 12, 0.22) 46%, rgba(15, 14, 12, 0.9) 100%);
+  box-shadow: inset 0 0 12rem rgba(8, 7, 5, 0.34);
   pointer-events: none;
   z-index: 2;
 }
@@ -258,27 +213,29 @@
   align-items: center;
   justify-content: center;
   min-height: 48px;
-  padding: 0 1.5rem;
-  border: 1px solid rgba(230, 213, 184, 0.3);
-  border-radius: 4px;
-  background: rgba(230, 213, 184, 0.03);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  font-size: 0.72rem;
+  padding: 0 1.35rem;
+  border: 1px solid rgba(255, 111, 97, 0.78);
+  border-radius: 2px;
+  background: var(--color-cta);
+  font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.22em;
   line-height: 1;
   text-transform: uppercase;
-  color: var(--color-cta);
-  transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  color: var(--warm-white);
+  transition:
+    background 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    transform 220ms ease;
 }
 
 .home-hero-button:hover {
-  transform: translateY(-2px);
-  border-color: rgba(230, 213, 184, 0.85);
-  background: rgba(230, 213, 184, 0.12);
-  box-shadow: 0 8px 24px rgba(230, 213, 184, 0.15);
+  transform: translateY(-1px);
+  border-color: rgba(77, 208, 225, 0.78);
+  background: #ff7d70;
   color: #ffffff;
+  text-decoration: none;
 }
 
 .home-hero-meta {
@@ -818,12 +775,14 @@
   inset: auto 0 0;
   height: 1px;
   opacity: 0;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(201, 169, 110, 0.14) 16%,
-      rgba(201, 169, 110, 0.92) 50%,
-      rgba(201, 169, 110, 0.14) 84%,
-      transparent 100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(201, 169, 110, 0.14) 16%,
+    rgba(201, 169, 110, 0.92) 50%,
+    rgba(201, 169, 110, 0.14) 84%,
+    transparent 100%
+  );
   transition: opacity 260ms ease;
 }
 
@@ -964,10 +923,12 @@
   height: 1px;
   transform: scaleX(0);
   transform-origin: center;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(77, 208, 225, 0.92) 50%,
-      transparent 100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(77, 208, 225, 0.92) 50%,
+    transparent 100%
+  );
   transition: transform 220ms ease;
 }
 
@@ -1245,12 +1206,14 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(110deg,
-      transparent 22%,
-      rgba(255, 255, 255, 0.08) 42%,
-      rgba(242, 210, 139, 0.16) 50%,
-      rgba(255, 255, 255, 0.06) 58%,
-      transparent 78%);
+  background: linear-gradient(
+    110deg,
+    transparent 22%,
+    rgba(255, 255, 255, 0.08) 42%,
+    rgba(242, 210, 139, 0.16) 50%,
+    rgba(255, 255, 255, 0.06) 58%,
+    transparent 78%
+  );
   transform: translateX(-120%);
   transition: transform 420ms ease;
 }
@@ -1271,12 +1234,14 @@
 .site-footer-divider {
   height: 1px;
   margin: 0.3rem 0 1.3rem;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(242, 210, 139, 0.18) 18%,
-      rgba(242, 210, 139, 0.52) 50%,
-      rgba(242, 210, 139, 0.18) 82%,
-      transparent 100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(242, 210, 139, 0.18) 18%,
+    rgba(242, 210, 139, 0.52) 50%,
+    rgba(242, 210, 139, 0.18) 82%,
+    transparent 100%
+  );
 }
 
 .editorial-nav-shell--footer {
@@ -1346,7 +1311,6 @@
 }
 
 @media only screen and (max-width: 640px) {
-
   .home-hero-section,
   .home-hero-swiper,
   .home-hero-slide,
@@ -3095,7 +3059,7 @@ a {
   .admin-repeatable-card-body,
   .admin-object-panel,
   .admin-object-panel-body,
-  .admin-structured-grid>* {
+  .admin-structured-grid > * {
     min-width: 0;
   }
 
@@ -5565,7 +5529,7 @@ a:not([class]):hover {
   z-index: 1;
 }
 
-.editorial-route-link>* {
+.editorial-route-link > * {
   position: relative;
   z-index: 2;
 }
@@ -5646,12 +5610,14 @@ a:not([class]):hover {
   content: "";
   display: block;
   height: 1px;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(242, 210, 139, 0.5) 30%,
-      rgba(217, 79, 43, 0.4) 50%,
-      rgba(242, 210, 139, 0.5) 70%,
-      transparent 100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(242, 210, 139, 0.5) 30%,
+    rgba(217, 79, 43, 0.4) 50%,
+    rgba(242, 210, 139, 0.5) 70%,
+    transparent 100%
+  );
 }
 
 /* ── Footer nav button gold hover glow ──────────────────────────────── */
@@ -5667,12 +5633,14 @@ a:not([class]):hover {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(110deg,
-      transparent 24%,
-      rgba(255, 255, 255, 0.06) 44%,
-      rgba(242, 210, 139, 0.14) 52%,
-      rgba(255, 255, 255, 0.05) 60%,
-      transparent 80%);
+  background: linear-gradient(
+    110deg,
+    transparent 24%,
+    rgba(255, 255, 255, 0.06) 44%,
+    rgba(242, 210, 139, 0.14) 52%,
+    rgba(255, 255, 255, 0.05) 60%,
+    transparent 80%
+  );
   transform: translateX(-120%);
   transition: transform 420ms ease;
   pointer-events: none;
@@ -5885,10 +5853,12 @@ a:not([class]):hover {
 /* Brand palette system overrides */
 
 .luxury-divider {
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(176, 141, 87, 0.56) 50%,
-      transparent 100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(176, 141, 87, 0.56) 50%,
+    transparent 100%
+  );
 }
 
 a:not([class]):hover {
