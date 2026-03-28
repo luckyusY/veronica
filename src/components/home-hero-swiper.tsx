@@ -160,10 +160,38 @@ export function HomeHeroSwiper({
               <Link className="home-hero-button" href={primaryAction.href}>
                 {primaryAction.label}
               </Link>
-              <Link className="home-hero-button" href={secondaryAction.href}>
+              <Link
+                className="home-hero-button home-hero-button--secondary"
+                href={secondaryAction.href}
+              >
                 {secondaryAction.label}
               </Link>
             </motion.div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                className="home-hero-slide-card"
+                exit={{ opacity: 0, y: 10, filter: "blur(8px)" }}
+                initial={{ opacity: 0, y: 10, filter: "blur(8px)" }}
+                key={`${activeIndex}-scene`}
+                transition={{ duration: 0.34, delay: 0.24, ease: itemEase }}
+              >
+                <div className="home-hero-slide-card-topline">
+                  <span className="home-hero-slide-card-count">
+                    {String(activeIndex + 1).padStart(2, "0")}
+                  </span>
+                  <span className="home-hero-slide-card-rule" />
+                  <span className="home-hero-slide-card-total">
+                    {String(slides.length).padStart(2, "0")}
+                  </span>
+                </div>
+                <p className="home-hero-slide-card-title">{activeSlide.title}</p>
+                <p className="home-hero-slide-card-note">
+                  {activeSlide.image.label ?? activeSlide.eyebrow}
+                </p>
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
 
           <AnimatePresence mode="wait">

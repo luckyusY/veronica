@@ -10,6 +10,29 @@ export default async function Home() {
   const page = await getCmsPage("home");
   const content = page.content as HomePageContent;
   const visualChaptersSet = content.visualChapters.items;
+  const heroSignals = [
+    {
+      label: content.hero.slides[0]?.accent ?? "Portraiture",
+      title: content.hero.slides[0]?.title ?? "Official Portraiture",
+      detail:
+        content.hero.slides[0]?.copy ??
+        "A cinematic first impression that frames Veronica as an artist, not a template profile.",
+    },
+    {
+      label: "Live Reach",
+      title: content.intro.stats[0]?.value ?? "41M+",
+      detail:
+        content.intro.stats[0]?.detail ??
+        "Momentum built from national touring, independent releases, and diaspora demand.",
+    },
+    {
+      label: content.hero.slides[1]?.accent ?? "Campaign Era",
+      title: content.hero.slides[1]?.title ?? "Release Worldbuilding",
+      detail:
+        content.hero.slides[1]?.copy ??
+        "Every era should feel like a chapter with its own lighting, wardrobe, and emotional tone.",
+    },
+  ];
 
   return (
     <main className="editorial-home pb-16 sm:pb-20">
@@ -21,6 +44,24 @@ export default async function Home() {
         slides={content.hero.slides}
         verticalLabel={content.hero.verticalLabel}
       />
+
+      <section className="section-shell relative z-10 -mt-10 pb-6 sm:-mt-14 sm:pb-8">
+        <div className="home-signal-band">
+          {heroSignals.map((item, index) => (
+            <RevealBlock
+              className="home-signal-card"
+              delay={0.06 + index * 0.06}
+              distance={20}
+              key={`${item.label}-${item.title}`}
+              variant={index === 1 ? "up" : index === 0 ? "left" : "right"}
+            >
+              <p className="home-signal-label">{item.label}</p>
+              <h2 className="home-signal-title">{item.title}</h2>
+              <p className="home-signal-detail">{item.detail}</p>
+            </RevealBlock>
+          ))}
+        </div>
+      </section>
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.88fr_1.12fr]">
@@ -144,6 +185,16 @@ export default async function Home() {
         items={content.testimonials.items}
         title={content.testimonials.title}
       />
+
+      <section className="section-shell py-10">
+        <RevealBlock className="home-quote-banner" variant="up" distance={28}>
+          <p className="home-quote-banner-label">Artist World</p>
+          <p className="home-quote-banner-copy">
+            Veronica&apos;s digital presence should feel like a premiere night, a press
+            archive, and a live performance invitation all at once.
+          </p>
+        </RevealBlock>
+      </section>
 
       <section className="editorial-section-opener-shell editorial-section-opener-shell--compact">
         <RevealBlock className="editorial-section-opener" variant="up" distance={24}>

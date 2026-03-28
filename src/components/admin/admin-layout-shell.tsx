@@ -53,6 +53,10 @@ export function AdminLayoutShell({ children, user }: AdminLayoutShellProps) {
                     media, releases, events, commerce, and inquiries.
                   </p>
                 </div>
+                <div className="admin-shell-pill-row">
+                  <span className="admin-shell-pill">Private workspace</span>
+                  <span className="admin-shell-pill">Role-aware access</span>
+                </div>
               </div>
             </div>
 
@@ -63,7 +67,7 @@ export function AdminLayoutShell({ children, user }: AdminLayoutShellProps) {
             <div className="luxury-divider my-5" />
 
             <div className="space-y-3">
-              <div className="admin-surface">
+              <div className="admin-sidebar-panel">
                 <p className="section-label">Workspace Standard</p>
                 <p className="mt-4 text-sm leading-7 text-white/72">
                   Keep publishing tasks separate from day-to-day operations so
@@ -71,7 +75,7 @@ export function AdminLayoutShell({ children, user }: AdminLayoutShellProps) {
                 </p>
               </div>
 
-              <div className="admin-surface">
+              <div className="admin-sidebar-panel">
                 <div className="flex items-start gap-3">
                   <span className="admin-nav-icon">
                     <Sparkles size={16} strokeWidth={1.8} />
@@ -88,7 +92,7 @@ export function AdminLayoutShell({ children, user }: AdminLayoutShellProps) {
                 </div>
               </div>
 
-              <div className="admin-surface">
+              <div className="admin-sidebar-panel">
                 <div className="flex items-start gap-3">
                   <span className="admin-nav-icon">
                     <Users size={16} strokeWidth={1.8} />
@@ -114,9 +118,12 @@ export function AdminLayoutShell({ children, user }: AdminLayoutShellProps) {
                   role={user.role}
                 />
 
-                <div className="flex flex-wrap gap-3">
-                  <Link className="primary-button" href="/">
+                <div className="admin-sidebar-actions">
+                  <Link className="admin-secondary-link" href="/">
                     Return To Site
+                  </Link>
+                  <Link className="admin-secondary-link" href="/admin/content">
+                    Open CMS
                   </Link>
                 </div>
               </div>

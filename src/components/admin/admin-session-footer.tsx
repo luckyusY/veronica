@@ -35,9 +35,7 @@ export function AdminSessionFooter({
         <div className="admin-session-avatar">{initials || "VA"}</div>
         <div>
           <p className="admin-session-name">{name}</p>
-          <p className="admin-session-role">
-            {adminRoleLabels[role]} · {email}
-          </p>
+          <p className="admin-session-role">{adminRoleLabels[role]} | {email}</p>
         </div>
       </div>
 

@@ -107,6 +107,30 @@ export default async function AdminPage() {
     },
   ];
 
+  const focusCards = [
+    {
+      href: "/admin/content",
+      label: "Publishing Priority",
+      title: "Keep the public story current.",
+      stat: `${cmsPages.length} routes`,
+      copy: "Review homepage, biography, and campaign sections before each major release or appearance.",
+    },
+    {
+      href: "/admin/media",
+      label: "Media Direction",
+      title: "Maintain a polished visual library.",
+      stat: `${mediaAssets.length} assets`,
+      copy: "Upload hero-ready portraits, campaign stills, and short-form clips without mixing them into page editing.",
+    },
+    {
+      href: "/admin/inquiries",
+      label: "Team Response",
+      title: "Move quickly on booking and press.",
+      stat: `${counts.inquiries} inquiries`,
+      copy: "Give management and brand requests a dedicated queue so high-value conversations never disappear inside content tasks.",
+    },
+  ];
+
   return (
     <div className="space-y-6">
       <section className="admin-surface admin-hero">
@@ -154,6 +178,45 @@ export default async function AdminPage() {
               </article>
             );
           })}
+        </div>
+      </section>
+
+      <section className="admin-surface">
+        <div className="admin-panel-header">
+          <div className="space-y-3">
+            <div className="admin-panel-meta">
+              <span className="admin-badge">
+                <Sparkles size={15} />
+                <span>Today&apos;s Focus</span>
+              </span>
+            </div>
+            <div>
+              <h2 className="display-title text-4xl text-white sm:text-5xl">
+                Work in lanes, not in one long queue.
+              </h2>
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
+                These three workspaces usually need the fastest attention: the live
+                story, the media library behind it, and the inquiries that turn brand
+                momentum into real opportunities.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="luxury-divider my-5" />
+
+        <div className="admin-focus-grid">
+          {focusCards.map((item) => (
+            <Link className="admin-focus-card" href={item.href} key={item.href}>
+              <p className="admin-focus-card-topline">{item.label}</p>
+              <h3 className="display-title text-3xl text-white">{item.title}</h3>
+              <p className="admin-focus-copy">{item.copy}</p>
+              <div className="admin-focus-stat">
+                <span>{item.stat}</span>
+                <span>Open workspace</span>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
