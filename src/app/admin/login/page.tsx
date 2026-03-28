@@ -1,5 +1,6 @@
 import { ShieldCheck } from "lucide-react";
 import { AdminLoginForm } from "@/components/admin/admin-login-form";
+import { getSampleAdminCredentials } from "@/lib/db/users";
 
 type AdminLoginPageProps = {
   searchParams: Promise<{
@@ -11,6 +12,7 @@ export default async function AdminLoginPage({
   searchParams,
 }: AdminLoginPageProps) {
   const resolvedSearchParams = await searchParams;
+  const sampleCredentials = getSampleAdminCredentials();
   const callbackUrl =
     typeof resolvedSearchParams.callbackUrl === "string" &&
     resolvedSearchParams.callbackUrl.startsWith("/admin")
@@ -64,6 +66,40 @@ export default async function AdminLoginPage({
           </div>
 
           <AdminLoginForm callbackUrl={callbackUrl} />
+
+          {sampleCredentials.length > 0 ? (
+            <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4 sm:p-5">
+              <div className="space-y-2">
+                <p className="section-label">Sample Access</p>
+                <p className="text-sm leading-7 text-white/60">
+                  Demo accounts are enabled for this environment. Use these only for
+                  staging or local setup.
+                </p>
+              </div>
+
+              <div className="mt-4 grid gap-3">
+                {sampleCredentials.map((credential) => (
+                  <div
+                    className="rounded-[1.25rem] border border-white/8 bg-black/20 px-4 py-3"
+                    key={credential.role}
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="section-label text-[0.65rem] text-[#d1b071]">
+                        {credential.role}
+                      </span>
+                      <span className="text-xs uppercase tracking-[0.24em] text-white/40">
+                        {credential.name}
+                      </span>
+                    </div>
+                    <div className="mt-3 space-y-1 font-mono text-sm text-white/82">
+                      <p>{credential.email}</p>
+                      <p>{credential.password}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
       </section>
     </div>

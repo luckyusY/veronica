@@ -1,20 +1,26 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { FileJson, LoaderCircle, RefreshCcw, Rocket, Save, Trash2 } from "lucide-react";
-import type { ZodIssue } from "zod";
 import { SectionEditor } from "@/components/admin/cms/SectionEditor";
 import { SectionFieldsRenderer } from "@/components/admin/cms/SectionFieldsRenderer";
 import { defaultCmsPageContent } from "@/lib/cms-defaults";
 import {
-  humanizeKey,
-  isPlainObject,
-  pathFromIssue,
-} from "@/lib/cms-editor-utils";
+  buildValidationState,
+  countChangedFields,
+  formatRelativeFromNow,
+  formatUpdatedAt,
+  getSectionErrorCount,
+  getStatusConfig,
+  summarizePageContent,
+  type ValidationErrorMap,
+  type ValidationIssueItem,
+} from "@/lib/cms-admin-ui";
+import { humanizeKey, isPlainObject } from "@/lib/cms-editor-utils";
 import { cmsPageEditorSchemas } from "@/lib/schemas/cms-pages";
 import type {
   CmsMediaAsset,
-  CmsPageStatus,
   CmsPageSlug,
   CmsPageWorkspaceDocument,
 } from "@/lib/cms-types";
@@ -22,6 +28,7 @@ import type {
 type AdminPageCmsPanelProps = {
   initialPages: CmsPageWorkspaceDocument[];
   initialMediaAssets: CmsMediaAsset[];
+  selectedSlug: CmsPageSlug;
 };
 
 type FeedbackState = {
@@ -42,13 +49,6 @@ type PageMutationResponse = {
   message?: string;
 };
 
-type ValidationErrorMap = Record<string, string[]>;
-
-type ValidationIssueItem = {
-  path: string;
-  message: string;
-};
-
 async function readApiError(response: Response) {
   try {
     const payload = (await response.json()) as { error?: string };
@@ -56,129 +56,6 @@ async function readApiError(response: Response) {
   } catch {
     return "Something went wrong.";
   }
-}
-
-function formatUpdatedAt(value: string | null) {
-  if (!value) {
-    return "Not yet";
-  }
-
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date(value));
-}
-
-function formatRelativeFromNow(value: string | null) {
-  if (!value) {
-    return "Not yet";
-  }
-
-  const target = new Date(value).getTime();
-  const now = Date.now();
-  const diffMs = target - now;
-  const diffMinutes = Math.round(diffMs / 60000);
-  const formatter = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-
-  if (Math.abs(diffMinutes) < 60) {
-    return formatter.format(diffMinutes, "minute");
-  }
-
-  const diffHours = Math.round(diffMinutes / 60);
-
-  if (Math.abs(diffHours) < 24) {
-    return formatter.format(diffHours, "hour");
-  }
-
-  const diffDays = Math.round(diffHours / 24);
-  return formatter.format(diffDays, "day");
-}
-
-function summarizePageContent(value: unknown) {
-  const content = isPlainObject(value) ? value : {};
-  const sectionKeys = Object.keys(content);
-  const hero = isPlainObject(content.hero) ? content.hero : null;
-  const heroSlides = hero && Array.isArray(hero.slides) ? hero.slides.length : 0;
-
-  let mediaRefs = 0;
-
-  function visit(entry: unknown) {
-    if (Array.isArray(entry)) {
-      entry.forEach(visit);
-      return;
-    }
-
-    if (!isPlainObject(entry)) {
-      return;
-    }
-
-    if (typeof entry.publicId === "string" || typeof entry.url === "string") {
-      mediaRefs += 1;
-    }
-
-    Object.values(entry).forEach(visit);
-  }
-
-  visit(content);
-
-  return { sectionKeys, heroSlides, mediaRefs };
-}
-
-function getStatusConfig(status: CmsPageStatus) {
-  if (status === "draft-pending") {
-    return {
-      label: "Draft pending",
-      className: "status-pill--draft",
-      description: "There are unpublished changes waiting for review.",
-    };
-  }
-
-  if (status === "published") {
-    return {
-      label: "Published",
-      className: "status-pill--ok",
-      description: "The live site is reading the published version.",
-    };
-  }
-
-  return {
-    label: "Never published",
-    className: "status-pill--neutral",
-    description: "This page has content, but it has not been explicitly published yet.",
-  };
-}
-
-function countChangedFields(left: unknown, right: unknown): number {
-  if (JSON.stringify(left ?? null) === JSON.stringify(right ?? null)) {
-    return 0;
-  }
-
-  if (Array.isArray(left) && Array.isArray(right)) {
-    const maxLength = Math.max(left.length, right.length);
-    let total = left.length === right.length ? 0 : 1;
-
-    for (let index = 0; index < maxLength; index += 1) {
-      total += countChangedFields(left[index], right[index]);
-    }
-
-    return total;
-  }
-
-  if (isPlainObject(left) && isPlainObject(right)) {
-    const keys = new Set([...Object.keys(left), ...Object.keys(right)]);
-    let total = 0;
-
-    for (const key of keys) {
-      total += countChangedFields(left[key], right[key]);
-    }
-
-    return total;
-  }
-
-  return 1;
 }
 
 function createDraftState(page: CmsPageWorkspaceDocument): PageDraft {
@@ -189,47 +66,12 @@ function createDraftState(page: CmsPageWorkspaceDocument): PageDraft {
   };
 }
 
-function normalizeIssuePath(issue: ZodIssue) {
-  const fullPath = pathFromIssue(issue.path);
-  return fullPath.startsWith("content.") ? fullPath.slice("content.".length) : fullPath;
-}
-
-function buildValidationState(issues: readonly ZodIssue[]) {
-  const errorMap: ValidationErrorMap = {};
-  const normalizedIssues: ValidationIssueItem[] = issues.map((issue) => {
-    const path = normalizeIssuePath(issue);
-
-    if (!errorMap[path]) {
-      errorMap[path] = [];
-    }
-
-    errorMap[path].push(issue.message);
-
-    return {
-      path: path || "content",
-      message: issue.message,
-    };
-  });
-
-  return { errorMap, issues: normalizedIssues };
-}
-
-function getSectionErrorCount(errorMap: ValidationErrorMap, sectionKey: string) {
-  return Object.entries(errorMap).reduce((count, [path, messages]) => {
-    if (path === sectionKey || path.startsWith(`${sectionKey}.`)) {
-      return count + messages.length;
-    }
-
-    return count;
-  }, 0);
-}
-
 export function AdminPageCmsPanel({
   initialPages,
   initialMediaAssets,
+  selectedSlug,
 }: AdminPageCmsPanelProps) {
   const [pages, setPages] = useState(initialPages);
-  const [selectedSlug, setSelectedSlug] = useState<CmsPageSlug>(initialPages[0]?.slug ?? "home");
   const [pageDrafts, setPageDrafts] = useState<Record<string, PageDraft>>(() =>
     Object.fromEntries(initialPages.map((page) => [page.slug, createDraftState(page)])),
   );
@@ -260,13 +102,6 @@ export function AdminPageCmsPanel({
         : [],
     [selectedDraft],
   );
-
-  function selectPage(slug: CmsPageSlug) {
-    setSelectedSlug(slug);
-    setFeedback(null);
-    setValidationErrors({});
-    setValidationIssues(null);
-  }
 
   function updateSelectedDraftField(field: "name" | "summary", value: string) {
     if (!selectedPage) return;
@@ -478,6 +313,10 @@ export function AdminPageCmsPanel({
     setBusyKey(null);
   }
 
+  if (!selectedPage || !selectedDraft || !statusConfig) {
+    return null;
+  }
+
   return (
     <div className="admin-stack">
       {feedback ? (
@@ -502,11 +341,11 @@ export function AdminPageCmsPanel({
             </div>
             <div>
               <h1 className="display-title text-4xl text-white sm:text-5xl">
-                Edit public page content by route.
+                Edit each public route in its own workspace.
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                Each route now saves to draft first, then publishes deliberately to the live site.
-                The public website only reads published content.
+                Every page now has a dedicated editor route so fields stay visible, repeatable
+                groups have room to breathe, and publishing decisions stay focused.
               </p>
             </div>
           </div>
@@ -517,18 +356,36 @@ export function AdminPageCmsPanel({
         <div className="admin-cms-layout">
           <aside className="admin-cms-rail">
             <div className="admin-cms-rail-surface">
-              <p className="section-label">Pages</p>
-              <div className="admin-cms-page-list">
+              <p className="section-label">Content directory</p>
+              <div className="admin-button-row mt-4">
+                <Link className="admin-button admin-button--ghost" href="/admin/content">
+                  All pages
+                </Link>
+                <a
+                  className="admin-button admin-button--ghost"
+                  href={selectedPage.route}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Open live page
+                </a>
+              </div>
+            </div>
+
+            <div className="admin-cms-rail-surface">
+              <p className="section-label">Page editors</p>
+              <div className="admin-cms-page-list admin-cms-page-list--stacked">
                 {pages.map((page) => {
                   const summary = summarizePageContent(page.content);
                   const pageStatus = getStatusConfig(page.status);
 
                   return (
-                    <button
-                      className={`admin-page-card ${selectedSlug === page.slug ? "is-active" : ""}`.trim()}
+                    <Link
+                      className={`admin-page-card ${
+                        selectedSlug === page.slug ? "is-active" : ""
+                      }`.trim()}
+                      href={`/admin/content/${page.slug}`}
                       key={page.slug}
-                      onClick={() => selectPage(page.slug)}
-                      type="button"
                     >
                       <div className="admin-page-card-topline">
                         <span className="admin-badge">{page.slug}</span>
@@ -543,18 +400,118 @@ export function AdminPageCmsPanel({
                         <span>{summary.sectionKeys.length} sections</span>
                         <span>{summary.mediaRefs} media refs</span>
                       </div>
-                    </button>
+                    </Link>
                   );
                 })}
               </div>
             </div>
+          </aside>
 
-            <div className="admin-cms-rail-surface">
-              <p className="section-label">Current page snapshot</p>
-              <div className="admin-mini-stat-grid">
+          <div className="admin-cms-main">
+            <div className="admin-surface admin-surface--inner">
+              <div className="admin-panel-header">
+                <div>
+                  <p className="section-label">{selectedPage.route}</p>
+                  <h2 className="display-title mt-3 text-3xl text-white">
+                    {selectedPage.name}
+                  </h2>
+                  <p className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
+                    Structured field editing is the default here. Advanced section JSON is
+                    still available when needed, but the editor now gives each page enough
+                    width to manage nested content comfortably.
+                  </p>
+                </div>
+
+                <div className="admin-button-row">
+                  <button
+                    className="admin-button admin-button--ghost"
+                    onClick={() =>
+                      setPageDrafts((current) => ({
+                        ...current,
+                        [selectedPage.slug]: createDraftState(selectedPage),
+                      }))
+                    }
+                    type="button"
+                  >
+                    <RefreshCcw size={15} />
+                    <span>Reset local changes</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="admin-publishing-bar">
+                <div className="admin-publishing-copy">
+                  <div className="admin-publishing-topline">
+                    <span className={`status-pill ${statusConfig.className}`}>
+                      {statusConfig.label}
+                    </span>
+                    <span className="admin-publishing-stamp">
+                      {selectedPage.draft.savedAt ? (
+                        <>
+                          Last saved {formatRelativeFromNow(selectedPage.draft.savedAt)} by{" "}
+                          {selectedPage.draft.savedBy ?? "Unknown"}
+                        </>
+                      ) : selectedPage.published.publishedAt ? (
+                        <>
+                          Live since {formatUpdatedAt(selectedPage.published.publishedAt)} by{" "}
+                          {selectedPage.published.publishedBy ?? "Unknown"}
+                        </>
+                      ) : (
+                        "This page has not been published yet."
+                      )}
+                    </span>
+                  </div>
+                  <p className="admin-publishing-note">
+                    {hasUnsavedChanges
+                      ? "Local edits are waiting to be saved as a draft."
+                      : statusConfig.description}
+                  </p>
+                </div>
+
+                <div className="admin-button-row">
+                  <button
+                    className="admin-button admin-button--ghost"
+                    disabled={busyKey !== null}
+                    onClick={() => void discardDraft()}
+                    type="button"
+                  >
+                    {busyKey === `discard:${selectedPage.slug}` ? (
+                      <LoaderCircle className="animate-spin" size={15} />
+                    ) : (
+                      <Trash2 size={15} />
+                    )}
+                    <span>Discard draft</span>
+                  </button>
+                  <button
+                    className="admin-button"
+                    disabled={
+                      busyKey !== null ||
+                      hasUnsavedChanges ||
+                      selectedPage.status !== "draft-pending"
+                    }
+                    onClick={() => void publishDraft()}
+                    type="button"
+                  >
+                    {busyKey === `publish:${selectedPage.slug}` ? (
+                      <LoaderCircle className="animate-spin" size={15} />
+                    ) : (
+                      <Rocket size={15} />
+                    )}
+                    <span>Publish</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="admin-editor-overview-grid mt-5">
                 <article className="admin-mini-stat">
                   <span className="admin-mini-stat-label">Route</span>
-                  <span className="admin-mini-stat-value">{selectedPage?.route ?? "/"}</span>
+                  <span className="admin-mini-stat-value">{selectedPage.route}</span>
+                </article>
+                <article className="admin-mini-stat">
+                  <span className="admin-mini-stat-label">Sections</span>
+                  <span className="admin-mini-stat-value">
+                    {selectedSummary.sectionKeys.length}
+                  </span>
                 </article>
                 <article className="admin-mini-stat">
                   <span className="admin-mini-stat-label">Hero slides</span>
@@ -564,240 +521,91 @@ export function AdminPageCmsPanel({
                   <span className="admin-mini-stat-label">Media refs</span>
                   <span className="admin-mini-stat-value">{selectedSummary.mediaRefs}</span>
                 </article>
-                <article className="admin-mini-stat">
-                  <span className="admin-mini-stat-label">Published</span>
-                  <span className="admin-mini-stat-value">
-                    {selectedPage?.published.publishedAt
-                      ? formatUpdatedAt(selectedPage.published.publishedAt)
-                      : "Not yet"}
+              </div>
+
+              <div className="admin-key-list mt-5">
+                {selectedSummary.sectionKeys.map((key) => (
+                  <span className="admin-key-chip" key={key}>
+                    {key}
                   </span>
-                </article>
+                ))}
               </div>
-            </div>
-          </aside>
 
-          {selectedPage && selectedDraft && statusConfig ? (
-            <div className="admin-editor-layout">
-              <div className="admin-surface admin-surface--inner">
-                <div className="admin-panel-header">
-                  <div>
-                    <p className="section-label">{selectedPage.route}</p>
-                    <h2 className="display-title mt-3 text-3xl text-white">
-                      {selectedPage.name}
-                    </h2>
-                    <p className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
-                      Content is now edited section by section. JSON is still available per
-                      section for advanced users, but the primary workflow is field-based and
-                      non-destructive.
-                    </p>
-                  </div>
-
-                  <div className="admin-button-row">
-                    <a
-                      className="admin-button admin-button--ghost"
-                      href={selectedPage.route}
-                      rel="noreferrer"
-                      target="_blank"
-                    >
-                      Open page
-                    </a>
-                    <button
-                      className="admin-button admin-button--ghost"
-                      onClick={() =>
-                        setPageDrafts((current) => ({
-                          ...current,
-                          [selectedPage.slug]: createDraftState(selectedPage),
-                        }))
-                      }
-                      type="button"
-                    >
-                      <RefreshCcw size={15} />
-                      <span>Reset local changes</span>
-                    </button>
-                  </div>
+              <div className="mt-5 grid gap-4 md:grid-cols-2">
+                <div className="admin-field">
+                  <label htmlFor="cms-page-name">Page name</label>
+                  <input
+                    className={`admin-input ${validationErrors.name ? "is-invalid" : ""}`.trim()}
+                    id="cms-page-name"
+                    onChange={(event) => updateSelectedDraftField("name", event.target.value)}
+                    value={selectedDraft.name}
+                  />
+                  {validationErrors.name?.[0] ? (
+                    <p className="admin-field-error">{validationErrors.name[0]}</p>
+                  ) : null}
                 </div>
 
-                <div className="admin-publishing-bar">
-                  <div className="admin-publishing-copy">
-                    <div className="admin-publishing-topline">
-                      <span className={`status-pill ${statusConfig.className}`}>
-                        {statusConfig.label}
-                      </span>
-                      <span className="admin-publishing-stamp">
-                        {selectedPage.draft.savedAt ? (
-                          <>
-                            Last saved {formatRelativeFromNow(selectedPage.draft.savedAt)} by{" "}
-                            {selectedPage.draft.savedBy ?? "Unknown"}
-                          </>
-                        ) : selectedPage.published.publishedAt ? (
-                          <>
-                            Live since {formatUpdatedAt(selectedPage.published.publishedAt)} by{" "}
-                            {selectedPage.published.publishedBy ?? "Unknown"}
-                          </>
-                        ) : (
-                          "This page has not been published yet."
-                        )}
-                      </span>
-                    </div>
-                    <p className="admin-publishing-note">
-                      {hasUnsavedChanges
-                        ? "Local edits are waiting to be saved as a draft."
-                        : statusConfig.description}
-                    </p>
-                  </div>
-
-                  <div className="admin-button-row">
-                    <button
-                      className="admin-button admin-button--ghost"
-                      disabled={busyKey !== null}
-                      onClick={() => void discardDraft()}
-                      type="button"
-                    >
-                      {busyKey === `discard:${selectedPage.slug}` ? (
-                        <LoaderCircle className="animate-spin" size={15} />
-                      ) : (
-                        <Trash2 size={15} />
-                      )}
-                      <span>Discard draft</span>
-                    </button>
-                    <button
-                      className="admin-button"
-                      disabled={
-                        busyKey !== null ||
-                        hasUnsavedChanges ||
-                        selectedPage.status !== "draft-pending"
-                      }
-                      onClick={() => void publishDraft()}
-                      type="button"
-                    >
-                      {busyKey === `publish:${selectedPage.slug}` ? (
-                        <LoaderCircle className="animate-spin" size={15} />
-                      ) : (
-                        <Rocket size={15} />
-                      )}
-                      <span>Publish</span>
-                    </button>
-                  </div>
+                <div className="admin-field">
+                  <label htmlFor="cms-page-summary">Summary</label>
+                  <input
+                    className={`admin-input ${validationErrors.summary ? "is-invalid" : ""}`.trim()}
+                    id="cms-page-summary"
+                    onChange={(event) => updateSelectedDraftField("summary", event.target.value)}
+                    value={selectedDraft.summary}
+                  />
+                  {validationErrors.summary?.[0] ? (
+                    <p className="admin-field-error">{validationErrors.summary[0]}</p>
+                  ) : null}
                 </div>
+              </div>
 
-                <div className="mt-5 grid gap-4 md:grid-cols-2">
-                  <div className="admin-field">
-                    <label htmlFor="cms-page-name">Page name</label>
-                    <input
-                      className={`admin-input ${validationErrors.name ? "is-invalid" : ""}`.trim()}
-                      id="cms-page-name"
-                      onChange={(event) => updateSelectedDraftField("name", event.target.value)}
-                      value={selectedDraft.name}
-                    />
-                    {validationErrors.name?.[0] ? (
-                      <p className="admin-field-error">{validationErrors.name[0]}</p>
-                    ) : null}
-                  </div>
-
-                  <div className="admin-field">
-                    <label htmlFor="cms-page-summary">Summary</label>
-                    <input
-                      className={`admin-input ${validationErrors.summary ? "is-invalid" : ""}`.trim()}
-                      id="cms-page-summary"
-                      onChange={(event) =>
-                        updateSelectedDraftField("summary", event.target.value)
-                      }
-                      value={selectedDraft.summary}
-                    />
-                    {validationErrors.summary?.[0] ? (
-                      <p className="admin-field-error">{validationErrors.summary[0]}</p>
-                    ) : null}
-                  </div>
-                </div>
-
-                <div className="admin-section-stack">
-                  {sectionKeys.map((sectionKey, index) => (
-                    <SectionEditor
-                      defaultOpen={index === 0}
-                      errorCount={getSectionErrorCount(validationErrors, sectionKey)}
-                      key={sectionKey}
-                      onChange={(nextValue) =>
-                        updateSelectedContent({
-                          ...(selectedDraft.content as Record<string, unknown>),
-                          [sectionKey]: nextValue,
-                        })
-                      }
-                      sectionKey={sectionKey}
-                      title={humanizeKey(sectionKey)}
-                      value={(selectedDraft.content as Record<string, unknown>)[sectionKey]}
-                    >
-                      <SectionFieldsRenderer
-                        contentRoot={selectedDraft.content}
-                        defaultContent={defaultCmsPageContent[selectedPage.slug]}
-                        errorMap={validationErrors}
-                        mediaAssets={initialMediaAssets}
-                        onContentChange={updateSelectedContent}
-                        path={[sectionKey]}
-                        slug={selectedPage.slug}
-                        value={(selectedDraft.content as Record<string, unknown>)[sectionKey]}
-                      />
-                    </SectionEditor>
-                  ))}
-                </div>
-
-                <div className="admin-button-row mt-4">
-                  <button
-                    className="admin-button"
-                    disabled={busyKey !== null}
-                    onClick={() => void saveDraft()}
-                    type="button"
+              <div className="admin-section-stack mt-5">
+                {sectionKeys.map((sectionKey, index) => (
+                  <SectionEditor
+                    defaultOpen={index === 0}
+                    errorCount={getSectionErrorCount(validationErrors, sectionKey)}
+                    key={sectionKey}
+                    onChange={(nextValue) =>
+                      updateSelectedContent({
+                        ...(selectedDraft.content as Record<string, unknown>),
+                        [sectionKey]: nextValue,
+                      })
+                    }
+                    sectionKey={sectionKey}
+                    title={humanizeKey(sectionKey)}
+                    value={(selectedDraft.content as Record<string, unknown>)[sectionKey]}
                   >
-                    {busyKey === `draft:${selectedPage.slug}` ? (
-                      <LoaderCircle className="animate-spin" size={15} />
-                    ) : (
-                      <Save size={15} />
-                    )}
-                    <span>Save draft</span>
-                  </button>
-                </div>
+                    <SectionFieldsRenderer
+                      contentRoot={selectedDraft.content}
+                      defaultContent={defaultCmsPageContent[selectedPage.slug]}
+                      errorMap={validationErrors}
+                      mediaAssets={initialMediaAssets}
+                      onContentChange={updateSelectedContent}
+                      path={[sectionKey]}
+                      slug={selectedPage.slug}
+                      value={(selectedDraft.content as Record<string, unknown>)[sectionKey]}
+                    />
+                  </SectionEditor>
+                ))}
               </div>
 
-              <div className="admin-side-stack">
-                <div className="admin-surface admin-surface--inner">
-                  <p className="section-label">Publishing context</p>
-                  <div className="admin-insight-grid mt-4">
-                    <article className="admin-insight-card">
-                      <span className="admin-insight-label">Status</span>
-                      <span className="admin-insight-value">{statusConfig.label}</span>
-                    </article>
-                    <article className="admin-insight-card">
-                      <span className="admin-insight-label">Updated</span>
-                      <span className="admin-insight-value">
-                        {formatUpdatedAt(selectedPage.updatedAt)}
-                      </span>
-                    </article>
-                    <article className="admin-insight-card">
-                      <span className="admin-insight-label">Draft save</span>
-                      <span className="admin-insight-value">
-                        {formatUpdatedAt(selectedPage.draft.savedAt)}
-                      </span>
-                    </article>
-                    <article className="admin-insight-card">
-                      <span className="admin-insight-label">Live publish</span>
-                      <span className="admin-insight-value">
-                        {formatUpdatedAt(selectedPage.published.publishedAt)}
-                      </span>
-                    </article>
-                  </div>
-
-                  <div className="luxury-divider my-5" />
-
-                  <div className="admin-key-list">
-                    {selectedSummary.sectionKeys.map((key) => (
-                      <span className="admin-key-chip" key={key}>
-                        {key}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+              <div className="admin-button-row mt-5">
+                <button
+                  className="admin-button"
+                  disabled={busyKey !== null}
+                  onClick={() => void saveDraft()}
+                  type="button"
+                >
+                  {busyKey === `draft:${selectedPage.slug}` ? (
+                    <LoaderCircle className="animate-spin" size={15} />
+                  ) : (
+                    <Save size={15} />
+                  )}
+                  <span>Save draft</span>
+                </button>
               </div>
             </div>
-          ) : null}
+          </div>
         </div>
       </section>
 

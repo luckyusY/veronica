@@ -24,6 +24,13 @@ export type AdminUserRecord = {
   lastLoginAt: string;
 };
 
+export type SeedAdminCredential = {
+  role: AdminRole;
+  name: string;
+  email: string;
+  password: string;
+};
+
 let usersSetupPromise: Promise<void> | null = null;
 
 function normalizeEmail(value: string) {
@@ -85,55 +92,151 @@ async function ensureUsersCollectionReady() {
   await usersSetupPromise;
 }
 
-function getSeedOwnerConfig() {
-  const email =
-    env.ADMIN_OWNER_EMAIL ??
-    (process.env.NODE_ENV === "development"
-      ? "owner@veronicaadane.com"
-      : undefined);
-  const password =
-    env.ADMIN_OWNER_PASSWORD ??
-    (process.env.NODE_ENV === "development" ? "VeronicaAdmin2026!" : undefined);
+function getDefaultSeedUser(role: AdminRole) {
+  if (process.env.NODE_ENV !== "development") {
+    return null;
+  }
 
-  if (!email || !password) {
+  const defaults: Record<AdminRole, SeedAdminCredential> = {
+    owner: {
+      role: "owner",
+      name: "Veronica Admin",
+      email: "owner@veronicaadane.com",
+      password: "VeronicaAdmin2026!",
+    },
+    content: {
+      role: "content",
+      name: "Content Editor",
+      email: "content@veronicaadane.com",
+      password: "VeronicaContent2026!",
+    },
+    bookings: {
+      role: "bookings",
+      name: "Bookings Desk",
+      email: "bookings@veronicaadane.com",
+      password: "VeronicaBookings2026!",
+    },
+    media: {
+      role: "media",
+      name: "Media Manager",
+      email: "media@veronicaadane.com",
+      password: "VeronicaMedia2026!",
+    },
+  };
+
+  return defaults[role];
+}
+
+function getSeedCredentialForRole(role: AdminRole) {
+  const defaults = getDefaultSeedUser(role);
+
+  const roleEnvMap: Record<
+    AdminRole,
+    {
+      email?: string;
+      password?: string;
+      name?: string;
+    }
+  > = {
+    owner: {
+      email: env.ADMIN_OWNER_EMAIL,
+      password: env.ADMIN_OWNER_PASSWORD,
+      name: env.ADMIN_OWNER_NAME,
+    },
+    content: {
+      email: env.ADMIN_CONTENT_EMAIL,
+      password: env.ADMIN_CONTENT_PASSWORD,
+      name: env.ADMIN_CONTENT_NAME,
+    },
+    bookings: {
+      email: env.ADMIN_BOOKINGS_EMAIL,
+      password: env.ADMIN_BOOKINGS_PASSWORD,
+      name: env.ADMIN_BOOKINGS_NAME,
+    },
+    media: {
+      email: env.ADMIN_MEDIA_EMAIL,
+      password: env.ADMIN_MEDIA_PASSWORD,
+      name: env.ADMIN_MEDIA_NAME,
+    },
+  };
+
+  const roleEnv = roleEnvMap[role];
+  const email = roleEnv.email ?? defaults?.email;
+  const password = roleEnv.password ?? defaults?.password;
+  const name = roleEnv.name ?? defaults?.name;
+
+  if (!email || !password || !name) {
     return null;
   }
 
   return {
+    role,
+    name,
     email: normalizeEmail(email),
     password,
-    name: env.ADMIN_OWNER_NAME ?? "Veronica Admin",
-  };
+  } satisfies SeedAdminCredential;
 }
 
-export async function ensureSeedOwnerUser() {
-  await ensureUsersCollectionReady();
-  const seedOwner = getSeedOwnerConfig();
+export function getSampleAdminCredentials() {
+  const credentials = (["owner", "content", "bookings", "media"] as const)
+    .map((role) => getSeedCredentialForRole(role))
+    .filter((credential): credential is SeedAdminCredential => Boolean(credential));
 
-  if (!seedOwner) {
+  if (
+    process.env.NODE_ENV !== "development" &&
+    !env.SHOW_SAMPLE_ADMIN_CREDENTIALS
+  ) {
+    return [];
+  }
+
+  return credentials;
+}
+
+export async function ensureSeedUsers() {
+  await ensureUsersCollectionReady();
+
+  const seedUsers = (["owner", "content", "bookings", "media"] as const)
+    .map((role) => getSeedCredentialForRole(role))
+    .filter((credential): credential is SeedAdminCredential => Boolean(credential));
+
+  if (seedUsers.length === 0) {
     return null;
   }
 
   const usersCollection = await getUsersCollection();
-  const existingUser = await usersCollection.findOne({ email: seedOwner.email });
+  let ownerRecord: AdminUserRecord | null = null;
 
-  if (existingUser) {
-    return serializeUser(existingUser);
+  for (const seedUser of seedUsers) {
+    const existingUser = await usersCollection.findOne({ email: seedUser.email });
+
+    if (existingUser) {
+      if (seedUser.role === "owner") {
+        ownerRecord = serializeUser(existingUser);
+      }
+
+      continue;
+    }
+
+    const now = new Date();
+    const insertResult = await usersCollection.insertOne({
+      email: seedUser.email,
+      name: seedUser.name,
+      role: seedUser.role,
+      passwordHash: hashPassword(seedUser.password),
+      createdAt: now,
+      lastLoginAt: now,
+    });
+
+    if (seedUser.role === "owner") {
+      const insertedUser = await usersCollection.findOne({
+        _id: insertResult.insertedId,
+      });
+
+      ownerRecord = insertedUser ? serializeUser(insertedUser) : null;
+    }
   }
 
-  const now = new Date();
-  const insertResult = await usersCollection.insertOne({
-    email: seedOwner.email,
-    name: seedOwner.name,
-    role: "owner",
-    passwordHash: hashPassword(seedOwner.password),
-    createdAt: now,
-    lastLoginAt: now,
-  });
-
-  const insertedUser = await usersCollection.findOne({ _id: insertResult.insertedId });
-
-  return insertedUser ? serializeUser(insertedUser) : null;
+  return ownerRecord;
 }
 
 export async function getAuthorizedUserByEmail(email: string) {
@@ -145,7 +248,7 @@ export async function getAuthorizedUserByEmail(email: string) {
 }
 
 export async function authenticateAuthorizedUser(email: string, password: string) {
-  await ensureSeedOwnerUser();
+  await ensureSeedUsers();
   const usersCollection = await getUsersCollection();
   const normalizedEmail = normalizeEmail(email);
   const existingUser = await usersCollection.findOne({ email: normalizedEmail });

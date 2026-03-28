@@ -8,6 +8,17 @@ export type CmsPageSlug =
   | "media"
   | "contact";
 
+export const cmsPageSlugs = [
+  "home",
+  "about",
+  "music",
+  "events",
+  "shop",
+  "collaborations",
+  "media",
+  "contact",
+] as const satisfies readonly CmsPageSlug[];
+
 export type CmsMediaResourceType = "image" | "video";
 
 export type CmsMediaItem = {

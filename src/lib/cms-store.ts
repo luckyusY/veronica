@@ -15,6 +15,7 @@ import {
   type CmsPageDraftSnapshot,
   type CmsPageEditorInput,
   type CmsPagePublishedSnapshot,
+  cmsPageSlugs,
   type CmsPageSlug,
   type CmsPageWorkspaceDocument,
   type CmsSiteSettings,
@@ -78,17 +79,6 @@ type CmsMediaAssetDocument = {
   createdAt: Date;
   updatedAt: Date;
 };
-
-const cmsPageSlugs = [
-  "home",
-  "about",
-  "music",
-  "events",
-  "shop",
-  "collaborations",
-  "media",
-  "contact",
-] as const satisfies readonly CmsPageSlug[];
 
 const SITE_SETTINGS_KEY = "site-settings" as const;
 const SYSTEM_MIGRATION_USER = "system-migration";
