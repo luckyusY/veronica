@@ -10,6 +10,108 @@ type CmsStandardPageProps = {
 
 type CmsCardVariant = "note" | "route" | "release" | "dark-note" | undefined;
 
+type PageSignal = {
+  label: string;
+  value: string;
+  detail: string;
+};
+
+function buildPageSignals(sections: StandardSection[]): PageSignal[] {
+  return sections.slice(0, 3).map((section) => {
+    if (section.type === "cards") {
+      return {
+        label: section.eyebrow,
+        value: `${section.items.length} modules`,
+        detail: section.title,
+      };
+    }
+
+    if (section.type === "timeline") {
+      return {
+        label: section.eyebrow,
+        value: `${section.items.length} chapters`,
+        detail: section.title,
+      };
+    }
+
+    if (section.type === "banner") {
+      return {
+        label: section.eyebrow,
+        value: "Full-bleed scene",
+        detail: section.title,
+      };
+    }
+
+    return {
+      label: section.eyebrow,
+      value: section.imageSide === "left" ? "Image-led split" : "Editorial split",
+      detail: section.title,
+    };
+  });
+}
+
+function SectionTopline({
+  eyebrow,
+  index,
+  inverse = false,
+}: {
+  eyebrow: string;
+  index: number;
+  inverse?: boolean;
+}) {
+  return (
+    <div
+      className={`page-standard-section-topline ${
+        inverse ? "page-standard-section-topline--inverse" : ""
+      }`.trim()}
+    >
+      <span className="page-standard-sequence">
+        {String(index + 1).padStart(2, "0")}
+      </span>
+      <span className="section-label">{eyebrow}</span>
+    </div>
+  );
+}
+
+function SectionLead({
+  eyebrow,
+  title,
+  description,
+  index,
+  inverse = false,
+}: {
+  eyebrow: string;
+  title: string;
+  description?: string;
+  index: number;
+  inverse?: boolean;
+}) {
+  return (
+    <RevealBlock className="page-standard-lead" variant="up" distance={22}>
+      <SectionTopline eyebrow={eyebrow} index={index} inverse={inverse} />
+      <div className="editorial-section-opener-row">
+        <h2
+          className={`display-title editorial-section-opener-title ${
+            inverse ? "page-standard-lead-title--inverse" : ""
+          }`.trim()}
+        >
+          {title}
+        </h2>
+        <span aria-hidden="true" className="editorial-section-opener-rule" />
+      </div>
+      {description ? (
+        <p
+          className={`page-standard-lead-copy ${
+            inverse ? "page-standard-lead-copy--inverse" : ""
+          }`.trim()}
+        >
+          {description}
+        </p>
+      ) : null}
+    </RevealBlock>
+  );
+}
+
 function renderCard(item: CmsTextCard, variant: CmsCardVariant, theme: "paper" | "dark") {
   const key = `${item.title}-${item.description}`;
 
@@ -30,9 +132,7 @@ function renderCard(item: CmsTextCard, variant: CmsCardVariant, theme: "paper" |
   if (variant === "dark-note") {
     return (
       <article className="editorial-dark-note" key={key}>
-        {item.title ? (
-          <p className="section-label text-white/82">{item.title}</p>
-        ) : null}
+        {item.title ? <p className="section-label text-white/82">{item.title}</p> : null}
         <p className={`${item.title ? "mt-3 " : ""}text-sm leading-7 text-white/70 sm:text-base`}>
           {item.description}
         </p>
@@ -41,23 +141,21 @@ function renderCard(item: CmsTextCard, variant: CmsCardVariant, theme: "paper" |
   }
 
   if (variant === "route") {
-    const content = (
+    const cardContent = (
       <>
         {item.accent ? <p className="section-label">{item.accent}</p> : null}
         <h3 className="display-title mt-4 text-3xl text-[#1f1914] sm:text-4xl">{item.title}</h3>
-        <p className="mt-4 text-sm leading-7 text-[#4b4138] sm:text-base">
-          {item.description}
-        </p>
+        <p className="mt-4 text-sm leading-7 text-[#4b4138] sm:text-base">{item.description}</p>
       </>
     );
 
     return item.href ? (
       <Link className="editorial-route-card" href={item.href} key={key}>
-        {content}
+        {cardContent}
       </Link>
     ) : (
       <article className="editorial-route-card" key={key}>
-        {content}
+        {cardContent}
       </article>
     );
   }
@@ -80,26 +178,25 @@ function renderSection(section: StandardSection, index: number) {
   if (section.type === "banner") {
     return (
       <section className="section-shell py-10" key={section.id}>
-        <RevealBlock className="editorial-quote-banner" variant="scale">
+        <RevealBlock className="page-standard-banner" variant="scale">
           <EditorialImage
-            className="editorial-quote-media"
+            className="page-standard-banner-media"
             image={section.image}
             motionPreset={section.imageMotionPreset ?? "settle-left"}
             sizes="100vw"
-            strength={78}
+            strength={84}
           />
-          <div className="editorial-quote-copy">
-            <p className={`section-label ${section.theme === "dark" ? "text-white/80" : ""}`}>
-              {section.eyebrow}
-            </p>
-            <h2 className="display-title mt-4 max-w-4xl text-4xl text-white sm:text-5xl lg:text-6xl">
+          <div className="page-standard-banner-copy">
+            <SectionTopline eyebrow={section.eyebrow} index={index} inverse />
+            <h2 className="display-title mt-5 max-w-4xl text-4xl text-white sm:text-5xl lg:text-6xl">
               {section.title}
             </h2>
             {section.description ? (
-              <p className="mt-4 max-w-2xl text-base leading-8 text-white/72">
+              <p className="mt-4 max-w-2xl text-base leading-8 text-white/74">
                 {section.description}
               </p>
             ) : null}
+            <span className="page-standard-banner-rule" aria-hidden="true" />
           </div>
         </RevealBlock>
       </section>
@@ -109,12 +206,12 @@ function renderSection(section: StandardSection, index: number) {
   if (section.type === "timeline") {
     return (
       <section className="section-shell py-10" key={section.id}>
-        <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="page-standard-timeline-shell">
           <RevealBlock
             className={section.theme === "dark" ? "editorial-dark-panel" : "editorial-paper-panel"}
             variant="left"
           >
-            <p className="section-label">{section.eyebrow}</p>
+            <SectionTopline eyebrow={section.eyebrow} index={index} inverse={section.theme === "dark"} />
             <h2
               className={`display-title mt-5 max-w-3xl text-4xl sm:text-5xl ${
                 section.theme === "dark" ? "text-white" : "text-[#1f1914]"
@@ -133,7 +230,7 @@ function renderSection(section: StandardSection, index: number) {
             ) : null}
           </RevealBlock>
 
-          <RevealBlock className="editorial-timeline-panel" delay={0.08} variant="right">
+          <RevealBlock className="editorial-timeline-panel page-standard-timeline-stage" delay={0.08} variant="right">
             <p className="section-label">Narrative timeline</p>
             <div className="mt-6 grid gap-4">
               {section.items.map((item, itemIndex) => (
@@ -152,31 +249,25 @@ function renderSection(section: StandardSection, index: number) {
   }
 
   if (section.type === "cards") {
-    const panelClass = section.theme === "dark" ? "editorial-dark-panel" : "editorial-paper-panel";
     const columns = section.columns ?? 3;
     const gridClass =
-      columns === 2 ? "mt-8 grid gap-4 lg:grid-cols-2" : "mt-8 grid gap-4 lg:grid-cols-3";
+      columns === 2 ? "page-standard-card-grid page-standard-card-grid--two" : "page-standard-card-grid";
 
     return (
       <section className="section-shell py-10" key={section.id}>
-        <RevealBlock className={panelClass} variant={index % 2 === 0 ? "left" : "right"}>
-          <p className="section-label">{section.eyebrow}</p>
-          <h2
-            className={`display-title mt-5 max-w-4xl text-4xl sm:text-5xl ${
-              section.theme === "dark" ? "text-white" : "text-[#1f1914]"
-            }`}
-          >
-            {section.title}
-          </h2>
-          {section.description ? (
-            <p
-              className={`mt-6 max-w-3xl text-base leading-8 ${
-                section.theme === "dark" ? "text-white/72" : "text-[#3a332d]"
-              }`}
-            >
-              {section.description}
-            </p>
-          ) : null}
+        <SectionLead
+          description={section.description}
+          eyebrow={section.eyebrow}
+          index={index}
+          inverse={section.theme === "dark"}
+          title={section.title}
+        />
+
+        <RevealBlock
+          className={`page-standard-card-stage page-standard-card-stage--${section.theme}`.trim()}
+          delay={0.08}
+          variant={index % 2 === 0 ? "left" : "right"}
+        >
           <div className={gridClass}>
             {section.items.map((item) => renderCard(item, section.cardVariant, section.theme))}
           </div>
@@ -188,11 +279,11 @@ function renderSection(section: StandardSection, index: number) {
   const copyPanelClass = section.theme === "dark" ? "editorial-dark-panel" : "editorial-paper-panel";
   const textPanel = (
     <RevealBlock
-      className={copyPanelClass}
+      className={`${copyPanelClass} page-standard-copy-panel`.trim()}
       delay={section.imageSide === "left" ? 0.08 : 0}
       variant={section.imageSide === "left" ? "right" : "left"}
     >
-      <p className="section-label">{section.eyebrow}</p>
+      <SectionTopline eyebrow={section.eyebrow} index={index} inverse={section.theme === "dark"} />
       <h2
         className={`display-title mt-5 max-w-4xl text-4xl sm:text-5xl ${
           section.theme === "dark" ? "text-white" : "text-[#1f1914]"
@@ -223,7 +314,11 @@ function renderSection(section: StandardSection, index: number) {
       ) : null}
 
       {section.cards?.length ? (
-        <div className={`mt-8 grid gap-4 ${section.cards.length === 2 ? "md:grid-cols-2" : "lg:grid-cols-3"}`}>
+        <div
+          className={`mt-8 grid gap-4 ${
+            section.cards.length === 2 ? "md:grid-cols-2" : "lg:grid-cols-3"
+          }`}
+        >
           {section.cards.map((item) => renderCard(item, section.cardVariant, section.theme))}
         </div>
       ) : null}
@@ -232,17 +327,25 @@ function renderSection(section: StandardSection, index: number) {
 
   const imagePanel = (
     <RevealBlock
-      className={`editorial-photo-block${section.tallImage ? " editorial-photo-block--tall" : ""}`}
+      className={`editorial-photo-block page-standard-photo-block image-hover-glow${
+        section.tallImage ? " editorial-photo-block--tall" : ""
+      }`}
       delay={section.imageSide === "left" ? 0 : 0.08}
       variant={section.imageSide === "left" ? "left" : "right"}
     >
       <EditorialImage
         className="editorial-photo-shell"
         image={section.image}
-        motionPreset={section.imageMotionPreset ?? (section.imageSide === "left" ? "from-left" : "from-right")}
+        motionPreset={
+          section.imageMotionPreset ??
+          (section.imageSide === "left" ? "from-left" : "from-right")
+        }
         sizes="(max-width: 1024px) 100vw, 42vw"
-        strength={68}
+        strength={72}
       />
+      <div className="page-standard-photo-caption">
+        <span className="section-label">{section.image.label ?? section.eyebrow}</span>
+      </div>
     </RevealBlock>
   );
 
@@ -257,9 +360,32 @@ function renderSection(section: StandardSection, index: number) {
 }
 
 export function CmsStandardPage({ content }: CmsStandardPageProps) {
+  const pageSignals = buildPageSignals(content.sections);
+
   return (
-    <main className="editorial-home pb-16 sm:pb-20">
+    <main className="editorial-home editorial-standard-page pb-16 sm:pb-20">
       <PageHero {...content.hero} />
+
+      {pageSignals.length ? (
+        <section className="section-shell relative z-10 -mt-10 pb-6 sm:-mt-14 sm:pb-8">
+          <div className="page-signal-band">
+            {pageSignals.map((item, index) => (
+              <RevealBlock
+                className="page-signal-card"
+                delay={0.05 + index * 0.06}
+                distance={20}
+                key={`${item.label}-${item.value}`}
+                variant={index === 1 ? "up" : index === 0 ? "left" : "right"}
+              >
+                <p className="page-signal-label">{item.label}</p>
+                <p className="page-signal-value">{item.value}</p>
+                <p className="page-signal-detail">{item.detail}</p>
+              </RevealBlock>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
       {content.sections.map((section, index) => renderSection(section, index))}
     </main>
   );

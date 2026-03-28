@@ -6346,3 +6346,350 @@ a:not([class]):hover {
     padding: 1rem;
   }
 }
+
+.editorial-standard-page .page-hero-section {
+  padding-top: clamp(6.4rem, 9vw, 8.1rem);
+}
+
+.editorial-standard-page .editorial-page-hero {
+  gap: clamp(1.2rem, 2vw, 2rem);
+}
+
+.page-hero-metadata-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1.1rem;
+}
+
+.page-hero-metadata-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid rgba(176, 141, 87, 0.18);
+  border-radius: 999px;
+  background: rgba(25, 25, 25, 0.74);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(237, 237, 237, 0.72);
+}
+
+.page-hero-guidance-card {
+  border-color: rgba(176, 141, 87, 0.18);
+  background:
+    linear-gradient(180deg, rgba(21, 21, 21, 0.98), rgba(14, 14, 14, 0.98)),
+    radial-gradient(circle at top left, rgba(176, 141, 87, 0.08), transparent 54%);
+}
+
+.page-signal-band {
+  display: grid;
+  gap: 1rem;
+}
+
+.page-signal-card {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 1.15rem 1.1rem;
+  border: 1px solid rgba(176, 141, 87, 0.16);
+  border-radius: 1.55rem;
+  background:
+    linear-gradient(180deg, rgba(34, 34, 34, 0.98), rgba(20, 20, 20, 0.98)),
+    radial-gradient(circle at top right, rgba(255, 111, 97, 0.08), transparent 42%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 18px 42px rgba(0, 0, 0, 0.2);
+}
+
+.page-signal-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 1.1rem 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(176, 141, 87, 0.7), transparent);
+}
+
+.page-signal-label {
+  margin: 0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.page-signal-value {
+  margin: 0;
+  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-size: clamp(1.3rem, 1.8vw, 1.85rem);
+  line-height: 0.98;
+  color: #fff;
+}
+
+.page-signal-detail {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.68;
+  color: rgba(237, 237, 237, 0.7);
+}
+
+.page-standard-lead {
+  display: grid;
+  gap: 0.7rem;
+  margin-bottom: 1.35rem;
+}
+
+.page-standard-section-topline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.page-standard-section-topline .section-label {
+  margin: 0;
+}
+
+.page-standard-sequence {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.2rem;
+  min-height: 1.8rem;
+  padding: 0.32rem 0.52rem;
+  border: 1px solid rgba(176, 141, 87, 0.2);
+  border-radius: 999px;
+  background: rgba(20, 20, 20, 0.56);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(237, 237, 237, 0.72);
+}
+
+.page-standard-section-topline--inverse .page-standard-sequence {
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(245, 242, 236, 0.78);
+}
+
+.page-standard-lead .editorial-section-opener-title {
+  color: #fff;
+}
+
+.page-standard-lead .editorial-section-opener-rule {
+  background: linear-gradient(90deg, rgba(176, 141, 87, 0.72), transparent);
+}
+
+.page-standard-lead-copy {
+  max-width: 48rem;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: rgba(237, 237, 237, 0.68);
+}
+
+.page-standard-lead-copy--inverse {
+  color: rgba(237, 237, 237, 0.74);
+}
+
+.page-standard-banner {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(26rem, 54vw, 39rem);
+  border-radius: 2rem;
+  border: 1px solid rgba(176, 141, 87, 0.14);
+  background: #0b0f14;
+  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.32);
+}
+
+.page-standard-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(12, 12, 12, 0.86) 0%, rgba(12, 12, 12, 0.36) 46%, rgba(12, 12, 12, 0.8) 100%),
+    linear-gradient(180deg, rgba(12, 12, 12, 0.12) 0%, rgba(12, 12, 12, 0.72) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.page-standard-banner-media {
+  position: absolute;
+  inset: 0;
+}
+
+.page-standard-banner-copy {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  align-content: end;
+  min-height: inherit;
+  padding: clamp(1.4rem, 3vw, 2.4rem);
+}
+
+.page-standard-banner-rule {
+  display: block;
+  width: 4.5rem;
+  height: 1px;
+  margin-top: 1.2rem;
+  background: linear-gradient(90deg, rgba(176, 141, 87, 0.8), transparent);
+}
+
+.page-standard-card-stage {
+  border-radius: 1.8rem;
+  padding: 1.2rem;
+}
+
+.page-standard-card-stage--paper {
+  border: 1px solid rgba(176, 141, 87, 0.12);
+  background:
+    linear-gradient(180deg, rgba(245, 245, 245, 0.04), rgba(245, 245, 245, 0.02)),
+    radial-gradient(circle at top left, rgba(176, 141, 87, 0.05), transparent 48%);
+}
+
+.page-standard-card-stage--dark {
+  border: 1px solid rgba(176, 141, 87, 0.14);
+  background:
+    linear-gradient(180deg, rgba(26, 26, 26, 0.98), rgba(17, 17, 17, 0.98)),
+    radial-gradient(circle at top right, rgba(255, 111, 97, 0.08), transparent 42%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 22px 48px rgba(0, 0, 0, 0.2);
+}
+
+.page-standard-card-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.page-standard-copy-panel {
+  min-height: 100%;
+}
+
+.page-standard-photo-block {
+  min-height: 34rem;
+}
+
+.page-standard-photo-caption {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 3;
+  max-width: 18rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 13, 17, 0.82);
+  padding: 0.75rem 0.9rem;
+}
+
+.page-standard-timeline-shell {
+  display: grid;
+  gap: 1rem;
+}
+
+.page-standard-timeline-stage {
+  min-height: 100%;
+}
+
+.page-standard-card-stage .editorial-route-card,
+.page-standard-card-stage .editorial-note,
+.page-standard-card-stage .editorial-dark-note {
+  height: 100%;
+}
+
+@media only screen and (min-width: 900px) {
+  .page-signal-band {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .editorial-standard-page .editorial-page-hero {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    align-items: end;
+  }
+
+  .editorial-standard-page .editorial-page-copy {
+    padding-right: 1.25rem;
+  }
+
+  .page-standard-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .page-standard-card-grid--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .page-standard-timeline-shell {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    align-items: stretch;
+  }
+}
+
+@media only screen and (max-width: 1023px) {
+  .page-standard-banner,
+  .page-standard-card-stage {
+    border-radius: 1.5rem;
+  }
+
+  .page-standard-photo-block {
+    min-height: 29rem;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .editorial-standard-page .page-hero-section {
+    padding-top: 5.9rem;
+  }
+
+  .page-hero-metadata-row {
+    gap: 0.45rem;
+    margin-top: 0.95rem;
+  }
+
+  .page-hero-metadata-chip {
+    min-height: 1.9rem;
+    padding: 0.34rem 0.64rem;
+    font-size: 0.54rem;
+  }
+
+  .page-signal-card,
+  .page-standard-card-stage {
+    padding: 1rem;
+  }
+
+  .page-signal-value {
+    font-size: 1.28rem;
+  }
+
+  .page-signal-detail,
+  .page-standard-lead-copy {
+    font-size: 0.84rem;
+    line-height: 1.66;
+  }
+
+  .page-standard-banner {
+    min-height: 22rem;
+    border-radius: 1.35rem;
+  }
+
+  .page-standard-banner-copy {
+    padding: 1rem;
+  }
+
+  .page-standard-photo-block {
+    min-height: 24rem;
+  }
+
+  .page-standard-photo-caption {
+    left: 0.85rem;
+    right: 0.85rem;
+    bottom: 0.85rem;
+    max-width: none;
+  }
+}

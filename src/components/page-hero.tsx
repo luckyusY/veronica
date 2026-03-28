@@ -70,6 +70,11 @@ export function PageHero({
             text={description}
           />
 
+          <RevealBlock className="page-hero-metadata-row" delay={0.16} variant="up">
+            <span className="page-hero-metadata-chip">{imageLabel}</span>
+            <span className="page-hero-metadata-chip">{noteTitle}</span>
+          </RevealBlock>
+
           {(primaryCta || secondaryCta) && (
             <RevealBlock className="mt-7 flex flex-wrap gap-3" delay={0.18}>
               {primaryCta ? (
@@ -85,7 +90,7 @@ export function PageHero({
             </RevealBlock>
           )}
 
-          <RevealBlock className="editorial-page-note" delay={0.22} variant="left">
+          <RevealBlock className="editorial-page-note page-hero-guidance-card" delay={0.22} variant="left">
             <p className="section-label">{noteTitle}</p>
             <p className="mt-4 max-w-xl text-sm leading-7 text-white/68 sm:text-base">
               {noteText}
