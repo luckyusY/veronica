@@ -371,7 +371,7 @@ export function CmsStandardPage({ content }: CmsStandardPageProps) {
       <PageHero {...content.hero} />
 
       {pageSignals.length ? (
-        <section className="section-shell relative z-10 -mt-10 pb-6 sm:-mt-14 sm:pb-8">
+        <section className="section-shell relative z-10 pt-2 pb-6 sm:-mt-14 sm:pt-0 sm:pb-8">
           <div className="page-signal-band">
             {pageSignals.map((item, index) => (
               <RevealBlock

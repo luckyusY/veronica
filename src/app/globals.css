@@ -7113,7 +7113,7 @@ a:not([class]):hover {
     padding-bottom: 0.65rem;
   }
 
-  .home-hero-button {
+.home-hero-button {
     min-width: 0;
     width: min(100%, 16rem);
   }
@@ -7125,5 +7125,311 @@ a:not([class]):hover {
 
   .editorial-release-card .display-title {
     font-size: clamp(1.7rem, 8vw, 2.15rem);
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .editorial-site-footer .section-shell {
+    width: min(100% - 1.15rem, 78rem);
+    padding-top: 2.4rem;
+    padding-bottom: 2.25rem;
+  }
+
+  .editorial-site-footer .editorial-classic-topline--footer {
+    gap: 0.35rem 0.8rem;
+    padding-bottom: 0.45rem;
+    font-size: 0.48rem;
+    letter-spacing: 0.12em;
+  }
+
+  .editorial-site-footer .editorial-brand-stage--footer {
+    gap: 0.5rem;
+    padding-bottom: 0.6rem;
+  }
+
+  .editorial-site-footer .editorial-brand-copy--footer {
+    max-width: 20rem;
+    font-size: 0.72rem;
+    line-height: 1.55;
+  }
+
+  .editorial-site-footer .site-footer-cta-row {
+    gap: 0.5rem;
+    margin-top: 0.15rem;
+  }
+
+  .editorial-site-footer .site-footer-social-row {
+    justify-content: center;
+  }
+
+  .editorial-site-footer .site-footer-social-chip,
+  .editorial-site-footer .site-footer-utility-link {
+    min-height: 2.05rem;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.5rem;
+    letter-spacing: 0.12em;
+  }
+
+  .editorial-site-footer .editorial-nav-shell--footer {
+    display: none;
+  }
+
+  .editorial-site-footer .site-footer-divider {
+    margin: 0.2rem 0 0.65rem;
+  }
+
+  .editorial-site-footer .editorial-footer-markline {
+    gap: 0.25rem;
+    padding-top: 0.75rem;
+    font-size: 0.5rem;
+    letter-spacing: 0.12em;
+  }
+
+  .site-header-shell {
+    background-color: rgba(13, 9, 7, 0.72) !important;
+    backdrop-filter: blur(16px) saturate(112%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(112%) !important;
+  }
+
+  .site-header-inner {
+    min-height: 4.4rem;
+  }
+
+  .site-header-mobile {
+    min-height: 4.2rem;
+  }
+
+  .site-header-mobile-logo {
+    gap: 0.55rem;
+  }
+
+  .site-header-mobile-logo-copy {
+    gap: 0;
+  }
+
+  .site-header-mobile-kicker {
+    display: none;
+  }
+
+  .site-header-mobile-mark {
+    width: 2.3rem;
+    height: 2.3rem;
+    font-size: 0.68rem;
+  }
+
+  .site-header-mobile-wordmark .veronica-wordmark-script {
+    font-size: 1.2rem;
+  }
+
+  .site-header-mobile-wordmark .veronica-wordmark-didot {
+    font-size: 0.68rem;
+    letter-spacing: 0.26em;
+  }
+
+  .site-header-menu-button {
+    width: 2.7rem;
+    height: 2.7rem;
+  }
+
+  .site-header-mobile-panel {
+    padding: 0 0 max(0.85rem, env(safe-area-inset-bottom));
+    border-bottom-left-radius: 1.35rem;
+    border-bottom-right-radius: 1.35rem;
+  }
+
+  .site-header-mobile-list {
+    gap: 0.45rem;
+    padding-top: 0.5rem;
+  }
+
+  .site-header-mobile-link {
+    min-height: 2.7rem;
+    padding: 0.72rem 0.85rem;
+    border-radius: 0.9rem;
+    font-size: 0.64rem;
+    letter-spacing: 0.16em;
+  }
+
+  .site-header-mobile-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    padding-top: 0.6rem;
+  }
+
+  .site-header-mobile-link--action {
+    min-height: 2.8rem;
+  }
+
+  .home-hero-section,
+  .home-hero-swiper,
+  .home-hero-slide,
+  .home-hero-slide-media,
+  .home-hero-overlay {
+    height: min(33.5rem, calc(100svh - 0.1rem));
+    min-height: 31rem;
+  }
+
+  .home-hero-vignette {
+    background:
+      radial-gradient(circle at 56% 42%, rgba(15, 14, 12, 0.12) 0%, rgba(15, 14, 12, 0.32) 26%, rgba(15, 14, 12, 0.82) 72%, rgba(15, 14, 12, 0.98) 100%),
+      linear-gradient(180deg, rgba(15, 14, 12, 0.26) 0%, rgba(15, 14, 12, 0.16) 28%, rgba(15, 14, 12, 0.84) 100%);
+  }
+
+  .home-hero-overlay-inner {
+    align-items: end;
+    gap: 0.8rem;
+    padding-top: 4.55rem;
+    padding-bottom: 1.2rem;
+  }
+
+  .home-hero-copy {
+    max-width: 100%;
+    padding-left: 0;
+    padding-bottom: 0;
+  }
+
+  .home-hero-kicker {
+    margin-bottom: 0.7rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+  }
+
+  .home-hero-headline-top {
+    max-width: 18ch;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+  }
+
+  .home-hero-headline-bottom {
+    max-width: 7.8ch;
+    font-size: clamp(2.2rem, 11vw, 3.2rem);
+    line-height: 0.86;
+  }
+
+  .home-hero-description {
+    max-width: 23rem;
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+
+  .home-hero-rule {
+    margin-top: 0.9rem;
+  }
+
+  .home-hero-actions {
+    width: 100%;
+    gap: 0.55rem;
+  }
+
+  .home-hero-button {
+    width: min(100%, 14.5rem);
+    min-height: 2.95rem;
+    padding-inline: 1rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+  }
+
+  .home-hero-button--secondary {
+    border-color: rgba(237, 237, 237, 0.28);
+    background: rgba(15, 15, 15, 0.72);
+  }
+
+  .home-hero-side,
+  .home-hero-meta,
+  .home-hero-vertical {
+    display: none !important;
+  }
+
+  .home-signal-band {
+    gap: 0.75rem;
+  }
+
+  .home-signal-card,
+  .page-signal-card {
+    padding: 0.95rem;
+    border-radius: 1.2rem;
+  }
+
+  .editorial-standard-page .page-hero-section {
+    padding-top: 5.2rem;
+    padding-bottom: 0.35rem;
+  }
+
+  .editorial-standard-page .editorial-page-hero {
+    gap: 1rem;
+  }
+
+  .editorial-standard-page .editorial-page-copy {
+    gap: 0;
+  }
+
+  .page-hero-metadata-row {
+    gap: 0.4rem;
+  }
+
+  .page-hero-guidance-card {
+    display: none;
+  }
+
+  .page-signal-band {
+    gap: 0.75rem;
+  }
+
+  .editorial-standard-page .section-shell.py-10 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .editorial-standard-page .editorial-paper-panel,
+  .editorial-standard-page .editorial-dark-panel,
+  .editorial-standard-page .page-standard-card-stage,
+  .editorial-standard-page .editorial-timeline-panel {
+    padding: 1rem;
+    border-radius: 1.2rem;
+  }
+
+  .page-standard-lead {
+    gap: 0.55rem;
+  }
+
+  .page-standard-lead .editorial-section-opener-title {
+    font-size: clamp(2rem, 11vw, 3rem);
+  }
+
+  .page-standard-lead-copy,
+  .page-standard-copy-panel p,
+  .page-standard-banner-copy p {
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+
+  .page-standard-banner {
+    min-height: 20rem;
+  }
+
+  .page-standard-banner-copy {
+    padding: 0.95rem;
+  }
+
+  .page-standard-photo-block {
+    min-height: 20.5rem;
+  }
+
+  .page-standard-timeline-shell,
+  .page-standard-card-grid,
+  .page-standard-copy-panel > .mt-8.grid {
+    gap: 0.85rem;
+  }
+
+  .page-standard-release-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .editorial-release-card,
+  .editorial-route-card,
+  .editorial-note,
+  .editorial-dark-note {
+    border-radius: 1.1rem;
   }
 }
