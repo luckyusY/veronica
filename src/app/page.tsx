@@ -45,7 +45,7 @@ export default async function Home() {
         verticalLabel={content.hero.verticalLabel}
       />
 
-      <section className="section-shell relative z-10 -mt-4 pb-6 sm:-mt-6 sm:pb-8 lg:-mt-8">
+      <section className="section-shell relative z-10 pb-6 sm:pb-8 lg:-mt-2">
         <div className="home-signal-band">
           {heroSignals.map((item, index) => (
             <RevealBlock

@@ -317,7 +317,7 @@ function renderSection(section: StandardSection, index: number) {
         <div
           className={`mt-8 grid gap-4 ${
             section.cardVariant === "release"
-              ? "xl:grid-cols-2"
+              ? "page-standard-release-grid"
               : section.cards.length === 2
                 ? "md:grid-cols-2"
                 : "lg:grid-cols-3"
