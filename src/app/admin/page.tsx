@@ -133,37 +133,42 @@ export default async function AdminPage() {
 
   return (
     <div className="space-y-6">
-      <section className="admin-surface admin-hero">
-        <div className="flex flex-wrap items-start justify-between gap-4">
+      <section className="admin-surface admin-overview-hero">
+        <div className="admin-overview-hero-grid">
           <div className="space-y-4">
-            <p className="section-label">Admin Overview</p>
+            <div className="admin-panel-meta">
+              <span className="admin-badge">
+                <LayoutDashboard size={15} />
+                <span>Overview</span>
+              </span>
+              <span
+                className={`status-pill ${
+                  databaseStatus.tone === "ok" ? "status-pill--ok" : "status-pill--warn"
+                }`}
+              >
+                <ShieldCheck size={15} />
+                <span>{databaseStatus.label}</span>
+              </span>
+            </div>
             <div>
-              <h1 className="display-title text-4xl text-white sm:text-5xl lg:text-6xl">
-                A cleaner admin, split into focused workspaces.
+              <h1 className="display-title text-4xl text-white sm:text-5xl">
+                One backstage for content, media, and operations.
               </h1>
-              <p className="mt-4 max-w-3xl text-sm leading-8 text-white/68 sm:text-base">
-                Publishing, global settings, media, releases, events, products, and
-                inquiries now each have their own destination instead of competing on
-                one long page.
+              <p className="mt-4 max-w-3xl text-sm leading-8 text-white/66 sm:text-base">
+                Use this space to update the public story, manage working assets,
+                and keep the team&apos;s release, event, product, and inquiry records in order.
               </p>
             </div>
           </div>
 
-          <div
-            className={`status-pill ${
-              databaseStatus.tone === "ok" ? "status-pill--ok" : "status-pill--warn"
-            }`}
-          >
-            <ShieldCheck size={15} />
-            <span>{databaseStatus.label}</span>
+          <div className="admin-overview-status-card">
+            <p className="section-label">System health</p>
+            <p className="admin-overview-status-title">{databaseStatus.label}</p>
+            <p className="text-sm leading-7 text-white/62">{databaseStatus.detail}</p>
           </div>
         </div>
 
-        <p className="mt-4 max-w-3xl text-sm leading-7 text-white/60">
-          {databaseStatus.detail}
-        </p>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="admin-overview-kpi-grid">
           {adminKpis.map((item) => {
             const Icon = item.icon;
 
@@ -192,12 +197,11 @@ export default async function AdminPage() {
             </div>
             <div>
               <h2 className="display-title text-4xl text-white sm:text-5xl">
-                Work in lanes, not in one long queue.
+                Start with the work that moves the site today.
               </h2>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                These three workspaces usually need the fastest attention: the live
-                story, the media library behind it, and the inquiries that turn brand
-                momentum into real opportunities.
+                These are usually the first touchpoints for management and content teams:
+                what is live, what supports it, and who needs a response next.
               </p>
             </div>
           </div>
@@ -231,11 +235,11 @@ export default async function AdminPage() {
             </div>
             <div>
               <h2 className="display-title text-4xl text-white sm:text-5xl">
-                Choose the right workspace for the task.
+                Choose the right workspace for the task at hand.
               </h2>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                Publishing tools manage the public website. Operations tools manage
-                business records and team flow.
+                Publishing tools control the public site. Operations tools keep the
+                business side organized without mixing records into page editing.
               </p>
             </div>
           </div>

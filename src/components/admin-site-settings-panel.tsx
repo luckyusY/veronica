@@ -140,97 +140,131 @@ export function AdminSiteSettingsPanel({
 
         <div className="luxury-divider my-5" />
 
-        <div className="admin-site-settings-grid">
-          <div className="admin-field">
-            <label htmlFor="site-brand-kicker">Header kicker</label>
-            <input
-              className="admin-input"
-              id="site-brand-kicker"
-              onChange={(event) => updateSiteSettings("header", "brandKicker", event.target.value)}
-              value={siteSettingsDraft.header.brandKicker}
-            />
-          </div>
+        <div className="admin-site-settings-layout">
+          <section className="admin-settings-card">
+            <div className="admin-settings-card-header">
+              <div>
+                <p className="section-label">Header</p>
+                <h2 className="display-title mt-3 text-3xl text-white">Navigation labels</h2>
+              </div>
+              <p className="text-sm leading-7 text-white/60">
+                Keep the top navigation language short, premium, and consistent.
+              </p>
+            </div>
 
-          <div className="admin-field">
-            <label htmlFor="site-booking-label">Booking label</label>
-            <input
-              className="admin-input"
-              id="site-booking-label"
-              onChange={(event) => updateSiteSettings("header", "bookingLabel", event.target.value)}
-              value={siteSettingsDraft.header.bookingLabel}
-            />
-          </div>
+            <div className="admin-site-settings-grid">
+              <div className="admin-field">
+                <label htmlFor="site-brand-kicker">Header kicker</label>
+                <input
+                  className="admin-input"
+                  id="site-brand-kicker"
+                  onChange={(event) =>
+                    updateSiteSettings("header", "brandKicker", event.target.value)
+                  }
+                  value={siteSettingsDraft.header.brandKicker}
+                />
+              </div>
 
-          <div className="admin-field">
-            <label htmlFor="site-shop-label">Shop label</label>
-            <input
-              className="admin-input"
-              id="site-shop-label"
-              onChange={(event) => updateSiteSettings("header", "shopLabel", event.target.value)}
-              value={siteSettingsDraft.header.shopLabel}
-            />
-          </div>
+              <div className="admin-field">
+                <label htmlFor="site-booking-label">Booking label</label>
+                <input
+                  className="admin-input"
+                  id="site-booking-label"
+                  onChange={(event) =>
+                    updateSiteSettings("header", "bookingLabel", event.target.value)
+                  }
+                  value={siteSettingsDraft.header.bookingLabel}
+                />
+              </div>
 
-          <div className="admin-field md:col-span-2 xl:col-span-3">
-            <label htmlFor="site-footer-description">Footer description</label>
-            <textarea
-              className="admin-textarea"
-              id="site-footer-description"
-              onChange={(event) => updateSiteSettings("footer", "description", event.target.value)}
-              value={siteSettingsDraft.footer.description}
-            />
-          </div>
+              <div className="admin-field">
+                <label htmlFor="site-shop-label">Shop label</label>
+                <input
+                  className="admin-input"
+                  id="site-shop-label"
+                  onChange={(event) =>
+                    updateSiteSettings("header", "shopLabel", event.target.value)
+                  }
+                  value={siteSettingsDraft.header.shopLabel}
+                />
+              </div>
+            </div>
+          </section>
 
-          <div className="admin-field">
-            <label htmlFor="site-footer-notes">Footer notes (one per line)</label>
-            <textarea
-              className="admin-textarea"
-              id="site-footer-notes"
-              onChange={(event) => {
-                setFooterNotesText(event.target.value);
-                updateSiteSettings("footer", "notes", fromMultiline(event.target.value));
-              }}
-              value={footerNotesText}
-            />
-          </div>
+          <section className="admin-settings-card">
+            <div className="admin-settings-card-header">
+              <div>
+                <p className="section-label">Footer</p>
+                <h2 className="display-title mt-3 text-3xl text-white">Closing details</h2>
+              </div>
+              <p className="text-sm leading-7 text-white/60">
+                Edit the supporting footer copy, signals, and utility links from one place.
+              </p>
+            </div>
 
-          <div className="admin-field">
-            <label htmlFor="site-social-signals">Social signals (one per line)</label>
-            <textarea
-              className="admin-textarea"
-              id="site-social-signals"
-              onChange={(event) => {
-                setSocialSignalsText(event.target.value);
-                updateSiteSettings("footer", "socialSignals", fromMultiline(event.target.value));
-              }}
-              value={socialSignalsText}
-            />
-          </div>
+            <div className="admin-site-settings-grid">
+              <div className="admin-field admin-field--full">
+                <label htmlFor="site-footer-description">Footer description</label>
+                <textarea
+                  className="admin-textarea"
+                  id="site-footer-description"
+                  onChange={(event) => updateSiteSettings("footer", "description", event.target.value)}
+                  value={siteSettingsDraft.footer.description}
+                />
+              </div>
 
-          <div className="admin-field">
-            <label htmlFor="site-utility-links">Utility links (`label | href`)</label>
-            <textarea
-              className="admin-textarea"
-              id="site-utility-links"
-              onChange={(event) => {
-                setUtilityLinksText(event.target.value);
-                updateSiteSettings("footer", "utilityLinks", parseUtilityLinks(event.target.value));
-              }}
-              value={utilityLinksText}
-            />
-          </div>
+              <div className="admin-field">
+                <label htmlFor="site-footer-notes">Footer notes (one per line)</label>
+                <textarea
+                  className="admin-textarea"
+                  id="site-footer-notes"
+                  onChange={(event) => {
+                    setFooterNotesText(event.target.value);
+                    updateSiteSettings("footer", "notes", fromMultiline(event.target.value));
+                  }}
+                  value={footerNotesText}
+                />
+              </div>
 
-          <div className="admin-field md:col-span-2 xl:col-span-3">
-            <label htmlFor="site-copyright-tagline">Copyright tagline</label>
-            <input
-              className="admin-input"
-              id="site-copyright-tagline"
-              onChange={(event) =>
-                updateSiteSettings("footer", "copyrightTagline", event.target.value)
-              }
-              value={siteSettingsDraft.footer.copyrightTagline}
-            />
-          </div>
+              <div className="admin-field">
+                <label htmlFor="site-social-signals">Social signals (one per line)</label>
+                <textarea
+                  className="admin-textarea"
+                  id="site-social-signals"
+                  onChange={(event) => {
+                    setSocialSignalsText(event.target.value);
+                    updateSiteSettings("footer", "socialSignals", fromMultiline(event.target.value));
+                  }}
+                  value={socialSignalsText}
+                />
+              </div>
+
+              <div className="admin-field">
+                <label htmlFor="site-utility-links">Utility links (`label | href`)</label>
+                <textarea
+                  className="admin-textarea"
+                  id="site-utility-links"
+                  onChange={(event) => {
+                    setUtilityLinksText(event.target.value);
+                    updateSiteSettings("footer", "utilityLinks", parseUtilityLinks(event.target.value));
+                  }}
+                  value={utilityLinksText}
+                />
+              </div>
+
+              <div className="admin-field admin-field--full">
+                <label htmlFor="site-copyright-tagline">Copyright tagline</label>
+                <input
+                  className="admin-input"
+                  id="site-copyright-tagline"
+                  onChange={(event) =>
+                    updateSiteSettings("footer", "copyrightTagline", event.target.value)
+                  }
+                  value={siteSettingsDraft.footer.copyrightTagline}
+                />
+              </div>
+            </div>
+          </section>
         </div>
 
         <div className="admin-button-row mt-4">

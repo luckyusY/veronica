@@ -357,6 +357,9 @@ export function AdminPageCmsPanel({
           <aside className="admin-cms-rail">
             <div className="admin-cms-rail-surface">
               <p className="section-label">Content directory</p>
+              <p className="admin-cms-rail-copy">
+                Switch between public routes without losing the current editor context.
+              </p>
               <div className="admin-button-row mt-4">
                 <Link className="admin-button admin-button--ghost" href="/admin/content">
                   All pages
@@ -439,6 +442,25 @@ export function AdminPageCmsPanel({
                 </div>
               </div>
 
+              <div className="admin-editor-summary-strip">
+                <div className="admin-editor-summary-item">
+                  <span className="admin-mini-stat-label">Route</span>
+                  <strong>{selectedPage.route}</strong>
+                </div>
+                <div className="admin-editor-summary-item">
+                  <span className="admin-mini-stat-label">Sections</span>
+                  <strong>{selectedSummary.sectionKeys.length}</strong>
+                </div>
+                <div className="admin-editor-summary-item">
+                  <span className="admin-mini-stat-label">Hero slides</span>
+                  <strong>{selectedSummary.heroSlides}</strong>
+                </div>
+                <div className="admin-editor-summary-item">
+                  <span className="admin-mini-stat-label">Media refs</span>
+                  <strong>{selectedSummary.mediaRefs}</strong>
+                </div>
+              </div>
+
               <div className="admin-publishing-bar">
                 <div className="admin-publishing-copy">
                   <div className="admin-publishing-topline">
@@ -502,27 +524,6 @@ export function AdminPageCmsPanel({
                 </div>
               </div>
 
-              <div className="admin-editor-overview-grid mt-5">
-                <article className="admin-mini-stat">
-                  <span className="admin-mini-stat-label">Route</span>
-                  <span className="admin-mini-stat-value">{selectedPage.route}</span>
-                </article>
-                <article className="admin-mini-stat">
-                  <span className="admin-mini-stat-label">Sections</span>
-                  <span className="admin-mini-stat-value">
-                    {selectedSummary.sectionKeys.length}
-                  </span>
-                </article>
-                <article className="admin-mini-stat">
-                  <span className="admin-mini-stat-label">Hero slides</span>
-                  <span className="admin-mini-stat-value">{selectedSummary.heroSlides}</span>
-                </article>
-                <article className="admin-mini-stat">
-                  <span className="admin-mini-stat-label">Media refs</span>
-                  <span className="admin-mini-stat-value">{selectedSummary.mediaRefs}</span>
-                </article>
-              </div>
-
               <div className="admin-key-list mt-5">
                 {selectedSummary.sectionKeys.map((key) => (
                   <span className="admin-key-chip" key={key}>
@@ -531,33 +532,45 @@ export function AdminPageCmsPanel({
                 ))}
               </div>
 
-              <div className="mt-5 grid gap-4 md:grid-cols-2">
-                <div className="admin-field">
-                  <label htmlFor="cms-page-name">Page name</label>
-                  <input
-                    className={`admin-input ${validationErrors.name ? "is-invalid" : ""}`.trim()}
-                    id="cms-page-name"
-                    onChange={(event) => updateSelectedDraftField("name", event.target.value)}
-                    value={selectedDraft.name}
-                  />
-                  {validationErrors.name?.[0] ? (
-                    <p className="admin-field-error">{validationErrors.name[0]}</p>
-                  ) : null}
+              <section className="admin-editing-basics-card mt-5">
+                <div className="admin-settings-card-header">
+                  <div>
+                    <p className="section-label">Editing basics</p>
+                    <h3 className="display-title mt-3 text-3xl text-white">Page identity</h3>
+                  </div>
+                  <p className="text-sm leading-7 text-white/60">
+                    These fields affect the editor listing and publishing context for this route.
+                  </p>
                 </div>
 
-                <div className="admin-field">
-                  <label htmlFor="cms-page-summary">Summary</label>
-                  <input
-                    className={`admin-input ${validationErrors.summary ? "is-invalid" : ""}`.trim()}
-                    id="cms-page-summary"
-                    onChange={(event) => updateSelectedDraftField("summary", event.target.value)}
-                    value={selectedDraft.summary}
-                  />
-                  {validationErrors.summary?.[0] ? (
-                    <p className="admin-field-error">{validationErrors.summary[0]}</p>
-                  ) : null}
+                <div className="admin-form-grid admin-form-grid--wide">
+                  <div className="admin-field">
+                    <label htmlFor="cms-page-name">Page name</label>
+                    <input
+                      className={`admin-input ${validationErrors.name ? "is-invalid" : ""}`.trim()}
+                      id="cms-page-name"
+                      onChange={(event) => updateSelectedDraftField("name", event.target.value)}
+                      value={selectedDraft.name}
+                    />
+                    {validationErrors.name?.[0] ? (
+                      <p className="admin-field-error">{validationErrors.name[0]}</p>
+                    ) : null}
+                  </div>
+
+                  <div className="admin-field">
+                    <label htmlFor="cms-page-summary">Summary</label>
+                    <input
+                      className={`admin-input ${validationErrors.summary ? "is-invalid" : ""}`.trim()}
+                      id="cms-page-summary"
+                      onChange={(event) => updateSelectedDraftField("summary", event.target.value)}
+                      value={selectedDraft.summary}
+                    />
+                    {validationErrors.summary?.[0] ? (
+                      <p className="admin-field-error">{validationErrors.summary[0]}</p>
+                    ) : null}
+                  </div>
                 </div>
-              </div>
+              </section>
 
               <div className="admin-section-stack mt-5">
                 {sectionKeys.map((sectionKey, index) => (

@@ -44,9 +44,9 @@ export function AdminSidebarNav({ role }: AdminSidebarNavProps) {
   return (
     <div className="admin-nav-groups">
       {visibleGroups.map((group) => (
-        <div className="admin-nav-group" key={group.label}>
+        <section className="admin-nav-group" key={group.label}>
           <p className="admin-nav-group-title">{group.label}</p>
-          <nav aria-label={group.label} className="space-y-2">
+          <nav aria-label={group.label} className="admin-nav-group-list">
             {group.items.map((item) => {
               const Icon = iconMap[item.iconKey];
 
@@ -61,12 +61,14 @@ export function AdminSidebarNav({ role }: AdminSidebarNavProps) {
                   <span className="admin-nav-icon">
                     <Icon size={16} strokeWidth={1.8} />
                   </span>
-                  <span>{item.label}</span>
+                  <span className="admin-nav-link-copy">
+                    <span>{item.label}</span>
+                  </span>
                 </Link>
               );
             })}
           </nav>
-        </div>
+        </section>
       ))}
     </div>
   );
