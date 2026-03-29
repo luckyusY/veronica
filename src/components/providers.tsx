@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
 import Lenis from "lenis";
 import { MotionConfig } from "motion/react";
 import { Toaster } from "sonner";
@@ -19,7 +19,7 @@ export function useMotionLite() {
 export function Providers({ children }: ProvidersProps) {
   const [motionLite, setMotionLite] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const media = window.matchMedia(
       "(pointer: coarse), (max-width: 820px), (prefers-reduced-motion: reduce)",
     );
