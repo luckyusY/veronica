@@ -7,23 +7,23 @@ import { getCmsSiteSettings, listCmsMediaAssets, listCmsPages } from "@/lib/cms-
 import { pingDatabase } from "@/lib/mongodb";
 
 export async function getDatabaseStatus() {
-  try {
-    await pingDatabase();
+  const result = await pingDatabase();
 
+  if (result.ok) {
     return {
       tone: "ok" as const,
       label: "MongoDB connected",
       detail:
         "Admin records are live and this control room is writing directly to your production database.",
     };
-  } catch {
-    return {
-      tone: "warn" as const,
-      label: "Database unavailable",
-      detail:
-        "The admin layout is ready, but MongoDB could not be reached. Check your environment variables and cluster access before publishing changes.",
-    };
   }
+
+  return {
+    tone: "warn" as const,
+    label: "Database unavailable",
+    detail:
+      "The admin layout is ready, but MongoDB could not be reached. Check your environment variables and cluster access before publishing changes.",
+  };
 }
 
 export async function getAdminOverviewData() {

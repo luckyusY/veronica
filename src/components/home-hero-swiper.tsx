@@ -7,6 +7,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Autoplay, EffectFade, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useMotionLite } from "@/components/providers";
+import { createSvgBlurDataURL } from "@/lib/image-utils";
 
 type HeroSlide = {
   eyebrow: string;
@@ -84,9 +85,15 @@ export function HomeHeroSwiper({
               <div className="home-hero-slide-media">
                 <Image
                   alt={slide.image.alt}
+                  blurDataURL={createSvgBlurDataURL(
+                    slide.image.placeholderBase ?? "#141012",
+                    slide.image.placeholderHighlight ?? "#8e6b43",
+                  )}
                   className="home-hero-slide-image"
                   fill
+                  placeholder="blur"
                   priority={index === 0}
+                  loading={index === 0 ? undefined : "lazy"}
                   sizes="100vw"
                   src={slide.image.src ?? slide.image.url ?? ""}
                   style={{ objectPosition: slide.image.position ?? "center center" }}

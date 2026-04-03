@@ -6,6 +6,8 @@ import { TestimonialsCarousel } from "@/components/testimonials-carousel";
 import { getCmsPage } from "@/lib/cms-store";
 import type { HomePageContent } from "@/lib/cms-types";
 
+export const revalidate = 60;
+
 export default async function Home() {
   const page = await getCmsPage("home");
   const content = page.content as HomePageContent;

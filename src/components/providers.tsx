@@ -2,7 +2,6 @@
 
 import type { ReactNode } from "react";
 import { createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
-import Lenis from "lenis";
 import { MotionConfig } from "motion/react";
 import { Toaster } from "sonner";
 
@@ -44,19 +43,27 @@ export function Providers({ children }: ProvidersProps) {
       return;
     }
 
-    const lenis = new Lenis({
-      autoRaf: true,
-      duration: 1.05,
-      smoothWheel: true,
-      wheelMultiplier: 0.92,
-      touchMultiplier: 1,
-      overscroll: true,
-      prevent: (node) =>
-        node instanceof HTMLElement && !!node.closest("[data-lenis-prevent]"),
-    });
+    let lenis: any;
+
+    async function initLenis() {
+      const { default: Lenis } = await import("lenis");
+      
+      lenis = new Lenis({
+        autoRaf: true,
+        duration: 1.05,
+        smoothWheel: true,
+        wheelMultiplier: 0.92,
+        touchMultiplier: 1,
+        overscroll: true,
+        prevent: (node) =>
+          node instanceof HTMLElement && !!node.closest("[data-lenis-prevent]"),
+      });
+    }
+
+    initLenis();
 
     return () => {
-      lenis.destroy();
+      lenis?.destroy();
     };
   }, [motionLite]);
 

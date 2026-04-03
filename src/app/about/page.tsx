@@ -3,9 +3,15 @@ import { CmsStandardPage } from "@/components/cms-standard-page";
 import { getCmsPage } from "@/lib/cms-store";
 import type { StandardPageContent } from "@/lib/cms-types";
 
-export const metadata: Metadata = {
-  title: "About",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getCmsPage("about");
+  return {
+    title: page.name,
+    description: page.summary,
+  };
+}
+
+export const revalidate = 60;
 
 export default async function AboutPage() {
   const page = await getCmsPage("about");

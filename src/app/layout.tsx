@@ -8,7 +8,7 @@ import { getCmsSiteSettings } from "@/lib/cms-store";
 import "./globals.css";
 
 const displaySerif = Cormorant_Garamond({
-  variable: "--font-bodoni",
+  variable: "--font-display-serif",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
@@ -21,7 +21,7 @@ const greatVibes = Great_Vibes({
 });
 
 const bodySans = Jost({
-  variable: "--font-manrope",
+  variable: "--font-body-sans",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
 });

@@ -40,11 +40,21 @@ function getOptionalEnvVar(name: OptionalEnvVar) {
 export const env = {
   MONGODB_URI: getEnvVar("MONGODB_URI"),
   MONGODB_DB_NAME: getEnvVar("MONGODB_DB_NAME"),
-  AUTH_SECRET:
-    getOptionalEnvVar("AUTH_SECRET") ??
-    (process.env.NODE_ENV === "development"
-      ? "veronica-local-auth-secret"
-      : undefined),
+  get AUTH_SECRET() {
+    const secret = getOptionalEnvVar("AUTH_SECRET");
+    if (secret) return secret;
+    if (
+      process.env.NODE_ENV === "development" ||
+      process.env.npm_lifecycle_event === "build" ||
+      process.env.NEXT_PHASE !== undefined
+    ) {
+      return "veronica-local-auth-secret";
+    }
+    throw new Error(
+      "AUTH_SECRET environment variable is required in production. " +
+      "Generate one with: openssl rand -base64 32"
+    );
+  },
   ADMIN_OWNER_EMAIL: getOptionalEnvVar("ADMIN_OWNER_EMAIL"),
   ADMIN_OWNER_PASSWORD: getOptionalEnvVar("ADMIN_OWNER_PASSWORD"),
   ADMIN_OWNER_NAME: getOptionalEnvVar("ADMIN_OWNER_NAME"),

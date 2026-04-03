@@ -3,6 +3,8 @@
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import NextTopLoader from "nextjs-toploader";
+import { AnimatePresence, motion } from "motion/react";
+import { ScrollToTop } from "@/components/scroll-to-top";
 
 type AppShellProps = {
   children: ReactNode;
@@ -30,8 +32,20 @@ export function AppShell({ children, header, footer }: AppShellProps) {
       ) : (
         <div className="flex min-h-screen flex-col">
           {header}
-          <div className="flex-1">{children}</div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              className="flex-1 flex flex-col"
+              key={pathname}
+              initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -4, filter: "blur(2px)" }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
           {footer}
+          <ScrollToTop />
         </div>
       )}
     </>

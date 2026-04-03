@@ -261,7 +261,7 @@
 
 .home-hero-meta-value {
   margin: 0;
-  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-family: var(--font-display-serif), "Didot", Georgia, serif;
   font-size: clamp(1.2rem, 1.6vw, 1.7rem);
   font-style: italic;
   line-height: 0.95;
@@ -460,7 +460,7 @@
   position: relative;
   z-index: 1;
   max-width: 11ch;
-  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-family: var(--font-display-serif), "Didot", Georgia, serif;
   font-size: clamp(2.1rem, 3.6vw, 3.4rem);
   font-style: italic;
   line-height: 0.95;
@@ -663,7 +663,7 @@
 
 .testimonial-mark {
   margin: 0;
-  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-family: var(--font-display-serif), "Didot", Georgia, serif;
   font-size: clamp(4rem, 10vw, 5.8rem);
   line-height: 0.78;
   color: rgba(242, 210, 139, 0.78);
@@ -736,7 +736,7 @@
 }
 
 .editorial-route-index {
-  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-family: var(--font-display-serif), "Didot", Georgia, serif;
   font-size: clamp(3.6rem, 8vw, 5rem);
   line-height: 0.82;
   color: rgba(242, 210, 139, 0.16);
@@ -834,7 +834,7 @@
   background:
     radial-gradient(circle at 35% 30%, rgba(201, 169, 110, 0.22), transparent 64%),
     linear-gradient(145deg, rgba(92, 63, 40, 0.8), rgba(25, 19, 16, 0.94));
-  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-family: var(--font-display-serif), "Didot", Georgia, serif;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1443,8 +1443,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-manrope);
-  --font-display: var(--font-bodoni);
+  --font-sans: var(--font-body-sans);
+  --font-display: var(--font-display-serif);
 }
 
 html {
@@ -1628,7 +1628,7 @@ html.lenis body {
     radial-gradient(circle at 14% 74%, rgba(77, 208, 225, 0.1), transparent 22%),
     linear-gradient(180deg, rgba(28, 28, 28, 0.96) 0%, rgba(28, 28, 28, 1) 100%);
   color: var(--foreground);
-  font-family: var(--font-manrope), "Segoe UI", sans-serif;
+  font-family: var(--font-body-sans), "Segoe UI", sans-serif;
   font-weight: 300;
   letter-spacing: 0.01em;
   color-scheme: dark;
@@ -1752,6 +1752,51 @@ a {
   text-decoration: none;
 }
 
+.scroll-to-top-button {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 999px;
+  border: 1px solid rgba(242, 210, 139, 0.22);
+  background: linear-gradient(145deg, rgba(42, 35, 28, 0.96), rgba(18, 14, 11, 0.98));
+  color: rgba(242, 210, 139, 0.82);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.scroll-to-top-button:hover {
+  transform: translateY(-3px);
+  border-color: rgba(242, 210, 139, 0.42);
+  background: linear-gradient(145deg, rgba(54, 44, 34, 0.98), rgba(24, 18, 14, 0.98));
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.34),
+    0 0 22px rgba(242, 210, 139, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: rgba(242, 210, 139, 1);
+}
+
+.site-header-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  background: rgba(5, 3, 2, 0.62);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
 @layer base {
   * {
     box-sizing: border-box;
@@ -1770,7 +1815,7 @@ a {
   h1,
   h2,
   h3 {
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-family: var(--font-display-serif), "Didot", Georgia, serif;
     font-weight: 600;
     letter-spacing: -0.035em;
     line-height: 0.94;
@@ -1822,7 +1867,7 @@ a {
   }
 
   .display-title {
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-family: var(--font-display-serif), "Didot", Georgia, serif;
     font-optical-sizing: auto;
     font-feature-settings: "liga" 1, "kern" 1, "pnum" 1;
     font-weight: 600;
@@ -2124,7 +2169,7 @@ a {
     right: 1.1rem;
     bottom: 0.5rem;
     z-index: 0;
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-family: var(--font-display-serif), "Didot", Georgia, serif;
     font-size: clamp(4.5rem, 12vw, 7.4rem);
     line-height: 0.88;
     color: rgba(255, 255, 255, 0.05);
@@ -2156,7 +2201,7 @@ a {
   }
 
   .metric-index {
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-family: var(--font-display-serif), "Didot", Georgia, serif;
     font-size: 3rem;
     line-height: 0.9;
     color: rgba(255, 255, 255, 0.16);
@@ -2276,7 +2321,7 @@ a {
     border-radius: 1.5rem;
     border: 1px solid rgba(242, 210, 139, 0.22);
     background: linear-gradient(145deg, #3a2b1c 0%, #241813 100%);
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-family: var(--font-display-serif), "Didot", Georgia, serif;
     font-size: 2rem;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -2334,7 +2379,7 @@ a {
   }
 
   .nav-rail-index {
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-family: var(--font-display-serif), "Didot", Georgia, serif;
     font-size: 1.75rem;
     line-height: 0.9;
     color: rgba(255, 255, 255, 0.12);
@@ -2410,7 +2455,7 @@ a {
   }
 
   .footer-link-index {
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-family: var(--font-display-serif), "Didot", Georgia, serif;
     font-size: 1.7rem;
     line-height: 0.9;
     color: rgba(255, 255, 255, 0.14);
@@ -2604,7 +2649,7 @@ a {
 
   .admin-kpi-value {
     margin-top: 1.15rem;
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-family: var(--font-display-serif), "Didot", Georgia, serif;
     font-size: clamp(2.8rem, 6vw, 4.2rem);
     line-height: 0.9;
     color: white;
@@ -2947,7 +2992,7 @@ a {
 
   .admin-mini-stat-value,
   .admin-insight-value {
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-family: var(--font-display-serif), "Didot", Georgia, serif;
     font-size: 1.3rem;
     line-height: 1;
     color: white;
@@ -4551,7 +4596,7 @@ a {
   .editorial-wordmark {
     display: inline-block;
     max-width: 8ch;
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-family: var(--font-display-serif), "Didot", Georgia, serif;
     font-size: clamp(3.6rem, 9vw, 6.5rem);
     line-height: 0.9;
     letter-spacing: -0.05em;
@@ -4578,7 +4623,7 @@ a {
   }
 
   .brand-didot {
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-family: var(--font-display-serif), "Didot", Georgia, serif;
     font-feature-settings: "liga" 1, "kern" 1, "pnum" 1;
     font-size: 0.5em;
     font-weight: 700;
@@ -4691,7 +4736,7 @@ a {
     width: fit-content;
     border: 1px solid rgba(242, 210, 139, 0.22);
     padding: 0.65rem 0.82rem;
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-family: var(--font-display-serif), "Didot", Georgia, serif;
     font-size: 1.2rem;
     color: #f7f2ea;
   }
@@ -4997,7 +5042,7 @@ a {
     display: inline-grid;
     gap: 0.16rem;
     justify-items: center;
-    font-family: var(--font-bodoni), "Didot", Georgia, serif;
+    font-family: var(--font-display-serif), "Didot", Georgia, serif;
     line-height: 0.9;
     letter-spacing: -0.05em;
     color: #f7f2ea;
@@ -6058,7 +6103,7 @@ a:not([class]):hover {
 
 .home-hero-slide-card-title {
   margin: 0;
-  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-family: var(--font-display-serif), "Didot", Georgia, serif;
   font-size: 1.22rem;
   line-height: 1.02;
   color: #fff;
@@ -6113,7 +6158,7 @@ a:not([class]):hover {
 
 .home-signal-title {
   margin: 0;
-  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-family: var(--font-display-serif), "Didot", Georgia, serif;
   font-size: clamp(1.4rem, 1.7vw, 1.95rem);
   line-height: 0.98;
   color: #fff;
@@ -6163,7 +6208,7 @@ a:not([class]):hover {
   margin: 0;
   max-width: 46rem;
   padding-left: 1rem;
-  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-family: var(--font-display-serif), "Didot", Georgia, serif;
   font-size: clamp(1.7rem, 2.7vw, 2.5rem);
   font-style: italic;
   line-height: 1.02;
@@ -6462,7 +6507,7 @@ a:not([class]):hover {
 
 .page-signal-value {
   margin: 0;
-  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-family: var(--font-display-serif), "Didot", Georgia, serif;
   font-size: clamp(1.3rem, 1.8vw, 1.85rem);
   line-height: 0.98;
   color: #fff;
@@ -6752,7 +6797,7 @@ a:not([class]):hover {
 .veronica-wordmark-didot {
   display: block;
   margin-left: 0.3em;
-  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-family: var(--font-display-serif), "Didot", Georgia, serif;
   font-size: 0.88rem;
   font-weight: 700;
   letter-spacing: 0.34em;
@@ -7669,7 +7714,7 @@ a:not([class]):hover {
 
 .admin-overview-status-title {
   margin: 0;
-  font-family: var(--font-bodoni), "Didot", Georgia, serif;
+  font-family: var(--font-display-serif), "Didot", Georgia, serif;
   font-size: clamp(2rem, 5vw, 2.9rem);
   line-height: 0.92;
   color: white;
