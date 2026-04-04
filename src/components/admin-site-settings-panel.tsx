@@ -127,12 +127,9 @@ export function AdminSiteSettingsPanel({
               </span>
             </div>
             <div>
-              <h1 className="display-title text-4xl text-white sm:text-5xl">
-                Manage header and footer content globally.
-              </h1>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                Keep brand copy, labels, social signals, and footer links in one place so every
-                public page stays aligned.
+              <h1 className="admin-page-title">Global settings.</h1>
+              <p className="admin-page-subtitle">
+                Keep brand copy, labels, social signals, and footer links in one place so every public page stays aligned.
               </p>
             </div>
           </div>

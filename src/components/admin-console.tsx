@@ -276,12 +276,8 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                   <span className="status-pill status-pill--ok">{counts[collection]} records</span>
                 </div>
                 <div>
-                  <h2 className="display-title text-4xl text-white sm:text-5xl">
-                    {config.label}
-                  </h2>
-                  <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                    {config.description}
-                  </p>
+                  <h2 className="admin-page-title">{config.label}</h2>
+                  <p className="admin-page-subtitle">{config.description}</p>
                 </div>
               </div>
             </div>
@@ -293,7 +289,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                 <div className="admin-record-composer-header">
                   <div>
                     <p className="section-label">New record</p>
-                    <h3 className="display-title mt-3 text-3xl text-white">
+                    <h3 className="admin-card-title mt-1">
                       Add {config.singular}
                     </h3>
                   </div>

@@ -44,7 +44,7 @@ const adminModules = [
     href: "/admin/releases",
     label: "Operations",
     title: "Releases",
-    description: "Track songs, campaigns, video drops, and rollout notes without page-CMS noise.",
+    description: "Track songs, campaigns, video drops, and rollout notes.",
     meta: "Music pipeline",
     icon: Disc3,
   },
@@ -52,7 +52,7 @@ const adminModules = [
     href: "/admin/events",
     label: "Operations",
     title: "Events",
-    description: "Manage routing, venues, ticket links, and live show status in a dedicated view.",
+    description: "Manage venues, ticket links, and live show status.",
     meta: "Tour workflow",
     icon: CalendarClock,
   },
@@ -60,7 +60,7 @@ const adminModules = [
     href: "/admin/products",
     label: "Operations",
     title: "Products",
-    description: "Keep merch, bundles, and storefront records organized in their own workspace.",
+    description: "Keep merch, bundles, and storefront records organized.",
     meta: "Commerce desk",
     icon: Package,
   },
@@ -68,7 +68,7 @@ const adminModules = [
     href: "/admin/inquiries",
     label: "Operations",
     title: "Inquiries",
-    description: "Separate booking, press, and management conversations into one focused queue.",
+    description: "Separate booking, press, and management conversations into one queue.",
     meta: "Press and booking",
     icon: Newspaper,
   },
@@ -81,29 +81,29 @@ export default async function AdminPage() {
   const adminKpis = [
     {
       icon: LayoutDashboard,
-      label: "Admin Modules",
+      label: "Modules",
       value: adminModules.length.toString().padStart(2, "0"),
-      detail: "Publishing and operations are now divided into dedicated routes.",
+      detail: "Publishing + operations workspaces",
     },
     {
       icon: FileJson,
       label: "CMS Pages",
       value: cmsPages.length.toString().padStart(2, "0"),
-      detail: "Every public page has its own editable document in MongoDB.",
+      detail: "Editable public routes",
     },
     {
       icon: CloudUpload,
       label: "Media Assets",
       value: mediaAssets.length.toString().padStart(2, "0"),
-      detail: "Cloudinary-backed images and videos ready for direct usage.",
+      detail: "Cloudinary-backed files",
     },
     {
       icon: Sparkles,
-      label: cloudinaryReady ? "Cloudinary" : "Cloudinary Missing",
+      label: cloudinaryReady ? "Cloudinary" : "Cloudinary",
       value: cloudinaryReady ? "LIVE" : "ENV",
       detail: cloudinaryReady
-        ? "Uploads and sync tooling are available from the media workspace."
-        : "Add Cloudinary environment variables before using admin uploads.",
+        ? "Uploads and sync available"
+        : "Add Cloudinary env vars to enable uploads",
     },
   ];
 
@@ -113,32 +113,33 @@ export default async function AdminPage() {
       label: "Publishing Priority",
       title: "Keep the public story current.",
       stat: `${cmsPages.length} routes`,
-      copy: "Review homepage, biography, and campaign sections before each major release or appearance.",
+      copy: "Review homepage, biography, and campaign sections before each major release.",
     },
     {
       href: "/admin/media",
       label: "Media Direction",
       title: "Maintain a polished visual library.",
       stat: `${mediaAssets.length} assets`,
-      copy: "Upload hero-ready portraits, campaign stills, and short-form clips without mixing them into page editing.",
+      copy: "Upload hero-ready portraits, campaign stills, and short-form clips.",
     },
     {
       href: "/admin/inquiries",
       label: "Team Response",
       title: "Move quickly on booking and press.",
       stat: `${counts.inquiries} inquiries`,
-      copy: "Give management and brand requests a dedicated queue so high-value conversations never disappear inside content tasks.",
+      copy: "Keep high-value conversations in their own queue so nothing gets buried.",
     },
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
+      {/* Status + KPIs */}
       <section className="admin-surface admin-overview-hero">
         <div className="admin-overview-hero-grid">
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="admin-panel-meta">
               <span className="admin-badge">
-                <LayoutDashboard size={15} />
+                <LayoutDashboard size={14} />
                 <span>Overview</span>
               </span>
               <span
@@ -146,17 +147,16 @@ export default async function AdminPage() {
                   databaseStatus.tone === "ok" ? "status-pill--ok" : "status-pill--warn"
                 }`}
               >
-                <ShieldCheck size={15} />
+                <ShieldCheck size={14} />
                 <span>{databaseStatus.label}</span>
               </span>
             </div>
             <div>
-              <h1 className="display-title text-4xl text-white sm:text-5xl">
-                One backstage for content, media, and operations.
+              <h1 className="admin-page-title">
+                Content, media, and operations.
               </h1>
-              <p className="mt-4 max-w-3xl text-sm leading-8 text-white/66 sm:text-base">
-                Use this space to update the public story, manage working assets,
-                and keep the team&apos;s release, event, product, and inquiry records in order.
+              <p className="admin-page-subtitle">
+                Update the public story, manage assets, and keep release and booking records organized.
               </p>
             </div>
           </div>
@@ -175,45 +175,38 @@ export default async function AdminPage() {
             return (
               <article className="admin-kpi" key={item.label}>
                 <span className="admin-badge">
-                  <Icon size={15} />
+                  <Icon size={14} />
                   <span>{item.label}</span>
                 </span>
                 <p className="admin-kpi-value">{item.value}</p>
-                <p className="mt-3 text-sm leading-7 text-white/68">{item.detail}</p>
+                <p className="mt-2 text-sm leading-6 text-white/66">{item.detail}</p>
               </article>
             );
           })}
         </div>
       </section>
 
+      {/* Today's focus */}
       <section className="admin-surface">
         <div className="admin-panel-header">
-          <div className="space-y-3">
+          <div className="space-y-2">
             <div className="admin-panel-meta">
               <span className="admin-badge">
-                <Sparkles size={15} />
+                <Sparkles size={14} />
                 <span>Today&apos;s Focus</span>
               </span>
             </div>
-            <div>
-              <h2 className="display-title text-4xl text-white sm:text-5xl">
-                Start with the work that moves the site today.
-              </h2>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                These are usually the first touchpoints for management and content teams:
-                what is live, what supports it, and who needs a response next.
-              </p>
-            </div>
+            <h2 className="admin-page-title">Where to start today.</h2>
           </div>
         </div>
 
-        <div className="luxury-divider my-5" />
+        <div className="luxury-divider my-4" />
 
         <div className="admin-focus-grid">
           {focusCards.map((item) => (
             <Link className="admin-focus-card" href={item.href} key={item.href}>
               <p className="admin-focus-card-topline">{item.label}</p>
-              <h3 className="display-title text-3xl text-white">{item.title}</h3>
+              <h3 className="admin-focus-card-heading">{item.title}</h3>
               <p className="admin-focus-copy">{item.copy}</p>
               <div className="admin-focus-stat">
                 <span>{item.stat}</span>
@@ -224,28 +217,21 @@ export default async function AdminPage() {
         </div>
       </section>
 
+      {/* Workspace directory */}
       <section className="admin-surface">
         <div className="admin-panel-header">
-          <div className="space-y-3">
+          <div className="space-y-2">
             <div className="admin-panel-meta">
               <span className="admin-badge">
-                <Sparkles size={15} />
-                <span>Workspace Directory</span>
+                <Sparkles size={14} />
+                <span>Workspaces</span>
               </span>
             </div>
-            <div>
-              <h2 className="display-title text-4xl text-white sm:text-5xl">
-                Choose the right workspace for the task at hand.
-              </h2>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                Publishing tools control the public site. Operations tools keep the
-                business side organized without mixing records into page editing.
-              </p>
-            </div>
+            <h2 className="admin-page-title">All workspaces.</h2>
           </div>
         </div>
 
-        <div className="luxury-divider my-5" />
+        <div className="luxury-divider my-4" />
 
         <div className="admin-directory-grid">
           {adminModules.map((module) => {
@@ -267,14 +253,14 @@ export default async function AdminPage() {
               <Link className="admin-directory-card" href={module.href} key={module.href}>
                 <div className="admin-directory-card-header">
                   <span className="admin-badge">
-                    <Icon size={15} />
+                    <Icon size={14} />
                     <span>{module.label}</span>
                   </span>
                   <span className="admin-directory-meta">{count} items</span>
                 </div>
                 <div>
-                  <h3 className="display-title text-3xl text-white">{module.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-white/66">
+                  <h3 className="admin-card-title">{module.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/62">
                     {module.description}
                   </p>
                 </div>

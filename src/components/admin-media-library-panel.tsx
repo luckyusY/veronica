@@ -194,12 +194,9 @@ export function AdminMediaLibraryPanel({
               </span>
             </div>
             <div>
-              <h1 className="display-title text-4xl text-white sm:text-5xl">
-                Manage the full Veronica media library.
-              </h1>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                Search the library, track where assets are being used, upload in batches, and
-                avoid deleting media that is already live on the site.
+              <h1 className="admin-page-title">Media library.</h1>
+              <p className="admin-page-subtitle">
+                Search, track usage, upload in batches, and avoid deleting media that is already live on the site.
               </p>
             </div>
           </div>

@@ -117,12 +117,9 @@ export function PageEditor({ initialPages }: PageEditorProps) {
               <span className="status-pill status-pill--ok">{pages.length} unique pages</span>
             </div>
             <div>
-              <h2 className="display-title text-4xl text-white sm:text-5xl">
-                Edit every public page from one publishing workspace.
-              </h2>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                Headlines, hero slides, section blocks, footer details, and media references now
-                live in MongoDB and can be updated without touching code.
+              <h2 className="admin-page-title">Edit every public page.</h2>
+              <p className="admin-page-subtitle">
+                Headlines, hero slides, section blocks, and media references live in MongoDB and update without touching code.
               </p>
             </div>
           </div>

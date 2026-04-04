@@ -340,12 +340,9 @@ export function AdminPageCmsPanel({
               <span className="status-pill status-pill--ok">{pages.length} pages</span>
             </div>
             <div>
-              <h1 className="display-title text-4xl text-white sm:text-5xl">
-                Edit each public route in its own workspace.
-              </h1>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                Every page now has a dedicated editor route so fields stay visible, repeatable
-                groups have room to breathe, and publishing decisions stay focused.
+              <h1 className="admin-page-title">Edit each public route.</h1>
+              <p className="admin-page-subtitle">
+                Every page has a dedicated editor so fields stay visible and publishing decisions stay focused.
               </p>
             </div>
           </div>

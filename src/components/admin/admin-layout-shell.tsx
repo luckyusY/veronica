@@ -20,13 +20,17 @@ type AdminLayoutShellProps = {
     | null;
 };
 
+function workspaceLabel(pathname: string) {
+  if (pathname === "/admin") return "Overview";
+  return (
+    pathname.replace("/admin/", "").split("/")[0]?.replace(/-/g, " ") ?? "Workspace"
+  );
+}
+
 export function AdminLayoutShell({ children, user }: AdminLayoutShellProps) {
   const pathname = usePathname();
   const isLoginPage = pathname === "/admin/login";
-  const workspaceLabel =
-    pathname === "/admin"
-      ? "Overview"
-      : pathname.replace("/admin/", "").split("/")[0]?.replace(/-/g, " ") ?? "Workspace";
+  const label = workspaceLabel(pathname);
 
   if (isLoginPage) {
     return (
@@ -44,59 +48,42 @@ export function AdminLayoutShell({ children, user }: AdminLayoutShellProps) {
       <AdminRouteNotice />
 
       <div className="section-shell py-6 sm:py-8 lg:py-10">
-        <div className="grid gap-6 xl:grid-cols-[18rem_minmax(0,1fr)]">
+        <div className="grid gap-6 xl:grid-cols-[17rem_minmax(0,1fr)]">
           <aside className="admin-sidebar">
+            {/* Brand */}
             <Link className="admin-shell-brand-block" href="/admin">
               <div className="admin-brand">
                 <div className="brand-monogram">VA</div>
-                <div className="space-y-2">
+                <div>
                   <span className="brand-crest">Control Room</span>
-                  <div>
-                    <p className="display-title text-3xl text-white">Admin Suite</p>
-                    <p className="mt-2 text-sm leading-7 text-white/66">
-                      Calm publishing and operations for Veronica Adane&apos;s team.
-                    </p>
-                  </div>
+                  <p className="admin-shell-brand-title">Admin</p>
                 </div>
               </div>
             </Link>
 
-            <div className="admin-shell-meta">
-              <div className="admin-shell-pill-row">
-                <span className="admin-shell-pill">Private</span>
-                <span className="admin-shell-pill">Role-aware</span>
-              </div>
-              <div className="admin-shell-context-card">
-                <div className="admin-shell-context-topline">
-                  <span className="admin-nav-icon">
-                    <Compass size={15} strokeWidth={1.8} />
-                  </span>
-                  <div>
-                    <p className="section-label">Current workspace</p>
-                    <p className="admin-shell-context-title">{workspaceLabel}</p>
-                  </div>
-                </div>
-                <p className="admin-shell-context-copy">
-                  Keep publishing, media, and operations in separate lanes so
-                  the team can move quickly without losing clarity.
-                </p>
-              </div>
+            {/* Workspace indicator */}
+            <div className="admin-shell-workspace">
+              <span className="admin-nav-icon">
+                <Compass size={13} strokeWidth={1.8} />
+              </span>
+              <span className="admin-shell-workspace-label">{label}</span>
             </div>
 
+            {/* Navigation */}
             {user ? <AdminSidebarNav role={user.role} /> : null}
 
+            {/* Footer actions */}
             {user ? (
-              <div className="mt-5 space-y-3">
+              <div className="admin-sidebar-footer">
                 <div className="admin-sidebar-actions">
                   <Link className="admin-secondary-link" href="/">
-                    <span>Return to site</span>
+                    <span>View site</span>
                     <ArrowUpRight size={14} />
                   </Link>
                   <Link className="admin-secondary-link" href="/admin/content">
                     Open CMS
                   </Link>
                 </div>
-
                 <AdminSessionFooter
                   email={user.email}
                   name={user.name}

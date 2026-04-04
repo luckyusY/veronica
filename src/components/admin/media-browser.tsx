@@ -110,12 +110,9 @@ export function MediaBrowser({ cloudinaryReady, initialMediaAssets }: MediaBrows
             </span>
           </div>
           <div>
-            <h2 className="display-title text-4xl text-white sm:text-5xl">
-              Upload once, reuse everywhere.
-            </h2>
-            <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-              Sync the bundled Veronica library to Cloudinary, or upload new media directly from
-              admin. Every asset lands in Mongo-backed media records with reusable delivery URLs.
+            <h2 className="admin-page-title">Upload once, reuse everywhere.</h2>
+            <p className="admin-page-subtitle">
+              Sync to Cloudinary, upload directly, or reuse existing assets across the site via delivery URLs.
             </p>
           </div>
         </div>

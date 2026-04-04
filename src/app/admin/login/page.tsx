@@ -30,12 +30,10 @@ export default async function AdminLoginPage({
 
           <div>
             <p className="section-label">Veronica Adane Admin</p>
-            <h1 className="display-title mt-4 text-5xl text-white sm:text-6xl">
-              Sign in to the control room.
-            </h1>
-            <p className="mt-4 max-w-xl text-sm leading-8 text-white/68 sm:text-base">
-              Secure access for publishing, media, bookings, commerce, and management
-              teams. Every workspace is role-protected and session-limited.
+            <h1 className="admin-page-title mt-3">Sign in to the control room.</h1>
+            <p className="admin-page-subtitle">
+              Secure access for publishing, media, bookings, and management teams.
+              Every workspace is role-protected and session-limited.
             </p>
           </div>
 
@@ -56,9 +54,7 @@ export default async function AdminLoginPage({
         <div className="space-y-5">
           <div>
             <p className="section-label">Credentials</p>
-            <h2 className="display-title mt-4 text-4xl text-white">
-              Enter your admin account.
-            </h2>
+            <h2 className="admin-page-title mt-3">Enter your admin account.</h2>
             <p className="mt-3 text-sm leading-7 text-white/64">
               Use the email and password assigned to your team role. If you lose
               access, ask the site owner to re-authorize your account.

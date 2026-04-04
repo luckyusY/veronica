@@ -17,37 +17,11 @@ type PageSignal = {
 };
 
 function buildPageSignals(sections: StandardSection[]): PageSignal[] {
-  return sections.slice(0, 3).map((section) => {
-    if (section.type === "cards") {
-      return {
-        label: section.eyebrow,
-        value: `${section.items.length} modules`,
-        detail: section.title,
-      };
-    }
-
-    if (section.type === "timeline") {
-      return {
-        label: section.eyebrow,
-        value: `${section.items.length} chapters`,
-        detail: section.title,
-      };
-    }
-
-    if (section.type === "banner") {
-      return {
-        label: section.eyebrow,
-        value: "Full-bleed scene",
-        detail: section.title,
-      };
-    }
-
-    return {
-      label: section.eyebrow,
-      value: section.imageSide === "left" ? "Image-led split" : "Editorial split",
-      detail: section.title,
-    };
-  });
+  return sections.slice(0, 3).map((section) => ({
+    label: section.eyebrow,
+    value: section.title,
+    detail: section.description ?? section.eyebrow,
+  }));
 }
 
 function SectionTopline({

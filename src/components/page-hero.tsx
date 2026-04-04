@@ -50,8 +50,8 @@ export function PageHero({
   image,
   imageMotionPreset = "settle-right",
   imageLabel = "Official Veronica Adane photography",
-  noteTitle = "Page direction",
-  noteText = "Each public page is being rebuilt as part of one editorial world: stronger image hierarchy, less interface noise, and cleaner storytelling rhythm.",
+  noteTitle,
+  noteText,
 }: PageHeroProps) {
   return (
     <section className="section-shell page-hero-section py-6 sm:py-8">
@@ -72,7 +72,6 @@ export function PageHero({
 
           <RevealBlock className="page-hero-metadata-row" delay={0.16} variant="up">
             <span className="page-hero-metadata-chip">{imageLabel}</span>
-            <span className="page-hero-metadata-chip">{noteTitle}</span>
           </RevealBlock>
 
           {(primaryCta || secondaryCta) && (
@@ -90,12 +89,14 @@ export function PageHero({
             </RevealBlock>
           )}
 
-          <RevealBlock className="editorial-page-note page-hero-guidance-card" delay={0.22} variant="left">
-            <p className="section-label">{noteTitle}</p>
-            <p className="mt-4 max-w-xl text-sm leading-7 text-white/68 sm:text-base">
-              {noteText}
-            </p>
-          </RevealBlock>
+          {noteTitle && noteText ? (
+            <RevealBlock className="editorial-page-note page-hero-guidance-card" delay={0.22} variant="left">
+              <p className="section-label">{noteTitle}</p>
+              <p className="mt-4 max-w-xl text-sm leading-7 text-white/68 sm:text-base">
+                {noteText}
+              </p>
+            </RevealBlock>
+          ) : null}
         </div>
 
         <RevealBlock className="editorial-page-visual" delay={0.1} variant="right">

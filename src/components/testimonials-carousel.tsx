@@ -35,6 +35,7 @@ export function TestimonialsCarousel({
 
         <Swiper
           className="testimonial-swiper"
+          loop={items.length > 1}
           modules={[Autoplay, Pagination]}
           pagination={{ clickable: true }}
           speed={900}

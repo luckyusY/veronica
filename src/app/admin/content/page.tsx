@@ -21,12 +21,9 @@ export default async function AdminContentPage() {
               <span className="status-pill status-pill--ok">{cmsPages.length} routes</span>
             </div>
             <div>
-              <h1 className="display-title text-4xl text-white sm:text-5xl">
-                Choose a page, then edit it in a dedicated workspace.
-              </h1>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                Each public route now opens in its own editor page so nested sections,
-                repeatable fields, and media objects stay visible and manageable.
+              <h1 className="admin-page-title">Choose a page to edit.</h1>
+              <p className="admin-page-subtitle">
+                Each route opens in its own editor. Sections, fields, and media stay visible and manageable.
               </p>
             </div>
           </div>

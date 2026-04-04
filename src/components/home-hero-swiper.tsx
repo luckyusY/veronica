@@ -59,7 +59,7 @@ export function HomeHeroSwiper({
   return (
     <section className="home-hero-section">
       <Swiper
-        allowTouchMove={false}
+        allowTouchMove={!userReducedMotion}
         autoplay={
           userReducedMotion
             ? false
