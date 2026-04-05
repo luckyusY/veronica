@@ -97,28 +97,19 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
   ) {
     setForms((current) => ({
       ...current,
-      [collection]: {
-        ...current[collection],
-        [field]: value,
-      },
+      [collection]: { ...current[collection], [field]: value },
     }));
   }
 
   function updateDraft(id: string, field: keyof AdminRecordInput, value: string) {
     setDrafts((current) => ({
       ...current,
-      [id]: {
-        ...current[id],
-        [field]: value,
-      },
+      [id]: { ...current[id], [field]: value },
     }));
   }
 
   function beginEdit(collection: AdminCollectionKey, record: AdminRecord) {
-    setEditingId((current) => ({
-      ...current,
-      [collection]: record.id,
-    }));
+    setEditingId((current) => ({ ...current, [collection]: record.id }));
     setDrafts((current) => ({
       ...current,
       [record.id]: {
@@ -134,10 +125,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
   }
 
   function cancelEdit(collection: AdminCollectionKey, id: string) {
-    setEditingId((current) => ({
-      ...current,
-      [collection]: null,
-    }));
+    setEditingId((current) => ({ ...current, [collection]: null }));
     setDrafts((current) => {
       const next = { ...current };
       delete next[id];
@@ -151,36 +139,24 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
 
     const response = await fetch(`/api/admin/${collection}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(forms[collection]),
     });
 
     if (!response.ok) {
       setBusyKey(null);
-      setFeedback({
-        tone: "error",
-        message: await readApiError(response),
-      });
+      setFeedback({ tone: "error", message: await readApiError(response) });
       return;
     }
 
     const payload = (await response.json()) as { item: AdminRecord };
-
     setSections((current) => ({
       ...current,
       [collection]: sortRecords([payload.item, ...current[collection]]),
     }));
-    setForms((current) => ({
-      ...current,
-      [collection]: createBlankRecord(collection),
-    }));
+    setForms((current) => ({ ...current, [collection]: createBlankRecord(collection) }));
     setBusyKey(null);
-    setFeedback({
-      tone: "ok",
-      message: `${adminCollectionConfig[collection].singular} created.`,
-    });
+    setFeedback({ tone: "ok", message: `${adminCollectionConfig[collection].singular} created.` });
   }
 
   async function saveEdit(collection: AdminCollectionKey, id: string) {
@@ -189,53 +165,37 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
 
     const response = await fetch(`/api/admin/${collection}/${id}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(drafts[id]),
     });
 
     if (!response.ok) {
       setBusyKey(null);
-      setFeedback({
-        tone: "error",
-        message: await readApiError(response),
-      });
+      setFeedback({ tone: "error", message: await readApiError(response) });
       return;
     }
 
     const payload = (await response.json()) as { item: AdminRecord };
-
     setSections((current) => ({
       ...current,
       [collection]: sortRecords(
-        current[collection].map((record) =>
-          record.id === id ? payload.item : record,
-        ),
+        current[collection].map((record) => (record.id === id ? payload.item : record)),
       ),
     }));
     cancelEdit(collection, id);
     setBusyKey(null);
-    setFeedback({
-      tone: "ok",
-      message: `${adminCollectionConfig[collection].singular} updated.`,
-    });
+    setFeedback({ tone: "ok", message: `${adminCollectionConfig[collection].singular} updated.` });
   }
 
   async function deleteRecord(collection: AdminCollectionKey, id: string) {
     setBusyKey(`${collection}:delete:${id}`);
     setFeedback(null);
 
-    const response = await fetch(`/api/admin/${collection}/${id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(`/api/admin/${collection}/${id}`, { method: "DELETE" });
 
     if (!response.ok) {
       setBusyKey(null);
-      setFeedback({
-        tone: "error",
-        message: await readApiError(response),
-      });
+      setFeedback({ tone: "error", message: await readApiError(response) });
       return;
     }
 
@@ -245,14 +205,11 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
     }));
     cancelEdit(collection, id);
     setBusyKey(null);
-    setFeedback({
-      tone: "ok",
-      message: `${adminCollectionConfig[collection].singular} removed.`,
-    });
+    setFeedback({ tone: "ok", message: `${adminCollectionConfig[collection].singular} removed.` });
   }
 
   return (
-    <div className="admin-stack">
+    <div className="admin-page-stack">
       {feedback ? (
         <div
           className={`admin-feedback ${
@@ -268,38 +225,19 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
         const records = sections[collection];
 
         return (
-          <section className="admin-surface" id={collection} key={collection}>
-            <div className="admin-panel-header">
-              <div className="space-y-3">
-                <div className="admin-panel-meta">
-                  <span className="admin-badge">{config.label}</span>
-                  <span className="status-pill status-pill--ok">{counts[collection]} records</span>
-                </div>
-                <div>
-                  <h2 className="display-title text-4xl text-white sm:text-5xl">
-                    {config.label}
-                  </h2>
-                  <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                    {config.description}
-                  </p>
-                </div>
+          <div key={collection}>
+            <header className="admin-page-head">
+              <div className="admin-page-head-left">
+                <h1 className="admin-page-title">{config.label}</h1>
               </div>
-            </div>
+              <span className="status-pill status-pill--ok">{counts[collection]} records</span>
+            </header>
 
-            <div className="luxury-divider my-5" />
-
-            <div className="admin-operations-layout">
-              <div className="admin-record-composer">
-                <div className="admin-record-composer-header">
-                  <div>
-                    <p className="section-label">New record</p>
-                    <h3 className="display-title mt-3 text-3xl text-white">
-                      Add {config.singular}
-                    </h3>
-                  </div>
-                  <p className="text-sm leading-7 text-white/58">
-                    Keep titles, status, notes, and links together in one clean form.
-                  </p>
+            <div className="admin-ops-body" style={{ marginTop: "1rem" }}>
+              {/* Add record form */}
+              <div className="admin-add-form-panel">
+                <div className="admin-add-form-head">
+                  <p className="admin-add-form-title">New {config.singular}</p>
                 </div>
 
                 <div className="admin-form">
@@ -309,7 +247,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                       <input
                         className="admin-input"
                         id={`${collection}-title`}
-                        onChange={(event) => updateForm(collection, "title", event.target.value)}
+                        onChange={(e) => updateForm(collection, "title", e.target.value)}
                         value={forms[collection].title}
                       />
                     </div>
@@ -319,9 +257,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                       <input
                         className="admin-input"
                         id={`${collection}-subtitle`}
-                        onChange={(event) =>
-                          updateForm(collection, "subtitle", event.target.value)
-                        }
+                        onChange={(e) => updateForm(collection, "subtitle", e.target.value)}
                         value={forms[collection].subtitle}
                       />
                     </div>
@@ -331,7 +267,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                       <input
                         className="admin-input"
                         id={`${collection}-status`}
-                        onChange={(event) => updateForm(collection, "status", event.target.value)}
+                        onChange={(e) => updateForm(collection, "status", e.target.value)}
                         value={forms[collection].status}
                       />
                     </div>
@@ -341,9 +277,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                       <input
                         className="admin-input"
                         id={`${collection}-highlight`}
-                        onChange={(event) =>
-                          updateForm(collection, "highlight", event.target.value)
-                        }
+                        onChange={(e) => updateForm(collection, "highlight", e.target.value)}
                         value={forms[collection].highlight}
                       />
                     </div>
@@ -353,7 +287,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                       <input
                         className="admin-input"
                         id={`${collection}-link`}
-                        onChange={(event) => updateForm(collection, "link", event.target.value)}
+                        onChange={(e) => updateForm(collection, "link", e.target.value)}
                         value={forms[collection].link}
                       />
                     </div>
@@ -364,7 +298,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                     <textarea
                       className="admin-textarea"
                       id={`${collection}-notes`}
-                      onChange={(event) => updateForm(collection, "notes", event.target.value)}
+                      onChange={(e) => updateForm(collection, "notes", e.target.value)}
                       value={forms[collection].notes}
                     />
                   </div>
@@ -377,9 +311,9 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                       type="button"
                     >
                       {busyKey === `${collection}:create` ? (
-                        <LoaderCircle className="animate-spin" size={16} />
+                        <LoaderCircle className="animate-spin" size={15} />
                       ) : (
-                        <Plus size={16} />
+                        <Plus size={15} />
                       )}
                       <span>Add {config.singular}</span>
                     </button>
@@ -387,17 +321,14 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                 </div>
               </div>
 
-              <div className="admin-record-list-shell">
-                <div className="admin-record-list-topline">
-                  <p className="section-label">Existing records</p>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/38">
-                    {counts[collection]} total
-                  </p>
+              {/* Records list */}
+              <div className="admin-records-panel">
+                <div className="admin-records-head">
+                  <p className="admin-records-title">Records</p>
+                  <span className="admin-records-count">{counts[collection]} total</span>
                 </div>
 
-                <div className="luxury-divider my-5" />
-
-                <div className="admin-record-grid">
+                <div className="admin-record-list">
                   {records.length === 0 ? (
                     <div className="admin-empty">{config.emptyTitle}</div>
                   ) : null}
@@ -421,9 +352,11 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                               ) : null}
                             </div>
                             <div>
-                              <h3 className="text-lg font-semibold text-white">{record.title}</h3>
+                              <h3 className="text-base font-semibold text-white">
+                                {record.title}
+                              </h3>
                               {record.subtitle ? (
-                                <p className="mt-2 text-sm leading-7 text-white/60">
+                                <p className="mt-1 text-sm leading-6 text-white/56">
                                   {record.subtitle}
                                 </p>
                               ) : null}
@@ -438,7 +371,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                 rel="noreferrer"
                                 target="_blank"
                               >
-                                <ExternalLink size={15} />
+                                <ExternalLink size={14} />
                                 <span>Open</span>
                               </a>
                             ) : null}
@@ -449,7 +382,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                 onClick={() => beginEdit(collection, record)}
                                 type="button"
                               >
-                                <Pencil size={15} />
+                                <Pencil size={14} />
                                 <span>Edit</span>
                               </button>
                             ) : (
@@ -458,7 +391,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                 onClick={() => cancelEdit(collection, record.id)}
                                 type="button"
                               >
-                                <X size={15} />
+                                <X size={14} />
                                 <span>Cancel</span>
                               </button>
                             )}
@@ -470,20 +403,20 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                               type="button"
                             >
                               {busyDelete ? (
-                                <LoaderCircle className="animate-spin" size={15} />
+                                <LoaderCircle className="animate-spin" size={14} />
                               ) : (
-                                <Trash2 size={15} />
+                                <Trash2 size={14} />
                               )}
                               <span>Delete</span>
                             </button>
                           </div>
                         </div>
 
-                        <p className="admin-note">
-                          {record.notes || "No notes added yet."}
-                        </p>
+                        {record.notes ? (
+                          <p className="admin-note">{record.notes}</p>
+                        ) : null}
 
-                        <p className="text-xs uppercase tracking-[0.18em] text-white/35">
+                        <p className="text-xs uppercase tracking-[0.16em] text-white/32">
                           Updated {formatUpdatedAt(record.updatedAt)}
                         </p>
 
@@ -494,8 +427,8 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                 <label>{config.fields.title}</label>
                                 <input
                                   className="admin-input"
-                                  onChange={(event) =>
-                                    updateDraft(record.id, "title", event.target.value)
+                                  onChange={(e) =>
+                                    updateDraft(record.id, "title", e.target.value)
                                   }
                                   value={draft.title}
                                 />
@@ -505,8 +438,8 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                 <label>{config.fields.subtitle}</label>
                                 <input
                                   className="admin-input"
-                                  onChange={(event) =>
-                                    updateDraft(record.id, "subtitle", event.target.value)
+                                  onChange={(e) =>
+                                    updateDraft(record.id, "subtitle", e.target.value)
                                   }
                                   value={draft.subtitle}
                                 />
@@ -516,8 +449,8 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                 <label>Status</label>
                                 <input
                                   className="admin-input"
-                                  onChange={(event) =>
-                                    updateDraft(record.id, "status", event.target.value)
+                                  onChange={(e) =>
+                                    updateDraft(record.id, "status", e.target.value)
                                   }
                                   value={draft.status}
                                 />
@@ -527,8 +460,8 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                 <label>{config.fields.highlight}</label>
                                 <input
                                   className="admin-input"
-                                  onChange={(event) =>
-                                    updateDraft(record.id, "highlight", event.target.value)
+                                  onChange={(e) =>
+                                    updateDraft(record.id, "highlight", e.target.value)
                                   }
                                   value={draft.highlight}
                                 />
@@ -538,8 +471,8 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                 <label>{config.fields.link}</label>
                                 <input
                                   className="admin-input"
-                                  onChange={(event) =>
-                                    updateDraft(record.id, "link", event.target.value)
+                                  onChange={(e) =>
+                                    updateDraft(record.id, "link", e.target.value)
                                   }
                                   value={draft.link}
                                 />
@@ -550,8 +483,8 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                               <label>{config.fields.notes}</label>
                               <textarea
                                 className="admin-textarea"
-                                onChange={(event) =>
-                                  updateDraft(record.id, "notes", event.target.value)
+                                onChange={(e) =>
+                                  updateDraft(record.id, "notes", e.target.value)
                                 }
                                 value={draft.notes}
                               />
@@ -565,9 +498,9 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                 type="button"
                               >
                                 {busyUpdate ? (
-                                  <LoaderCircle className="animate-spin" size={15} />
+                                  <LoaderCircle className="animate-spin" size={14} />
                                 ) : (
-                                  <Save size={15} />
+                                  <Save size={14} />
                                 )}
                                 <span>Save changes</span>
                               </button>
@@ -580,7 +513,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                 </div>
               </div>
             </div>
-          </section>
+          </div>
         );
       })}
     </div>
