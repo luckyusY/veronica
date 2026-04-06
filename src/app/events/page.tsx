@@ -1,23 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { CalendarClock, MapPin, Ticket } from "lucide-react";
+import { CalendarClock, CalendarPlus, MapPin, Ticket } from "lucide-react";
 import { listAdminCollection } from "@/lib/admin-store";
 import type { AdminRecord } from "@/lib/admin-schema";
 import { EventCountdown } from "@/components/event-countdown";
-
-function formatEventDate(iso: string) {
-  return new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date(iso));
-}
-
-
 
 export const metadata: Metadata = {
   title: "Events — Veronica Adane",
@@ -26,108 +13,190 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
-function statusColor(status: string) {
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function statusMeta(status: string): { cls: string; dot: string } {
   const s = status.toLowerCase();
-  if (s === "confirmed") return "events-badge--confirmed";
-  if (s === "planning") return "events-badge--planning";
-  if (s === "sold out") return "events-badge--soldout";
-  if (s === "cancelled") return "events-badge--cancelled";
-  return "events-badge--default";
+  if (s === "confirmed") return { cls: "ev-badge--confirmed", dot: "#4ade80" };
+  if (s === "planning")  return { cls: "ev-badge--planning",  dot: "#facc15" };
+  if (s === "sold out")  return { cls: "ev-badge--soldout",   dot: "#f87171" };
+  if (s === "cancelled") return { cls: "ev-badge--cancelled", dot: "#94a3b8" };
+  return                        { cls: "ev-badge--default",   dot: "#b08d57" };
 }
 
+function formatDate(iso: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month:   "short",
+    day:     "numeric",
+    year:    "numeric",
+    hour:    "numeric",
+    minute:  "2-digit",
+  }).format(new Date(iso));
+}
+
+/** Convert datetime-local string (2025-05-18T19:00) to Google Calendar date format */
+function toGCalDate(iso: string) {
+  // Google Calendar expects YYYYMMDDTHHmmss (no colon/dash)
+  return iso.replace(/[-:]/g, "").slice(0, 15);
+}
+
+function buildGoogleCalUrl(event: AdminRecord) {
+  if (!event.eventDate) return null;
+  const start = toGCalDate(event.eventDate);
+  // Default 2-hour duration for end time
+  const startMs = new Date(event.eventDate).getTime();
+  const endMs   = startMs + 2 * 60 * 60 * 1000;
+  const end     = toGCalDate(new Date(endMs).toISOString().slice(0, 16));
+  const params  = new URLSearchParams({
+    action:   "TEMPLATE",
+    text:     event.title,
+    dates:    `${start}/${end}`,
+    details:  event.notes || "",
+    location: event.subtitle || "",
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+// ─── Event Card ───────────────────────────────────────────────────────────────
+
 function EventCard({ event }: { event: AdminRecord }) {
+  const { cls } = statusMeta(event.status);
+  const googleCalUrl = buildGoogleCalUrl(event);
+
   return (
-    <article className="events-card">
-      {event.bannerImage ? (
-        <div className="events-card-banner">
+    <article className="ev-card">
+      {/* ── Banner ── */}
+      <div className="ev-card-media">
+        {event.bannerImage ? (
           <Image
             alt={event.title}
-            className="events-card-img"
+            className="ev-card-img"
             fill
             loading="lazy"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             src={event.bannerImage}
             style={{ objectFit: "cover" }}
             unoptimized
           />
-        </div>
-      ) : (
-        <div className="events-card-banner events-card-banner--empty">
-          <CalendarClock size={28} />
-        </div>
-      )}
+        ) : (
+          <div className="ev-card-img-placeholder">
+            <CalendarClock size={32} />
+          </div>
+        )}
+        {/* Gradient overlay */}
+        <div className="ev-card-media-overlay" />
+        {/* Status badge pinned to image */}
+        <span className={`ev-badge ${cls}`}>
+          <span className="ev-badge-dot" />
+          {event.status}
+        </span>
+      </div>
 
-      <div className="events-card-body">
-        <div className="events-card-topline">
-          <span className={`events-badge ${statusColor(event.status)}`}>{event.status}</span>
-          {event.eventDate ? (
-            <span className="events-card-date">
-              <CalendarClock size={11} />
-              {formatEventDate(event.eventDate)}
-            </span>
-          ) : event.highlight ? (
-            <span className="events-card-date">{event.highlight}</span>
-          ) : null}
-        </div>
+      {/* ── Body ── */}
+      <div className="ev-card-body">
 
-        <h2 className="events-card-title">{event.title}</h2>
+        {/* Date line */}
+        {event.eventDate ? (
+          <p className="ev-card-dateline">
+            <CalendarClock size={12} />
+            {formatDate(event.eventDate)}
+          </p>
+        ) : event.highlight ? (
+          <p className="ev-card-dateline">
+            <CalendarClock size={12} />
+            {event.highlight}
+          </p>
+        ) : null}
 
+        {/* Title */}
+        <h2 className="ev-card-title">{event.title}</h2>
+
+        {/* Venue */}
         {event.subtitle ? (
-          <p className="events-card-venue">
+          <p className="ev-card-venue">
             <MapPin size={12} />
             <span>{event.subtitle}</span>
           </p>
         ) : null}
 
-        {event.notes ? <p className="events-card-notes">{event.notes}</p> : null}
+        {/* Notes */}
+        {event.notes ? (
+          <p className="ev-card-notes">{event.notes}</p>
+        ) : null}
 
-        {/* Live countdown — only shown when eventDate is set */}
+        {/* Countdown */}
         {event.eventDate ? (
-          <EventCountdown eventDate={event.eventDate} />
+          <div className="ev-card-countdown-wrap">
+            <p className="ev-card-countdown-label">Time remaining</p>
+            <EventCountdown eventDate={event.eventDate} />
+          </div>
         ) : null}
 
         {/* Gallery strip */}
         {event.galleryImages && event.galleryImages.length > 0 ? (
-          <div className="events-gallery-strip">
-            {event.galleryImages.map((src, i) => (
-              <div className="events-gallery-thumb" key={i}>
+          <div className="ev-gallery-strip">
+            {event.galleryImages.slice(0, 4).map((src, i) => (
+              <div className="ev-gallery-thumb" key={i}>
                 <Image
-                  alt={`${event.title} gallery ${i + 1}`}
-                  className="events-gallery-img"
+                  alt={`${event.title} photo ${i + 1}`}
+                  className="ev-gallery-img"
                   fill
                   loading="lazy"
-                  sizes="80px"
+                  sizes="72px"
                   src={src}
                   style={{ objectFit: "cover" }}
                   unoptimized
                 />
               </div>
             ))}
+            {event.galleryImages.length > 4 ? (
+              <div className="ev-gallery-more">+{event.galleryImages.length - 4}</div>
+            ) : null}
           </div>
         ) : null}
 
-        {/* Ticket button — only shown when a link is set */}
-        <div className="events-card-footer">
+        {/* Action row */}
+        <div className="ev-card-actions">
           {event.link ? (
-            <a className="events-ticket-btn" href={event.link} rel="noreferrer" target="_blank">
-              <Ticket size={15} />
+            <a
+              className="ev-ticket-btn"
+              href={event.link}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <Ticket size={14} />
               <span>Buy Tickets</span>
             </a>
           ) : (
-            <span className="events-no-ticket">Tickets not available yet</span>
+            <span className="ev-no-ticket">Tickets not available yet</span>
           )}
+
+          {googleCalUrl ? (
+            <a
+              className="ev-cal-btn"
+              href={googleCalUrl}
+              rel="noreferrer"
+              target="_blank"
+              title="Add to Google Calendar"
+            >
+              <CalendarPlus size={14} />
+              <span>Add to Calendar</span>
+            </a>
+          ) : null}
         </div>
       </div>
     </article>
   );
 }
 
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
 export default async function EventsPage() {
   const events = await listAdminCollection("events");
 
   return (
     <main className="events-page">
-      {/* Page header */}
       <div className="events-header section-shell">
         <p className="section-label">Live performance</p>
         <h1 className="display-title events-page-title">Events</h1>
@@ -136,7 +205,6 @@ export default async function EventsPage() {
         </p>
       </div>
 
-      {/* All events grid */}
       {events.length > 0 ? (
         <section className="events-grid-section section-shell">
           <div className="events-grid">
@@ -149,7 +217,7 @@ export default async function EventsPage() {
         <div className="events-empty section-shell">
           <CalendarClock size={32} />
           <p>No events scheduled yet. Check back soon.</p>
-          <Link className="events-ticket-link" href="/">Back to home</Link>
+          <Link className="ev-ticket-btn" href="/">Back to home</Link>
         </div>
       )}
     </main>

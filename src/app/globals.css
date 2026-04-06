@@ -8383,8 +8383,6 @@ a:not([class]):hover {
   .admin-record-composer {
     position: sticky;
     top: 1rem;
-    max-height: calc(100svh - 2rem);
-    overflow-y: auto;
   }
 }
 
@@ -10303,8 +10301,9 @@ a:not([class]):hover {
 
 /* Datetime picker */
 .admin-input--datetime {
-  color-scheme: dark;
   cursor: pointer;
+  color-scheme: dark;
+  appearance: none;
 }
 
 /* Full-width field spanning the 2-col grid */
@@ -10336,15 +10335,356 @@ a:not([class]):hover {
   max-width: 480px;
 }
 
-/* Status badges */
-.events-badge {
+/* ─── Events Page ─────────────────────────────────────────────────── */
+
+.events-page {
+  background: var(--surface-1);
+  min-height: 100svh;
+}
+
+.events-header {
+  padding-top: 5rem;
+  padding-bottom: 2.5rem;
+}
+
+.events-page-title {
+  margin-top: 0.75rem;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+}
+
+.events-page-subtitle {
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(237, 237, 237, 0.52);
+  max-width: 480px;
+}
+
+/* ── Events grid ──────────────────────────────────────────────────── */
+
+.events-grid-section {
+  padding-top: 3rem;
+  padding-bottom: 5rem;
+}
+
+.events-grid {
+  display: grid;
+  gap: 1.75rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .events-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .events-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ── Event card ───────────────────────────────────────────────────── */
+
+.ev-card {
+  border-radius: 1.25rem;
+  background: rgba(18, 18, 14, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.28);
+}
+
+.ev-card:hover {
+  border-color: rgba(176, 141, 87, 0.24);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.5);
+}
+
+.ev-card-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(18,18,14,1), rgba(30,26,18,1));
+}
+
+.ev-card-img { transition: transform 0.5s ease; }
+.ev-card:hover .ev-card-img { transform: scale(1.06); }
+
+.ev-card-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(176,141,87,0.18);
+}
+
+.ev-card-media-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0) 40%, rgba(12,10,6,0.7) 100%);
+  pointer-events: none;
+}
+
+/* Status badge pinned to image */
+.ev-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
   display: inline-flex;
   align-items: center;
-  padding: 0.2rem 0.7rem;
+  gap: 0.35rem;
+  padding: 0.22rem 0.65rem 0.22rem 0.45rem;
   border-radius: 999px;
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.ev-badge-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.ev-badge--confirmed  { background: rgba(22,60,30,0.9);  color: #86efac; }
+.ev-badge--planning   { background: rgba(55,45,8,0.9);   color: #fde047; }
+.ev-badge--soldout    { background: rgba(60,18,18,0.9);  color: #fca5a5; }
+.ev-badge--cancelled  { background: rgba(28,28,36,0.9);  color: #94a3b8; text-decoration: line-through; }
+.ev-badge--default    { background: rgba(44,36,18,0.9);  color: rgba(196,161,108,0.95); }
+
+/* Card body */
+.ev-card-body {
+  padding: 1.15rem 1.35rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1;
+}
+
+.ev-card-dateline {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: rgba(196,161,108,0.82);
+  font-weight: 500;
+}
+
+.ev-card-title {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--warm-white);
+  line-height: 1.3;
+  letter-spacing: 0.005em;
+}
+
+.ev-card-venue {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: rgba(237,237,237,0.42);
+}
+
+.ev-card-notes {
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: rgba(237,237,237,0.38);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Countdown block */
+.ev-card-countdown-wrap {
+  background: rgba(176,141,87,0.06);
+  border: 1px solid rgba(176,141,87,0.13);
+  border-radius: 0.75rem;
+  padding: 0.7rem 1rem;
+  margin-top: 0.3rem;
+}
+
+.ev-card-countdown-label {
+  font-size: 0.58rem;
   letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(237,237,237,0.28);
+  margin-bottom: 0.4rem;
+}
+
+.events-countdown {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.events-countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 2.5rem;
+}
+
+.events-countdown-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: rgba(218,185,120,0.98);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.events-countdown-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(237,237,237,0.28);
+  margin-top: 0.2rem;
+}
+
+.events-countdown-sep {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: rgba(176,141,87,0.3);
+  padding-bottom: 0.7rem;
+  flex-shrink: 0;
+}
+
+.events-countdown-past {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(237,237,237,0.2);
+}
+
+/* Gallery strip */
+.ev-gallery-strip {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.ev-gallery-strip::-webkit-scrollbar { display: none; }
+
+.ev-gallery-thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 3.5rem;
+  height: 2.75rem;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--surface-3);
+}
+
+.ev-gallery-img { object-fit: cover; }
+
+.ev-gallery-more {
+  flex-shrink: 0;
+  width: 3.5rem;
+  height: 2.75rem;
+  border-radius: 4px;
+  background: rgba(176,141,87,0.08);
+  border: 1px solid rgba(176,141,87,0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  color: rgba(196,161,108,0.65);
+}
+
+/* Action row */
+.ev-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 0.8rem;
+}
+
+.ev-ticket-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  background: rgba(176,141,87,0.15);
+  border: 1px solid rgba(176,141,87,0.42);
+  color: rgba(218,185,120,0.98);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.ev-ticket-btn:hover {
+  background: rgba(176,141,87,0.28);
+  border-color: rgba(218,185,120,0.65);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.ev-cal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(237,237,237,0.48);
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+  white-space: nowrap;
+}
+
+.ev-cal-btn:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.2);
+  color: rgba(237,237,237,0.85);
+}
+
+.ev-no-ticket {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(237,237,237,0.18);
+}
+
+/* Empty state */
+.events-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  color: rgba(237, 237, 237, 0.3);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* ── keep old class names alive for legacy CSS that still references them ── */
+.events-badge { display: inline-flex; align-items: center; padding: 0.2rem 0.7rem;
+  border-radius: 999px; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
