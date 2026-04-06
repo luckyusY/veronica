@@ -11651,3 +11651,182 @@ a:not([class]):hover {
   color: #c4a16c;
   border-color: rgba(176,141,87,0.35);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Music & Videos page  (mv-*)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Page shell */
+.mv-page { padding-bottom: 5rem; }
+
+.mv-header {
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+  text-align: center;
+}
+
+.mv-page-title {
+  margin: 0.4rem 0 0.6rem;
+}
+
+.mv-page-subtitle {
+  font-size: 0.95rem;
+  color: rgba(237,237,237,0.42);
+  max-width: 38ch;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Grid */
+.mv-grid-section { padding-top: 1.5rem; }
+
+.mv-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .mv-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .mv-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Empty state */
+.mv-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  color: rgba(237,237,237,0.28);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* ── Video card ─────────────────────────────────────────────────────── */
+
+.mv-card {
+  border-radius: 1.25rem;
+  background: rgba(18, 18, 14, 0.96);
+  border: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.28);
+}
+
+.mv-card:hover {
+  border-color: rgba(176,141,87,0.24);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.5);
+}
+
+/* Media area — 16:9 */
+.mv-card-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: rgba(12,10,6,1);
+}
+
+.mv-card-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.mv-card-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* Status badge reuses ev-badge; position it within mv-card-media */
+.mv-card-media .ev-badge {
+  top: 0.65rem;
+  left: 0.65rem;
+}
+
+/* Card body */
+.mv-card-body {
+  padding: 1rem 1.25rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+/* Meta row: format tag + views/plays */
+.mv-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.mv-card-format {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(196,161,108,0.75);
+  background: rgba(176,141,87,0.09);
+  border: 1px solid rgba(176,141,87,0.18);
+  border-radius: 999px;
+  padding: 0.18rem 0.6rem;
+}
+
+.mv-card-views {
+  font-size: 0.68rem;
+  color: rgba(237,237,237,0.32);
+  letter-spacing: 0.04em;
+}
+
+/* Title */
+.mv-card-title {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--warm-white);
+  line-height: 1.3;
+  letter-spacing: 0.005em;
+  margin-top: 0.1rem;
+}
+
+/* Notes (2-line clamp) */
+.mv-card-notes {
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: rgba(237,237,237,0.36);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* External link */
+.mv-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(196,161,108,0.7);
+  text-decoration: none;
+  transition: color 0.16s;
+  width: fit-content;
+}
+
+.mv-card-link:hover {
+  color: rgba(218,185,120,1);
+}

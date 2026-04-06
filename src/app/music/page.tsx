@@ -1,41 +1,29 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import { ExternalLink, Music, Play } from "lucide-react";
-import { getCmsPage } from "@/lib/cms-store";
+import { ExternalLink, Music } from "lucide-react";
 import { listAdminCollection } from "@/lib/admin-store";
-import { CmsStandardPage } from "@/components/cms-standard-page";
 import type { AdminRecord } from "@/lib/admin-schema";
-import type { StandardPageContent } from "@/lib/cms-types";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const page = await getCmsPage("music");
-  return {
-    title: page.name,
-    description: page.summary,
-  };
-}
+export const metadata: Metadata = {
+  title: "Music & Videos — Veronica Adane",
+  description: "Official music releases, singles, and video premieres by Veronica Adane.",
+};
 
 export const revalidate = 60;
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function getYouTubeEmbedUrl(url: string): string | null {
   if (!url) return null;
   try {
     const parsed = new URL(url);
     let videoId: string | null = null;
-
     if (parsed.hostname === "youtu.be") {
       videoId = parsed.pathname.slice(1);
-    } else if (
-      parsed.hostname === "www.youtube.com" ||
-      parsed.hostname === "youtube.com"
-    ) {
-      if (parsed.pathname.startsWith("/shorts/")) {
-        videoId = parsed.pathname.split("/shorts/")[1]?.split("/")[0] ?? null;
-      } else {
-        videoId = parsed.searchParams.get("v");
-      }
+    } else if (parsed.hostname === "www.youtube.com" || parsed.hostname === "youtube.com") {
+      videoId = parsed.pathname.startsWith("/shorts/")
+        ? parsed.pathname.split("/shorts/")[1]?.split("/")[0] ?? null
+        : parsed.searchParams.get("v");
     }
-
     if (!videoId) return null;
     return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
   } catch {
@@ -43,105 +31,83 @@ function getYouTubeEmbedUrl(url: string): string | null {
   }
 }
 
-function isLiveRelease(status: string) {
-  const s = status.toLowerCase();
-  return s === "live" || s === "published" || s === "released";
+function hasVideo(release: AdminRecord): boolean {
+  return Boolean(release.videoUrl) || Boolean(getYouTubeEmbedUrl(release.link ?? ""));
 }
 
-function ReleaseCard({ release }: { release: AdminRecord }) {
+function statusMeta(status: string): { cls: string } {
+  const s = status.toLowerCase();
+  if (s === "live" || s === "released" || s === "published") return { cls: "ev-badge--confirmed" };
+  if (s === "review" || s === "coming soon")                  return { cls: "ev-badge--planning"  };
+  if (s === "draft")                                          return { cls: "ev-badge--default"   };
+  return                                                             { cls: "ev-badge--default"   };
+}
+
+// ─── Video Card ───────────────────────────────────────────────────────────────
+
+function VideoCard({ release }: { release: AdminRecord }) {
   const youtubeEmbedUrl = getYouTubeEmbedUrl(release.link ?? "");
-  // Cloudinary video takes priority; YouTube embed is fallback
-  const hasCloudinaryVideo = Boolean(release.videoUrl);
-  const hasYouTube = Boolean(youtubeEmbedUrl);
-  const hasVideo = hasCloudinaryVideo || hasYouTube;
+  const hasCloudinary   = Boolean(release.videoUrl);
+  const hasYouTube      = Boolean(youtubeEmbedUrl);
+  const { cls }         = statusMeta(release.status);
 
   return (
-    <article className="music-release-card">
-      {/* Video embed or cover image */}
-      <div className="music-release-media">
-        {hasCloudinaryVideo ? (
-          <div className="music-release-embed-wrap">
-            <video
-              className="music-release-embed"
-              controls
-              playsInline
-              poster={release.bannerImage ?? undefined}
-              preload="metadata"
-              src={release.videoUrl}
-              title={release.title}
-            />
-          </div>
+    <article className="mv-card">
+      {/* ── Video media ── */}
+      <div className="mv-card-media">
+        {hasCloudinary ? (
+          <video
+            className="mv-card-video"
+            controls
+            playsInline
+            poster={release.bannerImage ?? undefined}
+            preload="metadata"
+            src={release.videoUrl}
+          />
         ) : hasYouTube ? (
-          <div className="music-release-embed-wrap">
-            <iframe
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="music-release-embed"
-              loading="lazy"
-              src={youtubeEmbedUrl!}
-              title={release.title}
-            />
-          </div>
-        ) : release.bannerImage ? (
-          <div className="music-release-cover">
-            <Image
-              alt={release.title}
-              className="music-release-cover-img"
-              fill
-              loading="lazy"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              src={release.bannerImage}
-              style={{ objectFit: "cover" }}
-              unoptimized
-            />
-            {release.link ? (
-              <a
-                className="music-release-play-btn"
-                href={release.link}
-                rel="noreferrer"
-                target="_blank"
-              >
-                <Play fill="currentColor" size={22} />
-              </a>
-            ) : (
-              <div className="music-release-play-icon">
-                <Music size={26} />
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="music-release-placeholder">
-            <Music size={32} />
-          </div>
-        )}
+          <iframe
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="mv-card-iframe"
+            loading="lazy"
+            src={youtubeEmbedUrl!}
+            title={release.title}
+          />
+        ) : null}
+
+        {/* Status badge overlaid on video */}
+        <span className={`ev-badge ${cls}`}>
+          <span className="ev-badge-dot" />
+          {release.status}
+        </span>
       </div>
 
-      {/* Info */}
-      <div className="music-release-body">
-        <div className="music-release-meta">
+      {/* ── Info ── */}
+      <div className="mv-card-body">
+        <div className="mv-card-meta">
           {release.subtitle ? (
-            <span className="music-release-format">{release.subtitle}</span>
+            <span className="mv-card-format">{release.subtitle}</span>
           ) : null}
           {release.highlight ? (
-            <span className="music-release-views">{release.highlight}</span>
+            <span className="mv-card-views">{release.highlight}</span>
           ) : null}
         </div>
 
-        <h2 className="music-release-title">{release.title}</h2>
+        <h2 className="mv-card-title">{release.title}</h2>
 
         {release.notes ? (
-          <p className="music-release-notes">{release.notes}</p>
+          <p className="mv-card-notes">{release.notes}</p>
         ) : null}
 
         {release.link ? (
           <a
-            className="music-release-link"
+            className="mv-card-link"
             href={release.link}
             rel="noreferrer"
             target="_blank"
           >
-            <ExternalLink size={13} />
-            <span>{hasYouTube ? "Open on YouTube" : "Listen / watch"}</span>
+            <ExternalLink size={12} />
+            <span>{hasYouTube ? "Open on YouTube" : "Watch / Listen"}</span>
           </a>
         ) : null}
       </div>
@@ -149,43 +115,38 @@ function ReleaseCard({ release }: { release: AdminRecord }) {
   );
 }
 
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
 export default async function MusicPage() {
-  const [cmsPage, releases] = await Promise.all([
-    getCmsPage("music"),
-    listAdminCollection("releases"),
-  ]);
-
-  const liveReleases = releases.filter((r) => isLiveRelease(r.status));
-  const allReleases = liveReleases.length > 0 ? liveReleases : releases;
-
-  const content = cmsPage.content as StandardPageContent;
+  const releases     = await listAdminCollection("releases");
+  const videoReleases = releases.filter(hasVideo);
 
   return (
-    <main className="music-page">
-      {/* CMS-driven hero + editorial sections */}
-      <CmsStandardPage content={content} />
+    <main className="mv-page">
+      {/* Header */}
+      <div className="mv-header section-shell">
+        <p className="section-label">Official releases</p>
+        <h1 className="display-title mv-page-title">Music &amp; Videos</h1>
+        <p className="mv-page-subtitle">
+          Singles, music videos, and live performances.
+        </p>
+      </div>
 
-      {/* Live releases from admin */}
-      {allReleases.length > 0 ? (
-        <section className="music-releases-section section-shell">
-          <div className="music-releases-header">
-            <p className="section-label">Releases</p>
-            <h2 className="display-title music-releases-title">
-              Music &amp; Videos
-            </h2>
-            <p className="music-releases-subtitle">
-              {liveReleases.length > 0
-                ? "Official releases, singles, and video premieres."
-                : "Upcoming releases and works in progress."}
-            </p>
-          </div>
-          <div className="music-releases-grid">
-            {allReleases.map((release) => (
-              <ReleaseCard key={release.id} release={release} />
+      {/* Grid */}
+      {videoReleases.length > 0 ? (
+        <section className="mv-grid-section section-shell">
+          <div className="mv-grid">
+            {videoReleases.map((release) => (
+              <VideoCard key={release.id} release={release} />
             ))}
           </div>
         </section>
-      ) : null}
+      ) : (
+        <div className="mv-empty section-shell">
+          <Music size={32} />
+          <p>No videos available yet. Check back soon.</p>
+        </div>
+      )}
     </main>
   );
 }
