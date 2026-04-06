@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ExternalLink, Music } from "lucide-react";
 import { listAdminCollection } from "@/lib/admin-store";
 import type { AdminRecord } from "@/lib/admin-schema";
+import { YouTubeFacade } from "@/components/youtube-facade";
 
 export const metadata: Metadata = {
   title: "Music & Videos — Veronica Adane",
@@ -10,25 +11,35 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
+const CHANNEL_ID = "UCfpttsgc_FkvxZrI8_wuuCA";
+// Uploads playlist = replace UC → UU
+const CHANNEL_PLAYLIST = "UU" + CHANNEL_ID.slice(2);
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function getYouTubeEmbedUrl(url: string): string | null {
+function getYouTubeVideoId(url: string): string | null {
   if (!url) return null;
   try {
     const parsed = new URL(url);
-    let videoId: string | null = null;
     if (parsed.hostname === "youtu.be") {
-      videoId = parsed.pathname.slice(1);
-    } else if (parsed.hostname === "www.youtube.com" || parsed.hostname === "youtube.com") {
-      videoId = parsed.pathname.startsWith("/shorts/")
-        ? parsed.pathname.split("/shorts/")[1]?.split("/")[0] ?? null
-        : parsed.searchParams.get("v");
+      return parsed.pathname.slice(1) || null;
     }
-    if (!videoId) return null;
-    return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
+    if (parsed.hostname === "www.youtube.com" || parsed.hostname === "youtube.com") {
+      if (parsed.pathname.startsWith("/shorts/")) {
+        return parsed.pathname.split("/shorts/")[1]?.split("/")[0] ?? null;
+      }
+      return parsed.searchParams.get("v");
+    }
+    return null;
   } catch {
     return null;
   }
+}
+
+function getYouTubeEmbedUrl(url: string): string | null {
+  const id = getYouTubeVideoId(url);
+  if (!id) return null;
+  return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
 }
 
 function hasVideo(release: AdminRecord): boolean {
@@ -46,9 +57,8 @@ function statusMeta(status: string): { cls: string } {
 // ─── Video Card ───────────────────────────────────────────────────────────────
 
 function VideoCard({ release }: { release: AdminRecord }) {
-  const youtubeEmbedUrl = getYouTubeEmbedUrl(release.link ?? "");
+  const youtubeVideoId  = getYouTubeVideoId(release.link ?? "");
   const hasCloudinary   = Boolean(release.videoUrl);
-  const hasYouTube      = Boolean(youtubeEmbedUrl);
   const { cls }         = statusMeta(release.status);
 
   return (
@@ -61,21 +71,18 @@ function VideoCard({ release }: { release: AdminRecord }) {
             controls
             playsInline
             poster={release.bannerImage ?? undefined}
-            preload="metadata"
+            preload="none"
             src={release.videoUrl}
           />
-        ) : hasYouTube ? (
-          <iframe
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
+        ) : youtubeVideoId ? (
+          <YouTubeFacade
             className="mv-card-iframe"
-            loading="lazy"
-            src={youtubeEmbedUrl!}
             title={release.title}
+            videoId={youtubeVideoId}
           />
         ) : null}
 
-        {/* Status badge overlaid on video */}
+        {/* Status badge */}
         <span className={`ev-badge ${cls}`}>
           <span className="ev-badge-dot" />
           {release.status}
@@ -107,7 +114,7 @@ function VideoCard({ release }: { release: AdminRecord }) {
             target="_blank"
           >
             <ExternalLink size={12} />
-            <span>{hasYouTube ? "Open on YouTube" : "Watch / Listen"}</span>
+            <span>{youtubeVideoId ? "Open on YouTube" : "Watch / Listen"}</span>
           </a>
         ) : null}
       </div>
@@ -118,7 +125,7 @@ function VideoCard({ release }: { release: AdminRecord }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function MusicPage() {
-  const releases     = await listAdminCollection("releases");
+  const releases      = await listAdminCollection("releases");
   const videoReleases = releases.filter(hasVideo);
 
   return (
@@ -132,7 +139,7 @@ export default async function MusicPage() {
         </p>
       </div>
 
-      {/* Grid */}
+      {/* Individual release cards */}
       {videoReleases.length > 0 ? (
         <section className="mv-grid-section section-shell">
           <div className="mv-grid">
@@ -147,6 +154,34 @@ export default async function MusicPage() {
           <p>No videos available yet. Check back soon.</p>
         </div>
       )}
+
+      {/* Full YouTube channel embed */}
+      <section className="mv-channel-section section-shell">
+        <div className="mv-channel-header">
+          <p className="section-label">Full channel</p>
+          <h2 className="mv-channel-title">All Videos</h2>
+          <p className="mv-channel-desc">Browse every upload directly from the YouTube channel.</p>
+        </div>
+        <div className="mv-channel-embed-wrap">
+          <iframe
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="mv-channel-iframe"
+            loading="lazy"
+            src={`https://www.youtube.com/embed/videoseries?list=${CHANNEL_PLAYLIST}&rel=0&modestbranding=1`}
+            title="Veronica Adane — YouTube channel"
+          />
+        </div>
+        <a
+          className="mv-channel-link"
+          href={`https://www.youtube.com/channel/${CHANNEL_ID}`}
+          rel="noreferrer"
+          target="_blank"
+        >
+          <ExternalLink size={13} />
+          Open full channel on YouTube
+        </a>
+      </section>
     </main>
   );
 }
