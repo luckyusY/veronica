@@ -59,7 +59,7 @@ export function AdminSidebarNav({ role }: AdminSidebarNavProps) {
                   key={item.href}
                 >
                   <span className="admin-nav-icon">
-                    <Icon size={16} strokeWidth={1.8} />
+                    <Icon size={17} strokeWidth={1.75} />
                   </span>
                   <span className="admin-nav-link-copy">
                     <span>{item.label}</span>

@@ -75,7 +75,7 @@ export default async function AdminPage() {
       <header className="admin-page-head">
         <div className="admin-page-head-left">
           <div className="admin-page-head-icon">
-            <LayoutDashboard size={16} />
+            <LayoutDashboard size={18} />
           </div>
           <h1 className="admin-page-title">Dashboard</h1>
         </div>
@@ -94,9 +94,13 @@ export default async function AdminPage() {
           const Icon = stat.icon;
           return (
             <div className="admin-stat-box" key={stat.label}>
-              <Icon className="admin-stat-icon" size={14} />
-              <span className="admin-stat-value">{stat.value}</span>
-              <span className="admin-stat-label">{stat.label}</span>
+              <div className="admin-stat-icon-wrap">
+                <Icon size={18} />
+              </div>
+              <div className="admin-stat-body">
+                <span className="admin-stat-value">{stat.value}</span>
+                <span className="admin-stat-label">{stat.label}</span>
+              </div>
             </div>
           );
         })}
@@ -124,7 +128,7 @@ export default async function AdminPage() {
               <Link className="admin-workspace-card" href={ws.href} key={ws.href}>
                 <div className="admin-workspace-card-head">
                   <div className="admin-workspace-icon">
-                    <Icon size={15} />
+                    <Icon size={18} />
                   </div>
                   <span className="admin-workspace-count">{count}</span>
                 </div>

@@ -342,64 +342,65 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                     return (
                       <article className="admin-record-card" key={record.id}>
                         <div className="admin-record-header">
-                          <div className="admin-record-copy">
-                            <div className="admin-panel-meta">
+                          <div className="admin-record-main">
+                            <div className="admin-record-topline">
                               <span className="admin-badge">{record.status}</span>
                               {record.highlight ? (
                                 <span className="status-pill status-pill--warn">
                                   {record.highlight}
                                 </span>
                               ) : null}
+                              <span className="admin-record-date">
+                                Updated {formatUpdatedAt(record.updatedAt)}
+                              </span>
                             </div>
-                            <div>
-                              <h3 className="text-base font-semibold text-white">
-                                {record.title}
-                              </h3>
-                              {record.subtitle ? (
-                                <p className="mt-1 text-sm leading-6 text-white/56">
-                                  {record.subtitle}
-                                </p>
-                              ) : null}
-                            </div>
+                            <h3 className="admin-record-title">{record.title}</h3>
+                            {record.subtitle ? (
+                              <p className="admin-record-sub">{record.subtitle}</p>
+                            ) : null}
+                            {record.notes ? (
+                              <p className="admin-note">{record.notes}</p>
+                            ) : null}
                           </div>
 
-                          <div className="admin-button-row">
+                          <div className="admin-record-actions">
                             {record.link ? (
                               <a
-                                className="admin-button admin-button--ghost"
+                                className="admin-icon-button"
                                 href={record.link}
                                 rel="noreferrer"
                                 target="_blank"
+                                title="Open link"
                               >
                                 <ExternalLink size={14} />
-                                <span>Open</span>
                               </a>
                             ) : null}
 
                             {!isEditing ? (
                               <button
-                                className="admin-button admin-button--secondary"
+                                className="admin-icon-button"
                                 onClick={() => beginEdit(collection, record)}
+                                title="Edit"
                                 type="button"
                               >
                                 <Pencil size={14} />
-                                <span>Edit</span>
                               </button>
                             ) : (
                               <button
-                                className="admin-button admin-button--ghost"
+                                className="admin-icon-button"
                                 onClick={() => cancelEdit(collection, record.id)}
+                                title="Cancel"
                                 type="button"
                               >
                                 <X size={14} />
-                                <span>Cancel</span>
                               </button>
                             )}
 
                             <button
-                              className="admin-button admin-button--ghost"
+                              className="admin-icon-button admin-icon-button--danger"
                               disabled={busyDelete}
                               onClick={() => deleteRecord(collection, record.id)}
+                              title="Delete"
                               type="button"
                             >
                               {busyDelete ? (
@@ -407,18 +408,9 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                               ) : (
                                 <Trash2 size={14} />
                               )}
-                              <span>Delete</span>
                             </button>
                           </div>
                         </div>
-
-                        {record.notes ? (
-                          <p className="admin-note">{record.notes}</p>
-                        ) : null}
-
-                        <p className="text-xs uppercase tracking-[0.16em] text-white/32">
-                          Updated {formatUpdatedAt(record.updatedAt)}
-                        </p>
 
                         {isEditing && draft ? (
                           <div className="admin-edit-grid">
