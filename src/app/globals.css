@@ -10451,30 +10451,44 @@ a:not([class]):hover {
   max-width: 520px;
 }
 
-/* Ticket button */
+/* Card footer — pushes to bottom of card body */
+.events-card-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+/* Ticket button — shown when link is available */
 .events-ticket-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.5rem;
-  padding: 0.65rem 1.35rem;
+  padding: 0.7rem 1.4rem;
   border-radius: 999px;
   background: rgba(176, 141, 87, 0.14);
-  border: 1px solid rgba(176, 141, 87, 0.35);
+  border: 1px solid rgba(176, 141, 87, 0.38);
   color: rgba(218, 185, 120, 0.95);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: background 0.18s, border-color 0.18s, color 0.18s;
+  transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.15s;
   width: fit-content;
 }
 
 .events-ticket-btn:hover {
-  background: rgba(176, 141, 87, 0.22);
-  border-color: rgba(218, 185, 120, 0.55);
+  background: rgba(176, 141, 87, 0.26);
+  border-color: rgba(218, 185, 120, 0.62);
   color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Placeholder when no link is set */
+.events-no-ticket {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(237, 237, 237, 0.2);
 }
 
 /* ── Events grid ─────────────────────────────────────────── */

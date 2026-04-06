@@ -84,12 +84,17 @@ function EventCard({ event }: { event: AdminRecord }) {
           </div>
         ) : null}
 
-        {event.link ? (
-          <a className="events-ticket-link" href={event.link} rel="noreferrer" target="_blank">
-            <Ticket size={13} />
-            <span>Tickets</span>
-          </a>
-        ) : null}
+        {/* Ticket button — only shown when a link is set */}
+        <div className="events-card-footer">
+          {event.link ? (
+            <a className="events-ticket-btn" href={event.link} rel="noreferrer" target="_blank">
+              <Ticket size={15} />
+              <span>Buy Tickets</span>
+            </a>
+          ) : (
+            <span className="events-no-ticket">Tickets not available yet</span>
+          )}
+        </div>
       </div>
     </article>
   );
