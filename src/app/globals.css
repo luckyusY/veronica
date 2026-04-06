@@ -10119,3 +10119,164 @@ a:not([class]):hover {
     font-size: 0.84rem;
   }
 }
+
+/* ── Media library optimised layout ─────────────────────── */
+
+/* Thumbnail grid */
+.admin-media-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+/* Compact card */
+.admin-media-asset-card {
+  border-radius: 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(18, 18, 18, 0.9);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-media-asset-preview {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  background: rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.admin-media-asset-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.admin-media-asset-video-thumb {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Badge overlay on image */
+.admin-media-asset-overlay {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+/* Card footer */
+.admin-media-asset-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-media-asset-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.admin-media-asset-title {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(245, 242, 236, 0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-media-asset-id {
+  margin: 0.15rem 0 0;
+  font-size: 0.6rem;
+  font-family: ui-monospace, "Cascadia Code", monospace;
+  color: rgba(237, 237, 237, 0.3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-media-asset-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+/* Warn variant for icon button */
+.admin-icon-button--warn {
+  color: rgba(251, 191, 36, 0.7);
+}
+.admin-icon-button--warn:hover {
+  color: rgba(251, 191, 36, 1);
+  background: rgba(251, 191, 36, 0.1);
+  border-color: rgba(251, 191, 36, 0.25);
+}
+
+/* Load more */
+.admin-media-load-more {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0 0.25rem;
+}
+
+/* Gallery workflow notice */
+.admin-media-gallery-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(176, 141, 87, 0.18);
+  background: rgba(176, 141, 87, 0.05);
+}
+
+.admin-media-gallery-notice-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 0.6rem;
+  background: rgba(176, 141, 87, 0.12);
+  color: rgba(218, 185, 120, 0.85);
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+.admin-media-gallery-notice-title {
+  margin: 0 0 0.2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(245, 242, 236, 0.88);
+}
+
+.admin-media-gallery-notice-body {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.65;
+  color: rgba(237, 237, 237, 0.52);
+}
+
+.admin-media-gallery-notice-body strong {
+  color: rgba(218, 185, 120, 0.82);
+  font-weight: 600;
+}

@@ -1,7 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AlertTriangle, CloudUpload, LoaderCircle, RefreshCcw } from "lucide-react";
+import { AlertTriangle, CloudUpload, Info, LoaderCircle, RefreshCcw } from "lucide-react";
+
+const PAGE_SIZE = 18;
 import { AssetCard } from "@/components/admin/media/AssetCard";
 import { SearchBar } from "@/components/admin/media/SearchBar";
 import { UploadZone } from "@/components/admin/media/UploadZone";
@@ -64,8 +66,10 @@ export function AdminMediaLibraryPanel({
   const [busyKey, setBusyKey] = useState<string | null>(null);
   const [usageItem, setUsageItem] = useState<CmsMediaUsageRecord | null>(null);
   const [deleteCandidate, setDeleteCandidate] = useState<CmsMediaAsset | null>(null);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
-  const visibleMedia = useMemo(() => {
+  // Reset page when filters/search change
+  const filteredMedia = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
 
     const filtered = mediaAssets.filter((asset) => {
@@ -89,6 +93,28 @@ export function AdminMediaLibraryPanel({
       return mediaSort === "oldest" ? leftTime - rightTime : rightTime - leftTime;
     });
   }, [mediaAssets, mediaFilter, mediaSort, searchQuery]);
+
+  const visibleMedia = useMemo(
+    () => filteredMedia.slice(0, visibleCount),
+    [filteredMedia, visibleCount],
+  );
+
+  const hasMore = visibleCount < filteredMedia.length;
+
+  function changeFilter(value: MediaFilter) {
+    setMediaFilter(value);
+    setVisibleCount(PAGE_SIZE);
+  }
+
+  function changeSort(value: MediaSort) {
+    setMediaSort(value);
+    setVisibleCount(PAGE_SIZE);
+  }
+
+  function changeSearch(value: string) {
+    setSearchQuery(value);
+    setVisibleCount(PAGE_SIZE);
+  }
 
   async function syncBundledAssets() {
     setBusyKey("sync-library");
@@ -260,17 +286,30 @@ export function AdminMediaLibraryPanel({
             </article>
           </div>
 
+          {/* How gallery sections work */}
+          <div className="admin-media-gallery-notice">
+            <div className="admin-media-gallery-notice-icon"><Info size={14} /></div>
+            <div>
+              <p className="admin-media-gallery-notice-title">How to add images to site sections</p>
+              <p className="admin-media-gallery-notice-body">
+                After uploading, go to <strong>Content → Home</strong> (or any page) and use the image
+                picker inside each section editor to assign images. Uploaded images appear in the picker
+                automatically.
+              </p>
+            </div>
+          </div>
+
           <SearchBar
             filter={mediaFilter}
-            onFilterChange={setMediaFilter}
-            onQueryChange={setSearchQuery}
-            onSortChange={setMediaSort}
+            onFilterChange={changeFilter}
+            onQueryChange={changeSearch}
+            onSortChange={changeSort}
             query={searchQuery}
-            resultCount={visibleMedia.length}
+            resultCount={filteredMedia.length}
             sort={mediaSort}
           />
 
-          <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+          <div className="admin-media-grid">
             {visibleMedia.map((asset) => (
               <AssetCard
                 asset={asset}
@@ -283,10 +322,26 @@ export function AdminMediaLibraryPanel({
               />
             ))}
 
-            {visibleMedia.length === 0 ? (
-              <div className="admin-empty">No assets match the current filters.</div>
+            {filteredMedia.length === 0 ? (
+              <div className="admin-empty" style={{ gridColumn: "1 / -1" }}>
+                No assets match the current filters.
+              </div>
             ) : null}
           </div>
+
+          {hasMore ? (
+            <div className="admin-media-load-more">
+              <button
+                className="admin-button admin-button--ghost"
+                onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                type="button"
+              >
+                <span>
+                  Show more ({filteredMedia.length - visibleCount} remaining)
+                </span>
+              </button>
+            </div>
+          ) : null}
         </div>
       </section>
 

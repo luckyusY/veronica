@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import { ImageIcon, Search, Video } from "lucide-react";
 import type { CmsMediaAsset, CmsMediaItem } from "@/lib/cms-types";
+import { cloudinaryThumb } from "@/lib/cloudinary-url";
 
 type ImagePickerFieldProps = {
   label: string;
@@ -206,10 +207,11 @@ export function ImagePickerField({
                       <Image
                         alt={asset.alt}
                         className="admin-media-field-image"
-                        height={180}
-                        src={asset.secureUrl}
+                        height={160}
+                        loading="lazy"
+                        src={cloudinaryThumb(asset.secureUrl, { width: 220, height: 160, crop: "fill" })}
                         unoptimized
-                        width={180}
+                        width={220}
                       />
                     )}
                   </div>
