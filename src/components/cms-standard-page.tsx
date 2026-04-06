@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { RevealBlock } from "@/components/animated-text";
 import { EditorialImage } from "@/components/editorial-image";
@@ -38,6 +39,14 @@ function buildPageSignals(sections: StandardSection[]): PageSignal[] {
       return {
         label: section.eyebrow,
         value: "Full-bleed scene",
+        detail: section.title,
+      };
+    }
+
+    if (section.type === "gallery") {
+      return {
+        label: section.eyebrow,
+        value: `${section.items.length} images`,
         detail: section.title,
       };
     }
@@ -272,6 +281,46 @@ function renderSection(section: StandardSection, index: number) {
             {section.items.map((item) => renderCard(item, section.cardVariant, section.theme))}
           </div>
         </RevealBlock>
+      </section>
+    );
+  }
+
+  if (section.type === "gallery") {
+    const cols = section.columns ?? 3;
+    return (
+      <section
+        className={`cms-gallery-section ${section.theme === "dark" ? "cms-gallery-section--dark" : ""}`}
+        key={section.id}
+      >
+        <div className="section-shell py-10">
+          <SectionLead
+            description={section.description}
+            eyebrow={section.eyebrow}
+            index={index}
+            inverse={section.theme === "dark"}
+            title={section.title}
+          />
+          <RevealBlock className="cms-masonry-gallery" delay={0.1} variant="up">
+            <div className="cms-masonry-grid" style={{ columnCount: cols }}>
+              {section.items.map((item, i) => (
+                <div className="cms-masonry-item" key={i}>
+                  <Image
+                    alt={item.alt}
+                    className="cms-masonry-img"
+                    height={600}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    src={item.url}
+                    unoptimized
+                    width={400}
+                  />
+                  {item.label ? (
+                    <p className="cms-masonry-caption">{item.label}</p>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </RevealBlock>
+        </div>
       </section>
     );
   }

@@ -218,6 +218,17 @@ export type StandardSection =
       title: string;
       description?: string;
       items: string[];
+    }
+  | {
+      id: string;
+      type: "gallery";
+      theme: "paper" | "dark";
+      eyebrow: string;
+      title: string;
+      description?: string;
+      /** Images chosen by admin via the media picker */
+      items: CmsMediaItem[];
+      columns?: 2 | 3 | 4;
     };
 
 export type StandardPageContent = {

@@ -469,6 +469,17 @@ export const defaultMediaPageContent: StandardPageContent = {
       ],
       cardVariant: "dark-note",
     },
+    {
+      id: "press-gallery",
+      type: "gallery",
+      theme: "paper",
+      eyebrow: "Press gallery",
+      title: "Official photography and campaign imagery.",
+      description:
+        "High-resolution approved images for press, editorial, and media use. Add or update images via the admin media library.",
+      items: [],
+      columns: 3,
+    },
   ],
 };
 

@@ -151,11 +151,23 @@ const standardTimelineSectionSchema = z.object({
   items: z.array(requiredText("Timeline item")).min(1, "Add at least one timeline item."),
 });
 
+const standardGallerySectionSchema = z.object({
+  id: requiredText("Section ID"),
+  type: z.literal("gallery"),
+  theme: z.enum(["paper", "dark"]),
+  eyebrow: requiredText("Section eyebrow"),
+  title: requiredText("Section title"),
+  description: optionalText(),
+  items: z.array(cmsMediaItemSchema),
+  columns: z.union([z.literal(2), z.literal(3), z.literal(4)]).optional(),
+});
+
 export const standardSectionSchema = z.discriminatedUnion("type", [
   standardSplitSectionSchema,
   standardCardsSectionSchema,
   standardBannerSectionSchema,
   standardTimelineSectionSchema,
+  standardGallerySectionSchema,
 ]);
 
 export const standardPageSchema = z.object({

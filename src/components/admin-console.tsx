@@ -208,16 +208,16 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
     setBusyKey(`${collection}:create`);
     setFeedback(null);
 
-    const payload: AdminRecordInput = { ...forms[collection] };
+    const body: AdminRecordInput = { ...forms[collection] };
     if (collection === "events") {
       const lines = (galleryText[collection] ?? "").split("\n").map((s) => s.trim()).filter(Boolean);
-      if (lines.length > 0) payload.galleryImages = lines;
+      if (lines.length > 0) body.galleryImages = lines;
     }
 
     const response = await fetch(`/api/admin/${collection}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(body),
     });
 
     if (!response.ok) {
