@@ -9223,3 +9223,177 @@ a:not([class]):hover {
 .admin-repeatable-stack {
   gap: 0.5rem;
 }
+
+/* ── Login page ──────────────────────────────────────────── */
+.admin-login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 1.25rem;
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(16, 16, 16, 0.96);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.4),
+    0 32px 64px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Brand row */
+.admin-login-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.admin-login-monogram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.9rem;
+  background: linear-gradient(145deg, rgba(176, 141, 87, 0.22), rgba(176, 141, 87, 0.08));
+  border: 1px solid rgba(176, 141, 87, 0.25);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(218, 185, 120, 0.92);
+  flex-shrink: 0;
+}
+
+.admin-login-brand-name {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: rgba(245, 242, 236, 0.95);
+}
+
+.admin-login-brand-sub {
+  margin: 0.15rem 0 0;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(176, 141, 87, 0.72);
+}
+
+/* Divider */
+.admin-login-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: -0.25rem 0;
+}
+
+/* Header */
+.admin-login-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-login-shield {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 0.75rem;
+  background: rgba(176, 141, 87, 0.1);
+  border: 1px solid rgba(176, 141, 87, 0.2);
+  color: rgba(218, 185, 120, 0.85);
+  margin-bottom: 0.25rem;
+}
+
+.admin-login-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: rgba(245, 242, 236, 0.97);
+}
+
+.admin-login-desc {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: rgba(237, 237, 237, 0.48);
+}
+
+/* Sample credentials */
+.admin-login-sample {
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.admin-login-sample-label {
+  margin: 0;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(176, 141, 87, 0.65);
+}
+
+.admin-login-sample-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.admin-login-sample-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.7rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-login-sample-role {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(176, 141, 87, 0.8);
+}
+
+.admin-login-sample-creds {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: ui-monospace, "Cascadia Code", monospace;
+  font-size: 0.75rem;
+  color: rgba(237, 237, 237, 0.72);
+}
+
+.admin-login-sample-sep {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Footer note */
+.admin-login-footer {
+  margin: 0;
+  text-align: center;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: rgba(237, 237, 237, 0.28);
+}
