@@ -60,6 +60,18 @@ export async function getAdminWorkspaceData() {
   };
 }
 
+/** Content index — only needs pages, no media */
+export async function getAdminContentListData() {
+  const cmsPages = await listCmsPages();
+  return { cmsPages };
+}
+
+/** Content editor — only needs pages; media loads lazily on the client */
+export async function getAdminContentEditorData() {
+  const cmsPages = await listCmsPages();
+  return { cmsPages };
+}
+
 export async function getAdminOperationsData() {
   const [{ counts, sections }, databaseStatus] = await Promise.all([
     getAdminDashboardData(),

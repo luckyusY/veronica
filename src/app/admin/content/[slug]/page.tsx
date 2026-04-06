@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { AdminPageCmsPanel } from "@/components/admin-page-cms-panel";
-import { getAdminWorkspaceData } from "@/lib/admin-screen-data";
+import { getAdminContentEditorData } from "@/lib/admin-screen-data";
 import { cmsPageSlugs, type CmsPageSlug } from "@/lib/cms-types";
 
 export const dynamic = "force-dynamic";
@@ -24,11 +24,10 @@ export default async function AdminContentEditorPage({
     notFound();
   }
 
-  const { cmsPages, mediaAssets } = await getAdminWorkspaceData();
+  const { cmsPages } = await getAdminContentEditorData();
 
   return (
     <AdminPageCmsPanel
-      initialMediaAssets={mediaAssets}
       initialPages={cmsPages}
       selectedSlug={slug as CmsPageSlug}
     />

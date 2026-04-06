@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { FileJson } from "lucide-react";
-import { getAdminWorkspaceData } from "@/lib/admin-screen-data";
+import { getAdminContentListData } from "@/lib/admin-screen-data";
 import { formatUpdatedAt, getStatusConfig, summarizePageContent } from "@/lib/cms-admin-ui";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminContentPage() {
-  const { cmsPages } = await getAdminWorkspaceData();
+  const { cmsPages } = await getAdminContentListData();
   const contentSummary = cmsPages.reduce(
     (accumulator, page) => {
       const summary = summarizePageContent(page.content);

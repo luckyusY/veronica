@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ExternalLink, FileJson, LoaderCircle, RefreshCcw, Rocket, Save, Trash2 } from "lucide-react";
 import { SectionEditor } from "@/components/admin/cms/SectionEditor";
 import { SectionFieldsRenderer } from "@/components/admin/cms/SectionFieldsRenderer";
@@ -27,7 +27,6 @@ import type {
 
 type AdminPageCmsPanelProps = {
   initialPages: CmsPageWorkspaceDocument[];
-  initialMediaAssets: CmsMediaAsset[];
   selectedSlug: CmsPageSlug;
 };
 
@@ -68,10 +67,28 @@ function createDraftState(page: CmsPageWorkspaceDocument): PageDraft {
 
 export function AdminPageCmsPanel({
   initialPages,
-  initialMediaAssets,
   selectedSlug,
 }: AdminPageCmsPanelProps) {
   const [pages, setPages] = useState(initialPages);
+  const [mediaAssets, setMediaAssets] = useState<CmsMediaAsset[]>([]);
+  const mediaFetched = useRef(false);
+
+  // Load media assets in the background — non-blocking, doesn't delay initial render
+  useEffect(() => {
+    if (mediaFetched.current) return;
+    mediaFetched.current = true;
+
+    fetch("/api/admin/media")
+      .then((res) => res.json())
+      .then((payload: { items?: CmsMediaAsset[] }) => {
+        if (Array.isArray(payload.items)) {
+          setMediaAssets(payload.items);
+        }
+      })
+      .catch(() => {
+        // silent — image picker will just show empty if this fails
+      });
+  }, []);
   const [pageDrafts, setPageDrafts] = useState<Record<string, PageDraft>>(() =>
     Object.fromEntries(initialPages.map((page) => [page.slug, createDraftState(page)])),
   );
@@ -569,7 +586,7 @@ export function AdminPageCmsPanel({
                   contentRoot={selectedDraft.content}
                   defaultContent={defaultCmsPageContent[selectedPage.slug]}
                   errorMap={validationErrors}
-                  mediaAssets={initialMediaAssets}
+                  mediaAssets={mediaAssets}
                   onContentChange={updateSelectedContent}
                   path={[sectionKey]}
                   slug={selectedPage.slug}
