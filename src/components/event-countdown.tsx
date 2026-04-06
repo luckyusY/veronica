@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import NumberFlow from "@number-flow/react";
 
 type TimeLeft = {
   days: number;
@@ -21,40 +21,15 @@ function getTimeLeft(isoDate: string): TimeLeft {
   };
 }
 
-function pad(n: number) {
-  return String(n).padStart(2, "0");
-}
-
-// Single animated digit slot — flips when the value changes
-function FlipDigit({ value }: { value: string }) {
-  return (
-    <span className="events-flip-slot">
-      <AnimatePresence mode="popLayout" initial={false}>
-        <motion.span
-          key={value}
-          animate={{ y: 0, opacity: 1 }}
-          className="events-countdown-value"
-          exit={{ y: -28, opacity: 0 }}
-          initial={{ y: 28, opacity: 0 }}
-          transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
-        >
-          {value}
-        </motion.span>
-      </AnimatePresence>
-    </span>
-  );
-}
-
-function CountdownUnit({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
+function CountdownUnit({ value, label }: { value: number; label: string }) {
   return (
     <div className="events-countdown-unit">
-      <FlipDigit value={value} />
+      <NumberFlow
+        className="events-countdown-value"
+        format={{ minimumIntegerDigits: label === "days" ? 1 : 2 }}
+        transformTiming={{ duration: 400, easing: "cubic-bezier(0.4,0,0.2,1)" }}
+        value={value}
+      />
       <span className="events-countdown-label">{label}</span>
     </div>
   );
@@ -69,26 +44,18 @@ export function EventCountdown({ eventDate }: { eventDate: string }) {
   }, [eventDate]);
 
   if (timeLeft === null) {
-    return (
-      <motion.p
-        animate={{ opacity: 1 }}
-        className="events-countdown-past"
-        initial={{ opacity: 0 }}
-      >
-        This event has passed
-      </motion.p>
-    );
+    return <p className="events-countdown-past">This event has passed</p>;
   }
 
   return (
     <div className="events-countdown">
-      <CountdownUnit label="days" value={String(timeLeft.days)} />
+      <CountdownUnit label="days"  value={timeLeft.days}  />
       <span aria-hidden="true" className="events-countdown-sep">:</span>
-      <CountdownUnit label="hrs"  value={pad(timeLeft.hours)} />
+      <CountdownUnit label="hrs"   value={timeLeft.hours} />
       <span aria-hidden="true" className="events-countdown-sep">:</span>
-      <CountdownUnit label="min"  value={pad(timeLeft.mins)} />
+      <CountdownUnit label="min"   value={timeLeft.mins}  />
       <span aria-hidden="true" className="events-countdown-sep">:</span>
-      <CountdownUnit label="sec"  value={pad(timeLeft.secs)} />
+      <CountdownUnit label="sec"   value={timeLeft.secs}  />
     </div>
   );
 }
