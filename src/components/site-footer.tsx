@@ -1,22 +1,13 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { VeronicaWordmark } from "@/components/veronica-wordmark";
 import type { CmsSiteSettings } from "@/lib/cms-types";
-import { navigationItems } from "@/lib/site-data";
 
 type SiteFooterProps = {
   settings: CmsSiteSettings["footer"];
 };
 
-function isActivePath(pathname: string, href: string) {
-  return href === "/" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
-}
-
 export function SiteFooter({ settings }: SiteFooterProps) {
   const year = new Date().getFullYear();
-  const pathname = usePathname();
 
   return (
     <footer className="editorial-site-footer">
@@ -45,34 +36,10 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                   </span>
                 ))}
               </div>
-
-              <div className="site-footer-utility-row">
-                {settings.utilityLinks.map((item) => (
-                  <Link className="site-footer-utility-link" href={item.href} key={item.href}>
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
             </div>
           </div>
 
           <div className="site-footer-divider" aria-hidden="true" />
-
-          <div className="editorial-nav-shell editorial-nav-shell--footer">
-            <nav aria-label="Footer navigation" className="editorial-nav-gridline">
-              {navigationItems.map((item) => (
-                <Link
-                  className={`editorial-nav-button ${
-                    isActivePath(pathname, item.href) ? "is-active" : ""
-                  }`.trim()}
-                  href={item.href}
-                  key={item.href}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
         </div>
 
         <div className="editorial-footer-markline">

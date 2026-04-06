@@ -15,7 +15,6 @@ const primaryNavigation = navigationItems.filter(
 );
 
 const actionNavigation = [
-  { href: "/contact", label: "Booking" },
   { href: "/shop", label: "Shop" },
 ];
 
