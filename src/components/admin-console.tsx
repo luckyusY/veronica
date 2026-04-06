@@ -132,6 +132,9 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
   const [drafts, setDrafts] = useState<Record<string, AdminRecordInput>>({});
   const [busyKey, setBusyKey] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<FeedbackState>(null);
+  // Gallery text state: create form keyed by collection, edit form keyed by record id
+  const [galleryText, setGalleryText] = useState<Record<string, string>>({ events: "" });
+  const [draftGalleryText, setDraftGalleryText] = useState<Record<string, string>>({});
 
   const counts = useMemo(
     () =>
@@ -180,8 +183,15 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
         highlight: record.highlight,
         link: record.link,
         notes: record.notes,
+        bannerImage: record.bannerImage ?? "",
       },
     }));
+    if (collection === "events") {
+      setDraftGalleryText((current) => ({
+        ...current,
+        [record.id]: (record.galleryImages ?? []).join("\n"),
+      }));
+    }
     setFeedback(null);
   }
 
@@ -198,10 +208,16 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
     setBusyKey(`${collection}:create`);
     setFeedback(null);
 
+    const payload: AdminRecordInput = { ...forms[collection] };
+    if (collection === "events") {
+      const lines = (galleryText[collection] ?? "").split("\n").map((s) => s.trim()).filter(Boolean);
+      if (lines.length > 0) payload.galleryImages = lines;
+    }
+
     const response = await fetch(`/api/admin/${collection}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(forms[collection]),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -216,6 +232,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
       [collection]: sortRecords([payload.item, ...current[collection]]),
     }));
     setForms((current) => ({ ...current, [collection]: createBlankRecord(collection) }));
+    if (collection === "events") setGalleryText((c) => ({ ...c, [collection]: "" }));
     setBusyKey(null);
     setFeedback({ tone: "ok", message: `${adminCollectionConfig[collection].singular} created.` });
   }
@@ -224,10 +241,16 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
     setBusyKey(`${collection}:update:${id}`);
     setFeedback(null);
 
+    const editPayload: AdminRecordInput = { ...drafts[id] };
+    if (collection === "events") {
+      const lines = (draftGalleryText[id] ?? "").split("\n").map((s) => s.trim()).filter(Boolean);
+      editPayload.galleryImages = lines.length > 0 ? lines : [];
+    }
+
     const response = await fetch(`/api/admin/${collection}/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(drafts[id]),
+      body: JSON.stringify(editPayload),
     });
 
     if (!response.ok) {
@@ -433,6 +456,38 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                       />
                     </div>
 
+                    {collection === "events" ? (
+                      <>
+                        <div className="admin-field">
+                          <label htmlFor="events-banner-image">Banner image URL</label>
+                          <input
+                            className="admin-input"
+                            id="events-banner-image"
+                            onChange={(event) =>
+                              updateForm("events", "bannerImage", event.target.value)
+                            }
+                            placeholder="https://res.cloudinary.com/…"
+                            value={forms["events"].bannerImage ?? ""}
+                          />
+                          <p className="admin-field-hint">Paste a Cloudinary or external image URL to show as the event banner.</p>
+                        </div>
+                        <div className="admin-field">
+                          <label htmlFor="events-gallery-images">Gallery images (one URL per line)</label>
+                          <textarea
+                            className="admin-textarea"
+                            id="events-gallery-images"
+                            onChange={(event) =>
+                              setGalleryText((c) => ({ ...c, events: event.target.value }))
+                            }
+                            placeholder={"https://res.cloudinary.com/…\nhttps://res.cloudinary.com/…"}
+                            rows={4}
+                            value={galleryText["events"] ?? ""}
+                          />
+                          <p className="admin-field-hint">Each line becomes one gallery image on the public events page.</p>
+                        </div>
+                      </>
+                    ) : null}
+
                     <div className="admin-button-row">
                       <button
                         className="admin-button"
@@ -479,6 +534,14 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                         <article className="admin-record-card" key={record.id}>
                           <div className="admin-record-header">
                             <div className="admin-record-main">
+                              {collection === "events" && record.bannerImage ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                  alt={record.title}
+                                  className="admin-event-card-banner"
+                                  src={record.bannerImage}
+                                />
+                              ) : null}
                               <div className="admin-record-topline">
                                 <span className="admin-badge">{record.status}</span>
                                 {record.highlight ? (
@@ -496,6 +559,11 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                 <p className="admin-record-sub">{record.subtitle}</p>
                               ) : null}
                               {record.notes ? <p className="admin-note">{record.notes}</p> : null}
+                              {collection === "events" && record.galleryImages?.length ? (
+                                <p className="admin-record-sub" style={{ opacity: 0.5 }}>
+                                  {record.galleryImages.length} gallery image{record.galleryImages.length === 1 ? "" : "s"}
+                                </p>
+                              ) : null}
                             </div>
 
                             <div className="admin-record-actions">
@@ -616,6 +684,39 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                   value={draft.notes}
                                 />
                               </div>
+
+                              {collection === "events" ? (
+                                <>
+                                  <div className="admin-field">
+                                    <label>Banner image URL</label>
+                                    <input
+                                      className="admin-input"
+                                      onChange={(event) =>
+                                        updateDraft(record.id, "bannerImage", event.target.value)
+                                      }
+                                      placeholder="https://res.cloudinary.com/…"
+                                      value={draft.bannerImage ?? ""}
+                                    />
+                                    <p className="admin-field-hint">Banner shown on the public events page.</p>
+                                  </div>
+                                  <div className="admin-field">
+                                    <label>Gallery images (one URL per line)</label>
+                                    <textarea
+                                      className="admin-textarea"
+                                      onChange={(event) =>
+                                        setDraftGalleryText((c) => ({
+                                          ...c,
+                                          [record.id]: event.target.value,
+                                        }))
+                                      }
+                                      placeholder={"https://res.cloudinary.com/…\nhttps://res.cloudinary.com/…"}
+                                      rows={4}
+                                      value={draftGalleryText[record.id] ?? ""}
+                                    />
+                                    <p className="admin-field-hint">Each line is one gallery image.</p>
+                                  </div>
+                                </>
+                              ) : null}
 
                               <div className="admin-button-row">
                                 <button

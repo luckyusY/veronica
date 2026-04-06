@@ -14,6 +14,10 @@ export type AdminRecordInput = {
   highlight: string;
   link: string;
   notes: string;
+  /** URL of the event banner / hero image (events only) */
+  bannerImage?: string;
+  /** Array of image URLs for the event gallery (events only) */
+  galleryImages?: string[];
 };
 
 export type AdminRecord = AdminRecordInput & {

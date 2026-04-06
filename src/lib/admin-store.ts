@@ -39,6 +39,20 @@ function normalizeRecordInput(
     throw new Error(`${adminCollectionConfig[collection].fields.title} is required.`);
   }
 
+  const bannerImage = sanitizeField(raw.bannerImage) || undefined;
+
+  // Accept array or newline-separated string for gallery images
+  let galleryImages: string[] | undefined;
+  if (Array.isArray(raw.galleryImages)) {
+    const cleaned = (raw.galleryImages as unknown[])
+      .map((v) => sanitizeField(v))
+      .filter(Boolean);
+    galleryImages = cleaned.length > 0 ? cleaned : undefined;
+  } else if (typeof raw.galleryImages === "string" && raw.galleryImages.trim()) {
+    const cleaned = raw.galleryImages.split("\n").map((s) => s.trim()).filter(Boolean);
+    galleryImages = cleaned.length > 0 ? cleaned : undefined;
+  }
+
   return {
     title,
     subtitle: sanitizeField(raw.subtitle),
@@ -47,6 +61,8 @@ function normalizeRecordInput(
     highlight: sanitizeField(raw.highlight),
     link: sanitizeField(raw.link),
     notes: sanitizeField(raw.notes),
+    ...(bannerImage !== undefined ? { bannerImage } : {}),
+    ...(galleryImages !== undefined ? { galleryImages } : {}),
   };
 }
 
@@ -59,6 +75,8 @@ function serializeRecord(record: WithId<AdminDocument>): AdminRecord {
     highlight: record.highlight,
     link: record.link,
     notes: record.notes,
+    bannerImage: record.bannerImage ?? undefined,
+    galleryImages: record.galleryImages ?? undefined,
     createdAt: record.createdAt.toISOString(),
     updatedAt: record.updatedAt.toISOString(),
   };

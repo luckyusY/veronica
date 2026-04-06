@@ -1,20 +1,185 @@
 import type { Metadata } from "next";
-import { CmsStandardPage } from "@/components/cms-standard-page";
-import { getCmsPage } from "@/lib/cms-store";
-import type { StandardPageContent } from "@/lib/cms-types";
+import Image from "next/image";
+import Link from "next/link";
+import { CalendarClock, MapPin, Ticket } from "lucide-react";
+import { listAdminCollection } from "@/lib/admin-store";
+import type { AdminRecord } from "@/lib/admin-schema";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const page = await getCmsPage("events");
-  return {
-    title: page.name,
-    description: page.summary,
-  };
-}
+export const metadata: Metadata = {
+  title: "Events — Veronica Adane",
+  description: "Upcoming shows, tour dates, and live performances by Veronica Adane.",
+};
 
 export const revalidate = 60;
 
-export default async function EventsPage() {
-  const page = await getCmsPage("events");
+function statusColor(status: string) {
+  const s = status.toLowerCase();
+  if (s === "confirmed") return "events-badge--confirmed";
+  if (s === "planning") return "events-badge--planning";
+  if (s === "sold out") return "events-badge--soldout";
+  if (s === "cancelled") return "events-badge--cancelled";
+  return "events-badge--default";
+}
 
-  return <CmsStandardPage content={page.content as StandardPageContent} />;
+function FeaturedEvent({ event }: { event: AdminRecord }) {
+  return (
+    <div className="events-featured">
+      {event.bannerImage ? (
+        <div className="events-featured-banner">
+          <Image
+            alt={event.title}
+            className="events-featured-img"
+            fill
+            priority
+            sizes="100vw"
+            src={event.bannerImage}
+            style={{ objectFit: "cover" }}
+            unoptimized
+          />
+          <div className="events-featured-gradient" />
+        </div>
+      ) : (
+        <div className="events-featured-placeholder" />
+      )}
+
+      <div className="events-featured-body section-shell">
+        <span className={`events-badge ${statusColor(event.status)}`}>{event.status}</span>
+        {event.highlight ? (
+          <div className="events-featured-date">
+            <CalendarClock size={15} />
+            <span>{event.highlight}</span>
+          </div>
+        ) : null}
+        <h1 className="events-featured-title">{event.title}</h1>
+        {event.subtitle ? (
+          <p className="events-featured-venue">
+            <MapPin size={14} />
+            <span>{event.subtitle}</span>
+          </p>
+        ) : null}
+        {event.notes ? <p className="events-featured-notes">{event.notes}</p> : null}
+        {event.link ? (
+          <a className="events-ticket-btn" href={event.link} rel="noreferrer" target="_blank">
+            <Ticket size={16} />
+            <span>Get tickets</span>
+          </a>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function EventCard({ event }: { event: AdminRecord }) {
+  return (
+    <article className="events-card">
+      {event.bannerImage ? (
+        <div className="events-card-banner">
+          <Image
+            alt={event.title}
+            className="events-card-img"
+            fill
+            loading="lazy"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            src={event.bannerImage}
+            style={{ objectFit: "cover" }}
+            unoptimized
+          />
+        </div>
+      ) : (
+        <div className="events-card-banner events-card-banner--empty">
+          <CalendarClock size={28} />
+        </div>
+      )}
+
+      <div className="events-card-body">
+        <div className="events-card-topline">
+          <span className={`events-badge ${statusColor(event.status)}`}>{event.status}</span>
+          {event.highlight ? (
+            <span className="events-card-date">{event.highlight}</span>
+          ) : null}
+        </div>
+
+        <h2 className="events-card-title">{event.title}</h2>
+
+        {event.subtitle ? (
+          <p className="events-card-venue">
+            <MapPin size={12} />
+            <span>{event.subtitle}</span>
+          </p>
+        ) : null}
+
+        {event.notes ? <p className="events-card-notes">{event.notes}</p> : null}
+
+        {/* Gallery strip */}
+        {event.galleryImages && event.galleryImages.length > 0 ? (
+          <div className="events-gallery-strip">
+            {event.galleryImages.map((src, i) => (
+              <div className="events-gallery-thumb" key={i}>
+                <Image
+                  alt={`${event.title} gallery ${i + 1}`}
+                  className="events-gallery-img"
+                  fill
+                  loading="lazy"
+                  sizes="80px"
+                  src={src}
+                  style={{ objectFit: "cover" }}
+                  unoptimized
+                />
+              </div>
+            ))}
+          </div>
+        ) : null}
+
+        {event.link ? (
+          <a className="events-ticket-link" href={event.link} rel="noreferrer" target="_blank">
+            <Ticket size={13} />
+            <span>Tickets</span>
+          </a>
+        ) : null}
+      </div>
+    </article>
+  );
+}
+
+export default async function EventsPage() {
+  const events = await listAdminCollection("events");
+
+  const featured = events[0] ?? null;
+  const rest = events.slice(1);
+
+  return (
+    <main className="events-page">
+      {/* Page header */}
+      <div className="events-header section-shell">
+        <p className="section-label">Live performance</p>
+        <h1 className="display-title events-page-title">Events</h1>
+        <p className="events-page-subtitle">
+          Upcoming shows, confirmed dates, and touring information.
+        </p>
+      </div>
+
+      {/* Featured event */}
+      {featured ? <FeaturedEvent event={featured} /> : null}
+
+      {/* All events grid */}
+      {rest.length > 0 ? (
+        <section className="events-grid-section section-shell">
+          <p className="section-label">All dates</p>
+          <div className="events-grid">
+            {rest.map((event) => (
+              <EventCard event={event} key={event.id} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {events.length === 0 ? (
+        <div className="events-empty section-shell">
+          <CalendarClock size={32} />
+          <p>No events scheduled yet. Check back soon.</p>
+          <Link className="events-ticket-link" href="/">Back to home</Link>
+        </div>
+      ) : null}
+    </main>
+  );
 }
