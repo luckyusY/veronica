@@ -9822,8 +9822,7 @@ a:not([class]):hover {
 .admin-layout .admin-page-card {
   transition:
     border-color 180ms ease,
-    box-shadow 180ms ease,
-    transform 180ms ease;
+    box-shadow 180ms ease;
 }
 
 .admin-layout .admin-focus-card:hover,
@@ -9831,7 +9830,6 @@ a:not([class]):hover {
 .admin-layout .admin-content-card:hover,
 .admin-layout .admin-record-card:hover,
 .admin-layout .admin-page-card:hover {
-  transform: translateY(-2px);
   border-color: rgba(0, 113, 227, 0.18);
   box-shadow: 0 24px 56px rgba(0, 0, 0, 0.1);
 }
@@ -10302,8 +10300,7 @@ a:not([class]):hover {
 /* Datetime picker */
 .admin-input--datetime {
   cursor: pointer;
-  color-scheme: dark;
-  appearance: none;
+  color-scheme: light;
 }
 
 /* Full-width field spanning the 2-col grid */
