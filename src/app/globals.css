@@ -8383,6 +8383,8 @@ a:not([class]):hover {
   .admin-record-composer {
     position: sticky;
     top: 1rem;
+    max-height: calc(100svh - 2rem);
+    overflow-y: auto;
   }
 }
 
