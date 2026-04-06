@@ -553,6 +553,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
         notes: record.notes,
         bannerImage: record.bannerImage ?? "",
         videoUrl: record.videoUrl ?? "",
+        eventDate: record.eventDate ?? "",
       },
     }));
     setDraftGallery((c) => ({ ...c, [record.id]: record.galleryImages ?? [] }));
@@ -794,6 +795,24 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                             value={forms[collection].highlight}
                           />
                         </div>
+
+                        {collection === "events" ? (
+                          <div className="admin-field admin-field--full">
+                            <label htmlFor="events-event-date">
+                              Event date &amp; time
+                            </label>
+                            <input
+                              className="admin-input admin-input--datetime"
+                              id="events-event-date"
+                              onChange={(e) => updateForm("events", "eventDate", e.target.value)}
+                              type="datetime-local"
+                              value={forms["events"].eventDate ?? ""}
+                            />
+                            <p className="admin-field-hint">
+                              Used for the live countdown timer shown on the public events page.
+                            </p>
+                          </div>
+                        ) : null}
 
                         <div className="admin-field">
                           <label htmlFor={`${collection}-link`}>{config.fields.link}</label>
@@ -1037,6 +1056,18 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                       value={draft.highlight}
                                     />
                                   </div>
+                                  {collection === "events" ? (
+                                    <div className="admin-field admin-field--full">
+                                      <label>Event date &amp; time</label>
+                                      <input
+                                        className="admin-input admin-input--datetime"
+                                        onChange={(e) => updateDraft(record.id, "eventDate", e.target.value)}
+                                        type="datetime-local"
+                                        value={draft.eventDate ?? ""}
+                                      />
+                                      <p className="admin-field-hint">Drives the live countdown timer on the public page.</p>
+                                    </div>
+                                  ) : null}
                                   <div className="admin-field">
                                     <label>{config.fields.link}</label>
                                     <input

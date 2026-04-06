@@ -20,6 +20,8 @@ export type AdminRecordInput = {
   galleryImages?: string[];
   /** Cloudinary video URL selected from the media library (releases only) */
   videoUrl?: string;
+  /** ISO datetime string for the event date — used for countdown timer (events only) */
+  eventDate?: string;
 };
 
 export type AdminRecord = AdminRecordInput & {

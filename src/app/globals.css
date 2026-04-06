@@ -10301,6 +10301,17 @@ a:not([class]):hover {
   color: rgba(237, 237, 237, 0.38);
 }
 
+/* Datetime picker */
+.admin-input--datetime {
+  color-scheme: dark;
+  cursor: pointer;
+}
+
+/* Full-width field spanning the 2-col grid */
+.admin-field--full {
+  grid-column: 1 / -1;
+}
+
 /* ── Public events page ──────────────────────────────────── */
 .events-page {
   min-height: 100vh;
@@ -10449,6 +10460,57 @@ a:not([class]):hover {
   line-height: 1.65;
   color: rgba(237, 237, 237, 0.5);
   max-width: 520px;
+}
+
+/* Countdown timer */
+.events-countdown {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(176, 141, 87, 0.07);
+  border: 1px solid rgba(176, 141, 87, 0.14);
+  border-radius: 6px;
+  padding: 0.55rem 0.75rem;
+  width: fit-content;
+}
+
+.events-countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 2rem;
+}
+
+.events-countdown-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(218, 185, 120, 0.95);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.events-countdown-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(237, 237, 237, 0.35);
+  margin-top: 0.15rem;
+}
+
+.events-countdown-sep {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(176, 141, 87, 0.4);
+  align-self: flex-start;
+  padding-top: 0.05rem;
+}
+
+.events-countdown-past {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(237, 237, 237, 0.25);
 }
 
 /* Card footer — pushes to bottom of card body */

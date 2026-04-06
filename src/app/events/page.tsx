@@ -4,6 +4,18 @@ import Link from "next/link";
 import { CalendarClock, MapPin, Ticket } from "lucide-react";
 import { listAdminCollection } from "@/lib/admin-store";
 import type { AdminRecord } from "@/lib/admin-schema";
+import { EventCountdown } from "@/components/event-countdown";
+
+function formatEventDate(iso: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date(iso));
+}
 
 
 
@@ -48,7 +60,12 @@ function EventCard({ event }: { event: AdminRecord }) {
       <div className="events-card-body">
         <div className="events-card-topline">
           <span className={`events-badge ${statusColor(event.status)}`}>{event.status}</span>
-          {event.highlight ? (
+          {event.eventDate ? (
+            <span className="events-card-date">
+              <CalendarClock size={11} />
+              {formatEventDate(event.eventDate)}
+            </span>
+          ) : event.highlight ? (
             <span className="events-card-date">{event.highlight}</span>
           ) : null}
         </div>
@@ -63,6 +80,11 @@ function EventCard({ event }: { event: AdminRecord }) {
         ) : null}
 
         {event.notes ? <p className="events-card-notes">{event.notes}</p> : null}
+
+        {/* Live countdown — only shown when eventDate is set */}
+        {event.eventDate ? (
+          <EventCountdown eventDate={event.eventDate} />
+        ) : null}
 
         {/* Gallery strip */}
         {event.galleryImages && event.galleryImages.length > 0 ? (

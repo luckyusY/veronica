@@ -41,6 +41,7 @@ function normalizeRecordInput(
 
   const bannerImage = sanitizeField(raw.bannerImage) || undefined;
   const videoUrl = sanitizeField(raw.videoUrl) || undefined;
+  const eventDate = sanitizeField(raw.eventDate) || undefined;
 
   // Accept array or newline-separated string for gallery images
   let galleryImages: string[] | undefined;
@@ -65,6 +66,7 @@ function normalizeRecordInput(
     ...(bannerImage !== undefined ? { bannerImage } : {}),
     ...(galleryImages !== undefined ? { galleryImages } : {}),
     ...(videoUrl !== undefined ? { videoUrl } : {}),
+    ...(eventDate !== undefined ? { eventDate } : {}),
   };
 }
 
@@ -80,6 +82,7 @@ function serializeRecord(record: WithId<AdminDocument>): AdminRecord {
     bannerImage: record.bannerImage ?? undefined,
     galleryImages: record.galleryImages ?? undefined,
     videoUrl: record.videoUrl ?? undefined,
+    eventDate: record.eventDate ?? undefined,
     createdAt: record.createdAt.toISOString(),
     updatedAt: record.updatedAt.toISOString(),
   };
