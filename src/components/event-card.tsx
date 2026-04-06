@@ -1,30 +1,35 @@
 "use client";
 
 import Image from "next/image";
-import { CalendarClock, CalendarPlus, MapPin, Ticket } from "lucide-react";
+import { CalendarPlus, Clock, MapPin, Ticket } from "lucide-react";
 import { motion } from "motion/react";
 import type { AdminRecord } from "@/lib/admin-schema";
 import { EventCountdown } from "@/components/event-countdown";
 
-// ─── Helpers (duplicated from page so the card is self-contained) ─────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function statusMeta(status: string): { cls: string } {
+function statusMeta(status: string): { cls: string; label: string } {
   const s = status.toLowerCase();
-  if (s === "confirmed") return { cls: "ev-badge--confirmed" };
-  if (s === "planning")  return { cls: "ev-badge--planning"  };
-  if (s === "sold out")  return { cls: "ev-badge--soldout"   };
-  if (s === "cancelled") return { cls: "ev-badge--cancelled" };
-  return                        { cls: "ev-badge--default"   };
+  if (s === "confirmed") return { cls: "ev-badge--confirmed", label: "Confirmed" };
+  if (s === "planning")  return { cls: "ev-badge--planning",  label: "Planning"  };
+  if (s === "sold out")  return { cls: "ev-badge--soldout",   label: "Sold Out"  };
+  if (s === "cancelled") return { cls: "ev-badge--cancelled", label: "Cancelled" };
+  return                        { cls: "ev-badge--default",   label: status      };
 }
 
 function formatDate(iso: string) {
   return new Intl.DateTimeFormat("en-US", {
     weekday: "short",
-    month:   "short",
+    month:   "long",
     day:     "numeric",
     year:    "numeric",
-    hour:    "numeric",
-    minute:  "2-digit",
+  }).format(new Date(iso));
+}
+
+function formatTime(iso: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    hour:   "numeric",
+    minute: "2-digit",
   }).format(new Date(iso));
 }
 
@@ -41,38 +46,27 @@ function buildGoogleCalUrl(event: AdminRecord) {
     action:   "TEMPLATE",
     text:     event.title,
     dates:    `${start}/${end}`,
-    details:  event.notes  || "",
+    details:  event.notes    || "",
     location: event.subtitle || "",
   });
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
+// ─── Card ─────────────────────────────────────────────────────────────────────
 
-export function EventCard({
-  event,
-  index = 0,
-}: {
-  event: AdminRecord;
-  index?: number;
-}) {
-  const { cls }      = statusMeta(event.status);
-  const googleCalUrl = buildGoogleCalUrl(event);
+export function EventCard({ event, index = 0 }: { event: AdminRecord; index?: number }) {
+  const { cls, label } = statusMeta(event.status);
+  const googleCalUrl   = buildGoogleCalUrl(event);
 
   return (
     <motion.article
-      animate={{ opacity: 1, y: 0 }}
       className="ev-card"
-      initial={{ opacity: 0, y: 48 }}
-      transition={{
-        duration: 0.55,
-        delay: index * 0.1,
-        ease: [0.22, 1, 0.36, 1],
-      }}
-      viewport={{ once: true, margin: "-60px" }}
+      initial={{ opacity: 0, y: 40 }}
+      transition={{ duration: 0.5, delay: index * 0.09, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-50px" }}
       whileInView={{ opacity: 1, y: 0 }}
     >
-      {/* ── Banner ── */}
+      {/* ── Banner image ── */}
       <div className="ev-card-media">
         {event.bannerImage ? (
           <Image
@@ -87,60 +81,64 @@ export function EventCard({
           />
         ) : (
           <div className="ev-card-img-placeholder">
-            <CalendarClock size={32} />
+            <Clock size={28} strokeWidth={1.5} />
           </div>
         )}
         <div className="ev-card-media-overlay" />
+
+        {/* Status badge — Coinbase pill style */}
         <span className={`ev-badge ${cls}`}>
           <span className="ev-badge-dot" />
-          {event.status}
+          {label}
         </span>
       </div>
 
-      {/* ── Body ── */}
+      {/* ── Card body ── */}
       <div className="ev-card-body">
+
+        {/* Date + time row */}
         {event.eventDate ? (
-          <p className="ev-card-dateline">
-            <CalendarClock size={12} />
-            {formatDate(event.eventDate)}
-          </p>
+          <div className="ev-card-dateline">
+            <span className="ev-card-date">{formatDate(event.eventDate)}</span>
+            <span className="ev-card-time-chip">
+              <Clock size={10} />
+              {formatTime(event.eventDate)}
+            </span>
+          </div>
         ) : event.highlight ? (
-          <p className="ev-card-dateline">
-            <CalendarClock size={12} />
-            {event.highlight}
-          </p>
+          <p className="ev-card-date">{event.highlight}</p>
         ) : null}
 
+        {/* Title */}
         <h2 className="ev-card-title">{event.title}</h2>
 
+        {/* Venue */}
         {event.subtitle ? (
           <p className="ev-card-venue">
-            <MapPin size={12} />
+            <MapPin size={12} strokeWidth={2} />
             <span>{event.subtitle}</span>
           </p>
         ) : null}
 
-        {event.notes ? (
-          <p className="ev-card-notes">{event.notes}</p>
-        ) : null}
+        {/* Notes */}
+        {event.notes ? <p className="ev-card-notes">{event.notes}</p> : null}
 
+        {/* Countdown — Coinbase-style tile grid */}
         {event.eventDate ? (
-          <div className="ev-card-countdown-wrap">
-            <p className="ev-card-countdown-label">Time remaining</p>
-            <EventCountdown eventDate={event.eventDate} />
-          </div>
+          <EventCountdown eventDate={event.eventDate} />
         ) : null}
 
+        {/* Gallery strip */}
         {event.galleryImages && event.galleryImages.length > 0 ? (
           <div className="ev-gallery-strip">
             {event.galleryImages.slice(0, 4).map((src, i) => (
               <div className="ev-gallery-thumb" key={i}>
                 <Image
-                  alt={`${event.title} photo ${i + 1}`}
+                  alt=""
                   className="ev-gallery-img"
                   fill
                   loading="lazy"
-                  sizes="72px"
+                  sizes="56px"
                   src={src}
                   style={{ objectFit: "cover" }}
                   unoptimized
@@ -153,7 +151,7 @@ export function EventCard({
           </div>
         ) : null}
 
-        {/* ── Action row ── */}
+        {/* ── Actions — Coinbase pill buttons ── */}
         <div className="ev-card-actions">
           {event.link ? (
             <motion.a
@@ -161,15 +159,15 @@ export function EventCard({
               href={event.link}
               rel="noreferrer"
               target="_blank"
-              whileHover={{ scale: 1.07 }}
-              whileTap={{ scale: 0.93 }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
             >
-              <Ticket size={14} />
+              <Ticket size={15} strokeWidth={2} />
               <span>Buy Tickets</span>
-              <span className="ev-ticket-btn-shine" aria-hidden="true" />
+              <span aria-hidden="true" className="ev-ticket-btn-shine" />
             </motion.a>
           ) : (
-            <span className="ev-no-ticket">Tickets not available yet</span>
+            <span className="ev-no-ticket">Tickets TBA</span>
           )}
 
           {googleCalUrl ? (
@@ -178,12 +176,11 @@ export function EventCard({
               href={googleCalUrl}
               rel="noreferrer"
               target="_blank"
-              title="Add to Google Calendar"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
             >
-              <CalendarPlus size={14} />
-              <span>Add to Calendar</span>
+              <CalendarPlus size={15} strokeWidth={2} />
+              <span>Save Date</span>
             </motion.a>
           ) : null}
         </div>
