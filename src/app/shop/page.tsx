@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Link from "next/link";
 import { ShoppingBag, Tag } from "lucide-react";
 import { listAdminCollection } from "@/lib/admin-store";
 import type { AdminRecord } from "@/lib/admin-schema";
+import { ShopCardSwiper } from "@/components/shop-image-swiper";
 
 export const metadata: Metadata = {
   title: "Shop — Veronica Adane",
@@ -13,60 +14,64 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 function ProductCard({ product }: { product: AdminRecord }) {
-  const available = product.status?.toLowerCase() !== "sold out" &&
+  const available =
+    product.status?.toLowerCase() !== "sold out" &&
     product.status?.toLowerCase() !== "inactive";
 
+  // all images: banner first, then gallery
+  const allImages = [
+    ...(product.bannerImage ? [product.bannerImage] : []),
+    ...(product.galleryImages ?? []),
+  ];
+
   return (
-    <div className="shop-card">
+    <Link className="shop-card" href={`/shop/${product.id}`}>
+      {/* ── Media area ── */}
       <div className="shop-card-media">
-        {product.bannerImage ? (
-          <Image
-            alt={product.title}
-            className="shop-card-img"
-            fill
-            loading="lazy"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            src={product.bannerImage}
-            style={{ objectFit: "cover" }}
-            unoptimized
-          />
+        {allImages.length > 0 ? (
+          <ShopCardSwiper images={allImages} title={product.title} />
         ) : (
           <div className="shop-card-placeholder">
             <ShoppingBag size={28} strokeWidth={1.5} />
           </div>
         )}
+
         {product.subtitle ? (
           <span className="shop-card-category">
             <Tag size={9} strokeWidth={2} />
             {product.subtitle}
           </span>
         ) : null}
+
+        {!available && (
+          <span className="shop-card-unavailable-badge">
+            {product.status}
+          </span>
+        )}
       </div>
 
+      {/* ── Card body ── */}
       <div className="shop-card-body">
         <h2 className="shop-card-title">{product.title}</h2>
         {product.highlight ? (
           <p className="shop-card-price">{product.highlight}</p>
         ) : null}
-        {product.notes ? <p className="shop-card-notes">{product.notes}</p> : null}
+        {product.notes ? (
+          <p className="shop-card-notes">{product.notes}</p>
+        ) : null}
 
-        {product.link && available ? (
-          <a
-            className="shop-buy-btn"
-            href={product.link}
-            rel="noreferrer"
-            target="_blank"
-          >
-            <ShoppingBag size={14} strokeWidth={2} />
-            <span>Buy now</span>
-          </a>
-        ) : !available ? (
-          <span className="shop-sold-out">Sold out</span>
-        ) : (
-          <span className="shop-coming-soon">Coming soon</span>
-        )}
+        <span className="shop-card-cta">
+          {available ? (
+            <>
+              <ShoppingBag size={13} strokeWidth={2} />
+              View product
+            </>
+          ) : (
+            "Sold out"
+          )}
+        </span>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -74,12 +79,9 @@ export default async function ShopPage() {
   let products: AdminRecord[] = [];
   try {
     products = await listAdminCollection("products");
-    // filter out inactive/hidden
-    products = products.filter(
-      (p) => p.status?.toLowerCase() !== "inactive",
-    );
+    products = products.filter((p) => p.status?.toLowerCase() !== "inactive");
   } catch {
-    // DB might be unavailable; show empty state
+    // DB unavailable — show empty state
   }
 
   return (

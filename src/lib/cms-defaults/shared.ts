@@ -164,6 +164,7 @@ export const defaultSiteSettings: CmsSiteSettings = {
     ],
     copyrightTagline: "Addis Ababa to global audiences.",
   },
+  collabImages: [],
 };
 
 export const defaultPageSummaries: Record<

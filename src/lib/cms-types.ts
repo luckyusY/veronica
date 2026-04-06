@@ -301,6 +301,8 @@ export type CmsSiteSettings = {
     utilityLinks: CmsAction[];
     copyrightTagline: string;
   };
+  /** Cloudinary image URLs shown in the scrolling strip on the Collaborations page */
+  collabImages: string[];
 };
 
 export type CmsMediaAsset = {

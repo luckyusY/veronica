@@ -130,6 +130,13 @@ export async function listAdminCollection(collection: AdminCollectionKey) {
   return records.map(serializeRecord);
 }
 
+export async function getAdminRecord(collection: AdminCollectionKey, id: string) {
+  if (!ObjectId.isValid(id)) return null;
+  const adminCollection = await getAdminCollection(collection);
+  const record = await adminCollection.findOne({ _id: new ObjectId(id) });
+  return record ? serializeRecord(record) : null;
+}
+
 export async function createAdminRecord(
   collection: AdminCollectionKey,
   payload: unknown,

@@ -63,6 +63,9 @@ export function AdminSiteSettingsPanel({
   const [utilityLinksText, setUtilityLinksText] = useState(
     serializeUtilityLinks(initialSiteSettings.footer.utilityLinks),
   );
+  const [collabImagesText, setCollabImagesText] = useState(
+    toMultiline(initialSiteSettings.collabImages ?? []),
+  );
   const [feedback, setFeedback] = useState<FeedbackState>(null);
   const [busy, setBusy] = useState(false);
 
@@ -75,8 +78,10 @@ export function AdminSiteSettingsPanel({
       if (section === "header") {
         return { ...current, header: { ...current.header, [field]: value } };
       }
-
-      return { ...current, footer: { ...current.footer, [field]: value } };
+      if (section === "footer") {
+        return { ...current, footer: { ...current.footer, [field]: value } };
+      }
+      return { ...current, [field]: value };
     });
   }
 
@@ -101,6 +106,7 @@ export function AdminSiteSettingsPanel({
     setFooterNotesText(toMultiline(payload.item.footer.notes));
     setSocialSignalsText(toMultiline(payload.item.footer.socialSignals));
     setUtilityLinksText(serializeUtilityLinks(payload.item.footer.utilityLinks));
+    setCollabImagesText(toMultiline(payload.item.collabImages ?? []));
     setBusy(false);
     setFeedback({ tone: "ok", message: "Global settings saved." });
   }
@@ -261,6 +267,45 @@ export function AdminSiteSettingsPanel({
                     updateSiteSettings("footer", "copyrightTagline", event.target.value)
                   }
                   value={siteSettingsDraft.footer.copyrightTagline}
+                />
+              </div>
+            </div>
+          </section>
+        </div>
+
+        {/* ── Collaborations: artist photo strip ── */}
+        <div className="admin-site-settings-layout" style={{ marginTop: "1.5rem" }}>
+          <section className="admin-settings-card">
+            <div className="admin-settings-card-header">
+              <div>
+                <p className="section-label">Collaborations page</p>
+                <h2 className="display-title mt-3 text-3xl text-white">Artist photo strip</h2>
+              </div>
+              <p className="text-sm leading-7 text-white/60">
+                Add one Cloudinary image URL per line. These images scroll automatically
+                across the top of the Collaborations page. Upload images via the Media
+                library, then paste their secure URLs here.
+              </p>
+            </div>
+
+            <div className="admin-site-settings-grid">
+              <div className="admin-field admin-field--full">
+                <label htmlFor="collab-images">
+                  Photo URLs <span style={{ fontWeight: 400, opacity: 0.5 }}>(one per line)</span>
+                </label>
+                <textarea
+                  className="admin-textarea"
+                  id="collab-images"
+                  onChange={(event) => {
+                    setCollabImagesText(event.target.value);
+                    setSiteSettingsDraft((current) => ({
+                      ...current,
+                      collabImages: fromMultiline(event.target.value),
+                    }));
+                  }}
+                  placeholder={"https://res.cloudinary.com/your-cloud/image/upload/v.../photo1.jpg\nhttps://..."}
+                  rows={6}
+                  value={collabImagesText}
                 />
               </div>
             </div>

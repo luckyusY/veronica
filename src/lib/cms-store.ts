@@ -245,6 +245,8 @@ function validateSiteSettings(payload: unknown): CmsSiteSettings {
     throw new Error("Site settings must include header and footer objects.");
   }
 
+  const rawCollabImages = (payload as Record<string, unknown>).collabImages;
+
   return {
     header: {
       brandKicker: sanitizeText(header.brandKicker),
@@ -270,6 +272,9 @@ function validateSiteSettings(payload: unknown): CmsSiteSettings {
         : [],
       copyrightTagline: sanitizeText(footer.copyrightTagline),
     },
+    collabImages: Array.isArray(rawCollabImages)
+      ? rawCollabImages.map(sanitizeText).filter(Boolean)
+      : [],
   };
 }
 

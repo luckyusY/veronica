@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc:*)",
+      "Bash(npm run:*)",
+      "Read(//c/Users/HP/3D Objects/Veronica/site/**)",
+      "Bash(dir \"C:\\\\Users\\\\HP\\\\3D Objects\\\\Veronica\\\\site\\\\src\\\\app\\\\admin\\\\content\")",
+      "Bash(awk 'NR>=1280 && NR<=1290' \"C:\\\\Users\\\\HP\\\\3D Objects\\\\Veronica\\\\site\\\\src\\\\app\\\\globals.css\")",
+      "Bash(awk 'NR>=2000 && NR<=2010' \"C:\\\\Users\\\\HP\\\\3D Objects\\\\Veronica\\\\site\\\\src\\\\app\\\\globals.css\")",
+      "Bash(awk 'NR>=2470 && NR<=2490' \"C:\\\\Users\\\\HP\\\\3D Objects\\\\Veronica\\\\site\\\\src\\\\app\\\\globals.css\")",
+      "Bash(awk 'NR>=2260 && NR<=2275' \"C:\\\\Users\\\\HP\\\\3D Objects\\\\Veronica\\\\site\\\\src\\\\app\\\\globals.css\")"
+    ]
+  }
+}

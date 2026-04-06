@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { Music2, Briefcase, CalendarDays, Newspaper, Star, Zap, Globe2 } from "lucide-react";
 import { CollabForm } from "@/components/collab-form";
+import { CollabImageStrip } from "@/components/collab-image-strip";
+import { getCmsSiteSettings } from "@/lib/cms-store";
 
 export const metadata: Metadata = {
   title: "Collaborations — Veronica Adane",
@@ -7,37 +10,42 @@ export const metadata: Metadata = {
     "Reach out to Veronica Adane for music projects, brand partnerships, events, and press opportunities.",
 };
 
+export const revalidate = 60;
+
 const STATS = [
-  { value: "41M+",  label: "Album views"         },
-  { value: "1.8M+", label: "TikTok followers"    },
-  { value: "4",     label: "Global tour regions" },
-  { value: "2",     label: "Industry awards"     },
+  { value: "41M+",  label: "Album views",          icon: Zap   },
+  { value: "1.8M+", label: "TikTok followers",     icon: Star  },
+  { value: "4",     label: "Global tour regions",  icon: Globe2 },
+  { value: "2",     label: "Industry awards",      icon: Star  },
 ];
 
 const TRACKS = [
   {
-    icon: "🎵",
+    Icon: Music2,
     title: "Music collaborations",
     desc: "Features, songwriting, production partnerships, and joint releases.",
   },
   {
-    icon: "🤝",
+    Icon: Briefcase,
     title: "Brand partnerships",
     desc: "Ambassador campaigns, sponsored content, and launch activations.",
   },
   {
-    icon: "🎤",
+    Icon: CalendarDays,
     title: "Event partnerships",
     desc: "Festival co-headlining, private events, and diaspora tours.",
   },
   {
-    icon: "📰",
+    Icon: Newspaper,
     title: "Media & press",
     desc: "Interviews, editorial features, and official press kit delivery.",
   },
 ];
 
-export default function CollaborationsPage() {
+export default async function CollaborationsPage() {
+  const settings = await getCmsSiteSettings();
+  const collabImages = settings.collabImages ?? [];
+
   return (
     <main className="collab-page">
 
@@ -51,13 +59,18 @@ export default function CollaborationsPage() {
         </p>
       </div>
 
+      {/* ── Image strip (only shown when images are configured) ────── */}
+      {collabImages.length > 0 && (
+        <CollabImageStrip images={collabImages} />
+      )}
+
       {/* ── Split: info + form ─────────────────────────────────────── */}
       <section className="collab-split section-shell">
 
         {/* Left — context panel */}
         <div className="collab-info">
 
-          {/* Stats row */}
+          {/* Stats */}
           <div className="collab-stats">
             {STATS.map((s) => (
               <div className="collab-stat" key={s.label}>
@@ -69,14 +82,16 @@ export default function CollaborationsPage() {
 
           <div className="collab-info-divider" />
 
-          {/* Tracks */}
+          {/* Track list with lucide icons */}
           <div className="collab-tracks">
-            {TRACKS.map((t) => (
-              <div className="collab-track" key={t.title}>
-                <span className="collab-track-icon">{t.icon}</span>
+            {TRACKS.map(({ Icon, title, desc }) => (
+              <div className="collab-track" key={title}>
+                <span className="collab-track-icon-wrap">
+                  <Icon size={15} strokeWidth={2} />
+                </span>
                 <div>
-                  <p className="collab-track-title">{t.title}</p>
-                  <p className="collab-track-desc">{t.desc}</p>
+                  <p className="collab-track-title">{title}</p>
+                  <p className="collab-track-desc">{desc}</p>
                 </div>
               </div>
             ))}
@@ -94,7 +109,7 @@ export default function CollaborationsPage() {
           <div className="collab-form-card-header">
             <h2 className="collab-form-card-title">Send an inquiry</h2>
             <p className="collab-form-card-sub">
-              Fill in the details and we'll respond within 48 hours.
+              Fill in the details and we&apos;ll respond within 48 hours.
             </p>
           </div>
           <CollabForm />
