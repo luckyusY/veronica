@@ -7844,93 +7844,171 @@ a:not([class]):hover {
 }
 
 .admin-cms-rail-surface {
-  border-radius: 1.15rem;
+  border-radius: 1.2rem;
   border: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(20, 20, 20, 0.72);
-  padding: 0.95rem;
+  background: rgba(16, 16, 16, 0.86);
+  padding: 1rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
 .admin-cms-rail-copy {
   margin: 0.55rem 0 0;
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   line-height: 1.6;
-  color: rgba(237, 237, 237, 0.58);
+  color: rgba(237, 237, 237, 0.52);
 }
 
 .admin-page-card {
-  gap: 0.6rem;
-  border-radius: 1rem;
+  gap: 0.45rem;
+  border-radius: 0.95rem;
   border-color: rgba(255, 255, 255, 0.07);
-  background: rgba(18, 18, 18, 0.72);
-  padding: 0.9rem;
+  background: rgba(22, 22, 22, 0.82);
+  padding: 0.82rem 0.88rem;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .admin-page-card:hover,
 .admin-page-card.is-active {
   transform: none;
-  border-color: rgba(176, 141, 87, 0.24);
-  background:
-    linear-gradient(180deg, rgba(42, 38, 33, 0.96), rgba(22, 22, 22, 0.98));
+  border-color: rgba(176, 141, 87, 0.28);
+  background: linear-gradient(160deg, rgba(46, 40, 32, 0.98), rgba(22, 20, 16, 0.98));
   box-shadow:
     inset 3px 0 0 rgba(176, 141, 87, 0.9),
-    0 12px 30px rgba(0, 0, 0, 0.14);
+    0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.admin-page-card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.admin-page-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: 0 0 auto;
+  border-radius: 0.55rem;
+  border: 1px solid rgba(176, 141, 87, 0.18);
+  background: linear-gradient(145deg, rgba(48, 40, 28, 0.96), rgba(24, 22, 16, 0.98));
+  color: rgba(176, 141, 87, 0.82);
 }
 
 .admin-page-card-title {
-  font-size: 1rem;
+  margin: 0.1rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.3;
 }
 
-.admin-page-card-summary {
-  font-size: 0.82rem;
-  line-height: 1.62;
+.admin-page-card-route {
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(237, 237, 237, 0.34);
 }
 
+.admin-page-card-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(176, 141, 87, 0.72);
+}
+
+/* Editor sub-header (route + reset button) */
+.admin-editor-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 0.9rem;
+}
+
+.admin-editor-head-info {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.admin-editor-route {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(176, 141, 87, 0.8);
+}
+
+.admin-editor-summary-line {
+  margin: 0;
+  font-size: 0.72rem;
+  color: rgba(237, 237, 237, 0.44);
+}
+
+/* Stats strip inside editor */
 .admin-editor-summary-strip {
   display: grid;
-  gap: 0.8rem;
-  margin-top: 1rem;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
 }
 
 .admin-editor-summary-item {
   display: grid;
-  gap: 0.35rem;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 1rem;
-  background: rgba(18, 18, 18, 0.72);
-  padding: 0.85rem 0.9rem;
+  gap: 0.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 0.9rem;
+  background: rgba(16, 16, 16, 0.78);
+  padding: 0.8rem 0.9rem;
 }
 
 .admin-editor-summary-item strong {
-  font-size: 0.96rem;
-  line-height: 1.35;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.3;
   color: white;
 }
 
+/* Publishing bar */
 .admin-publishing-bar {
   gap: 1rem;
-  margin-top: 1rem;
   border-radius: 1.15rem;
   border-color: rgba(176, 141, 87, 0.16);
-  background:
-    linear-gradient(180deg, rgba(40, 36, 31, 0.98), rgba(25, 25, 25, 0.98));
-  padding: 1rem;
+  background: linear-gradient(160deg, rgba(38, 34, 28, 0.98), rgba(20, 20, 18, 0.98));
+  padding: 1rem 1.1rem;
+  box-shadow:
+    inset 0 1px 0 rgba(176, 141, 87, 0.06),
+    0 8px 20px rgba(0, 0, 0, 0.14);
 }
 
 .admin-publishing-note {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   line-height: 1.65;
+  color: rgba(237, 237, 237, 0.62);
 }
 
 .admin-key-list {
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
 
 .admin-key-chip {
-  min-height: 2.1rem;
-  border-radius: 0.9rem;
-  padding: 0.45rem 0.72rem;
-  font-size: 0.56rem;
-  letter-spacing: 0.16em;
+  min-height: 2rem;
+  border-radius: 0.75rem;
+  padding: 0.38rem 0.68rem;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
 }
 
 .admin-editing-basics-card,
@@ -8702,25 +8780,34 @@ a:not([class]):hover {
 /* Content page card grid */
 .admin-content-grid {
   display: grid;
-  gap: 0.7rem;
+  gap: 0.75rem;
 }
 
 .admin-content-card {
   display: grid;
-  gap: 0.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 1.1rem;
-  background: rgba(20, 20, 20, 0.84);
-  padding: 1rem;
+  gap: 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.2rem;
+  background: rgba(20, 20, 20, 0.88);
+  padding: 1.1rem;
   text-decoration: none;
   transition:
     border-color 200ms ease,
+    background 200ms ease,
+    box-shadow 200ms ease,
     transform 200ms ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .admin-content-card:hover {
-  transform: translateY(-1px);
-  border-color: rgba(176, 141, 87, 0.24);
+  transform: translateY(-2px);
+  border-color: rgba(176, 141, 87, 0.3);
+  background: rgba(30, 27, 22, 0.96);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 14px 30px rgba(0, 0, 0, 0.2);
 }
 
 .admin-content-card-head {
@@ -8730,12 +8817,26 @@ a:not([class]):hover {
   gap: 0.5rem;
 }
 
+.admin-content-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  flex: 0 0 auto;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(176, 141, 87, 0.2);
+  background: linear-gradient(145deg, rgba(50, 42, 30, 0.98), rgba(28, 24, 18, 0.98));
+  color: rgba(176, 141, 87, 0.88);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
 .admin-content-route {
-  font-size: 0.58rem;
+  font-size: 0.56rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(237, 237, 237, 0.38);
+  color: rgba(237, 237, 237, 0.34);
 }
 
 .admin-content-name {

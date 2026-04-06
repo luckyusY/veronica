@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { FileJson, LoaderCircle, RefreshCcw, Rocket, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, FileJson, LoaderCircle, RefreshCcw, Rocket, Save, Trash2 } from "lucide-react";
 import { SectionEditor } from "@/components/admin/cms/SectionEditor";
 import { SectionFieldsRenderer } from "@/components/admin/cms/SectionFieldsRenderer";
 import { defaultCmsPageContent } from "@/lib/cms-defaults";
@@ -318,7 +318,7 @@ export function AdminPageCmsPanel({
   }
 
   return (
-    <div className="admin-stack">
+    <div className="admin-page-stack">
       {feedback ? (
         <div
           className={`admin-feedback ${
@@ -329,315 +329,293 @@ export function AdminPageCmsPanel({
         </div>
       ) : null}
 
-      <section className="admin-surface">
-        <div className="admin-panel-header">
-          <div className="space-y-3">
-            <div className="admin-panel-meta">
-              <span className="admin-badge">
-                <FileJson size={15} />
-                <span>Page CMS</span>
-              </span>
-              <span className="status-pill status-pill--ok">{pages.length} pages</span>
-            </div>
-            <div>
-              <h1 className="display-title text-4xl text-white sm:text-5xl">
-                Edit each public route in its own workspace.
-              </h1>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
-                Every page now has a dedicated editor route so fields stay visible, repeatable
-                groups have room to breathe, and publishing decisions stay focused.
-              </p>
+      {/* Page header */}
+      <header className="admin-page-head">
+        <div className="admin-page-head-left">
+          <div className="admin-page-head-icon">
+            <FileJson size={18} />
+          </div>
+          <h1 className="admin-page-title">{selectedPage.name}</h1>
+        </div>
+        <div className="admin-button-row">
+          <Link className="admin-button admin-button--ghost" href="/admin/content">
+            <ArrowLeft size={14} />
+            <span>All pages</span>
+          </Link>
+          <a
+            className="admin-button admin-button--ghost"
+            href={selectedPage.route}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <ExternalLink size={14} />
+            <span>View live</span>
+          </a>
+          <span className={`status-pill ${statusConfig.className}`}>{statusConfig.label}</span>
+        </div>
+      </header>
+
+      {/* Two-column CMS layout */}
+      <div className="admin-cms-layout">
+        {/* Rail: page switcher */}
+        <aside className="admin-cms-rail">
+          <div className="admin-cms-rail-surface">
+            <p className="admin-v2-section-title">Pages</p>
+            <div className="admin-cms-page-list admin-cms-page-list--stacked">
+              {pages.map((page) => {
+                const summary = summarizePageContent(page.content);
+                const pageStatus = getStatusConfig(page.status);
+
+                return (
+                  <Link
+                    className={`admin-page-card ${
+                      selectedSlug === page.slug ? "is-active" : ""
+                    }`.trim()}
+                    href={`/admin/content/${page.slug}`}
+                    key={page.slug}
+                  >
+                    <div className="admin-page-card-topline">
+                      <div className="admin-page-card-icon">
+                        <FileJson size={13} />
+                      </div>
+                      <span className={`status-pill ${pageStatus.className}`}>
+                        {pageStatus.label}
+                      </span>
+                    </div>
+                    <h3 className="admin-page-card-title">{page.name}</h3>
+                    <span className="admin-page-card-route">{page.route}</span>
+                    <div className="admin-page-card-metrics">
+                      <span>{summary.sectionKeys.length} sections</span>
+                      <span>{summary.mediaRefs} media</span>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
-        </div>
+        </aside>
 
-        <div className="luxury-divider my-5" />
-
-        <div className="admin-cms-layout">
-          <aside className="admin-cms-rail">
-            <div className="admin-cms-rail-surface">
-              <p className="section-label">Content directory</p>
-              <p className="admin-cms-rail-copy">
-                Switch between public routes without losing the current editor context.
+        {/* Main editor column */}
+        <div className="admin-cms-main">
+          {/* Editor sub-header */}
+          <div className="admin-editor-head">
+            <div className="admin-editor-head-info">
+              <p className="admin-editor-route">{selectedPage.route}</p>
+              <p className="admin-editor-summary-line">
+                {selectedSummary.sectionKeys.length} sections &middot;{" "}
+                {selectedSummary.mediaRefs} media refs
               </p>
-              <div className="admin-button-row mt-4">
-                <Link className="admin-button admin-button--ghost" href="/admin/content">
-                  All pages
-                </Link>
-                <a
-                  className="admin-button admin-button--ghost"
-                  href={selectedPage.route}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Open live page
-                </a>
-              </div>
             </div>
+            <button
+              className="admin-icon-button"
+              onClick={() =>
+                setPageDrafts((current) => ({
+                  ...current,
+                  [selectedPage.slug]: createDraftState(selectedPage),
+                }))
+              }
+              title="Reset local changes"
+              type="button"
+            >
+              <RefreshCcw size={15} />
+            </button>
+          </div>
 
-            <div className="admin-cms-rail-surface">
-              <p className="section-label">Page editors</p>
-              <div className="admin-cms-page-list admin-cms-page-list--stacked">
-                {pages.map((page) => {
-                  const summary = summarizePageContent(page.content);
-                  const pageStatus = getStatusConfig(page.status);
-
-                  return (
-                    <Link
-                      className={`admin-page-card ${
-                        selectedSlug === page.slug ? "is-active" : ""
-                      }`.trim()}
-                      href={`/admin/content/${page.slug}`}
-                      key={page.slug}
-                    >
-                      <div className="admin-page-card-topline">
-                        <span className="admin-badge">{page.slug}</span>
-                        <span className={`status-pill ${pageStatus.className}`}>
-                          {pageStatus.label}
-                        </span>
-                      </div>
-                      <span className="admin-page-card-route">{page.route}</span>
-                      <h3 className="admin-page-card-title">{page.name}</h3>
-                      <p className="admin-page-card-summary">{page.summary}</p>
-                      <div className="admin-page-card-metrics">
-                        <span>{summary.sectionKeys.length} sections</span>
-                        <span>{summary.mediaRefs} media refs</span>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
+          {/* Stats strip */}
+          <div className="admin-editor-summary-strip">
+            <div className="admin-editor-summary-item">
+              <span className="admin-mini-stat-label">Route</span>
+              <strong>{selectedPage.route}</strong>
             </div>
-          </aside>
+            <div className="admin-editor-summary-item">
+              <span className="admin-mini-stat-label">Sections</span>
+              <strong>{selectedSummary.sectionKeys.length}</strong>
+            </div>
+            <div className="admin-editor-summary-item">
+              <span className="admin-mini-stat-label">Hero slides</span>
+              <strong>{selectedSummary.heroSlides}</strong>
+            </div>
+            <div className="admin-editor-summary-item">
+              <span className="admin-mini-stat-label">Media refs</span>
+              <strong>{selectedSummary.mediaRefs}</strong>
+            </div>
+          </div>
 
-          <div className="admin-cms-main">
-            <div className="admin-surface admin-surface--inner">
-              <div className="admin-panel-header">
-                <div>
-                  <p className="section-label">{selectedPage.route}</p>
-                  <h2 className="display-title mt-3 text-3xl text-white">
-                    {selectedPage.name}
-                  </h2>
-                  <p className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
-                    Structured field editing is the default here. Advanced section JSON is
-                    still available when needed, but the editor now gives each page enough
-                    width to manage nested content comfortably.
-                  </p>
-                </div>
-
-                <div className="admin-button-row">
-                  <button
-                    className="admin-button admin-button--ghost"
-                    onClick={() =>
-                      setPageDrafts((current) => ({
-                        ...current,
-                        [selectedPage.slug]: createDraftState(selectedPage),
-                      }))
-                    }
-                    type="button"
-                  >
-                    <RefreshCcw size={15} />
-                    <span>Reset local changes</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="admin-editor-summary-strip">
-                <div className="admin-editor-summary-item">
-                  <span className="admin-mini-stat-label">Route</span>
-                  <strong>{selectedPage.route}</strong>
-                </div>
-                <div className="admin-editor-summary-item">
-                  <span className="admin-mini-stat-label">Sections</span>
-                  <strong>{selectedSummary.sectionKeys.length}</strong>
-                </div>
-                <div className="admin-editor-summary-item">
-                  <span className="admin-mini-stat-label">Hero slides</span>
-                  <strong>{selectedSummary.heroSlides}</strong>
-                </div>
-                <div className="admin-editor-summary-item">
-                  <span className="admin-mini-stat-label">Media refs</span>
-                  <strong>{selectedSummary.mediaRefs}</strong>
-                </div>
-              </div>
-
-              <div className="admin-publishing-bar">
-                <div className="admin-publishing-copy">
-                  <div className="admin-publishing-topline">
-                    <span className={`status-pill ${statusConfig.className}`}>
-                      {statusConfig.label}
-                    </span>
-                    <span className="admin-publishing-stamp">
-                      {selectedPage.draft.savedAt ? (
-                        <>
-                          Last saved {formatRelativeFromNow(selectedPage.draft.savedAt)} by{" "}
-                          {selectedPage.draft.savedBy ?? "Unknown"}
-                        </>
-                      ) : selectedPage.published.publishedAt ? (
-                        <>
-                          Live since {formatUpdatedAt(selectedPage.published.publishedAt)} by{" "}
-                          {selectedPage.published.publishedBy ?? "Unknown"}
-                        </>
-                      ) : (
-                        "This page has not been published yet."
-                      )}
-                    </span>
-                  </div>
-                  <p className="admin-publishing-note">
-                    {hasUnsavedChanges
-                      ? "Local edits are waiting to be saved as a draft."
-                      : statusConfig.description}
-                  </p>
-                </div>
-
-                <div className="admin-button-row">
-                  <button
-                    className="admin-button admin-button--ghost"
-                    disabled={busyKey !== null}
-                    onClick={() => void discardDraft()}
-                    type="button"
-                  >
-                    {busyKey === `discard:${selectedPage.slug}` ? (
-                      <LoaderCircle className="animate-spin" size={15} />
-                    ) : (
-                      <Trash2 size={15} />
-                    )}
-                    <span>Discard draft</span>
-                  </button>
-                  <button
-                    className="admin-button"
-                    disabled={
-                      busyKey !== null ||
-                      hasUnsavedChanges ||
-                      selectedPage.status !== "draft-pending"
-                    }
-                    onClick={() => void publishDraft()}
-                    type="button"
-                  >
-                    {busyKey === `publish:${selectedPage.slug}` ? (
-                      <LoaderCircle className="animate-spin" size={15} />
-                    ) : (
-                      <Rocket size={15} />
-                    )}
-                    <span>Publish</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="admin-key-list mt-5">
-                {selectedSummary.sectionKeys.map((key) => (
-                  <span className="admin-key-chip" key={key}>
-                    {key}
-                  </span>
-                ))}
-              </div>
-
-              <section className="admin-editing-basics-card mt-5">
-                <div className="admin-settings-card-header">
-                  <div>
-                    <p className="section-label">Editing basics</p>
-                    <h3 className="display-title mt-3 text-3xl text-white">Page identity</h3>
-                  </div>
-                  <p className="text-sm leading-7 text-white/60">
-                    These fields affect the editor listing and publishing context for this route.
-                  </p>
-                </div>
-
-                <div className="admin-form-grid admin-form-grid--wide">
-                  <div className="admin-field">
-                    <label htmlFor="cms-page-name">Page name</label>
-                    <input
-                      className={`admin-input ${validationErrors.name ? "is-invalid" : ""}`.trim()}
-                      id="cms-page-name"
-                      onChange={(event) => updateSelectedDraftField("name", event.target.value)}
-                      value={selectedDraft.name}
-                    />
-                    {validationErrors.name?.[0] ? (
-                      <p className="admin-field-error">{validationErrors.name[0]}</p>
-                    ) : null}
-                  </div>
-
-                  <div className="admin-field">
-                    <label htmlFor="cms-page-summary">Summary</label>
-                    <input
-                      className={`admin-input ${validationErrors.summary ? "is-invalid" : ""}`.trim()}
-                      id="cms-page-summary"
-                      onChange={(event) => updateSelectedDraftField("summary", event.target.value)}
-                      value={selectedDraft.summary}
-                    />
-                    {validationErrors.summary?.[0] ? (
-                      <p className="admin-field-error">{validationErrors.summary[0]}</p>
-                    ) : null}
-                  </div>
-                </div>
-              </section>
-
-              <div className="admin-section-stack mt-5">
-                {sectionKeys.map((sectionKey, index) => (
-                  <SectionEditor
-                    defaultOpen={index === 0}
-                    errorCount={getSectionErrorCount(validationErrors, sectionKey)}
-                    key={sectionKey}
-                    onChange={(nextValue) =>
-                      updateSelectedContent({
-                        ...(selectedDraft.content as Record<string, unknown>),
-                        [sectionKey]: nextValue,
-                      })
-                    }
-                    sectionKey={sectionKey}
-                    title={humanizeKey(sectionKey)}
-                    value={(selectedDraft.content as Record<string, unknown>)[sectionKey]}
-                  >
-                    <SectionFieldsRenderer
-                      contentRoot={selectedDraft.content}
-                      defaultContent={defaultCmsPageContent[selectedPage.slug]}
-                      errorMap={validationErrors}
-                      mediaAssets={initialMediaAssets}
-                      onContentChange={updateSelectedContent}
-                      path={[sectionKey]}
-                      slug={selectedPage.slug}
-                      value={(selectedDraft.content as Record<string, unknown>)[sectionKey]}
-                    />
-                  </SectionEditor>
-                ))}
-              </div>
-
-              <div className="admin-button-row mt-5">
-                <button
-                  className="admin-button"
-                  disabled={busyKey !== null}
-                  onClick={() => void saveDraft()}
-                  type="button"
-                >
-                  {busyKey === `draft:${selectedPage.slug}` ? (
-                    <LoaderCircle className="animate-spin" size={15} />
+          {/* Publishing bar */}
+          <div className="admin-publishing-bar">
+            <div className="admin-publishing-copy">
+              <div className="admin-publishing-topline">
+                <span className={`status-pill ${statusConfig.className}`}>
+                  {statusConfig.label}
+                </span>
+                <span className="admin-publishing-stamp">
+                  {selectedPage.draft.savedAt ? (
+                    <>
+                      Last saved {formatRelativeFromNow(selectedPage.draft.savedAt)} by{" "}
+                      {selectedPage.draft.savedBy ?? "Unknown"}
+                    </>
+                  ) : selectedPage.published.publishedAt ? (
+                    <>
+                      Live since {formatUpdatedAt(selectedPage.published.publishedAt)} by{" "}
+                      {selectedPage.published.publishedBy ?? "Unknown"}
+                    </>
                   ) : (
-                    <Save size={15} />
+                    "Not published yet."
                   )}
-                  <span>Save draft</span>
-                </button>
+                </span>
               </div>
+              <p className="admin-publishing-note">
+                {hasUnsavedChanges
+                  ? "Local edits are waiting to be saved as a draft."
+                  : statusConfig.description}
+              </p>
+            </div>
+
+            <div className="admin-button-row">
+              <button
+                className="admin-button admin-button--ghost"
+                disabled={busyKey !== null}
+                onClick={() => void discardDraft()}
+                type="button"
+              >
+                {busyKey === `discard:${selectedPage.slug}` ? (
+                  <LoaderCircle className="animate-spin" size={15} />
+                ) : (
+                  <Trash2 size={15} />
+                )}
+                <span>Discard</span>
+              </button>
+              <button
+                className="admin-button"
+                disabled={
+                  busyKey !== null ||
+                  hasUnsavedChanges ||
+                  selectedPage.status !== "draft-pending"
+                }
+                onClick={() => void publishDraft()}
+                type="button"
+              >
+                {busyKey === `publish:${selectedPage.slug}` ? (
+                  <LoaderCircle className="animate-spin" size={15} />
+                ) : (
+                  <Rocket size={15} />
+                )}
+                <span>Publish</span>
+              </button>
             </div>
           </div>
-        </div>
-      </section>
 
+          {/* Section key chips */}
+          <div className="admin-key-list mt-5">
+            {selectedSummary.sectionKeys.map((key) => (
+              <span className="admin-key-chip" key={key}>
+                {key}
+              </span>
+            ))}
+          </div>
+
+          {/* Page identity fields */}
+          <section className="admin-editing-basics-card mt-5">
+            <div className="admin-settings-card-header">
+              <p className="admin-v2-section-title">Page identity</p>
+            </div>
+            <div className="admin-form-grid admin-form-grid--wide">
+              <div className="admin-field">
+                <label htmlFor="cms-page-name">Page name</label>
+                <input
+                  className={`admin-input ${validationErrors.name ? "is-invalid" : ""}`.trim()}
+                  id="cms-page-name"
+                  onChange={(event) => updateSelectedDraftField("name", event.target.value)}
+                  value={selectedDraft.name}
+                />
+                {validationErrors.name?.[0] ? (
+                  <p className="admin-field-error">{validationErrors.name[0]}</p>
+                ) : null}
+              </div>
+
+              <div className="admin-field">
+                <label htmlFor="cms-page-summary">Summary</label>
+                <input
+                  className={`admin-input ${validationErrors.summary ? "is-invalid" : ""}`.trim()}
+                  id="cms-page-summary"
+                  onChange={(event) => updateSelectedDraftField("summary", event.target.value)}
+                  value={selectedDraft.summary}
+                />
+                {validationErrors.summary?.[0] ? (
+                  <p className="admin-field-error">{validationErrors.summary[0]}</p>
+                ) : null}
+              </div>
+            </div>
+          </section>
+
+          {/* Section editors */}
+          <div className="admin-section-stack mt-5">
+            {sectionKeys.map((sectionKey, index) => (
+              <SectionEditor
+                defaultOpen={index === 0}
+                errorCount={getSectionErrorCount(validationErrors, sectionKey)}
+                key={sectionKey}
+                onChange={(nextValue) =>
+                  updateSelectedContent({
+                    ...(selectedDraft.content as Record<string, unknown>),
+                    [sectionKey]: nextValue,
+                  })
+                }
+                sectionKey={sectionKey}
+                title={humanizeKey(sectionKey)}
+                value={(selectedDraft.content as Record<string, unknown>)[sectionKey]}
+              >
+                <SectionFieldsRenderer
+                  contentRoot={selectedDraft.content}
+                  defaultContent={defaultCmsPageContent[selectedPage.slug]}
+                  errorMap={validationErrors}
+                  mediaAssets={initialMediaAssets}
+                  onContentChange={updateSelectedContent}
+                  path={[sectionKey]}
+                  slug={selectedPage.slug}
+                  value={(selectedDraft.content as Record<string, unknown>)[sectionKey]}
+                />
+              </SectionEditor>
+            ))}
+          </div>
+
+          {/* Save draft */}
+          <div className="admin-button-row mt-5">
+            <button
+              className="admin-button"
+              disabled={busyKey !== null}
+              onClick={() => void saveDraft()}
+              type="button"
+            >
+              {busyKey === `draft:${selectedPage.slug}` ? (
+                <LoaderCircle className="animate-spin" size={15} />
+              ) : (
+                <Save size={15} />
+              )}
+              <span>Save draft</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Validation modal */}
       {validationIssues ? (
         <div className="admin-modal-overlay" role="presentation">
           <div className="admin-modal">
             <div className="admin-panel-header">
               <div>
-                <p className="section-label">Validation</p>
-                <h3 className="display-title mt-3 text-3xl text-white">
+                <p className="admin-v2-section-title">Validation</p>
+                <h3 className="admin-records-title" style={{ fontSize: "1.1rem" }}>
                   Resolve these fields before saving
                 </h3>
               </div>
               <button
-                className="admin-button admin-button--ghost"
+                className="admin-icon-button"
                 onClick={() => setValidationIssues(null)}
+                title="Close"
                 type="button"
               >
-                <span>Close</span>
+                <ArrowLeft size={14} />
               </button>
             </div>
 

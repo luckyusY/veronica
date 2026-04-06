@@ -13,7 +13,7 @@ export default async function AdminContentPage() {
       <header className="admin-page-head">
         <div className="admin-page-head-left">
           <div className="admin-page-head-icon">
-            <FileJson size={16} />
+            <FileJson size={18} />
           </div>
           <h1 className="admin-page-title">Page Content</h1>
         </div>
@@ -32,9 +32,12 @@ export default async function AdminContentPage() {
               key={page.slug}
             >
               <div className="admin-content-card-head">
-                <span className="admin-content-route">{page.route}</span>
+                <div className="admin-content-card-icon">
+                  <FileJson size={16} />
+                </div>
                 <span className={`status-pill ${status.className}`}>{status.label}</span>
               </div>
+              <span className="admin-content-route">{page.route}</span>
               <p className="admin-content-name">{page.name}</p>
               <div className="admin-content-meta">
                 <span>{summary.sectionKeys.length} sections</span>
