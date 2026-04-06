@@ -49,12 +49,12 @@ export function AdminSidebarNav({ role }: AdminSidebarNavProps) {
           <nav aria-label={group.label} className="admin-nav-group-list">
             {group.items.map((item) => {
               const Icon = iconMap[item.iconKey];
+              const isActive = isActivePath(pathname, item.href);
 
               return (
                 <Link
-                  className={`admin-nav-link ${
-                    isActivePath(pathname, item.href) ? "is-active" : ""
-                  }`.trim()}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`admin-nav-link ${isActive ? "is-active" : ""}`.trim()}
                   href={item.href}
                   key={item.href}
                 >

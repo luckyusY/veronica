@@ -22,7 +22,6 @@ export default async function AdminLoginPage({
   return (
     <div className="admin-login-page">
       <div className="admin-login-card">
-        {/* Brand */}
         <div className="admin-login-brand">
           <div className="admin-login-monogram">VA</div>
           <div>
@@ -33,21 +32,18 @@ export default async function AdminLoginPage({
 
         <div className="admin-login-divider" />
 
-        {/* Header */}
         <div className="admin-login-header">
           <div className="admin-login-shield">
             <ShieldCheck size={15} />
           </div>
-          <h1 className="admin-login-title">Sign in to your workspace</h1>
+          <h1 className="admin-login-title">Sign in to the control room</h1>
           <p className="admin-login-desc">
-            Enter your credentials to access the admin panel.
+            Enter your credentials to manage content, media, releases, and operations.
           </p>
         </div>
 
-        {/* Form */}
         <AdminLoginForm callbackUrl={callbackUrl} />
 
-        {/* Sample credentials (dev / staging only) */}
         {sampleCredentials.length > 0 ? (
           <div className="admin-login-sample">
             <p className="admin-login-sample-label">Demo accounts</p>
@@ -57,7 +53,7 @@ export default async function AdminLoginPage({
                   <span className="admin-login-sample-role">{credential.role}</span>
                   <div className="admin-login-sample-creds">
                     <span>{credential.email}</span>
-                    <span className="admin-login-sample-sep">·</span>
+                    <span className="admin-login-sample-sep">&middot;</span>
                     <span>{credential.password}</span>
                   </div>
                 </div>
@@ -66,9 +62,8 @@ export default async function AdminLoginPage({
           </div>
         ) : null}
 
-        {/* Footer */}
         <p className="admin-login-footer">
-          Sessions active for 8 hours &nbsp;·&nbsp; Role-based access control
+          Sessions active for 8 hours &nbsp;&middot;&nbsp; Role-based access control
         </p>
       </div>
     </div>

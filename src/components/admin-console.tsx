@@ -1,7 +1,20 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ExternalLink, LoaderCircle, Pencil, Plus, Save, Trash2, X } from "lucide-react";
+import {
+  CalendarClock,
+  Disc3,
+  ExternalLink,
+  LoaderCircle,
+  Newspaper,
+  Package,
+  Pencil,
+  Plus,
+  Save,
+  Trash2,
+  X,
+  type LucideIcon,
+} from "lucide-react";
 import {
   adminCollectionConfig,
   adminCollectionOrder,
@@ -53,6 +66,54 @@ async function readApiError(response: Response) {
     return "Something went wrong.";
   }
 }
+
+const collectionUi: Record<
+  AdminCollectionKey,
+  {
+    headline: string;
+    intro: string;
+    icon: LucideIcon;
+    sectionLabel: string;
+    composerNote: string;
+  }
+> = {
+  releases: {
+    headline: "Track each release with the same clarity as the public brand.",
+    intro:
+      "Capture launch windows, rollout notes, and destination links so release planning stays focused and current.",
+    icon: Disc3,
+    sectionLabel: "Music Operations",
+    composerNote:
+      "Add the next single, campaign, or rollout milestone, then refine the details in the list beside it.",
+  },
+  events: {
+    headline: "Keep routing, timing, and venue planning in one live board.",
+    intro:
+      "Use this workspace to manage confirmed dates, planning notes, and ticket destinations without losing the broader tour picture.",
+    icon: CalendarClock,
+    sectionLabel: "Live Operations",
+    composerNote:
+      "Draft upcoming shows and routing details here before pushing them into the broader schedule.",
+  },
+  products: {
+    headline: "Manage merch and offers with a cleaner product release queue.",
+    intro:
+      "Catalog each product, attach its live link, and keep highlights visible so the storefront stays easy to maintain.",
+    icon: Package,
+    sectionLabel: "Commerce",
+    composerNote:
+      "Create the next product record here, then edit notes and launch details directly in the directory.",
+  },
+  inquiries: {
+    headline: "Review incoming conversations in a single, lightweight queue.",
+    intro:
+      "Track booking, brand, press, and management conversations with clear status, timing, and response context.",
+    icon: Newspaper,
+    sectionLabel: "Communications",
+    composerNote:
+      "Capture the request first, then use the list to update status, references, and response notes.",
+  },
+};
 
 export function AdminConsole({ initialSections, collections }: AdminConsoleProps) {
   const [sections, setSections] = useState(initialSections);
@@ -222,290 +283,365 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
 
       {visibleCollections.map((collection) => {
         const config = adminCollectionConfig[collection];
-        const records = sections[collection];
+        const Icon = collectionUi[collection].icon;
+        const orderedRecords = sortRecords(sections[collection]);
+        const linkedCount = orderedRecords.filter((record) => Boolean(record.link)).length;
+        const highlightedCount = orderedRecords.filter((record) => Boolean(record.highlight)).length;
+        const latestRecord = orderedRecords[0] ?? null;
 
         return (
-          <div key={collection}>
+          <section className="admin-page-stack" key={collection}>
             <header className="admin-page-head">
               <div className="admin-page-head-left">
+                <div className="admin-page-head-icon">
+                  <Icon size={18} />
+                </div>
                 <h1 className="admin-page-title">{config.label}</h1>
               </div>
               <span className="status-pill status-pill--ok">{counts[collection]} records</span>
             </header>
 
-            <div className="admin-ops-body" style={{ marginTop: "1rem" }}>
-              {/* Add record form */}
-              <div className="admin-add-form-panel">
-                <div className="admin-add-form-head">
-                  <p className="admin-add-form-title">New {config.singular}</p>
-                </div>
-
-                <div className="admin-form">
-                  <div className="admin-form-grid admin-form-grid--wide">
-                    <div className="admin-field">
-                      <label htmlFor={`${collection}-title`}>{config.fields.title}</label>
-                      <input
-                        className="admin-input"
-                        id={`${collection}-title`}
-                        onChange={(e) => updateForm(collection, "title", e.target.value)}
-                        value={forms[collection].title}
-                      />
-                    </div>
-
-                    <div className="admin-field">
-                      <label htmlFor={`${collection}-subtitle`}>{config.fields.subtitle}</label>
-                      <input
-                        className="admin-input"
-                        id={`${collection}-subtitle`}
-                        onChange={(e) => updateForm(collection, "subtitle", e.target.value)}
-                        value={forms[collection].subtitle}
-                      />
-                    </div>
-
-                    <div className="admin-field">
-                      <label htmlFor={`${collection}-status`}>Status</label>
-                      <input
-                        className="admin-input"
-                        id={`${collection}-status`}
-                        onChange={(e) => updateForm(collection, "status", e.target.value)}
-                        value={forms[collection].status}
-                      />
-                    </div>
-
-                    <div className="admin-field">
-                      <label htmlFor={`${collection}-highlight`}>{config.fields.highlight}</label>
-                      <input
-                        className="admin-input"
-                        id={`${collection}-highlight`}
-                        onChange={(e) => updateForm(collection, "highlight", e.target.value)}
-                        value={forms[collection].highlight}
-                      />
-                    </div>
-
-                    <div className="admin-field">
-                      <label htmlFor={`${collection}-link`}>{config.fields.link}</label>
-                      <input
-                        className="admin-input"
-                        id={`${collection}-link`}
-                        onChange={(e) => updateForm(collection, "link", e.target.value)}
-                        value={forms[collection].link}
-                      />
-                    </div>
+            <div className="admin-surface">
+              <div className="admin-panel-header">
+                <div className="space-y-3">
+                  <div className="admin-panel-meta">
+                    <span className="admin-badge">
+                      <Icon size={15} />
+                      <span>{collectionUi[collection].sectionLabel}</span>
+                    </span>
+                    <span className="status-pill status-pill--neutral">
+                      {config.defaultStatus} default
+                    </span>
                   </div>
 
-                  <div className="admin-field">
-                    <label htmlFor={`${collection}-notes`}>{config.fields.notes}</label>
-                    <textarea
-                      className="admin-textarea"
-                      id={`${collection}-notes`}
-                      onChange={(e) => updateForm(collection, "notes", e.target.value)}
-                      value={forms[collection].notes}
-                    />
-                  </div>
-
-                  <div className="admin-button-row">
-                    <button
-                      className="admin-button"
-                      disabled={busyKey === `${collection}:create`}
-                      onClick={() => createRecord(collection)}
-                      type="button"
-                    >
-                      {busyKey === `${collection}:create` ? (
-                        <LoaderCircle className="animate-spin" size={15} />
-                      ) : (
-                        <Plus size={15} />
-                      )}
-                      <span>Add {config.singular}</span>
-                    </button>
+                  <div>
+                    <h2 className="display-title text-4xl text-white sm:text-5xl">
+                      {collectionUi[collection].headline}
+                    </h2>
+                    <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
+                      {collectionUi[collection].intro}
+                    </p>
                   </div>
                 </div>
               </div>
 
-              {/* Records list */}
-              <div className="admin-records-panel">
-                <div className="admin-records-head">
-                  <p className="admin-records-title">Records</p>
-                  <span className="admin-records-count">{counts[collection]} total</span>
-                </div>
+              <div className="admin-editor-summary-strip mt-5">
+                <article className="admin-editor-summary-item">
+                  <span className="admin-mini-stat-label">Records</span>
+                  <strong>{counts[collection]}</strong>
+                </article>
+                <article className="admin-editor-summary-item">
+                  <span className="admin-mini-stat-label">Linked items</span>
+                  <strong>{linkedCount}</strong>
+                </article>
+                <article className="admin-editor-summary-item">
+                  <span className="admin-mini-stat-label">Highlights</span>
+                  <strong>{highlightedCount}</strong>
+                </article>
+                <article className="admin-editor-summary-item">
+                  <span className="admin-mini-stat-label">Latest update</span>
+                  <strong>
+                    {latestRecord ? formatUpdatedAt(latestRecord.updatedAt) : "No records yet"}
+                  </strong>
+                </article>
+              </div>
 
-                <div className="admin-record-list">
-                  {records.length === 0 ? (
-                    <div className="admin-empty">{config.emptyTitle}</div>
-                  ) : null}
+              <div className="admin-operations-layout mt-5">
+                <section className="admin-record-composer">
+                  <div className="admin-record-composer-header">
+                    <div>
+                      <p className="section-label">New entry</p>
+                      <h3 className="display-title mt-3 text-3xl text-white">
+                        Add {config.singular}
+                      </h3>
+                    </div>
+                    <span className="status-pill status-pill--ok">{counts[collection]} total</span>
+                  </div>
 
-                  {records.map((record) => {
-                    const isEditing = editingId[collection] === record.id;
-                    const draft = drafts[record.id];
-                    const busyUpdate = busyKey === `${collection}:update:${record.id}`;
-                    const busyDelete = busyKey === `${collection}:delete:${record.id}`;
+                  <p className="admin-note">{collectionUi[collection].composerNote}</p>
 
-                    return (
-                      <article className="admin-record-card" key={record.id}>
-                        <div className="admin-record-header">
-                          <div className="admin-record-main">
-                            <div className="admin-record-topline">
-                              <span className="admin-badge">{record.status}</span>
-                              {record.highlight ? (
-                                <span className="status-pill status-pill--warn">
-                                  {record.highlight}
+                  <div className="admin-form mt-5">
+                    <div className="admin-form-grid admin-form-grid--wide">
+                      <div className="admin-field">
+                        <label htmlFor={`${collection}-title`}>{config.fields.title}</label>
+                        <input
+                          className="admin-input"
+                          id={`${collection}-title`}
+                          onChange={(event) =>
+                            updateForm(collection, "title", event.target.value)
+                          }
+                          value={forms[collection].title}
+                        />
+                      </div>
+
+                      <div className="admin-field">
+                        <label htmlFor={`${collection}-subtitle`}>{config.fields.subtitle}</label>
+                        <input
+                          className="admin-input"
+                          id={`${collection}-subtitle`}
+                          onChange={(event) =>
+                            updateForm(collection, "subtitle", event.target.value)
+                          }
+                          value={forms[collection].subtitle}
+                        />
+                      </div>
+
+                      <div className="admin-field">
+                        <label htmlFor={`${collection}-status`}>Status</label>
+                        <input
+                          className="admin-input"
+                          id={`${collection}-status`}
+                          onChange={(event) =>
+                            updateForm(collection, "status", event.target.value)
+                          }
+                          value={forms[collection].status}
+                        />
+                      </div>
+
+                      <div className="admin-field">
+                        <label htmlFor={`${collection}-highlight`}>{config.fields.highlight}</label>
+                        <input
+                          className="admin-input"
+                          id={`${collection}-highlight`}
+                          onChange={(event) =>
+                            updateForm(collection, "highlight", event.target.value)
+                          }
+                          value={forms[collection].highlight}
+                        />
+                      </div>
+
+                      <div className="admin-field">
+                        <label htmlFor={`${collection}-link`}>{config.fields.link}</label>
+                        <input
+                          className="admin-input"
+                          id={`${collection}-link`}
+                          onChange={(event) =>
+                            updateForm(collection, "link", event.target.value)
+                          }
+                          value={forms[collection].link}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="admin-field">
+                      <label htmlFor={`${collection}-notes`}>{config.fields.notes}</label>
+                      <textarea
+                        className="admin-textarea"
+                        id={`${collection}-notes`}
+                        onChange={(event) => updateForm(collection, "notes", event.target.value)}
+                        value={forms[collection].notes}
+                      />
+                    </div>
+
+                    <div className="admin-button-row">
+                      <button
+                        className="admin-button"
+                        disabled={busyKey === `${collection}:create`}
+                        onClick={() => void createRecord(collection)}
+                        type="button"
+                      >
+                        {busyKey === `${collection}:create` ? (
+                          <LoaderCircle className="animate-spin" size={15} />
+                        ) : (
+                          <Plus size={15} />
+                        )}
+                        <span>Add {config.singular}</span>
+                      </button>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="admin-record-list-shell">
+                  <div className="admin-record-list-topline">
+                    <div>
+                      <p className="section-label">Directory</p>
+                      <h3 className="display-title mt-3 text-3xl text-white">
+                        {config.label}
+                      </h3>
+                    </div>
+                    <span className="admin-records-count">{counts[collection]} items</span>
+                  </div>
+
+                  <p className="admin-note">{config.description}</p>
+
+                  <div className="admin-record-list">
+                    {orderedRecords.length === 0 ? (
+                      <div className="admin-empty">{config.emptyTitle}</div>
+                    ) : null}
+
+                    {orderedRecords.map((record) => {
+                      const isEditing = editingId[collection] === record.id;
+                      const draft = drafts[record.id];
+                      const busyUpdate = busyKey === `${collection}:update:${record.id}`;
+                      const busyDelete = busyKey === `${collection}:delete:${record.id}`;
+
+                      return (
+                        <article className="admin-record-card" key={record.id}>
+                          <div className="admin-record-header">
+                            <div className="admin-record-main">
+                              <div className="admin-record-topline">
+                                <span className="admin-badge">{record.status}</span>
+                                {record.highlight ? (
+                                  <span className="status-pill status-pill--warn">
+                                    {record.highlight}
+                                  </span>
+                                ) : null}
+                                <span className="admin-record-date">
+                                  Updated {formatUpdatedAt(record.updatedAt)}
                                 </span>
+                              </div>
+
+                              <h3 className="admin-record-title">{record.title}</h3>
+                              {record.subtitle ? (
+                                <p className="admin-record-sub">{record.subtitle}</p>
                               ) : null}
-                              <span className="admin-record-date">
-                                Updated {formatUpdatedAt(record.updatedAt)}
-                              </span>
+                              {record.notes ? <p className="admin-note">{record.notes}</p> : null}
                             </div>
-                            <h3 className="admin-record-title">{record.title}</h3>
-                            {record.subtitle ? (
-                              <p className="admin-record-sub">{record.subtitle}</p>
-                            ) : null}
-                            {record.notes ? (
-                              <p className="admin-note">{record.notes}</p>
-                            ) : null}
-                          </div>
 
-                          <div className="admin-record-actions">
-                            {record.link ? (
-                              <a
-                                className="admin-icon-button"
-                                href={record.link}
-                                rel="noreferrer"
-                                target="_blank"
-                                title="Open link"
-                              >
-                                <ExternalLink size={14} />
-                              </a>
-                            ) : null}
+                            <div className="admin-record-actions">
+                              {record.link ? (
+                                <a
+                                  className="admin-icon-button"
+                                  href={record.link}
+                                  rel="noreferrer"
+                                  target="_blank"
+                                  title="Open link"
+                                >
+                                  <ExternalLink size={14} />
+                                </a>
+                              ) : null}
 
-                            {!isEditing ? (
-                              <button
-                                className="admin-icon-button"
-                                onClick={() => beginEdit(collection, record)}
-                                title="Edit"
-                                type="button"
-                              >
-                                <Pencil size={14} />
-                              </button>
-                            ) : (
-                              <button
-                                className="admin-icon-button"
-                                onClick={() => cancelEdit(collection, record.id)}
-                                title="Cancel"
-                                type="button"
-                              >
-                                <X size={14} />
-                              </button>
-                            )}
-
-                            <button
-                              className="admin-icon-button admin-icon-button--danger"
-                              disabled={busyDelete}
-                              onClick={() => deleteRecord(collection, record.id)}
-                              title="Delete"
-                              type="button"
-                            >
-                              {busyDelete ? (
-                                <LoaderCircle className="animate-spin" size={14} />
+                              {!isEditing ? (
+                                <button
+                                  className="admin-icon-button"
+                                  onClick={() => beginEdit(collection, record)}
+                                  title="Edit"
+                                  type="button"
+                                >
+                                  <Pencil size={14} />
+                                </button>
                               ) : (
-                                <Trash2 size={14} />
+                                <button
+                                  className="admin-icon-button"
+                                  onClick={() => cancelEdit(collection, record.id)}
+                                  title="Cancel"
+                                  type="button"
+                                >
+                                  <X size={14} />
+                                </button>
                               )}
-                            </button>
-                          </div>
-                        </div>
 
-                        {isEditing && draft ? (
-                          <div className="admin-edit-grid">
-                            <div className="admin-form-grid admin-form-grid--wide">
-                              <div className="admin-field">
-                                <label>{config.fields.title}</label>
-                                <input
-                                  className="admin-input"
-                                  onChange={(e) =>
-                                    updateDraft(record.id, "title", e.target.value)
-                                  }
-                                  value={draft.title}
-                                />
-                              </div>
-
-                              <div className="admin-field">
-                                <label>{config.fields.subtitle}</label>
-                                <input
-                                  className="admin-input"
-                                  onChange={(e) =>
-                                    updateDraft(record.id, "subtitle", e.target.value)
-                                  }
-                                  value={draft.subtitle}
-                                />
-                              </div>
-
-                              <div className="admin-field">
-                                <label>Status</label>
-                                <input
-                                  className="admin-input"
-                                  onChange={(e) =>
-                                    updateDraft(record.id, "status", e.target.value)
-                                  }
-                                  value={draft.status}
-                                />
-                              </div>
-
-                              <div className="admin-field">
-                                <label>{config.fields.highlight}</label>
-                                <input
-                                  className="admin-input"
-                                  onChange={(e) =>
-                                    updateDraft(record.id, "highlight", e.target.value)
-                                  }
-                                  value={draft.highlight}
-                                />
-                              </div>
-
-                              <div className="admin-field">
-                                <label>{config.fields.link}</label>
-                                <input
-                                  className="admin-input"
-                                  onChange={(e) =>
-                                    updateDraft(record.id, "link", e.target.value)
-                                  }
-                                  value={draft.link}
-                                />
-                              </div>
-                            </div>
-
-                            <div className="admin-field">
-                              <label>{config.fields.notes}</label>
-                              <textarea
-                                className="admin-textarea"
-                                onChange={(e) =>
-                                  updateDraft(record.id, "notes", e.target.value)
-                                }
-                                value={draft.notes}
-                              />
-                            </div>
-
-                            <div className="admin-button-row">
                               <button
-                                className="admin-button"
-                                disabled={busyUpdate}
-                                onClick={() => saveEdit(collection, record.id)}
+                                className="admin-icon-button admin-icon-button--danger"
+                                disabled={busyDelete}
+                                onClick={() => void deleteRecord(collection, record.id)}
+                                title="Delete"
                                 type="button"
                               >
-                                {busyUpdate ? (
+                                {busyDelete ? (
                                   <LoaderCircle className="animate-spin" size={14} />
                                 ) : (
-                                  <Save size={14} />
+                                  <Trash2 size={14} />
                                 )}
-                                <span>Save changes</span>
                               </button>
                             </div>
                           </div>
-                        ) : null}
-                      </article>
-                    );
-                  })}
-                </div>
+
+                          {isEditing && draft ? (
+                            <div className="admin-edit-grid">
+                              <div className="admin-form-grid admin-form-grid--wide">
+                                <div className="admin-field">
+                                  <label>{config.fields.title}</label>
+                                  <input
+                                    className="admin-input"
+                                    onChange={(event) =>
+                                      updateDraft(record.id, "title", event.target.value)
+                                    }
+                                    value={draft.title}
+                                  />
+                                </div>
+
+                                <div className="admin-field">
+                                  <label>{config.fields.subtitle}</label>
+                                  <input
+                                    className="admin-input"
+                                    onChange={(event) =>
+                                      updateDraft(record.id, "subtitle", event.target.value)
+                                    }
+                                    value={draft.subtitle}
+                                  />
+                                </div>
+
+                                <div className="admin-field">
+                                  <label>Status</label>
+                                  <input
+                                    className="admin-input"
+                                    onChange={(event) =>
+                                      updateDraft(record.id, "status", event.target.value)
+                                    }
+                                    value={draft.status}
+                                  />
+                                </div>
+
+                                <div className="admin-field">
+                                  <label>{config.fields.highlight}</label>
+                                  <input
+                                    className="admin-input"
+                                    onChange={(event) =>
+                                      updateDraft(record.id, "highlight", event.target.value)
+                                    }
+                                    value={draft.highlight}
+                                  />
+                                </div>
+
+                                <div className="admin-field">
+                                  <label>{config.fields.link}</label>
+                                  <input
+                                    className="admin-input"
+                                    onChange={(event) =>
+                                      updateDraft(record.id, "link", event.target.value)
+                                    }
+                                    value={draft.link}
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="admin-field">
+                                <label>{config.fields.notes}</label>
+                                <textarea
+                                  className="admin-textarea"
+                                  onChange={(event) =>
+                                    updateDraft(record.id, "notes", event.target.value)
+                                  }
+                                  value={draft.notes}
+                                />
+                              </div>
+
+                              <div className="admin-button-row">
+                                <button
+                                  className="admin-button"
+                                  disabled={busyUpdate}
+                                  onClick={() => void saveEdit(collection, record.id)}
+                                  type="button"
+                                >
+                                  {busyUpdate ? (
+                                    <LoaderCircle className="animate-spin" size={14} />
+                                  ) : (
+                                    <Save size={14} />
+                                  )}
+                                  <span>Save changes</span>
+                                </button>
+                              </div>
+                            </div>
+                          ) : null}
+                        </article>
+                      );
+                    })}
+                  </div>
+                </section>
               </div>
             </div>
-          </div>
+          </section>
         );
       })}
     </div>
