@@ -5,6 +5,8 @@ import { CalendarClock, MapPin, Ticket } from "lucide-react";
 import { listAdminCollection } from "@/lib/admin-store";
 import type { AdminRecord } from "@/lib/admin-schema";
 
+
+
 export const metadata: Metadata = {
   title: "Events — Veronica Adane",
   description: "Upcoming shows, tour dates, and live performances by Veronica Adane.",
@@ -19,54 +21,6 @@ function statusColor(status: string) {
   if (s === "sold out") return "events-badge--soldout";
   if (s === "cancelled") return "events-badge--cancelled";
   return "events-badge--default";
-}
-
-function FeaturedEvent({ event }: { event: AdminRecord }) {
-  return (
-    <div className="events-featured">
-      {event.bannerImage ? (
-        <div className="events-featured-banner">
-          <Image
-            alt={event.title}
-            className="events-featured-img"
-            fill
-            priority
-            sizes="100vw"
-            src={event.bannerImage}
-            style={{ objectFit: "cover" }}
-            unoptimized
-          />
-          <div className="events-featured-gradient" />
-        </div>
-      ) : (
-        <div className="events-featured-placeholder" />
-      )}
-
-      <div className="events-featured-body section-shell">
-        <span className={`events-badge ${statusColor(event.status)}`}>{event.status}</span>
-        {event.highlight ? (
-          <div className="events-featured-date">
-            <CalendarClock size={15} />
-            <span>{event.highlight}</span>
-          </div>
-        ) : null}
-        <h1 className="events-featured-title">{event.title}</h1>
-        {event.subtitle ? (
-          <p className="events-featured-venue">
-            <MapPin size={14} />
-            <span>{event.subtitle}</span>
-          </p>
-        ) : null}
-        {event.notes ? <p className="events-featured-notes">{event.notes}</p> : null}
-        {event.link ? (
-          <a className="events-ticket-btn" href={event.link} rel="noreferrer" target="_blank">
-            <Ticket size={16} />
-            <span>Get tickets</span>
-          </a>
-        ) : null}
-      </div>
-    </div>
-  );
 }
 
 function EventCard({ event }: { event: AdminRecord }) {
@@ -144,9 +98,6 @@ function EventCard({ event }: { event: AdminRecord }) {
 export default async function EventsPage() {
   const events = await listAdminCollection("events");
 
-  const featured = events[0] ?? null;
-  const rest = events.slice(1);
-
   return (
     <main className="events-page">
       {/* Page header */}
@@ -158,28 +109,22 @@ export default async function EventsPage() {
         </p>
       </div>
 
-      {/* Featured event */}
-      {featured ? <FeaturedEvent event={featured} /> : null}
-
       {/* All events grid */}
-      {rest.length > 0 ? (
+      {events.length > 0 ? (
         <section className="events-grid-section section-shell">
-          <p className="section-label">All dates</p>
           <div className="events-grid">
-            {rest.map((event) => (
+            {events.map((event) => (
               <EventCard event={event} key={event.id} />
             ))}
           </div>
         </section>
-      ) : null}
-
-      {events.length === 0 ? (
+      ) : (
         <div className="events-empty section-shell">
           <CalendarClock size={32} />
           <p>No events scheduled yet. Check back soon.</p>
           <Link className="events-ticket-link" href="/">Back to home</Link>
         </div>
-      ) : null}
+      )}
     </main>
   );
 }
