@@ -1,28 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { LoaderCircle, Save, Settings2 } from "lucide-react";
-import type { CmsSiteSettings } from "@/lib/cms-types";
+import { useMemo, useState } from "react";
+import { Check, Images, LoaderCircle, Save, Search, Settings2, X } from "lucide-react";
+import type { CmsMediaAsset, CmsSiteSettings } from "@/lib/cms-types";
 
 type AdminSiteSettingsPanelProps = {
   initialSiteSettings: CmsSiteSettings;
+  initialMediaAssets: CmsMediaAsset[];
 };
 
-type FeedbackState = {
-  tone: "ok" | "error";
-  message: string;
-} | null;
+type FeedbackState = { tone: "ok" | "error"; message: string } | null;
 
-function cloneSettings(value: CmsSiteSettings) {
-  return JSON.parse(JSON.stringify(value)) as CmsSiteSettings;
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function cloneSettings(v: CmsSiteSettings) {
+  return JSON.parse(JSON.stringify(v)) as CmsSiteSettings;
 }
 
-function toMultiline(items: string[]) {
-  return items.join("\n");
-}
+function toMultiline(items: string[]) { return items.join("\n"); }
 
 function fromMultiline(value: string) {
-  return value.split(/\r?\n/).map((item) => item.trim()).filter(Boolean);
+  return value.split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
 }
 
 function serializeUtilityLinks(links: CmsSiteSettings["footer"]["utilityLinks"]) {
@@ -35,95 +33,217 @@ function parseUtilityLinks(value: string) {
     .map((line) => line.trim())
     .filter(Boolean)
     .map((line) => {
-      const [label, href] = line.split("|").map((item) => item.trim());
+      const [label, href] = line.split("|").map((s) => s.trim());
       return { label: label ?? "", href: href ?? "" };
     })
     .filter((item) => item.label && item.href);
 }
 
-async function readApiError(response: Response) {
+async function readApiError(res: Response) {
   try {
-    const payload = (await response.json()) as { error?: string };
-    return payload.error ?? "Something went wrong.";
-  } catch {
-    return "Something went wrong.";
-  }
+    const p = (await res.json()) as { error?: string };
+    return p.error ?? "Something went wrong.";
+  } catch { return "Something went wrong."; }
 }
+
+// ─── Image gallery picker ─────────────────────────────────────────────────────
+
+function CollabImagePicker({
+  mediaAssets,
+  selected,
+  onChange,
+}: {
+  mediaAssets: CmsMediaAsset[];
+  selected: string[];
+  onChange: (urls: string[]) => void;
+}) {
+  const [query, setQuery] = useState("");
+
+  const imageAssets = useMemo(
+    () => mediaAssets.filter((a) => a.resourceType === "image"),
+    [mediaAssets],
+  );
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return imageAssets;
+    return imageAssets.filter(
+      (a) => a.title.toLowerCase().includes(q) || a.alt.toLowerCase().includes(q),
+    );
+  }, [imageAssets, query]);
+
+  const selectedSet = useMemo(() => new Set(selected), [selected]);
+
+  function toggle(url: string) {
+    if (selectedSet.has(url)) {
+      onChange(selected.filter((u) => u !== url));
+    } else {
+      onChange([...selected, url]);
+    }
+  }
+
+  function removeSelected(url: string) {
+    onChange(selected.filter((u) => u !== url));
+  }
+
+  return (
+    <div className="cip-root">
+      {/* Header bar */}
+      <div className="cip-bar">
+        <div className="cip-bar-left">
+          <Images size={15} strokeWidth={2} />
+          <span>Select photos for the Collaborations strip</span>
+        </div>
+        <span className="cip-count">
+          {selected.length > 0 ? `${selected.length} selected` : "None selected"}
+        </span>
+      </div>
+
+      {/* Search */}
+      <div className="cip-search-wrap">
+        <Search className="cip-search-icon" size={13} strokeWidth={2} />
+        <input
+          className="cip-search"
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search by name…"
+          type="text"
+          value={query}
+        />
+        {query && (
+          <button className="cip-search-clear" onClick={() => setQuery("")} type="button">
+            <X size={12} strokeWidth={2.5} />
+          </button>
+        )}
+      </div>
+
+      {/* Image grid */}
+      {imageAssets.length === 0 ? (
+        <div className="cip-empty">
+          <Images size={28} strokeWidth={1.2} />
+          <p>No images in your media library yet.</p>
+          <p className="cip-empty-sub">Upload photos via Admin → Media, then come back here.</p>
+        </div>
+      ) : filtered.length === 0 ? (
+        <div className="cip-empty">
+          <p>No images match &ldquo;{query}&rdquo;</p>
+        </div>
+      ) : (
+        <div className="cip-grid">
+          {filtered.map((asset) => {
+            const isSelected = selectedSet.has(asset.secureUrl);
+            return (
+              <button
+                className={`cip-thumb${isSelected ? " is-selected" : ""}`}
+                key={asset.id}
+                onClick={() => toggle(asset.secureUrl)}
+                title={asset.title || asset.alt}
+                type="button"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  alt={asset.alt || asset.title}
+                  className="cip-thumb-img"
+                  loading="lazy"
+                  src={asset.secureUrl}
+                />
+                {isSelected && (
+                  <span className="cip-thumb-check">
+                    <Check size={13} strokeWidth={3} />
+                  </span>
+                )}
+                <span className="cip-thumb-overlay" />
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Selected strip */}
+      {selected.length > 0 && (
+        <div className="cip-selected-strip">
+          <p className="cip-selected-label">Selected order (drag to rearrange is not yet supported — remove and re-add to reorder)</p>
+          <div className="cip-selected-list">
+            {selected.map((url, i) => (
+              <div className="cip-sel-item" key={url}>
+                <span className="cip-sel-num">{i + 1}</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img alt="" className="cip-sel-img" src={url} />
+                <button
+                  aria-label="Remove"
+                  className="cip-sel-remove"
+                  onClick={() => removeSelected(url)}
+                  type="button"
+                >
+                  <X size={10} strokeWidth={3} />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Main panel ───────────────────────────────────────────────────────────────
 
 export function AdminSiteSettingsPanel({
   initialSiteSettings,
+  initialMediaAssets,
 }: AdminSiteSettingsPanelProps) {
-  const [siteSettingsDraft, setSiteSettingsDraft] = useState(() => cloneSettings(initialSiteSettings));
-  const [footerNotesText, setFooterNotesText] = useState(
-    toMultiline(initialSiteSettings.footer.notes),
-  );
-  const [socialSignalsText, setSocialSignalsText] = useState(
-    toMultiline(initialSiteSettings.footer.socialSignals),
-  );
-  const [utilityLinksText, setUtilityLinksText] = useState(
-    serializeUtilityLinks(initialSiteSettings.footer.utilityLinks),
-  );
-  const [collabImagesText, setCollabImagesText] = useState(
-    toMultiline(initialSiteSettings.collabImages ?? []),
-  );
-  const [feedback, setFeedback] = useState<FeedbackState>(null);
-  const [busy, setBusy] = useState(false);
+  const [draft, setDraft]                 = useState(() => cloneSettings(initialSiteSettings));
+  const [footerNotesText, setFooterNotes] = useState(toMultiline(initialSiteSettings.footer.notes));
+  const [socialText, setSocialText]       = useState(toMultiline(initialSiteSettings.footer.socialSignals));
+  const [utilityText, setUtilityText]     = useState(serializeUtilityLinks(initialSiteSettings.footer.utilityLinks));
+  const [feedback, setFeedback]           = useState<FeedbackState>(null);
+  const [busy, setBusy]                   = useState(false);
 
-  function updateSiteSettings(
-    section: keyof CmsSiteSettings,
-    field: string,
-    value: string | string[] | CmsSiteSettings["footer"]["utilityLinks"],
-  ) {
-    setSiteSettingsDraft((current) => {
-      if (section === "header") {
-        return { ...current, header: { ...current.header, [field]: value } };
-      }
-      if (section === "footer") {
-        return { ...current, footer: { ...current.footer, [field]: value } };
-      }
-      return { ...current, [field]: value };
-    });
+  function patchHeader(field: string, value: string) {
+    setDraft((d) => ({ ...d, header: { ...d.header, [field]: value } }));
   }
 
-  async function saveSiteSettings() {
+  function patchFooter(field: string, value: string | string[] | CmsSiteSettings["footer"]["utilityLinks"]) {
+    setDraft((d) => ({ ...d, footer: { ...d.footer, [field]: value } }));
+  }
+
+  function setCollabImages(urls: string[]) {
+    setDraft((d) => ({ ...d, collabImages: urls }));
+  }
+
+  async function save() {
     setBusy(true);
     setFeedback(null);
-
-    const response = await fetch("/api/admin/site-settings", {
-      method: "PATCH",
+    const res = await fetch("/api/admin/site-settings", {
+      method:  "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(siteSettingsDraft),
+      body:    JSON.stringify(draft),
     });
 
-    if (!response.ok) {
+    if (!res.ok) {
       setBusy(false);
-      setFeedback({ tone: "error", message: await readApiError(response) });
+      setFeedback({ tone: "error", message: await readApiError(res) });
       return;
     }
 
-    const payload = (await response.json()) as { item: CmsSiteSettings };
-    setSiteSettingsDraft(cloneSettings(payload.item));
-    setFooterNotesText(toMultiline(payload.item.footer.notes));
-    setSocialSignalsText(toMultiline(payload.item.footer.socialSignals));
-    setUtilityLinksText(serializeUtilityLinks(payload.item.footer.utilityLinks));
-    setCollabImagesText(toMultiline(payload.item.collabImages ?? []));
+    const payload = (await res.json()) as { item: CmsSiteSettings };
+    setDraft(cloneSettings(payload.item));
+    setFooterNotes(toMultiline(payload.item.footer.notes));
+    setSocialText(toMultiline(payload.item.footer.socialSignals));
+    setUtilityText(serializeUtilityLinks(payload.item.footer.utilityLinks));
     setBusy(false);
-    setFeedback({ tone: "ok", message: "Global settings saved." });
+    setFeedback({ tone: "ok", message: "Settings saved." });
   }
 
   return (
     <div className="admin-stack">
-      {feedback ? (
-        <div
-          className={`admin-feedback ${
-            feedback.tone === "ok" ? "admin-feedback--ok" : "admin-feedback--error"
-          }`}
-        >
+      {feedback && (
+        <div className={`admin-feedback ${feedback.tone === "ok" ? "admin-feedback--ok" : "admin-feedback--error"}`}>
           {feedback.message}
         </div>
-      ) : null}
+      )}
 
       <section className="admin-surface">
+        {/* Header */}
         <div className="admin-panel-header">
           <div className="space-y-3">
             <div className="admin-panel-meta">
@@ -146,6 +266,7 @@ export function AdminSiteSettingsPanel({
 
         <div className="luxury-divider my-5" />
 
+        {/* Header settings */}
         <div className="admin-site-settings-layout">
           <section className="admin-settings-card">
             <div className="admin-settings-card-header">
@@ -164,39 +285,32 @@ export function AdminSiteSettingsPanel({
                 <input
                   className="admin-input"
                   id="site-brand-kicker"
-                  onChange={(event) =>
-                    updateSiteSettings("header", "brandKicker", event.target.value)
-                  }
-                  value={siteSettingsDraft.header.brandKicker}
+                  onChange={(e) => patchHeader("brandKicker", e.target.value)}
+                  value={draft.header.brandKicker}
                 />
               </div>
-
               <div className="admin-field">
                 <label htmlFor="site-booking-label">Booking label</label>
                 <input
                   className="admin-input"
                   id="site-booking-label"
-                  onChange={(event) =>
-                    updateSiteSettings("header", "bookingLabel", event.target.value)
-                  }
-                  value={siteSettingsDraft.header.bookingLabel}
+                  onChange={(e) => patchHeader("bookingLabel", e.target.value)}
+                  value={draft.header.bookingLabel}
                 />
               </div>
-
               <div className="admin-field">
                 <label htmlFor="site-shop-label">Shop label</label>
                 <input
                   className="admin-input"
                   id="site-shop-label"
-                  onChange={(event) =>
-                    updateSiteSettings("header", "shopLabel", event.target.value)
-                  }
-                  value={siteSettingsDraft.header.shopLabel}
+                  onChange={(e) => patchHeader("shopLabel", e.target.value)}
+                  value={draft.header.shopLabel}
                 />
               </div>
             </div>
           </section>
 
+          {/* Footer settings */}
           <section className="admin-settings-card">
             <div className="admin-settings-card-header">
               <div>
@@ -214,66 +328,60 @@ export function AdminSiteSettingsPanel({
                 <textarea
                   className="admin-textarea"
                   id="site-footer-description"
-                  onChange={(event) => updateSiteSettings("footer", "description", event.target.value)}
-                  value={siteSettingsDraft.footer.description}
+                  onChange={(e) => patchFooter("description", e.target.value)}
+                  value={draft.footer.description}
                 />
               </div>
-
               <div className="admin-field">
                 <label htmlFor="site-footer-notes">Footer notes (one per line)</label>
                 <textarea
                   className="admin-textarea"
                   id="site-footer-notes"
-                  onChange={(event) => {
-                    setFooterNotesText(event.target.value);
-                    updateSiteSettings("footer", "notes", fromMultiline(event.target.value));
+                  onChange={(e) => {
+                    setFooterNotes(e.target.value);
+                    patchFooter("notes", fromMultiline(e.target.value));
                   }}
                   value={footerNotesText}
                 />
               </div>
-
               <div className="admin-field">
                 <label htmlFor="site-social-signals">Social signals (one per line)</label>
                 <textarea
                   className="admin-textarea"
                   id="site-social-signals"
-                  onChange={(event) => {
-                    setSocialSignalsText(event.target.value);
-                    updateSiteSettings("footer", "socialSignals", fromMultiline(event.target.value));
+                  onChange={(e) => {
+                    setSocialText(e.target.value);
+                    patchFooter("socialSignals", fromMultiline(e.target.value));
                   }}
-                  value={socialSignalsText}
+                  value={socialText}
                 />
               </div>
-
               <div className="admin-field">
-                <label htmlFor="site-utility-links">Utility links (`label | href`)</label>
+                <label htmlFor="site-utility-links">Utility links (label | href)</label>
                 <textarea
                   className="admin-textarea"
                   id="site-utility-links"
-                  onChange={(event) => {
-                    setUtilityLinksText(event.target.value);
-                    updateSiteSettings("footer", "utilityLinks", parseUtilityLinks(event.target.value));
+                  onChange={(e) => {
+                    setUtilityText(e.target.value);
+                    patchFooter("utilityLinks", parseUtilityLinks(e.target.value));
                   }}
-                  value={utilityLinksText}
+                  value={utilityText}
                 />
               </div>
-
               <div className="admin-field admin-field--full">
                 <label htmlFor="site-copyright-tagline">Copyright tagline</label>
                 <input
                   className="admin-input"
                   id="site-copyright-tagline"
-                  onChange={(event) =>
-                    updateSiteSettings("footer", "copyrightTagline", event.target.value)
-                  }
-                  value={siteSettingsDraft.footer.copyrightTagline}
+                  onChange={(e) => patchFooter("copyrightTagline", e.target.value)}
+                  value={draft.footer.copyrightTagline}
                 />
               </div>
             </div>
           </section>
         </div>
 
-        {/* ── Collaborations: artist photo strip ── */}
+        {/* ── Collab image gallery picker ── */}
         <div className="admin-site-settings-layout" style={{ marginTop: "1.5rem" }}>
           <section className="admin-settings-card">
             <div className="admin-settings-card-header">
@@ -282,38 +390,27 @@ export function AdminSiteSettingsPanel({
                 <h2 className="display-title mt-3 text-3xl text-white">Artist photo strip</h2>
               </div>
               <p className="text-sm leading-7 text-white/60">
-                Add one Cloudinary image URL per line. These images scroll automatically
-                across the top of the Collaborations page. Upload images via the Media
-                library, then paste their secure URLs here.
+                Click images from your media library to add them to the auto-scrolling strip
+                on the Collaborations page. Upload photos via Admin → Media first.
               </p>
             </div>
 
-            <div className="admin-site-settings-grid">
-              <div className="admin-field admin-field--full">
-                <label htmlFor="collab-images">
-                  Photo URLs <span style={{ fontWeight: 400, opacity: 0.5 }}>(one per line)</span>
-                </label>
-                <textarea
-                  className="admin-textarea"
-                  id="collab-images"
-                  onChange={(event) => {
-                    setCollabImagesText(event.target.value);
-                    setSiteSettingsDraft((current) => ({
-                      ...current,
-                      collabImages: fromMultiline(event.target.value),
-                    }));
-                  }}
-                  placeholder={"https://res.cloudinary.com/your-cloud/image/upload/v.../photo1.jpg\nhttps://..."}
-                  rows={6}
-                  value={collabImagesText}
-                />
-              </div>
-            </div>
+            <CollabImagePicker
+              mediaAssets={initialMediaAssets}
+              onChange={setCollabImages}
+              selected={draft.collabImages ?? []}
+            />
           </section>
         </div>
 
+        {/* Save button */}
         <div className="admin-button-row mt-4">
-          <button className="admin-button" disabled={busy} onClick={() => void saveSiteSettings()} type="button">
+          <button
+            className="admin-button"
+            disabled={busy}
+            onClick={() => void save()}
+            type="button"
+          >
             {busy ? <LoaderCircle className="animate-spin" size={15} /> : <Save size={15} />}
             <span>Save settings</span>
           </button>
