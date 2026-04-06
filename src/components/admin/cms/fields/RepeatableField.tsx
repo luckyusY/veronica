@@ -29,15 +29,15 @@ export function RepeatableField({
   return (
     <div className="admin-repeatable-field">
       <div className="admin-repeatable-header">
-        <div>
-          <p className="section-label">{label}</p>
+        <div className="admin-repeatable-header-left">
+          <p className="admin-repeatable-label">{label}</p>
           <p className="admin-repeatable-count">
             {items.length} item{items.length === 1 ? "" : "s"}
           </p>
         </div>
         <button className="admin-button admin-button--ghost" onClick={onAdd} type="button">
-          <Plus size={15} />
-          <span>{addLabel ?? `Add ${label}`}</span>
+          <Plus size={14} />
+          <span>{addLabel ?? `Add`}</span>
         </button>
       </div>
       {error ? <p className="admin-field-error">{error}</p> : null}
@@ -47,32 +47,35 @@ export function RepeatableField({
           <article className="admin-repeatable-card" key={`${label}-${index}`}>
             <div className="admin-repeatable-card-topline">
               <div className="admin-repeatable-card-label">
-                <GripVertical size={15} />
+                <GripVertical size={13} className="admin-repeatable-grip" />
                 <span>{getItemLabel ? getItemLabel(index) : `Item ${index + 1}`}</span>
               </div>
-              <div className="admin-button-row">
+              <div className="admin-repeatable-card-actions">
                 <button
                   className="admin-icon-button"
                   disabled={index === 0}
                   onClick={() => onMove(index, index - 1)}
+                  title="Move up"
                   type="button"
                 >
-                  <ArrowUp size={15} />
+                  <ArrowUp size={13} />
                 </button>
                 <button
                   className="admin-icon-button"
                   disabled={index === items.length - 1}
                   onClick={() => onMove(index, index + 1)}
+                  title="Move down"
                   type="button"
                 >
-                  <ArrowDown size={15} />
+                  <ArrowDown size={13} />
                 </button>
                 <button
                   className="admin-icon-button admin-icon-button--danger"
                   onClick={() => onRemove(index)}
+                  title="Remove"
                   type="button"
                 >
-                  <Trash2 size={15} />
+                  <Trash2 size={13} />
                 </button>
               </div>
             </div>
@@ -81,7 +84,7 @@ export function RepeatableField({
         ))}
 
         {items.length === 0 ? (
-          <div className="admin-empty">No items yet. Add the first one to continue.</div>
+          <div className="admin-empty">No items yet — add the first one above.</div>
         ) : null}
       </div>
     </div>

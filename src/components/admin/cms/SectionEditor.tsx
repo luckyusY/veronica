@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronUp, CodeXml } from "lucide-react";
+import { ChevronDown, CodeXml, Layers } from "lucide-react";
 
 type SectionEditorProps = {
   title: string;
@@ -57,17 +57,25 @@ export function SectionEditor({
         onClick={() => setIsOpen((current) => !current)}
         type="button"
       >
-        <div>
-          <p className="section-label">{sectionKey}</p>
-          <h3 className="admin-section-editor-title">{title}</h3>
+        <div className="admin-section-editor-left">
+          <div className="admin-section-editor-num">
+            <Layers size={14} />
+          </div>
+          <div className="admin-section-editor-info">
+            <h3 className="admin-section-editor-title">{title}</h3>
+            <span className="admin-section-editor-key">{sectionKey}</span>
+          </div>
         </div>
-        <div className="admin-section-editor-meta">
+
+        <div className="admin-section-editor-right">
           {errorCount > 0 ? (
             <span className="status-pill status-pill--error-soft">
               {errorCount} issue{errorCount === 1 ? "" : "s"}
             </span>
           ) : null}
-          {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+          <div className={`admin-section-editor-chevron${isOpen ? " is-open" : ""}`}>
+            <ChevronDown size={14} />
+          </div>
         </div>
       </button>
 
@@ -89,9 +97,13 @@ export function SectionEditor({
           )}
 
           <div className="admin-section-editor-footer">
-            <button className="admin-button admin-button--ghost" onClick={toggleRawMode} type="button">
-              <CodeXml size={15} />
-              <span>{rawMode ? "Apply raw JSON" : "Advanced: Edit raw JSON"}</span>
+            <button
+              className="admin-button admin-button--ghost"
+              onClick={toggleRawMode}
+              type="button"
+            >
+              <CodeXml size={14} />
+              <span>{rawMode ? "Apply JSON" : "Raw JSON"}</span>
             </button>
           </div>
         </div>

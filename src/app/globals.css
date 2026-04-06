@@ -3626,7 +3626,7 @@ a {
     }
 
     .admin-form-grid--wide {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .admin-cms-layout {
@@ -9007,4 +9007,219 @@ a:not([class]):hover {
     border-radius: 1.25rem;
     padding: 0.9rem;
   }
+}
+
+/* ── Section editor v2 overrides ────────────────────────────────────────── */
+
+.admin-section-editor {
+  border-radius: 1.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 15, 15, 0.9);
+  overflow: hidden;
+}
+
+.admin-section-editor-header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  text-align: left;
+  background: transparent;
+  transition: background 160ms ease;
+}
+
+.admin-section-editor-header:hover {
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.admin-section-editor-left {
+  display: flex;
+  align-items: center;
+  gap: 0.82rem;
+  min-width: 0;
+}
+
+.admin-section-editor-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: 0 0 auto;
+  border-radius: 0.72rem;
+  border: 1px solid rgba(176, 141, 87, 0.2);
+  background: linear-gradient(145deg, rgba(48, 40, 28, 0.98), rgba(24, 22, 16, 0.98));
+  color: rgba(176, 141, 87, 0.85);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.admin-section-editor-info {
+  display: grid;
+  gap: 0.18rem;
+  min-width: 0;
+}
+
+.admin-section-editor-title {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-section-editor-key {
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(176, 141, 87, 0.6);
+}
+
+.admin-section-editor-right {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex: 0 0 auto;
+}
+
+.admin-section-editor-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  flex: 0 0 auto;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(24, 24, 24, 0.9);
+  color: rgba(237, 237, 237, 0.55);
+  transition:
+    transform 220ms ease,
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.admin-section-editor-chevron.is-open {
+  transform: rotate(180deg);
+  border-color: rgba(176, 141, 87, 0.26);
+  background: rgba(42, 36, 28, 0.96);
+  color: rgba(176, 141, 87, 0.85);
+}
+
+.admin-section-editor-body {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(8, 8, 8, 0.45);
+}
+
+.admin-section-editor-footer {
+  margin-top: 0.95rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Repeatable field v2 */
+.admin-repeatable-header {
+  align-items: center;
+}
+
+.admin-repeatable-header-left {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.admin-repeatable-label {
+  margin: 0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(176, 141, 87, 0.78);
+}
+
+.admin-repeatable-count {
+  font-size: 0.68rem;
+  color: rgba(237, 237, 237, 0.44);
+}
+
+.admin-repeatable-card {
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(18, 18, 18, 0.88);
+  overflow: hidden;
+}
+
+.admin-repeatable-card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: rgba(26, 24, 22, 0.88);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-repeatable-card-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(237, 237, 237, 0.56);
+}
+
+.admin-repeatable-grip {
+  color: rgba(237, 237, 237, 0.28);
+  flex-shrink: 0;
+}
+
+.admin-repeatable-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.admin-repeatable-card-body {
+  padding: 0.9rem;
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 0;
+}
+
+/* Object panel v2 */
+.admin-object-panel {
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(18, 18, 18, 0.75);
+  padding: 0.9rem 1rem;
+}
+
+.admin-object-panel-label {
+  margin: 0 0 0.75rem;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(176, 141, 87, 0.68);
+}
+
+/* Structured grid spacing */
+.admin-structured-grid {
+  gap: 0.85rem;
+}
+
+.admin-section-stack {
+  gap: 0.65rem;
+}
+
+.admin-repeatable-stack {
+  gap: 0.5rem;
 }

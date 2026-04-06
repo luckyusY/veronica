@@ -240,7 +240,7 @@ export function SectionFieldsRenderer({
           if (shouldWrapGroup) {
             return (
               <div className="admin-object-panel" key={pathKey(childPath)}>
-                <p className="section-label">{humanizeKey(childKey)}</p>
+                <p className="admin-object-panel-label">{humanizeKey(childKey)}</p>
                 <div className="admin-object-panel-body">
                   <SectionFieldsRenderer
                     contentRoot={contentRoot}
