@@ -40,9 +40,11 @@ type FeedbackState = {
 } | null;
 
 type PickerMode = "single" | "multi";
+type PickerFilter = "image" | "video";
 
 type PickerState = {
   mode: PickerMode;
+  filter: PickerFilter;
   onConfirm: (urls: string[]) => void;
 } | null;
 
@@ -105,6 +107,7 @@ const collectionUi: Record<
     composerNote: string;
     hasImages: boolean;
     hasGallery: boolean;
+    hasVideo: boolean;
   }
 > = {
   releases: {
@@ -117,6 +120,7 @@ const collectionUi: Record<
       "Add the next single, campaign, or rollout milestone, then refine the details in the list beside it.",
     hasImages: true,
     hasGallery: false,
+    hasVideo: true,
   },
   events: {
     headline: "Keep routing, timing, and venue planning in one live board.",
@@ -128,6 +132,7 @@ const collectionUi: Record<
       "Draft upcoming shows and routing details here before pushing them into the broader schedule.",
     hasImages: true,
     hasGallery: true,
+    hasVideo: false,
   },
   products: {
     headline: "Manage merch and offers with a cleaner product release queue.",
@@ -139,6 +144,7 @@ const collectionUi: Record<
       "Create the next product record here, then edit notes and launch details directly in the directory.",
     hasImages: true,
     hasGallery: false,
+    hasVideo: false,
   },
   inquiries: {
     headline: "Review incoming conversations in a single, lightweight queue.",
@@ -150,6 +156,7 @@ const collectionUi: Record<
       "Capture the request first, then use the list to update status, references, and response notes.",
     hasImages: false,
     hasGallery: false,
+    hasVideo: false,
   },
 };
 
@@ -157,12 +164,14 @@ const collectionUi: Record<
 
 function MediaPickerModal({
   mode,
+  filter,
   assets,
   loading,
   onConfirm,
   onClose,
 }: {
   mode: PickerMode;
+  filter: PickerFilter;
   assets: CmsMediaAsset[];
   loading: boolean;
   onConfirm: (urls: string[]) => void;
@@ -172,14 +181,14 @@ function MediaPickerModal({
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  const imageAssets = assets.filter((a) => a.resourceType === "image");
+  const filteredByType = assets.filter((a) => a.resourceType === filter);
   const filtered = query.trim()
-    ? imageAssets.filter(
+    ? filteredByType.filter(
         (a) =>
           a.title.toLowerCase().includes(query.toLowerCase()) ||
           a.alt.toLowerCase().includes(query.toLowerCase()),
       )
-    : imageAssets;
+    : filteredByType;
 
   function toggle(url: string) {
     if (mode === "single") {
@@ -224,7 +233,9 @@ function MediaPickerModal({
           <div>
             <p className="section-label">Media library</p>
             <h3 className="display-title mt-1 text-2xl text-white">
-              {mode === "single" ? "Choose image" : "Select images"}
+              {filter === "video"
+                ? mode === "single" ? "Choose video" : "Select videos"
+                : mode === "single" ? "Choose image" : "Select images"}
             </h3>
           </div>
           <div className="media-picker-header-actions">
@@ -262,13 +273,20 @@ function MediaPickerModal({
             </div>
           ) : filtered.length === 0 ? (
             <div className="media-picker-empty">
-              {query ? "No images match your search." : "No images in media library yet. Upload images first."}
+              {query
+            ? `No ${filter}s match your search.`
+            : `No ${filter}s in media library yet. Upload ${filter}s first.`}
             </div>
           ) : (
             <div className="media-picker-grid">
               {filtered.map((asset) => {
                 const url = asset.secureUrl;
                 const isSelected = selected.has(url);
+                // For videos, use Cloudinary's auto-generated poster (so/jpg transform)
+                const previewSrc =
+                  asset.resourceType === "video"
+                    ? thumbUrl(url.replace(/\.[^.]+$/, ".jpg"), 160, 120)
+                    : thumbUrl(url);
                 return (
                   <button
                     className={`media-picker-item ${isSelected ? "media-picker-item--selected" : ""}`}
@@ -281,8 +299,11 @@ function MediaPickerModal({
                     <img
                       alt={asset.alt || asset.title}
                       className="media-picker-thumb"
-                      src={thumbUrl(url)}
+                      src={previewSrc}
                     />
+                    {asset.resourceType === "video" && !isSelected ? (
+                      <span className="media-picker-video-badge">▶</span>
+                    ) : null}
                     {isSelected ? (
                       <span className="media-picker-check">
                         <Check size={13} />
@@ -402,6 +423,52 @@ function GalleryField({
   );
 }
 
+function VideoField({
+  value,
+  onChange,
+  onPickerOpen,
+}: {
+  value: string;
+  onChange: (url: string) => void;
+  onPickerOpen: () => void;
+}) {
+  return (
+    <div className="admin-field">
+      <label>Video (from media library)</label>
+      {value ? (
+        <div className="admin-video-preview">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt="Video preview"
+            className="admin-video-preview-thumb"
+            src={thumbUrl(value.replace(/\.[^.]+$/, ".jpg"), 240, 135)}
+          />
+          <span className="admin-video-preview-badge">▶ Video selected</span>
+          <button
+            className="admin-image-preview-remove"
+            onClick={() => onChange("")}
+            title="Remove video"
+            type="button"
+          >
+            <X size={12} />
+          </button>
+        </div>
+      ) : null}
+      <button
+        className="admin-image-pick-btn"
+        onClick={onPickerOpen}
+        type="button"
+      >
+        <Images size={14} />
+        <span>{value ? "Change video" : "Choose from library"}</span>
+      </button>
+      <p className="admin-field-hint">
+        Select an uploaded video from your media library. This plays directly on the music page.
+      </p>
+    </div>
+  );
+}
+
 // ─── Main AdminConsole ────────────────────────────────────────────────────────
 
 export function AdminConsole({ initialSections, collections }: AdminConsoleProps) {
@@ -440,8 +507,8 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
 
   // Fetch media assets once when picker is first opened
   const openPicker = useCallback(
-    (mode: PickerMode, onConfirm: (urls: string[]) => void) => {
-      setPicker({ mode, onConfirm });
+    (mode: PickerMode, filter: PickerFilter, onConfirm: (urls: string[]) => void) => {
+      setPicker({ mode, filter, onConfirm });
       if (!mediaFetched.current) {
         mediaFetched.current = true;
         setMediaLoading(true);
@@ -485,6 +552,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
         link: record.link,
         notes: record.notes,
         bannerImage: record.bannerImage ?? "",
+        videoUrl: record.videoUrl ?? "",
       },
     }));
     setDraftGallery((c) => ({ ...c, [record.id]: record.galleryImages ?? [] }));
@@ -587,6 +655,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
       {picker ? (
         <MediaPickerModal
           assets={mediaAssets}
+          filter={picker.filter}
           loading={mediaLoading}
           mode={picker.mode}
           onClose={closePicker}
@@ -758,11 +827,23 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                           label={collection === "events" ? "Banner image" : "Cover image"}
                           onChange={(url) => updateForm(collection, "bannerImage", url)}
                           onPickerOpen={() =>
-                            openPicker("single", ([url]) => {
+                            openPicker("single", "image", ([url]) => {
                               if (url) updateForm(collection, "bannerImage", url);
                             })
                           }
                           value={forms[collection].bannerImage ?? ""}
+                        />
+                      ) : null}
+
+                      {ui.hasVideo ? (
+                        <VideoField
+                          onChange={(url) => updateForm(collection, "videoUrl", url)}
+                          onPickerOpen={() =>
+                            openPicker("single", "video", ([url]) => {
+                              if (url) updateForm(collection, "videoUrl", url);
+                            })
+                          }
+                          value={forms[collection].videoUrl ?? ""}
                         />
                       ) : null}
 
@@ -772,7 +853,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                             setFormGallery((c) => ({ ...c, [collection]: urls }))
                           }
                           onPickerOpen={() =>
-                            openPicker("multi", (urls) => {
+                            openPicker("multi", "image", (urls) => {
                               setFormGallery((c) => ({
                                 ...c,
                                 [collection]: [...(c[collection] ?? []), ...urls.filter(
@@ -985,11 +1066,23 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                     label={collection === "events" ? "Banner image" : "Cover image"}
                                     onChange={(url) => updateDraft(record.id, "bannerImage", url)}
                                     onPickerOpen={() =>
-                                      openPicker("single", ([url]) => {
+                                      openPicker("single", "image", ([url]) => {
                                         if (url) updateDraft(record.id, "bannerImage", url);
                                       })
                                     }
                                     value={draft.bannerImage ?? ""}
+                                  />
+                                ) : null}
+
+                                {ui.hasVideo ? (
+                                  <VideoField
+                                    onChange={(url) => updateDraft(record.id, "videoUrl", url)}
+                                    onPickerOpen={() =>
+                                      openPicker("single", "video", ([url]) => {
+                                        if (url) updateDraft(record.id, "videoUrl", url);
+                                      })
+                                    }
+                                    value={draft.videoUrl ?? ""}
                                   />
                                 ) : null}
 
@@ -999,7 +1092,7 @@ export function AdminConsole({ initialSections, collections }: AdminConsoleProps
                                       setDraftGallery((c) => ({ ...c, [record.id]: urls }))
                                     }
                                     onPickerOpen={() =>
-                                      openPicker("multi", (urls) => {
+                                      openPicker("multi", "image", (urls) => {
                                         setDraftGallery((c) => ({
                                           ...c,
                                           [record.id]: [...(c[record.id] ?? []), ...urls.filter(

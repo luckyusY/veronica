@@ -18,6 +18,8 @@ export type AdminRecordInput = {
   bannerImage?: string;
   /** Array of image URLs for the event gallery (events only) */
   galleryImages?: string[];
+  /** Cloudinary video URL selected from the media library (releases only) */
+  videoUrl?: string;
 };
 
 export type AdminRecord = AdminRecordInput & {

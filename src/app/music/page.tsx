@@ -49,21 +49,36 @@ function isLiveRelease(status: string) {
 }
 
 function ReleaseCard({ release }: { release: AdminRecord }) {
-  const embedUrl = getYouTubeEmbedUrl(release.link ?? "");
-  const hasVideo = Boolean(embedUrl);
+  const youtubeEmbedUrl = getYouTubeEmbedUrl(release.link ?? "");
+  // Cloudinary video takes priority; YouTube embed is fallback
+  const hasCloudinaryVideo = Boolean(release.videoUrl);
+  const hasYouTube = Boolean(youtubeEmbedUrl);
+  const hasVideo = hasCloudinaryVideo || hasYouTube;
 
   return (
     <article className="music-release-card">
       {/* Video embed or cover image */}
       <div className="music-release-media">
-        {hasVideo ? (
+        {hasCloudinaryVideo ? (
+          <div className="music-release-embed-wrap">
+            <video
+              className="music-release-embed"
+              controls
+              playsInline
+              poster={release.bannerImage ?? undefined}
+              preload="metadata"
+              src={release.videoUrl}
+              title={release.title}
+            />
+          </div>
+        ) : hasYouTube ? (
           <div className="music-release-embed-wrap">
             <iframe
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               className="music-release-embed"
               loading="lazy"
-              src={embedUrl!}
+              src={youtubeEmbedUrl!}
               title={release.title}
             />
           </div>
@@ -118,7 +133,7 @@ function ReleaseCard({ release }: { release: AdminRecord }) {
           <p className="music-release-notes">{release.notes}</p>
         ) : null}
 
-        {release.link && !hasVideo ? (
+        {release.link ? (
           <a
             className="music-release-link"
             href={release.link}
@@ -126,17 +141,7 @@ function ReleaseCard({ release }: { release: AdminRecord }) {
             target="_blank"
           >
             <ExternalLink size={13} />
-            <span>Listen / watch</span>
-          </a>
-        ) : release.link && hasVideo ? (
-          <a
-            className="music-release-link"
-            href={release.link}
-            rel="noreferrer"
-            target="_blank"
-          >
-            <ExternalLink size={13} />
-            <span>Open on YouTube</span>
+            <span>{hasYouTube ? "Open on YouTube" : "Listen / watch"}</span>
           </a>
         ) : null}
       </div>

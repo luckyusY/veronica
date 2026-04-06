@@ -10797,6 +10797,56 @@ a:not([class]):hover {
   text-overflow: ellipsis;
 }
 
+.media-picker-video-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.52);
+  color: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  pointer-events: none;
+}
+
+.media-picker-item--selected .media-picker-video-badge {
+  display: none;
+}
+
+/* ─── Admin Video Field UI ────────────────────────────────────────── */
+
+.admin-video-preview {
+  position: relative;
+  width: fit-content;
+  margin-bottom: 0.4rem;
+}
+
+.admin-video-preview-thumb {
+  display: block;
+  width: 13.5rem;
+  height: 7.5rem;
+  object-fit: cover;
+  border-radius: 3px;
+  border: 1px solid rgba(176, 141, 87, 0.15);
+}
+
+.admin-video-preview-badge {
+  position: absolute;
+  bottom: 0.3rem;
+  left: 0.3rem;
+  background: rgba(0, 0, 0, 0.72);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 2px;
+}
+
 /* ─── Admin Image Field UI ────────────────────────────────────────── */
 
 .admin-image-field {
