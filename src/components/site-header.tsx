@@ -153,7 +153,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
             ))}
           </nav>
 
-          <div className="site-header-right" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div className="site-header-right">
             <motion.div
               animate={{ opacity: 1, y: 0 }}
               initial={{ opacity: 0, y: -12 }}
