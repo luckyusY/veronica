@@ -1,4 +1,5 @@
 import { ShieldCheck } from "lucide-react";
+import Image from "next/image";
 import { AdminLoginForm } from "@/components/admin/admin-login-form";
 import { getSampleAdminCredentials } from "@/lib/db/users";
 
@@ -23,7 +24,9 @@ export default async function AdminLoginPage({
     <div className="admin-login-page">
       <div className="admin-login-card">
         <div className="admin-login-brand">
-          <div className="admin-login-monogram">VA</div>
+          <div className="admin-login-monogram" style={{ background: 'transparent', border: 'none', padding: 0 }}>
+            <Image src="/logo.png" alt="VA" width={48} height={48} style={{ objectFit: 'contain' }} />
+          </div>
           <div>
             <p className="admin-login-brand-name">Veronica Adane</p>
             <p className="admin-login-brand-sub">Admin Portal</p>

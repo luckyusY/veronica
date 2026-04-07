@@ -5,8 +5,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 import { useMotionLite } from "@/components/providers";
 import { VeronicaWordmark } from "@/components/veronica-wordmark";
+import { YoutubeIcon, FacebookIcon, InstagramIcon } from "@/components/social-icons";
 import type { CmsSiteSettings } from "@/lib/cms-types";
 import { navigationItems } from "@/lib/site-data";
 
@@ -118,8 +120,8 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
             transition={{ duration: 0.68, delay: 0.08, ease: itemEase }}
           >
             <Link className="site-header-logo" href="/" onClick={() => setMenuOpen(false)}>
-              <span aria-hidden="true" className="site-header-logo-mark">
-                VA
+              <span aria-hidden="true" className="site-header-logo-mark" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: 'none' }}>
+                <Image src="/logo.png" alt="VA" width={32} height={32} style={{ objectFit: 'contain' }} />
               </span>
               <span className="site-header-logo-copy site-header-logo-copy--stacked">
                 <span className="site-header-logo-rail">
@@ -151,7 +153,18 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
             ))}
           </nav>
 
-          <div className="site-header-right">
+          <div className="site-header-right" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <motion.div
+              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.58, delay: 0.4, ease: itemEase }}
+              className="site-header-desktop-socials"
+              style={{ display: 'flex', gap: '0.75rem', marginRight: '0.5rem', alignItems: 'center' }}
+            >
+              <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube" className="hover:text-white transition-colors"><YoutubeIcon width={20} height={20} /></a>
+              <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" className="hover:text-white transition-colors"><FacebookIcon width={20} height={20} /></a>
+              <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-white transition-colors"><InstagramIcon width={20} height={20} /></a>
+            </motion.div>
             {actionNavigation.map((item, index) => {
               const label =
                 item.href === "/contact" ? settings.bookingLabel : settings.shopLabel;
@@ -178,8 +191,8 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
 
           <div className="site-header-mobile">
             <Link className="site-header-mobile-logo" href="/" onClick={() => setMenuOpen(false)}>
-              <span aria-hidden="true" className="site-header-mobile-mark">
-                VA
+              <span aria-hidden="true" className="site-header-mobile-mark" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: 'none' }}>
+                <Image src="/logo.png" alt="VA" width={28} height={28} style={{ objectFit: 'contain' }} />
               </span>
               <span className="site-header-mobile-logo-copy">
                 <span className="site-header-mobile-kicker">{settings.brandKicker}</span>
@@ -273,6 +286,11 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                     </motion.div>
                     );
                   })}
+                  <div className="site-header-mobile-socials" style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', justifyContent: 'center' }}>
+                    <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube"><YoutubeIcon width={24} height={24} /></a>
+                    <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook"><FacebookIcon width={24} height={24} /></a>
+                    <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram"><InstagramIcon width={24} height={24} /></a>
+                  </div>
                 </div>
               </div>
             </motion.div>

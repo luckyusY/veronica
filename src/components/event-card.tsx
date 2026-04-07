@@ -76,7 +76,7 @@ export function EventCard({ event, index = 0 }: { event: AdminRecord; index?: nu
             loading="lazy"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             src={event.bannerImage}
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "contain" }}
             unoptimized
           />
         ) : (

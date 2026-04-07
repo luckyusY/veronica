@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   ArrowUpRight,
@@ -157,7 +158,9 @@ export function AdminLayoutShell({ children, user }: AdminLayoutShellProps) {
       <div className="admin-shell-grid section-shell py-6 lg:py-8">
         <aside className="admin-sidebar">
           <Link className="admin-brand-row admin-shell-brand-block" href="/admin">
-            <div className="brand-monogram">VA</div>
+            <div className="brand-monogram" style={{ background: 'transparent', border: 'none', padding: 0 }}>
+              <Image src="/logo.png" alt="VA" width={32} height={32} style={{ objectFit: 'contain' }} />
+            </div>
             <div>
               <p className="admin-brand-name">Admin</p>
               <p className="admin-brand-sub">Veronica Adane</p>
