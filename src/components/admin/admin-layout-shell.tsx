@@ -159,7 +159,7 @@ export function AdminLayoutShell({ children, user }: AdminLayoutShellProps) {
         <aside className="admin-sidebar">
           <Link className="admin-brand-row admin-shell-brand-block" href="/admin">
             <div className="brand-monogram" style={{ background: 'transparent', border: 'none', padding: 0 }}>
-              <Image src="/logo.png" alt="VA" width={90} height={20} style={{ objectFit: 'contain' }} />
+              <Image src="/logo.png" alt="VA" width={32} height={32} style={{ objectFit: 'contain' }} />
             </div>
             <div>
               <p className="admin-brand-name">Admin</p>
