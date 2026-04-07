@@ -5,7 +5,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ExternalLink, FileJson, LoaderCircle, RefreshCcw, Rocket, Save, Trash2 } from "lucide-react";
 import { SectionEditor } from "@/components/admin/cms/SectionEditor";
 import { SectionFieldsRenderer } from "@/components/admin/cms/SectionFieldsRenderer";
+import { ImagePickerField } from "@/components/admin/cms/fields/ImagePickerField";
+import { RepeatableField } from "@/components/admin/cms/fields/RepeatableField";
+import { getSelectedMediaGridItems } from "@/lib/artist-page-content";
 import { defaultCmsPageContent } from "@/lib/cms-defaults";
+import { defaultMediaLibrary } from "@/lib/cms-defaults/shared";
 import {
   buildValidationState,
   countChangedFields,
@@ -21,8 +25,11 @@ import { humanizeKey, isPlainObject } from "@/lib/cms-editor-utils";
 import { cmsPageEditorSchemas } from "@/lib/schemas/cms-pages";
 import type {
   CmsMediaAsset,
+  CmsMediaItem,
   CmsPageSlug,
   CmsPageWorkspaceDocument,
+  StandardPageContent,
+  StandardSection,
 } from "@/lib/cms-types";
 
 type AdminPageCmsPanelProps = {
@@ -48,6 +55,43 @@ type PageMutationResponse = {
   message?: string;
 };
 
+const emptyMediaGridItem: CmsMediaItem = {
+  url: "",
+  alt: "",
+  publicId: "",
+  resourceType: "image",
+  label: "",
+  position: "",
+  placeholderBase: "",
+  placeholderHighlight: "",
+};
+
+const mediaAdminGallerySection: Extract<StandardSection, { type: "gallery" }> = {
+  id: "selected-media-grid",
+  type: "gallery",
+  theme: "paper",
+  eyebrow: "Selected images",
+  title: "Images shown on /media",
+  description:
+    "Add, reorder, or remove the exact images that should appear on the public media page.",
+  items: [],
+  columns: 3,
+};
+
+const mediaAdminTemplateContent: StandardPageContent = {
+  hero: {
+    eyebrow: "Media grid",
+    title: "Selected media gallery",
+    description: "Only the chosen gallery images are rendered on the public media page.",
+    image: defaultMediaLibrary.microphone,
+    imageMotionPreset: "from-left",
+    imageLabel: "Selected media preview",
+    noteTitle: "Selected images only",
+    noteText: "This hidden structure keeps the public media route focused on the image grid.",
+  },
+  sections: [mediaAdminGallerySection],
+};
+
 async function readApiError(response: Response) {
   try {
     const payload = (await response.json()) as { error?: string };
@@ -57,11 +101,60 @@ async function readApiError(response: Response) {
   }
 }
 
+function normalizeMediaGridItem(candidate: unknown): CmsMediaItem {
+  if (!candidate || typeof candidate !== "object") {
+    return { ...emptyMediaGridItem };
+  }
+
+  const item = candidate as Partial<CmsMediaItem>;
+
+  return {
+    url: typeof item.url === "string" ? item.url : "",
+    alt: typeof item.alt === "string" ? item.alt : "",
+    publicId: typeof item.publicId === "string" ? item.publicId : "",
+    resourceType: item.resourceType === "video" ? "video" : "image",
+    label: typeof item.label === "string" ? item.label : "",
+    position: typeof item.position === "string" ? item.position : "",
+    placeholderBase:
+      typeof item.placeholderBase === "string" ? item.placeholderBase : "",
+    placeholderHighlight:
+      typeof item.placeholderHighlight === "string" ? item.placeholderHighlight : "",
+  };
+}
+
+function getMediaEditorItems(content: unknown) {
+  const sections = Array.isArray((content as StandardPageContent | undefined)?.sections)
+    ? (content as StandardPageContent).sections
+    : [];
+  const gallerySection = sections.find((section) => section.type === "gallery");
+
+  return gallerySection ? gallerySection.items.map(normalizeMediaGridItem) : [];
+}
+
+function createMediaAdminContent(content: unknown): StandardPageContent {
+  return {
+    ...mediaAdminTemplateContent,
+    hero: { ...mediaAdminTemplateContent.hero },
+    sections: [
+      {
+        ...mediaAdminGallerySection,
+        items: getSelectedMediaGridItems(content as StandardPageContent).map(
+          normalizeMediaGridItem,
+        ),
+      },
+    ],
+  };
+}
+
+function getEditablePageContent(slug: CmsPageSlug, content: unknown) {
+  return slug === "media" ? createMediaAdminContent(content) : content;
+}
+
 function createDraftState(page: CmsPageWorkspaceDocument): PageDraft {
   return {
     name: page.name,
     summary: page.summary,
-    content: JSON.parse(JSON.stringify(page.content)),
+    content: JSON.parse(JSON.stringify(getEditablePageContent(page.slug, page.content))),
   };
 }
 
@@ -99,9 +192,19 @@ export function AdminPageCmsPanel({
 
   const selectedPage = pages.find((page) => page.slug === selectedSlug) ?? pages[0];
   const selectedDraft = selectedPage ? pageDrafts[selectedPage.slug] : null;
+  const isMediaPage = selectedPage?.slug === "media";
+  const selectedComparableContent = useMemo(
+    () =>
+      selectedPage ? getEditablePageContent(selectedPage.slug, selectedPage.content) : null,
+    [selectedPage],
+  );
   const selectedSummary = useMemo(
     () => summarizePageContent(selectedDraft?.content),
     [selectedDraft],
+  );
+  const selectedMediaItems = useMemo(
+    () => (isMediaPage && selectedDraft ? getMediaEditorItems(selectedDraft.content) : []),
+    [isMediaPage, selectedDraft],
   );
   const hasUnsavedChanges = Boolean(
     selectedPage &&
@@ -109,7 +212,7 @@ export function AdminPageCmsPanel({
       (selectedDraft.name !== selectedPage.name ||
         selectedDraft.summary !== selectedPage.summary ||
         JSON.stringify(selectedDraft.content ?? null) !==
-          JSON.stringify(selectedPage.content ?? null)),
+          JSON.stringify(selectedComparableContent ?? null)),
   );
   const statusConfig = selectedPage ? getStatusConfig(selectedPage.status) : null;
   const sectionKeys = useMemo(
@@ -146,6 +249,22 @@ export function AdminPageCmsPanel({
         content: nextContent,
       },
     }));
+  }
+
+  function updateSelectedMediaItems(nextItems: CmsMediaItem[]) {
+    if (!selectedPage || selectedPage.slug !== "media") {
+      return;
+    }
+
+    const nextContent = createMediaAdminContent(selectedDraft?.content);
+    nextContent.sections = [
+      {
+        ...mediaAdminGallerySection,
+        items: nextItems.map(normalizeMediaGridItem),
+      },
+    ];
+
+    updateSelectedContent(nextContent);
   }
 
   function applyPageUpdate(item: CmsPageWorkspaceDocument, successMessage: string) {
@@ -380,7 +499,9 @@ export function AdminPageCmsPanel({
             <p className="admin-v2-section-title">Pages</p>
             <div className="admin-cms-page-list admin-cms-page-list--stacked">
               {pages.map((page) => {
-                const summary = summarizePageContent(page.content);
+                const summary = summarizePageContent(
+                  getEditablePageContent(page.slug, page.content),
+                );
                 const pageStatus = getStatusConfig(page.status);
 
                 return (
@@ -419,8 +540,11 @@ export function AdminPageCmsPanel({
             <div className="admin-editor-head-info">
               <p className="admin-editor-route">{selectedPage.route}</p>
               <p className="admin-editor-summary-line">
-                {selectedSummary.sectionKeys.length} sections &middot;{" "}
-                {selectedSummary.mediaRefs} media refs
+                {isMediaPage
+                  ? `${selectedMediaItems.length} selected image${
+                      selectedMediaItems.length === 1 ? "" : "s"
+                    } · only these appear on the live media page`
+                  : `${selectedSummary.sectionKeys.length} sections · ${selectedSummary.mediaRefs} media refs`}
               </p>
             </div>
             <button
@@ -445,16 +569,22 @@ export function AdminPageCmsPanel({
               <strong>{selectedPage.route}</strong>
             </div>
             <div className="admin-editor-summary-item">
-              <span className="admin-mini-stat-label">Sections</span>
-              <strong>{selectedSummary.sectionKeys.length}</strong>
+              <span className="admin-mini-stat-label">
+                {isMediaPage ? "Selected images" : "Sections"}
+              </span>
+              <strong>{isMediaPage ? selectedMediaItems.length : selectedSummary.sectionKeys.length}</strong>
             </div>
             <div className="admin-editor-summary-item">
-              <span className="admin-mini-stat-label">Hero slides</span>
-              <strong>{selectedSummary.heroSlides}</strong>
+              <span className="admin-mini-stat-label">
+                {isMediaPage ? "Live layout" : "Hero slides"}
+              </span>
+              <strong>{isMediaPage ? "Grid only" : selectedSummary.heroSlides}</strong>
             </div>
             <div className="admin-editor-summary-item">
-              <span className="admin-mini-stat-label">Media refs</span>
-              <strong>{selectedSummary.mediaRefs}</strong>
+              <span className="admin-mini-stat-label">
+                {isMediaPage ? "Media refs" : "Media refs"}
+              </span>
+              <strong>{isMediaPage ? selectedMediaItems.length : selectedSummary.mediaRefs}</strong>
             </div>
           </div>
 
@@ -524,11 +654,15 @@ export function AdminPageCmsPanel({
 
           {/* Section key chips */}
           <div className="admin-key-list mt-5">
-            {selectedSummary.sectionKeys.map((key) => (
-              <span className="admin-key-chip" key={key}>
-                {key}
-              </span>
-            ))}
+            {isMediaPage ? (
+              <span className="admin-key-chip">selected images</span>
+            ) : (
+              selectedSummary.sectionKeys.map((key) => (
+                <span className="admin-key-chip" key={key}>
+                  {key}
+                </span>
+              ))
+            )}
           </div>
 
           {/* Page identity fields */}
@@ -567,33 +701,105 @@ export function AdminPageCmsPanel({
 
           {/* Section editors */}
           <div className="admin-section-stack mt-5">
-            {sectionKeys.map((sectionKey, index) => (
+            {isMediaPage ? (
               <SectionEditor
-                defaultOpen={index === 0}
-                errorCount={getSectionErrorCount(validationErrors, sectionKey)}
-                key={sectionKey}
+                defaultOpen
+                errorCount={getSectionErrorCount(validationErrors, "sections")}
                 onChange={(nextValue) =>
-                  updateSelectedContent({
-                    ...(selectedDraft.content as Record<string, unknown>),
-                    [sectionKey]: nextValue,
-                  })
+                  updateSelectedMediaItems(
+                    Array.isArray(nextValue) ? nextValue.map(normalizeMediaGridItem) : [],
+                  )
                 }
-                sectionKey={sectionKey}
-                title={humanizeKey(sectionKey)}
-                value={(selectedDraft.content as Record<string, unknown>)[sectionKey]}
+                sectionKey="selected-images"
+                title="Selected images"
+                value={selectedMediaItems}
               >
-                <SectionFieldsRenderer
-                  contentRoot={selectedDraft.content}
-                  defaultContent={defaultCmsPageContent[selectedPage.slug]}
-                  errorMap={validationErrors}
-                  mediaAssets={mediaAssets}
-                  onContentChange={updateSelectedContent}
-                  path={[sectionKey]}
-                  slug={selectedPage.slug}
-                  value={(selectedDraft.content as Record<string, unknown>)[sectionKey]}
+                <div className="admin-object-panel">
+                  <p className="admin-object-panel-label">Live media grid</p>
+                  <div className="admin-object-panel-body">
+                    <p className="admin-publishing-note">
+                      Add, reorder, or remove the exact images that should appear on
+                      {" "}
+                      <code>/media</code>. Save the draft, then publish it to update the live page.
+                    </p>
+                  </div>
+                </div>
+
+                <RepeatableField
+                  addLabel="Add image"
+                  error={validationErrors["sections.0.items"]?.[0]}
+                  getItemLabel={(index) =>
+                    selectedMediaItems[index]?.label ||
+                    selectedMediaItems[index]?.alt ||
+                    selectedMediaItems[index]?.publicId ||
+                    `Image ${index + 1}`
+                  }
+                  items={selectedMediaItems}
+                  label="Selected images"
+                  onAdd={() =>
+                    updateSelectedMediaItems([...selectedMediaItems, { ...emptyMediaGridItem }])
+                  }
+                  onMove={(fromIndex, toIndex) => {
+                    const nextItems = [...selectedMediaItems];
+                    const [movedItem] = nextItems.splice(fromIndex, 1);
+
+                    if (!movedItem) {
+                      return;
+                    }
+
+                    nextItems.splice(toIndex, 0, movedItem);
+                    updateSelectedMediaItems(nextItems);
+                  }}
+                  onRemove={(index) =>
+                    updateSelectedMediaItems(
+                      selectedMediaItems.filter((_, itemIndex) => itemIndex !== index),
+                    )
+                  }
+                  renderItem={(index) => (
+                    <ImagePickerField
+                      assets={mediaAssets}
+                      label={`Image ${index + 1}`}
+                      onChange={(nextValue) =>
+                        updateSelectedMediaItems(
+                          selectedMediaItems.map((item, itemIndex) =>
+                            itemIndex === index ? normalizeMediaGridItem(nextValue) : item,
+                          ),
+                        )
+                      }
+                      value={selectedMediaItems[index] ?? { ...emptyMediaGridItem }}
+                    />
+                  )}
                 />
               </SectionEditor>
-            ))}
+            ) : (
+              sectionKeys.map((sectionKey, index) => (
+                <SectionEditor
+                  defaultOpen={index === 0}
+                  errorCount={getSectionErrorCount(validationErrors, sectionKey)}
+                  key={sectionKey}
+                  onChange={(nextValue) =>
+                    updateSelectedContent({
+                      ...(selectedDraft.content as Record<string, unknown>),
+                      [sectionKey]: nextValue,
+                    })
+                  }
+                  sectionKey={sectionKey}
+                  title={humanizeKey(sectionKey)}
+                  value={(selectedDraft.content as Record<string, unknown>)[sectionKey]}
+                >
+                  <SectionFieldsRenderer
+                    contentRoot={selectedDraft.content}
+                    defaultContent={defaultCmsPageContent[selectedPage.slug]}
+                    errorMap={validationErrors}
+                    mediaAssets={mediaAssets}
+                    onContentChange={updateSelectedContent}
+                    path={[sectionKey]}
+                    slug={selectedPage.slug}
+                    value={(selectedDraft.content as Record<string, unknown>)[sectionKey]}
+                  />
+                </SectionEditor>
+              ))
+            )}
           </div>
 
           {/* Save draft */}
@@ -622,7 +828,7 @@ export function AdminPageCmsPanel({
             <div className="admin-panel-header">
               <div>
                 <p className="admin-v2-section-title">Validation</p>
-                <h3 className="admin-records-title" style={{ fontSize: "1.1rem" }}>
+                <h3 className="admin-records-title">
                   Resolve these fields before saving
                 </h3>
               </div>
