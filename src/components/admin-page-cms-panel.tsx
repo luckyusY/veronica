@@ -6,6 +6,7 @@ import { ArrowLeft, ExternalLink, FileJson, LoaderCircle, RefreshCcw, Rocket, Sa
 import { SectionEditor } from "@/components/admin/cms/SectionEditor";
 import { SectionFieldsRenderer } from "@/components/admin/cms/SectionFieldsRenderer";
 import { ImagePickerField } from "@/components/admin/cms/fields/ImagePickerField";
+import { MultiImagePickerField } from "@/components/admin/cms/fields/MultiImagePickerField";
 import { RepeatableField } from "@/components/admin/cms/fields/RepeatableField";
 import { getSelectedMediaGridItems } from "@/lib/artist-page-content";
 import { defaultCmsPageContent } from "@/lib/cms-defaults";
@@ -718,57 +719,21 @@ export function AdminPageCmsPanel({
                   <p className="admin-object-panel-label">Live media grid</p>
                   <div className="admin-object-panel-body">
                     <p className="admin-publishing-note">
-                      Add, reorder, or remove the exact images that should appear on
-                      {" "}
-                      <code>/media</code>. Save the draft, then publish it to update the live page.
+                      Click images from your library to add them to{" "}
+                      <code>/media</code>. Click again to deselect. Save the draft, then publish
+                      to update the live page.
                     </p>
                   </div>
                 </div>
 
-                <RepeatableField
-                  addLabel="Add image"
+                <MultiImagePickerField
+                  assets={mediaAssets}
                   error={validationErrors["sections.0.items"]?.[0]}
-                  getItemLabel={(index) =>
-                    selectedMediaItems[index]?.label ||
-                    selectedMediaItems[index]?.alt ||
-                    selectedMediaItems[index]?.publicId ||
-                    `Image ${index + 1}`
-                  }
-                  items={selectedMediaItems}
                   label="Selected images"
-                  onAdd={() =>
-                    updateSelectedMediaItems([...selectedMediaItems, { ...emptyMediaGridItem }])
+                  onChange={(nextItems) =>
+                    updateSelectedMediaItems(nextItems.map(normalizeMediaGridItem))
                   }
-                  onMove={(fromIndex, toIndex) => {
-                    const nextItems = [...selectedMediaItems];
-                    const [movedItem] = nextItems.splice(fromIndex, 1);
-
-                    if (!movedItem) {
-                      return;
-                    }
-
-                    nextItems.splice(toIndex, 0, movedItem);
-                    updateSelectedMediaItems(nextItems);
-                  }}
-                  onRemove={(index) =>
-                    updateSelectedMediaItems(
-                      selectedMediaItems.filter((_, itemIndex) => itemIndex !== index),
-                    )
-                  }
-                  renderItem={(index) => (
-                    <ImagePickerField
-                      assets={mediaAssets}
-                      label={`Image ${index + 1}`}
-                      onChange={(nextValue) =>
-                        updateSelectedMediaItems(
-                          selectedMediaItems.map((item, itemIndex) =>
-                            itemIndex === index ? normalizeMediaGridItem(nextValue) : item,
-                          ),
-                        )
-                      }
-                      value={selectedMediaItems[index] ?? { ...emptyMediaGridItem }}
-                    />
-                  )}
+                  value={selectedMediaItems}
                 />
               </SectionEditor>
             ) : (
