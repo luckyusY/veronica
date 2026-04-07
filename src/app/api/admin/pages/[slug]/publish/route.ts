@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { requireAdminAccess } from "@/lib/admin-guard";
 import { isCmsPageSlug, publishCmsPageDraft } from "@/lib/cms-store";
@@ -26,6 +27,11 @@ export async function POST(_request: Request, context: RouteContext) {
     }
 
     const item = await publishCmsPageDraft(slug, access.user.email);
+
+    revalidatePath(`/`); // Clear cache for root/home
+    if (item.route && item.route !== "/") {
+      revalidatePath(item.route); // Clear specific route
+    }
 
     return NextResponse.json({ success: true, item, message: "Page published." });
   } catch (error) {

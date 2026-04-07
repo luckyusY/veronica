@@ -20,12 +20,12 @@ export function SiteFooter({ settings }: SiteFooterProps) {
           <Link className="editorial-classic-wordmark editorial-classic-wordmark--centered" href="/" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.3rem' }}>
           <span style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              width: '72px', height: '72px', borderRadius: '50%',
+              width: '180px', height: '52px', borderRadius: '26px',
               background: 'radial-gradient(circle, rgba(201,169,110,0.22) 0%, rgba(201,169,110,0.06) 70%, transparent 100%)',
               border: '1px solid rgba(201,169,110,0.28)',
               boxShadow: '0 0 28px rgba(201,169,110,0.2)'
             }}>
-              <Image src="/logo.png" alt="VA Logo" width={54} height={54} style={{ objectFit: 'contain', filter: 'brightness(0) invert(1) sepia(1) saturate(2) hue-rotate(5deg)' }} />
+              <Image src="/logo.png" alt="VA Logo" width={140} height={28} style={{ objectFit: 'contain' }} />
             </span>
             <VeronicaWordmark className="site-footer-wordmark" />
           </Link>

@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { requireAdminAccess } from "@/lib/admin-guard";
 import { getCmsSiteSettings, updateCmsSiteSettings } from "@/lib/cms-store";
@@ -33,6 +34,8 @@ export async function PATCH(request: Request) {
 
     const payload = await request.json();
     const item = await updateCmsSiteSettings(payload);
+
+    revalidatePath("/", "layout"); // Reset everything since settings are global
 
     return NextResponse.json({ success: true, item });
   } catch (error) {

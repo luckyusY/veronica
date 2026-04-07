@@ -25,7 +25,7 @@ export default async function AdminLoginPage({
       <div className="admin-login-card">
         <div className="admin-login-brand">
           <div className="admin-login-monogram" style={{ background: 'transparent', border: 'none', padding: 0 }}>
-            <Image src="/logo.png" alt="VA" width={48} height={48} style={{ objectFit: 'contain' }} />
+            <Image src="/logo.png" alt="VA" width={110} height={24} style={{ objectFit: 'contain' }} />
           </div>
           <div>
             <p className="admin-login-brand-name">Veronica Adane</p>

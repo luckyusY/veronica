@@ -121,7 +121,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
           >
             <Link className="site-header-logo" href="/" onClick={() => setMenuOpen(false)}>
               <span aria-hidden="true" className="site-header-logo-mark" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: 'none' }}>
-                <Image src="/logo.png" alt="VA" width={32} height={32} style={{ objectFit: 'contain', filter: 'brightness(0) invert(1) sepia(1) saturate(2) hue-rotate(5deg)' }} />
+                <Image src="/logo.png" alt="VA" width={110} height={24} style={{ objectFit: 'contain' }} />
               </span>
               <span className="site-header-logo-copy site-header-logo-copy--stacked">
                 <span className="site-header-logo-rail">
@@ -193,7 +193,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
           <div className="site-header-mobile">
             <Link className="site-header-mobile-logo" href="/" onClick={() => setMenuOpen(false)}>
               <span aria-hidden="true" className="site-header-mobile-mark" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: 'none' }}>
-                <Image src="/logo.png" alt="VA" width={28} height={28} style={{ objectFit: 'contain', filter: 'brightness(0) invert(1) sepia(1) saturate(2) hue-rotate(5deg)' }} />
+                <Image src="/logo.png" alt="VA" width={90} height={20} style={{ objectFit: 'contain' }} />
               </span>
               <span className="site-header-mobile-logo-copy">
                 <span className="site-header-mobile-kicker">{settings.brandKicker}</span>
@@ -207,16 +207,18 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                 <a href="https://www.tiktok.com/@veronicaadane?_r=1&_t=ZS-95Kt36szYxt" target="_blank" rel="noreferrer" aria-label="TikTok" title="TikTok" className="mobile-social-icon"><TikTokIcon width={14} height={14} /></a>
                 <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook" className="mobile-social-icon"><FacebookIcon width={16} height={16} /></a>
                 <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram" className="mobile-social-icon"><InstagramIcon width={16} height={16} /></a>
+                <button
+                  aria-controls="mobile-navigation"
+                  aria-expanded={menuOpen}
+                  aria-label="Toggle navigation menu"
+                  title="Menu"
+                  className={`site-header-nav-toggle ${menuOpen ? "is-active" : ""}`.trim()}
+                  onClick={() => setMenuOpen(!menuOpen)}
+                  type="button"
+                >
+                  {menuOpen ? <X size={18} /> : <Menu size={18} />}
+                </button>
               </div>
-              <button
-                aria-expanded={menuOpen}
-                aria-label={menuOpen ? "Close menu" : "Open menu"}
-                className="site-header-menu-button"
-                onClick={() => setMenuOpen((value) => !value)}
-                type="button"
-              >
-                {menuOpen ? <X size={18} /> : <Menu size={18} />}
-              </button>
             </div>
           </div>
         </div>
