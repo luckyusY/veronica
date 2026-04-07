@@ -7133,7 +7133,7 @@ a:not([class]):hover {
 }
 
 .editorial-site-footer {
-  margin-top: 1.5rem;
+  margin-top: 0;
   border-top: 1px solid rgba(176, 141, 87, 0.14);
   background:
     radial-gradient(circle at top, rgba(176, 141, 87, 0.08), transparent 28%),

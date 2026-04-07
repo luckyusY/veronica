@@ -13,15 +13,23 @@ export function SiteFooter({ settings }: SiteFooterProps) {
 
   return (
     <footer className="editorial-site-footer">
-      <div className="section-shell py-10 sm:py-12" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2.5rem' }}>
+      <div className="section-shell py-6" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem' }}>
         
-        <div className="editorial-brand-stage editorial-brand-stage--footer" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-          <p className="site-footer-overline" style={{ marginBottom: '1.5rem' }}>Official Veronica Adane platform</p>
-          <Link className="editorial-classic-wordmark editorial-classic-wordmark--centered" href="/" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Image src="/logo.png" alt="VA Logo" width={42} height={42} style={{ objectFit: 'contain', marginBottom: '0.5rem' }} />
+        <div className="editorial-brand-stage editorial-brand-stage--footer" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '0.75rem' }}>
+          <p className="site-footer-overline" style={{ marginBottom: '0.25rem' }}>Official Veronica Adane platform</p>
+          <Link className="editorial-classic-wordmark editorial-classic-wordmark--centered" href="/" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: '80px', height: '80px', borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(201,169,110,0.18) 0%, rgba(201,169,110,0.04) 70%, transparent 100%)',
+              border: '1px solid rgba(201,169,110,0.22)',
+              boxShadow: '0 0 24px rgba(201,169,110,0.15)'
+            }}>
+              <Image src="/logo.png" alt="VA Logo" width={60} height={60} style={{ objectFit: 'contain' }} />
+            </span>
             <VeronicaWordmark className="site-footer-wordmark" />
           </Link>
-          <p className="editorial-brand-copy editorial-brand-copy--footer" style={{ marginTop: '1.5rem', maxWidth: '420px' }}>
+          <p className="editorial-brand-copy editorial-brand-copy--footer" style={{ maxWidth: '380px' }}>
             {settings.description}
           </p>
         </div>
