@@ -1,3 +1,5 @@
+import { defaultHomePageContent } from "@/lib/cms-defaults/home";
+import { defaultAboutPageContent } from "@/lib/cms-defaults/pages";
 import { defaultMediaLibrary } from "@/lib/cms-defaults/shared";
 import type {
   CmsMediaItem,
@@ -421,68 +423,11 @@ const researchedAboutPageContent: StandardPageContent = {
 };
 
 export function getHomePageContent(source?: HomePageContent): HomePageContent {
-  return {
-    ...researchedHomePageContent,
-    hero: {
-      ...researchedHomePageContent.hero,
-      slides: researchedHomePageContent.hero.slides.map((slide, index) => ({
-        ...slide,
-        image: mergeMediaItem(source?.hero?.slides?.[index]?.image, homeImages.heroSlides[index]),
-      })),
-    },
-    intro: {
-      ...researchedHomePageContent.intro,
-      image: mergeMediaItem(source?.intro?.image, homeImages.intro),
-    },
-    visualChapters: {
-      ...researchedHomePageContent.visualChapters,
-      items: researchedHomePageContent.visualChapters.items.map((item, index) => ({
-        ...item,
-        image: mergeMediaItem(source?.visualChapters?.items?.[index]?.image, homeImages.visualChapters[index]),
-      })),
-    },
-    heritage: {
-      ...researchedHomePageContent.heritage,
-      image: mergeMediaItem(source?.heritage?.image, homeImages.heritage),
-    },
-    rise: {
-      ...researchedHomePageContent.rise,
-      images: mergeMediaList(source?.rise?.images, homeImages.rise),
-    },
-    campaign: {
-      ...researchedHomePageContent.campaign,
-      featureImage: mergeMediaItem(source?.campaign?.featureImage, homeImages.campaignFeature),
-      supportingImages: mergeMediaList(source?.campaign?.supportingImages, homeImages.campaignSupport),
-    },
-  };
+  return source || defaultHomePageContent;
 }
 
 export function getAboutPageContent(source?: StandardPageContent): StandardPageContent {
-  const sourceSectionImages = Array.isArray(source?.sections)
-    ? source.sections.filter(hasImageSection).map((section) => section.image)
-    : [];
-
-  let imageIndex = 0;
-
-  return {
-    hero: {
-      ...researchedAboutPageContent.hero,
-      image: mergeMediaItem(source?.hero?.image, aboutImages.hero),
-    },
-    sections: researchedAboutPageContent.sections.map((section) => {
-      if (!hasImageSection(section)) {
-        return section;
-      }
-
-      const mergedSection = {
-        ...section,
-        image: mergeMediaItem(sourceSectionImages[imageIndex], section.image),
-      };
-
-      imageIndex += 1;
-      return mergedSection;
-    }),
-  };
+  return source || defaultAboutPageContent;
 }
 
 function normalizeMediaItem(candidate: unknown): CmsMediaItem | null {
