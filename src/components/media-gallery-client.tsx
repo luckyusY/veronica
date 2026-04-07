@@ -106,6 +106,19 @@ export function MediaGalleryClient({ items }: MediaGalleryClientProps) {
   const activeItem = lightboxIndex !== null ? items[lightboxIndex] : null;
   const selectionCount = selectedIds.size;
 
+  const downloadActiveItem = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!activeItem) return;
+    const link = document.createElement("a");
+    link.href = activeItem.url;
+    link.download = activeItem.alt || "veronica-image";
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }, [activeItem]);
+
   return (
     <>
       {/* ── Selection toolbar ── */}
@@ -257,12 +270,23 @@ export function MediaGalleryClient({ items }: MediaGalleryClientProps) {
             />
           </div>
 
-          {/* Caption */}
-          <div className="media-lightbox-caption" onClick={(e) => e.stopPropagation()}>
-            <p className="media-lightbox-caption-text">{activeItem.alt}</p>
-            <span className="media-lightbox-counter">
-              {lightboxIndex + 1} / {items.length}
-            </span>
+          {/* Caption and Actions */}
+          <div className="media-lightbox-bottom-bar" onClick={(e) => e.stopPropagation()}>
+            <div className="media-lightbox-caption">
+              <p className="media-lightbox-caption-text">{activeItem.alt}</p>
+              <span className="media-lightbox-counter">
+                {lightboxIndex + 1} / {items.length}
+              </span>
+            </div>
+            
+            <button
+              className="media-lightbox-download-action"
+              onClick={downloadActiveItem}
+              type="button"
+            >
+              <Download size={14} />
+              <span>Download High-Res</span>
+            </button>
           </div>
 
           {/* Next */}

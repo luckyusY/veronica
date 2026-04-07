@@ -4,229 +4,229 @@ import { defaultMediaLibrary } from "@/lib/cms-defaults/shared";
 export const defaultHomePageContent: HomePageContent = {
   hero: {
     verticalLabel: "VERONICA ADANE / OFFICIAL",
-    headlineTop: "Faith, glamour, and a voice",
-    headlineLines: ["carrying Ethiopia", "far beyond its borders"],
-    primaryAction: { href: "/about", label: "Read Biography" },
-    secondaryAction: { href: "/music", label: "Enter Music Archive" },
+    headlineTop: "The new era of Ethiopian sound",
+    headlineLines: ["Taking the stage", "across the globe"],
+    primaryAction: { href: "/music", label: "Listen to Meteriyaye" },
+    secondaryAction: { href: "/events", label: "View Tour Dates" },
     slides: [
       {
-        eyebrow: "Global Stage",
-        title: "Faith, glamour, and a voice carrying Ethiopia far beyond its borders.",
+        eyebrow: "Meteriyaye Album",
+        title: "The highly anticipated debut album is shattering streaming records.",
         copy:
-          "Veronica Adane stands at the meeting point of culture, discipline, and modern stardom. Her presence is cinematic, but the journey behind it is deeply earned.",
+          "Experience the project that is redefining the sound of modern Ethiopia. Stream Meteriyaye now on all platforms.",
         image: defaultMediaLibrary.hero,
-        stat: "41M+ album views",
-        accent: "Meteriyaye era",
+        stat: "41M+ streams",
+        accent: "Out Now",
       },
       {
-        eyebrow: "Signature Portrait",
-        title: "A woman whose elegance is matched by conviction, discipline, and purpose.",
+        eyebrow: "Live Experience",
+        title: "A stage presence that demands the room, backed by a world-class band.",
         copy:
-          "From journalism and advocacy to sold-out live performance, Veronica's public image is built on both beauty and substance.",
-        image: defaultMediaLibrary.cliff,
-        stat: "1.8M+ TikTok followers",
-        accent: "Official portraiture",
+          "From intimate venues to arena stages, Veronica's live show brings the emotion and energy of her records straight to the fans.",
+        image: defaultMediaLibrary.stage,
+        stat: "Global Tour",
+        accent: "On the road",
       },
       {
         eyebrow: "Scarlet Campaign",
-        title: "Romance, spectacle, and release-era drama captured with confidence.",
+        title: "Romance, spectacle, and high-impact visuals.",
         copy:
-          "Her visual language can move from intimate portraiture to high-impact campaigns without losing the warmth and identity that make her recognisable.",
+          "Dive into the visual world built around the latest singles. A cinematic journey accompanying the music.",
         image: defaultMediaLibrary.heartMid,
-        stat: "Multiple hit records",
-        accent: "Release campaign",
+        stat: "New Music Video",
+        accent: "Watch Now",
       },
       {
-        eyebrow: "Couture Studio",
-        title: "Rooted in heritage, styled with luxury, and ready for an international audience.",
+        eyebrow: "Official Merch",
+        title: "Exclusive collections dropping soon for fans around the world.",
         copy:
-          "Every frame should feel like a chapter in a growing legacy: Ethiopian, contemporary, and unmistakably Veronica.",
+          "Sign up to get early access to limited edition drops, vinyl releases, and exclusive tour merchandise.",
         image: defaultMediaLibrary.furClose,
-        stat: "Africa to diaspora tours",
-        accent: "Brand-led imagery",
+        stat: "Coming Soon",
+        accent: "Store",
       },
     ],
   },
   intro: {
-    eyebrow: "Biography",
-    title: "A journey shaped by faith, study, sacrifice, and the courage to keep going.",
+    eyebrow: "The Breakdown",
+    title: "An unstoppable momentum defining the cultural moment.",
     paragraphs: [
-      "Veronica Adane is an Ethiopian singer, songwriter, actress, and journalist whose story is built on faith, discipline, sacrifice, and purpose.",
-      "Born and raised in Addis Ababa, she rose from recording cover songs on a single phone to becoming one of Ethiopia's most influential female artists.",
-      "Her world now stretches across music, film, advocacy, and international stages while staying rooted in family, culture, and the pride of Azmari heritage.",
+      "Veronica Adane has rapidly become the central voice of a new generation. Her ability to blend traditional Ethiopian elements with contemporary pop records has earned her a fast-growing international audience.",
+      "With the release of her smash hit album, Meteriyaye, the focus has shifted entirely to the stage, the fans, and pushing the boundaries of what is possible in East African music.",
     ],
     image: defaultMediaLibrary.cliff,
     stats: [
       {
         value: "41M+",
-        label: "Album momentum",
-        detail: "Meteriyaye reached more than 41 million YouTube views within one year.",
+        label: "Album Views",
+        detail: "Meteriyaye reached more than 41 million views in record time.",
       },
       {
         value: "1.8M+",
-        label: "Social reach",
+        label: "Social Reach",
         detail:
-          "A fast-moving audience following her across TikTok, Instagram, Facebook, and beyond.",
+          "A massive digital community supporting every release.",
       },
       {
-        value: "Global",
-        label: "Tour energy",
+        value: "Sold Out",
+        label: "Global Tour",
         detail:
-          "From Ethiopian cities to diaspora venues across the US, Europe, and the Middle East.",
+          "Unprecedented demand across North America, Europe, and the Middle East.",
       },
     ],
   },
   visualChapters: {
-    eyebrow: "Visual Chapters",
-    title: "Meteriyaye",
+    eyebrow: "Latest Visuals",
+    title: "Watch the movement unfold",
     description:
-      "Real imagery now drives the homepage with more drama, elegance, and character. Veronica's portraits move between black-tie studio clarity, gilded couture, warm brown fashion, and scarlet campaign energy.",
-    chips: ["Portraiture", "Release Eras", "Couture", "Stage Presence"],
+      "A look into the cinematic side of Veronica's releases. High-production music videos and live sessions that translate the records into visual spectacle.",
+    chips: ["Music Videos", "Live Sessions", "Behind the Scenes"],
     items: [
       {
-        title: "Full Portrait",
-        era: "Official Portraiture",
-        note: "A modern icon framed with restraint and confidence.",
-        image: defaultMediaLibrary.furSeated,
+        title: "Meteriyaye Tour",
+        era: "Live on Stage",
+        note: "Capturing the undeniable energy of a sold-out crowd.",
+        image: defaultMediaLibrary.crowd,
       },
       {
         title: "Crystal Couture",
-        era: "Meteriyaye Era",
-        note: "A gilded portrait language for hero scenes and premiere moments.",
+        era: "Official Visuals",
+        note: "The signature look defining the current era of releases.",
         image: defaultMediaLibrary.stage,
       },
       {
         title: "Scarlet Hearts",
-        era: "Release Campaign",
-        note: "Release-ready visuals that bring energy, desire, and campaign colour.",
+        era: "Music Video",
+        note: "The visual counterpart to the fan-favorite anthem.",
         image: defaultMediaLibrary.heartClose,
       },
     ],
   },
   testimonials: {
-    eyebrow: "Testimonials",
-    title: "Press, producers, and audiences speak about the same thing: presence.",
+    eyebrow: "The Reception",
+    title: "Critics and fans agree: the live show is a mandatory experience.",
     description:
-      "Veronica's work lands through voice, image, discipline, and the feeling that every release belongs to a larger era.",
+      "Whether it’s in the studio or on the stage, the execution is flawless. Read what people are saying about the latest run of shows.",
     items: [
       {
         quote:
-          "Veronica's performances do not feel like entertainment first. They feel like a cultural chapter, photographed, paced, and delivered with intention.",
+          "One of the most commanding and energetic live sets we have seen this year. She owned the room from the first note.",
         name: "C. Desta",
-        role: "Curator / Editorial Producer",
+        role: "Live Music Review",
       },
       {
         quote:
-          "The songwriting carries identity without overexplaining it. The visual direction onstage makes every release feel like a premiere.",
+          "The album translated to the stage perfectly. A rare instance where the live vocals actually outshine the studio recordings.",
         name: "A. Alemu",
-        role: "Press & Partnerships",
+        role: "Music Critic",
       },
       {
         quote:
-          "A rare combination of discipline and stage presence. The project feels premium end to end, from imagery to ticket flow.",
+          "The crowd knew every single word. The connection she has with her audience is incredible to witness.",
         name: "N. Tesfaye",
-        role: "Tour Coordinator",
+        role: "Tour Promoter",
       },
       {
         quote:
-          "Every drop feels connected to an era. The experience reads like an artist's world, not a template storefront.",
+          "Every visual, every outfit, every note feels intentional. She isn't just an artist, she's an entire era.",
         name: "M. Robinson",
-        role: "Fan / Collector",
+        role: "Fan & Collector",
       },
     ],
   },
   heritage: {
-    eyebrow: "Heritage",
-    title: "An artist shaped by family, culture, and the courage to reclaim identity.",
+    eyebrow: "Live Experience",
+    title: "Bringing the sound of Ethiopia to stages worldwide.",
     description:
-      "Veronica's story begins with her father's legacy and her decision to wear the Azmari identity with pride instead of shame. That foundation should be visible in the home experience from the first scroll.",
-    tags: ["Azmari", "Family Legacy", "Faith", "Identity"],
-    image: defaultMediaLibrary.microphone,
+      "Every show is treated as a cultural event. With a full live band and breathtaking production, the current tour is designed to be an unforgettable, high-energy experience.",
+    tags: ["Live Band", "Global Tour", "Stage Production", "Fan Connection"],
+    image: defaultMediaLibrary.aerialCrowd,
   },
   rise: {
-    eyebrow: "Rise",
-    title: "A career that started with one phone and grew through relentless live performance.",
+    eyebrow: "Tour Summary",
+    title: "From intimate local venues to international arenas.",
     description:
-      "Before the sold-out rooms, the international routing, and the recognition, there was a student recording covers with minimal resources and funding the dream step by step.",
+      "The demand for live dates continues to grow as the music reaches new territories. Check the touring schedule regularly as more dates are added.",
     nationalNote:
-      "Addis Ababa, Gondar, Hawassa, Harar, Dire Dawa, Bahir Dar, Arba Minch, Dilla, and many more cities across Ethiopia.",
+      "Massive stadium and hall performances in Addis Ababa, Gondar, Bahir Dar, and across Ethiopia.",
     internationalNote:
-      "Atlanta, DMV, Los Angeles, Seattle, Denver, Oakland, Amsterdam, Paris, Zurich, Oslo, Frankfurt, and Stockholm.",
-    images: [defaultMediaLibrary.heartClose, defaultMediaLibrary.crowd],
+      "Selling out premiere venues in major routing cities including Los Angeles, Atlanta, Amsterdam, Paris, and Stockholm.",
+    images: [defaultMediaLibrary.stage, defaultMediaLibrary.crowd],
   },
   campaign: {
-    eyebrow: "Presence",
+    eyebrow: "Discography",
     title:
-      "Music, film, advocacy, and glamour now sit inside one unmistakable public identity.",
+      "Streaming everywhere. Hit singles, full-length projects, and visual albums.",
     description:
-      "Veronica moves easily between performance, screen presence, and cultural advocacy. The home experience should carry that same range without losing elegance or restraint.",
-    featureImage: defaultMediaLibrary.aerialCrowd,
-    supportingImages: [defaultMediaLibrary.stage, defaultMediaLibrary.furSeated],
+      "Dive into the catalogue that started the movement. Available across Apple Music, Spotify, YouTube, and all major digital platforms.",
+    featureImage: defaultMediaLibrary.hero,
+    supportingImages: [defaultMediaLibrary.furSeated, defaultMediaLibrary.cliff],
   },
   pathways: {
     eyebrow: "Explore",
-    title: "Step deeper into the catalogue, the stage world, and the public archive.",
+    title: "Navigate the official Veronica Adane platform.",
     description:
-      "The strongest homepages do not stop at introduction. They guide people cleanly into music, live performance, and the verified story behind the artist.",
+      "Find everything you need below—from the full discography and tour dates, to official press resources.",
     items: [
       {
         title: "Music & Videos",
         href: "/music",
         accent: "Discography",
         description:
-          "Enter the catalogue, watch featured visuals, and move through Veronica's major release eras.",
+          "Stream the latest releases and watch the official music videos all in one place.",
         note: "Albums, singles, visuals",
       },
       {
-        title: "Events",
+        title: "Tour Dates",
         href: "/events",
-        accent: "Live Performance",
+        accent: "Live Shows",
         description:
-          "Follow upcoming cities, tour momentum, and the performance world that made her one of Ethiopia's most in-demand live artists.",
-        note: "Tours, tickets, routing",
+          "Secure tickets to upcoming shows in your city before they sell out completely.",
+        note: "Tickets, routing, VIP",
       },
       {
-        title: "Media & Press",
+        title: "Official Media",
         href: "/media",
-        accent: "Recognition",
+        accent: "Press Archive",
         description:
-          "Open the archive of press, advocacy, interviews, awards, and official cultural milestones.",
+          "High-resolution official imagery and campaign assets available for press and media partners.",
         note: "Press, awards, advocacy",
       },
     ],
   },
   archive: {
-    eyebrow: "Official Image Archive",
-    title: "Veronica's own portrait library now gives the brand a clearer signature.",
+    eyebrow: "Connect",
+    title: "Join the community and stay updated on the latest drops.",
     description:
-      "The world now moves through signature black portraiture, crystal couture, warm studio fashion, and scarlet campaign imagery. That range gives the homepage more authority, emotion, and memorability.",
-    primaryAction: { href: "/media", label: "Open Press Archive" },
-    secondaryAction: { href: "/about", label: "Read Biography" },
+      "Follow Veronica across social platforms to see behind-the-scenes moments, studio sessions, and real-time tour updates.",
+    primaryAction: { href: "/music", label: "Stream on Spotify" },
+    secondaryAction: { href: "/events", label: "Find Tour Tickets" },
     credits: [
       {
-        label: "Signature Black Portrait",
-        note: "Studio portraiture for biography, press, and timeless artist presentation.",
+        label: "TikTok",
+        note: "Viral moments and direct fan interactions.",
       },
       {
-        label: "Crystal Couture Set",
-        note: "Luxury marble-and-gold imagery for hero scenes and premiere moments.",
+        label: "Instagram",
+        note: "Official photography, tour grids, and fashion moments.",
       },
       {
-        label: "Fur Studio Series",
-        note: "Warm brown fashion portraits supporting partnerships, commerce, and editorial storytelling.",
+        label: "YouTube",
+        note: "Music video premieres and live stage recordings.",
       },
       {
-        label: "Scarlet Campaign Series",
-        note: "High-saturation red visuals for releases, campaigns, and event storytelling.",
+        label: "Spotify / Apple Music",
+        note: "The primary streaming destinations for all official releases.",
       },
       {
-        label: "Performance Presence",
-        note: "Imagery that balances glamour, stage energy, and emotional closeness.",
+        label: "Facebook",
+        note: "Community connection and regional announcements.",
       },
       {
-        label: "Official Veronica Imagery",
-        note: "A consistent visual library built from Veronica's own portraits and campaign photography.",
+        label: "Official Store",
+        note: "Merchandise, vinyl releases, and physical goods coming soon.",
       },
     ],
   },
 };
+
