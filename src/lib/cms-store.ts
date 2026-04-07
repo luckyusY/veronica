@@ -535,8 +535,9 @@ export async function listCmsPages() {
 export async function getCmsPage<TSlug extends CmsPageSlug>(
   slug: TSlug,
 ): Promise<CmsPageDocument<CmsPageContentMap[TSlug]>> {
-  noStore();
-
+  // NOTE: noStore() removed — public pages use ISR via the page-level
+  // `export const revalidate = N` directive instead of per-request opt-out.
+  // Admin routes use getCmsWorkspacePage() which keeps noStore().
   try {
     const page = await getPageDocument(slug);
 

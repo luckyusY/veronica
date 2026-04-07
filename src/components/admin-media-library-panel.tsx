@@ -1,7 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { AlertTriangle, CloudUpload, Info, LoaderCircle, RefreshCcw } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
+import {
+  AlertTriangle,
+  CheckSquare,
+  CloudUpload,
+  Info,
+  LoaderCircle,
+  RefreshCcw,
+  Square,
+  Trash2,
+} from "lucide-react";
 
 const PAGE_SIZE = 18;
 import { AssetCard } from "@/components/admin/media/AssetCard";
@@ -68,7 +77,21 @@ export function AdminMediaLibraryPanel({
   const [deleteCandidate, setDeleteCandidate] = useState<CmsMediaAsset | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
-  // Reset page when filters/search change
+  // ── Bulk select ──────────────────────────────────────────────
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkDeleteConfirm, setBulkDeleteConfirm] = useState(false);
+  const [bulkDeleting, setBulkDeleting] = useState(false);
+
+  const toggleSelect = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  // ── Filtered / sorted list ──────────────────────────────────
   const filteredMedia = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
 
@@ -101,6 +124,11 @@ export function AdminMediaLibraryPanel({
 
   const hasMore = visibleCount < filteredMedia.length;
 
+  // Derive select-all state from filtered list
+  const allFilteredIds = useMemo(() => filteredMedia.map((a) => a.id), [filteredMedia]);
+  const allSelected = allFilteredIds.length > 0 && allFilteredIds.every((id) => selectedIds.has(id));
+  const someSelected = selectedIds.size > 0;
+
   function changeFilter(value: MediaFilter) {
     setMediaFilter(value);
     setVisibleCount(PAGE_SIZE);
@@ -116,6 +144,15 @@ export function AdminMediaLibraryPanel({
     setVisibleCount(PAGE_SIZE);
   }
 
+  function toggleSelectAll() {
+    if (allSelected) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(allFilteredIds));
+    }
+  }
+
+  // ── Sync bundled assets ─────────────────────────────────────
   async function syncBundledAssets() {
     setBusyKey("sync-library");
     setFeedback(null);
@@ -144,6 +181,7 @@ export function AdminMediaLibraryPanel({
     });
   }
 
+  // ── Copy helpers ─────────────────────────────────────────────
   async function copyValue(value: string, label: string) {
     try {
       await navigator.clipboard.writeText(value);
@@ -153,10 +191,9 @@ export function AdminMediaLibraryPanel({
     }
   }
 
+  // ── Single delete ────────────────────────────────────────────
   async function deleteAsset() {
-    if (!deleteCandidate) {
-      return;
-    }
+    if (!deleteCandidate) return;
 
     setBusyKey(`delete:${deleteCandidate.id}`);
     setFeedback(null);
@@ -185,12 +222,69 @@ export function AdminMediaLibraryPanel({
       next.delete(payload.item.publicId);
       return next;
     });
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      next.delete(payload.item.id);
+      return next;
+    });
     setDeleteCandidate(null);
     setBusyKey(null);
     setFeedback({
       tone: "ok",
       message: payload.message ?? `${payload.item.title} deleted.`,
     });
+  }
+
+  // ── Bulk delete ──────────────────────────────────────────────
+  async function bulkDelete() {
+    if (selectedIds.size === 0) return;
+
+    setBulkDeleting(true);
+    setBulkDeleteConfirm(false);
+    setFeedback(null);
+
+    const ids = [...selectedIds];
+    let successCount = 0;
+    const errors: string[] = [];
+
+    for (const id of ids) {
+      const response = await fetch(`/api/admin/media?id=${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const errMsg = await readApiError(response);
+        errors.push(errMsg);
+        continue;
+      }
+
+      const payload = (await response.json()) as { item: CmsMediaAsset };
+      const deletedId = payload.item.id;
+      const deletedPublicId = payload.item.publicId;
+
+      setMediaAssets((current) => current.filter((a) => a.id !== deletedId));
+      setUsageMap((current) => {
+        const next = new Map(current);
+        next.delete(deletedPublicId);
+        return next;
+      });
+      successCount++;
+    }
+
+    setSelectedIds(new Set());
+    setBulkDeleting(false);
+
+    if (errors.length > 0) {
+      setFeedback({
+        tone: "error",
+        message: `${successCount} deleted, ${errors.length} failed: ${errors[0]}`,
+      });
+    } else {
+      setFeedback({
+        tone: "ok",
+        message: `${successCount} asset${successCount === 1 ? "" : "s"} deleted.`,
+      });
+    }
   }
 
   const deleteUsage = deleteCandidate ? usageMap.get(deleteCandidate.publicId) ?? null : null;
@@ -309,14 +403,54 @@ export function AdminMediaLibraryPanel({
             sort={mediaSort}
           />
 
+          {/* ── Bulk-select toolbar ── */}
+          <div className="admin-media-bulk-bar">
+            <button
+              aria-label={allSelected ? "Deselect all" : "Select all visible"}
+              className="admin-media-bulk-toggle"
+              onClick={toggleSelectAll}
+              title={allSelected ? "Deselect all" : "Select all visible"}
+              type="button"
+            >
+              {allSelected ? <CheckSquare size={15} /> : <Square size={15} />}
+              <span>
+                {someSelected
+                  ? `${selectedIds.size} selected`
+                  : `Select all (${filteredMedia.length})`}
+              </span>
+            </button>
+
+            {someSelected && (
+              <button
+                className="admin-button admin-button--danger-ghost"
+                disabled={bulkDeleting}
+                onClick={() => setBulkDeleteConfirm(true)}
+                type="button"
+              >
+                {bulkDeleting ? (
+                  <LoaderCircle className="animate-spin" size={15} />
+                ) : (
+                  <Trash2 size={15} />
+                )}
+                <span>
+                  {bulkDeleting
+                    ? "Deleting…"
+                    : `Delete ${selectedIds.size} asset${selectedIds.size === 1 ? "" : "s"}`}
+                </span>
+              </button>
+            )}
+          </div>
+
           <div className="admin-media-grid">
             {visibleMedia.map((asset) => (
               <AssetCard
                 asset={asset}
+                isSelected={selectedIds.has(asset.id)}
                 key={asset.publicId}
                 onCopyId={(value) => void copyValue(value, "Public ID")}
                 onCopyUrl={(value) => void copyValue(value, "Asset URL")}
                 onDelete={setDeleteCandidate}
+                onToggleSelect={toggleSelect}
                 onViewUsage={setUsageItem}
                 usage={usageMap.get(asset.publicId) ?? null}
               />
@@ -347,6 +481,7 @@ export function AdminMediaLibraryPanel({
 
       {usageItem ? <UsagePopover item={usageItem} onClose={() => setUsageItem(null)} /> : null}
 
+      {/* ── Single delete confirmation ── */}
       {deleteCandidate ? (
         <div className="admin-modal-overlay" role="presentation">
           <div className="admin-modal">
@@ -408,6 +543,45 @@ export function AdminMediaLibraryPanel({
                   <AlertTriangle size={15} />
                 )}
                 <span>Delete asset</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {/* ── Bulk delete confirmation ── */}
+      {bulkDeleteConfirm ? (
+        <div className="admin-modal-overlay" role="presentation">
+          <div className="admin-modal">
+            <div className="admin-panel-header">
+              <div>
+                <p className="section-label">Bulk delete</p>
+                <h3 className="display-title mt-3 text-3xl text-white">
+                  Delete {selectedIds.size} asset{selectedIds.size === 1 ? "" : "s"}?
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-white/68">
+                  This will permanently remove {selectedIds.size} asset{selectedIds.size === 1 ? "" : "s"} from
+                  Cloudinary and the media library. Assets in use will leave broken image slots
+                  until replaced.
+                </p>
+              </div>
+            </div>
+
+            <div className="admin-button-row mt-5">
+              <button
+                className="admin-button admin-button--ghost"
+                onClick={() => setBulkDeleteConfirm(false)}
+                type="button"
+              >
+                <span>Cancel</span>
+              </button>
+              <button
+                className="admin-button"
+                onClick={() => void bulkDelete()}
+                type="button"
+              >
+                <Trash2 size={15} />
+                <span>Delete {selectedIds.size} asset{selectedIds.size === 1 ? "" : "s"}</span>
               </button>
             </div>
           </div>

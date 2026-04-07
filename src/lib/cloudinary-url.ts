@@ -21,3 +21,25 @@ export function cloudinaryThumb(
     return url;
   }
 }
+
+/**
+ * Injects q_auto,f_auto into a Cloudinary URL without changing dimensions.
+ * Delivers WebP/AVIF automatically and selects optimal quality.
+ * Falls back to the original URL if it doesn't match the expected pattern.
+ */
+export function cloudinaryOptimized(url: string): string {
+  try {
+    const marker = "/upload/";
+    const idx = url.indexOf(marker);
+
+    if (idx === -1) return url;
+
+    // Don't double-apply transforms
+    const afterUpload = url.slice(idx + marker.length);
+    if (afterUpload.startsWith("q_auto") || afterUpload.startsWith("f_auto")) return url;
+
+    return url.slice(0, idx + marker.length) + "q_auto,f_auto/" + afterUpload;
+  } catch {
+    return url;
+  }
+}

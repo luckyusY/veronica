@@ -13525,3 +13525,349 @@ a:not([class]):hover {
 
 .cip-sel-remove:hover { background: rgba(220,38,38,1); }
 
+/* ═══════════════════════════════════════════════════
+   PUBLIC MEDIA PAGE — Multi-select + Lightbox
+   ═══════════════════════════════════════════════════ */
+
+/* Interactive tile */
+.media-grid-tile--interactive {
+  cursor: pointer;
+  outline: none;
+}
+.media-grid-tile--interactive:focus-visible {
+  box-shadow: 0 0 0 3px rgba(194, 154, 103, 0.55);
+}
+
+/* Selected tile ring */
+.media-grid-tile--selected {
+  box-shadow:
+    0 0 0 3px rgba(194, 154, 103, 0.85),
+    0 20px 40px rgba(18, 13, 11, 0.2);
+}
+.media-grid-tile--selected .media-grid-photo {
+  transform: scale(1.03);
+}
+
+/* Per-tile checkbox */
+.media-grid-checkbox {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.65rem;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  background: rgba(10, 8, 7, 0.55);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.18s, background 0.18s, border-color 0.18s;
+  color: #fff;
+  pointer-events: none;
+}
+.media-grid-tile--interactive:hover .media-grid-checkbox,
+.media-grid-tile--selected .media-grid-checkbox {
+  opacity: 1;
+}
+.media-grid-checkbox--checked {
+  border-color: rgba(194, 154, 103, 0.95);
+  background: rgba(194, 154, 103, 0.9);
+  opacity: 1 !important;
+}
+
+/* Hover "View" hint pill */
+.media-grid-open-hint {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  z-index: 4;
+  padding: 0.28rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(10, 8, 7, 0.62);
+  backdrop-filter: blur(8px);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(245, 242, 236, 0.88);
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.media-grid-tile--interactive:hover .media-grid-open-hint {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Selection toolbar (floating bottom bar) ── */
+.media-select-toolbar {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem 0.6rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(194, 154, 103, 0.28);
+  background:
+    linear-gradient(180deg, rgba(28, 23, 19, 0.96), rgba(16, 13, 11, 0.98));
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  animation: mediaToolbarIn 0.24s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes mediaToolbarIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+.media-select-toolbar-count {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(218, 185, 120, 0.9);
+  white-space: nowrap;
+}
+
+.media-select-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.media-select-toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.38rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(245, 242, 236, 0.85);
+  cursor: pointer;
+  transition: background 0.16s, border-color 0.16s;
+  white-space: nowrap;
+}
+.media-select-toolbar-btn:hover {
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.media-select-toolbar-btn--download {
+  border-color: rgba(194, 154, 103, 0.35);
+  color: rgba(218, 185, 120, 0.92);
+}
+.media-select-toolbar-btn--download:hover {
+  background: rgba(194, 154, 103, 0.1);
+  border-color: rgba(194, 154, 103, 0.55);
+}
+.media-select-toolbar-btn--clear {
+  padding: 0.38rem 0.6rem;
+}
+
+/* ── Lightbox ── */
+.media-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: rgba(6, 5, 4, 0.92);
+  backdrop-filter: blur(14px);
+  animation: lightboxIn 0.22s ease both;
+}
+@keyframes lightboxIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.media-lightbox-frame {
+  position: relative;
+  width: min(90vw, 80vh * (4/5));
+  height: min(90vh, 90vw * (5/4));
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+}
+
+.media-lightbox-image {
+  object-fit: contain;
+}
+
+.media-lightbox-close {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 210;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(14, 12, 10, 0.72);
+  color: rgba(245, 242, 236, 0.85);
+  cursor: pointer;
+  transition: background 0.16s;
+}
+.media-lightbox-close:hover {
+  background: rgba(30, 25, 22, 0.95);
+}
+
+.media-lightbox-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 210;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(14, 12, 10, 0.68);
+  color: rgba(245, 242, 236, 0.82);
+  cursor: pointer;
+  transition: background 0.16s;
+}
+.media-lightbox-nav:hover {
+  background: rgba(30, 25, 22, 0.9);
+  color: #fff;
+}
+.media-lightbox-nav--prev { left: 1rem; }
+.media-lightbox-nav--next { right: 1rem; }
+
+.media-lightbox-caption {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 210;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 8, 7, 0.68);
+  backdrop-filter: blur(10px);
+  max-width: min(90vw, 40rem);
+}
+.media-lightbox-caption-text {
+  margin: 0;
+  font-size: 0.72rem;
+  color: rgba(245, 242, 236, 0.75);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.media-lightbox-counter {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(218, 185, 120, 0.75);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   ADMIN MEDIA — Bulk select
+   ═══════════════════════════════════════════════════ */
+
+/* Per-card checkbox pill */
+.admin-media-select-checkbox {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  background: rgba(10, 8, 7, 0.5);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.16s, background 0.16s, border-color 0.16s;
+}
+.admin-media-asset-card:hover .admin-media-select-checkbox,
+.admin-media-asset-card--selected .admin-media-select-checkbox {
+  opacity: 1;
+}
+.admin-media-select-checkbox--checked {
+  border-color: rgba(176, 141, 87, 0.9);
+  background: rgba(176, 141, 87, 0.85);
+  opacity: 1 !important;
+}
+.admin-media-select-checkbox:hover {
+  opacity: 1;
+  border-color: rgba(176, 141, 87, 0.7);
+}
+
+/* Selected card ring */
+.admin-media-asset-card--selected {
+  border-color: rgba(176, 141, 87, 0.6);
+  box-shadow: 0 0 0 2px rgba(176, 141, 87, 0.3);
+}
+
+/* Bulk toolbar row */
+.admin-media-bulk-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.admin-media-bulk-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.38rem 0.85rem;
+  border-radius: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(237, 237, 237, 0.65);
+  cursor: pointer;
+  transition: background 0.16s, color 0.16s, border-color 0.16s;
+}
+.admin-media-bulk-toggle:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(245, 242, 236, 0.9);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Danger ghost button (bulk delete) */
+.admin-button--danger-ghost {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.06);
+  color: rgba(252, 165, 165, 0.88);
+}
+.admin-button--danger-ghost:hover:not(:disabled) {
+  border-color: rgba(239, 68, 68, 0.55);
+  background: rgba(239, 68, 68, 0.12);
+  color: rgba(252, 165, 165, 1);
+}

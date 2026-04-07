@@ -1,24 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import { AlertTriangle, Copy, ImageIcon, Trash2, Video } from "lucide-react";
+import { memo } from "react";
+import { AlertTriangle, Check, Copy, ImageIcon, Trash2, Video } from "lucide-react";
 import type { CmsMediaAsset, CmsMediaUsageRecord } from "@/lib/cms-types";
 import { cloudinaryThumb } from "@/lib/cloudinary-url";
 
 type AssetCardProps = {
   asset: CmsMediaAsset;
+  isSelected: boolean;
   onCopyId: (value: string) => void;
   onCopyUrl: (value: string) => void;
   onDelete: (asset: CmsMediaAsset) => void;
+  onToggleSelect: (id: string) => void;
   onViewUsage: (usage: CmsMediaUsageRecord) => void;
   usage: CmsMediaUsageRecord | null;
 };
 
-export function AssetCard({
+export const AssetCard = memo(function AssetCard({
   asset,
+  isSelected,
   onCopyId,
   onCopyUrl,
   onDelete,
+  onToggleSelect,
   onViewUsage,
   usage,
 }: AssetCardProps) {
@@ -26,7 +31,7 @@ export function AssetCard({
   const thumbSrc = cloudinaryThumb(asset.secureUrl, { width: 480, height: 320, crop: "fill" });
 
   return (
-    <article className="admin-media-asset-card">
+    <article className={`admin-media-asset-card${isSelected ? " admin-media-asset-card--selected" : ""}`}>
       <div className="admin-media-asset-preview">
         {asset.resourceType === "video" ? (
           <div className="admin-media-asset-video-thumb">
@@ -44,6 +49,21 @@ export function AssetCard({
             width={480}
           />
         )}
+
+        {/* Checkbox overlay — always visible on selected, hover-visible otherwise */}
+        <button
+          aria-checked={isSelected}
+          aria-label={isSelected ? "Deselect asset" : "Select asset"}
+          className={`admin-media-select-checkbox${isSelected ? " admin-media-select-checkbox--checked" : ""}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleSelect(asset.id);
+          }}
+          role="checkbox"
+          type="button"
+        >
+          {isSelected && <Check size={11} strokeWidth={3} />}
+        </button>
 
         {/* Usage badge overlay */}
         <div className="admin-media-asset-overlay">
@@ -98,4 +118,4 @@ export function AssetCard({
       </div>
     </article>
   );
-}
+});
