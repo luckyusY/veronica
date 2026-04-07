@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { YoutubeIcon, FacebookIcon, InstagramIcon } from "@/components/social-icons";
 import { VeronicaWordmark } from "@/components/veronica-wordmark";
 import type { CmsSiteSettings } from "@/lib/cms-types";
@@ -12,15 +13,26 @@ export function SiteFooter({ settings }: SiteFooterProps) {
 
   return (
     <footer className="editorial-site-footer">
-      <div className="section-shell py-10 sm:py-12" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>
+      <div className="section-shell py-10 sm:py-12" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2.5rem' }}>
+        
+        <div className="editorial-brand-stage editorial-brand-stage--footer" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+          <p className="site-footer-overline" style={{ marginBottom: '1.5rem' }}>Official Veronica Adane platform</p>
+          <Link className="editorial-classic-wordmark editorial-classic-wordmark--centered" href="/" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Image src="/logo.png" alt="VA Logo" width={42} height={42} style={{ objectFit: 'contain', marginBottom: '0.5rem' }} />
+            <VeronicaWordmark className="site-footer-wordmark" />
+          </Link>
+          <p className="editorial-brand-copy editorial-brand-copy--footer" style={{ marginTop: '1.5rem', maxWidth: '420px' }}>
+            {settings.description}
+          </p>
+        </div>
         <div className="site-footer-social-row" aria-label="Social reach" style={{ display: 'flex', gap: '1rem' }}>
-          <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube" className="site-footer-social-chip" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.6rem', borderRadius: '50%' }}>
+          <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube" className="site-footer-social-chip" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.6rem', borderRadius: '50%' }}>
             <YoutubeIcon width={22} height={22} />
           </a>
-          <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" className="site-footer-social-chip" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.6rem', borderRadius: '50%' }}>
+          <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook" className="site-footer-social-chip" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.6rem', borderRadius: '50%' }}>
             <FacebookIcon width={22} height={22} />
           </a>
-          <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" className="site-footer-social-chip" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.6rem', borderRadius: '50%' }}>
+          <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram" className="site-footer-social-chip" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.6rem', borderRadius: '50%' }}>
             <InstagramIcon width={22} height={22} />
           </a>
         </div>

@@ -161,9 +161,9 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               className="site-header-desktop-socials"
               style={{ display: 'flex', gap: '0.75rem', marginRight: '0.5rem', alignItems: 'center' }}
             >
-              <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube" className="hover:text-white transition-colors"><YoutubeIcon width={20} height={20} /></a>
-              <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" className="hover:text-white transition-colors"><FacebookIcon width={20} height={20} /></a>
-              <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-white transition-colors"><InstagramIcon width={20} height={20} /></a>
+              <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube" className="hover:text-white transition-colors"><YoutubeIcon width={20} height={20} /></a>
+              <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook" className="hover:text-white transition-colors"><FacebookIcon width={20} height={20} /></a>
+              <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram" className="hover:text-white transition-colors"><InstagramIcon width={20} height={20} /></a>
             </motion.div>
             {actionNavigation.map((item, index) => {
               const label =
@@ -200,15 +200,22 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               </span>
             </Link>
 
-            <button
-              aria-expanded={menuOpen}
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              className="site-header-menu-button"
-              onClick={() => setMenuOpen((value) => !value)}
-              type="button"
-            >
-              {menuOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
+            <div className="site-header-mobile-right" style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+              <div className="site-header-mobile-socials" style={{ display: 'flex', gap: '0.65rem' }}>
+                <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube" className="hover:text-white transition-colors"><YoutubeIcon width={18} height={18} /></a>
+                <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook" className="hover:text-white transition-colors"><FacebookIcon width={18} height={18} /></a>
+                <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram" className="hover:text-white transition-colors"><InstagramIcon width={18} height={18} /></a>
+              </div>
+              <button
+                aria-expanded={menuOpen}
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
+                className="site-header-menu-button"
+                onClick={() => setMenuOpen((value) => !value)}
+                type="button"
+              >
+                {menuOpen ? <X size={18} /> : <Menu size={18} />}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -286,11 +293,6 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                     </motion.div>
                     );
                   })}
-                  <div className="site-header-mobile-socials" style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', justifyContent: 'center' }}>
-                    <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube"><YoutubeIcon width={24} height={24} /></a>
-                    <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook"><FacebookIcon width={24} height={24} /></a>
-                    <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram"><InstagramIcon width={24} height={24} /></a>
-                  </div>
                 </div>
               </div>
             </motion.div>
