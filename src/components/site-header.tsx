@@ -121,7 +121,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
           >
             <Link className="site-header-logo" href="/" onClick={() => setMenuOpen(false)}>
               <span aria-hidden="true" className="site-header-logo-mark" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: 'none' }}>
-                <Image src="/logo.png" alt="VA" width={32} height={32} style={{ objectFit: 'contain' }} />
+                <Image src="/logo.png" alt="VA" width={32} height={32} style={{ objectFit: 'contain', filter: 'brightness(0) invert(1) sepia(1) saturate(2) hue-rotate(5deg)' }} />
               </span>
               <span className="site-header-logo-copy site-header-logo-copy--stacked">
                 <span className="site-header-logo-rail">
@@ -193,7 +193,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
           <div className="site-header-mobile">
             <Link className="site-header-mobile-logo" href="/" onClick={() => setMenuOpen(false)}>
               <span aria-hidden="true" className="site-header-mobile-mark" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: 'none' }}>
-                <Image src="/logo.png" alt="VA" width={28} height={28} style={{ objectFit: 'contain' }} />
+                <Image src="/logo.png" alt="VA" width={28} height={28} style={{ objectFit: 'contain', filter: 'brightness(0) invert(1) sepia(1) saturate(2) hue-rotate(5deg)' }} />
               </span>
               <span className="site-header-mobile-logo-copy">
                 <span className="site-header-mobile-kicker">{settings.brandKicker}</span>
