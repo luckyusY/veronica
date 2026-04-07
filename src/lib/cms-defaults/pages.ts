@@ -4,17 +4,17 @@ import { defaultMediaLibrary } from "@/lib/cms-defaults/shared";
 export const defaultAboutPageContent: StandardPageContent = {
   hero: {
     eyebrow: "About Veronica",
-    title: "A biography rooted in purpose, discipline, family, and identity.",
+    title: "A journey shaped by faith, study, sacrifice, and the courage to keep going.",
     description:
-      "This biography page is designed to feel like a long-form artist profile: heritage, discipline, and public milestones arranged with more visual weight and less template noise.",
-    highlightWords: ["purpose", "family", "identity"],
+      "Veronica Adane is an Ethiopian singer, songwriter, actress, and journalist whose story is built on faith, discipline, sacrifice, and purpose.",
+    highlightWords: ["faith", "discipline", "purpose"],
     image: defaultMediaLibrary.cliff,
     imageMotionPreset: "from-right",
     imageLabel: "Official full-length studio portrait",
-    noteTitle: "Biography standard",
+    noteTitle: "A Modern Icon",
     noteText:
-      "The biography should read with dignity and emotional weight, holding real milestones without turning the page into a resume.",
-    primaryCta: { href: "/media", label: "View press positioning" },
+      "From recording cover songs on a single phone to becoming one of Ethiopia's most influential female artists.",
+    primaryCta: { href: "/media", label: "View press & media" },
     secondaryCta: { href: "/music", label: "Explore releases" },
   },
   sections: [
@@ -22,21 +22,21 @@ export const defaultAboutPageContent: StandardPageContent = {
       id: "narrative-frame",
       type: "split",
       theme: "paper",
-      eyebrow: "Narrative frame",
+      eyebrow: "The Origin",
       title:
-        "Veronica Adane's story should feel carried by heritage, courage, and deliberate self-definition.",
+        "Carrying heritage, courage, and deliberate self-definition into the global spotlight.",
       description:
-        "The strongest version of this page balances biography with atmosphere. It acknowledges family legacy, academic rigor, and the long period of independent work that turned local momentum into national and international reach.",
+        "The story begins in Addis Ababa. Driven by a deep connection to the musical legacy of her father, Adane Teka, Veronica's trajectory is a testament to the power of independent artistry. What started as raw, unaccompanied vocal covers quickly gathered unstoppable momentum, bridging traditional Ethiopian roots with a sleek, contemporary global pop sensibility.",
       image: defaultMediaLibrary.furSeated,
       imageSide: "right",
       imageMotionPreset: "from-right",
       tallImage: true,
       cards: [
-        { title: "Faith", description: "Faith and discipline sit at the center of the story." },
-        { title: "Identity", description: "Azmari heritage is presented with pride, not apology." },
+        { title: "Faith", description: "A deep-seated belief and discipline sit at the absolute center of her story." },
+        { title: "Identity", description: "The Azmari heritage is presented and celebrated with pride, not apology." },
         {
           title: "Study",
-          description: "Academic and artistic identity are treated as part of one narrative.",
+          description: "Graduating with a degree in journalism, her academic rigor heavily influences her songwriting and advocacy.",
         },
       ],
       cardVariant: "note",
@@ -45,24 +45,24 @@ export const defaultAboutPageContent: StandardPageContent = {
       id: "story-layers",
       type: "timeline",
       theme: "dark",
-      eyebrow: "Story layers",
-      title: "The public story is strongest when it carries both tenderness and stature.",
+      eyebrow: "Milestones",
+      title: "From local recognition to international reach.",
       description:
-        "Reclaiming the Azmari identity, supporting family, excelling in journalism, and building a music career independently are not separate facts. Together they create the emotional architecture of the brand.",
+        "Building a music career independently is not just about releasing records. It is about emotional connection, sacrifice, and elevating the cultural conversation at every step.",
       items: [
-        "Raised in Addis Ababa and shaped by the musical legacy of Adane Teka.",
-        "Graduated from Mekelle University in journalism and communication with strong academic performance.",
-        "Started sharing cover performances online using only a mobile phone while supporting family and studies.",
-        "Moved from event leadership into full-time music, funding releases through live performance income.",
-        "Expanded from national recognition to international tours, awards, acting, and advocacy.",
+        "Raised in Addis Ababa, deeply shaped by the musical and storytelling legacy of Adane Teka.",
+        "Graduated from Mekelle University in journalism and communication, laying the foundation for her media presence.",
+        "Began sharing cover performances online using only a mobile phone while simultaneously supporting her family and studies.",
+        "Transitioned into full-time music, funding her own high-end releases and music videos entirely through live performance income.",
+        "Expanded from national Ethiopian recognition to massive diaspora tours spanning the US, Europe, and the Middle East.",
       ],
     },
     {
       id: "biography-atmosphere",
       type: "banner",
       theme: "dark",
-      eyebrow: "Biography atmosphere",
-      title: "The biography should feel like a sequence of public moments, not a column of facts.",
+      eyebrow: "The Vision",
+      title: "A public image built on both unshakeable confidence and genuine warmth.",
       image: defaultMediaLibrary.stage,
       imageMotionPreset: "settle-left",
     },
@@ -70,23 +70,23 @@ export const defaultAboutPageContent: StandardPageContent = {
       id: "biography-chapters",
       type: "cards",
       theme: "paper",
-      eyebrow: "Biography chapter",
-      title: "Key foundations of the Veronica Adane story.",
+      eyebrow: "Core Foundations",
+      title: "The pillars of the Veronica Adane identity.",
       items: [
         {
-          title: "Azmari heritage with global reach",
+          title: "Azmari Heritage",
           description:
-            "Veronica proudly reclaims the Azmari identity through the legacy of her father, Adane Teka, one of Ethiopia's respected traditional performers and storytellers.",
+            "Veronica proudly reclaims the Azmari identity through the legacy of her father, Adane Teka, continuing long traditions of Ethiopian storytelling and musical expression.",
         },
         {
-          title: "Journalism, leadership, and research discipline",
+          title: "Journalism & Advocacy",
           description:
-            "Her academic background in journalism and communication adds depth to how she tells stories, uses media, and advocates for truth, women, and children.",
+            "Her background in journalism adds profound depth to her lyricism, allowing her to advocate effectively for truth, women's empowerment, and social progression.",
         },
         {
-          title: "A career built independently",
+          title: "Fierce Independence",
           description:
-            "From recording covers on a single phone to funding music through nonstop live performances, her trajectory is grounded in grit, faith, and self-belief.",
+            "From DIY phone recordings to fully realized cinematic campaigns, her entire catalogue and touring empire has been built independently through grit and self-belief.",
         },
       ],
     },
