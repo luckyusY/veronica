@@ -75,20 +75,25 @@ export function MediaGalleryClient({ items }: MediaGalleryClientProps) {
     setSelectMode(false);
   }, []);
 
+  /* ── Single download helper ── */
+  const triggerDownload = useCallback((url: string, alt?: string) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = alt || "veronica-image";
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }, []);
+
   /* ── Download selected ── */
   const downloadSelected = useCallback(() => {
     const toDownload = [...selectedIds].map((i) => items[i]).filter(Boolean);
     for (const item of toDownload) {
-      const link = document.createElement("a");
-      link.href = item.url;
-      link.download = item.alt || "veronica-image";
-      link.target = "_blank";
-      link.rel = "noreferrer";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      triggerDownload(item.url, item.alt);
     }
-  }, [selectedIds, items]);
+  }, [selectedIds, items, triggerDownload]);
 
   /* ── Click on tile ── */
   const handleTileClick = useCallback(
@@ -108,16 +113,10 @@ export function MediaGalleryClient({ items }: MediaGalleryClientProps) {
 
   const downloadActiveItem = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!activeItem) return;
-    const link = document.createElement("a");
-    link.href = activeItem.url;
-    link.download = activeItem.alt || "veronica-image";
-    link.target = "_blank";
-    link.rel = "noreferrer";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }, [activeItem]);
+    if (activeItem) {
+      triggerDownload(activeItem.url, activeItem.alt);
+    }
+  }, [activeItem, triggerDownload]);
 
   return (
     <>
@@ -203,6 +202,22 @@ export function MediaGalleryClient({ items }: MediaGalleryClientProps) {
               >
                 {isSelected && <Check size={12} strokeWidth={3} />}
               </span>
+
+              {/* Download hint */}
+              {!selectMode && selectionCount === 0 && (
+                <button
+                  aria-label="Download image"
+                  className="media-grid-download-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    triggerDownload(item.url, item.alt);
+                  }}
+                  title="Download"
+                  type="button"
+                >
+                  <Download size={14} />
+                </button>
+              )}
 
               {/* Hover hint */}
               {!selectMode && selectionCount === 0 && (

@@ -13672,6 +13672,36 @@ a:not([class]):hover {
   transform: translateX(-50%) translateY(0);
 }
 
+/* Hover "Download" button */
+.media-grid-download-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(10, 8, 7, 0.62);
+  backdrop-filter: blur(8px);
+  color: rgba(245, 242, 236, 0.88);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.2s, transform 0.2s, background 0.18s, color 0.18s;
+}
+.media-grid-tile--interactive:hover .media-grid-download-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+.media-grid-download-btn:hover {
+  background: rgba(194, 154, 103, 0.9);
+  color: #fff;
+  border-color: transparent;
+}
+
 /* ── Selection toolbar (floating bottom bar) ── */
 .media-select-toolbar {
   position: fixed;
