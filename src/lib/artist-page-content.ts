@@ -6,8 +6,8 @@ import type {
   StandardSection,
 } from "@/lib/cms-types";
 
-// Public-facing narrative copy is grounded in published profiles and coverage,
-// especially SBS Amharic and Addis Insight coverage around Meteriyaye.
+// Public-facing narrative copy is grounded in published profiles and catalogue
+// listings, especially SBS Amharic, Apple Music, and SoundCloud.
 
 function mergeMediaItem(candidate: unknown, fallback: CmsMediaItem): CmsMediaItem {
   if (!candidate || typeof candidate !== "object") {
@@ -76,22 +76,22 @@ const aboutImages = {
 
 export const homeResearchSignals = [
   {
-    label: "Album rollout",
-    title: "August 2024",
+    label: "Album",
+    title: "Meteriyaye",
     detail:
-      "Addis Insight reported Meteriyaye's August 24, 2024 release and its record-setting acquisition.",
+      "Apple Music and SoundCloud both list Meteriyaye as a Veronica Adane album from 2024.",
   },
   {
-    label: "Project scale",
-    title: "12 tracks",
+    label: "Track count",
+    title: "12 songs",
     detail:
-      "SoundCloud lists Meteriyaye as a 12-track album, giving the site a clear anchor for the current era.",
+      "Apple Music lists 12 songs and SoundCloud lists 12 tracks for the same project.",
   },
   {
-    label: "Core message",
+    label: "Interview theme",
     title: "Love, hope, unity",
     detail:
-      "SBS Amharic describes the album as carrying love, hope, unity, and a wish for peace in Ethiopia.",
+      "In SBS Amharic, Veronica described the album around love, hope, unity, patriotism, and peace for Ethiopia.",
   },
 ] as const;
 
@@ -99,73 +99,72 @@ const researchedHomePageContent: HomePageContent = {
   hero: {
     verticalLabel: "VERONICA ADANE / OFFICIAL",
     headlineTop: "Veronica Adane",
-    headlineLines: ["music, image,", "and stage presence"],
+    headlineLines: ["music, catalogue,", "and official imagery"],
     primaryAction: { href: "/about", label: "Read Biography" },
     secondaryAction: { href: "/media", label: "View Official Images" },
     slides: [
       {
         eyebrow: "Meteriyaye",
-        title: "A major album era that pushed her story onto a larger stage.",
+        title: "Meteriyaye sits at the center of the current public catalogue.",
         copy:
-          "Recent coverage around Meteriyaye framed Veronica Adane as an Ethiopian artist moving with bigger scale, sharper imagery, and stronger international distribution.",
+          "Apple Music and SoundCloud both present Meteriyaye as Veronica Adane's 2024 album, which makes it the clearest anchor for the homepage.",
         image: homeImages.heroSlides[0],
-        stat: "17 million birr deal",
+        stat: "2024 album",
         accent: "Album era",
       },
       {
-        eyebrow: "Artist story",
-        title: "An Addis Ababa artist shaped by family legacy, study, and steady work.",
+        eyebrow: "Release history",
+        title: "The catalogue already shows a steady run of singles before the album.",
         copy:
-          "Published profiles describe Veronica as born and raised in Addis Ababa, trained in journalism and communication, and shaped by the artistic legacy of her father, Adane Teka.",
+          "Apple Music lists earlier singles including Tewu in 2021, Kurfya in 2022, and Enaney and Abebaye in 2023 before the album arrives.",
         image: homeImages.heroSlides[1],
-        stat: "Addis Ababa roots",
-        accent: "Biography",
+        stat: "2021 to 2024",
+        accent: "Release line",
       },
       {
-        eyebrow: "Voice and message",
-        title: "Songs that pair polished imagery with emotional directness.",
+        eyebrow: "Interview",
+        title: "Veronica's own words give the album its clearest meaning.",
         copy:
           "In SBS Amharic, Veronica described Meteriyaye as an album centered on love, hope, unity, patriotism, and peace for Ethiopia.",
         image: homeImages.heroSlides[2],
-        stat: "Love, hope, unity",
+        stat: "SBS Amharic",
         accent: "Message",
       },
       {
         eyebrow: "Official platform",
         title: "One place for biography, music, press, and selected imagery.",
         copy:
-          "This site now focuses on the parts of the story that matter most: the artist background, the current catalogue, and the official visual archive.",
+          "The homepage now does a simpler job: show the verified release history, keep the wording grounded, and let the official visuals lead.",
         image: homeImages.heroSlides[3],
-        stat: "Music • media • archive",
+        stat: "Music / media / archive",
         accent: "Official site",
       },
     ],
   },
   intro: {
     eyebrow: "Overview",
-    title: "A contemporary Ethiopian artist whose public story is rooted in work, not filler.",
+    title: "A homepage built around the catalogue and the official image library.",
     paragraphs: [
-      "Veronica Adane is an Ethiopian singer whose work now stretches across recorded music, performance, and a carefully built visual identity.",
-      "Public profiles describe her as born and raised in Addis Ababa, the daughter of traditional artist Adane Teka, and a journalism and communication graduate of Mekelle University.",
-      "That background meets a newer breakthrough in Meteriyaye, the 12-track project released in August 2024 and reported as a major acquisition by Zojak Worldwide.",
+      "Veronica Adane is an Ethiopian singer with a public catalogue that includes singles, music videos, and the 2024 album Meteriyaye.",
+      "Apple Music lists Meteriyaye as a 12-song release running 51 minutes, and SoundCloud also presents it as a 12-track album from late August 2024.",
+      "That gives the homepage a clear job: introduce the current music era, surface official visuals, and route visitors into the biography, media grid, and music pages.",
     ],
     image: homeImages.intro,
     stats: [
       {
         value: "12",
-        label: "Tracks on Meteriyaye",
-        detail: "SoundCloud lists the album at 12 tracks and a runtime of just over 51 minutes.",
+        label: "Songs on the album",
+        detail: "Apple Music lists 12 songs and SoundCloud lists 12 tracks for Meteriyaye.",
       },
       {
-        value: "Aug 2024",
-        label: "Current album era",
-        detail: "Addis Insight reported the album release for August 24, 2024.",
+        value: "51 min",
+        label: "Album runtime",
+        detail: "Apple Music lists Meteriyaye at 51 minutes.",
       },
       {
-        value: "17M Birr",
-        label: "Reported acquisition",
-        detail:
-          "Addis Insight described the Zojak Worldwide deal as worth more than 17 million birr.",
+        value: "2021",
+        label: "Earlier listed singles",
+        detail: "Apple Music shows singles before the album, including releases from 2021 onward.",
       },
     ],
   },
@@ -173,7 +172,7 @@ const researchedHomePageContent: HomePageContent = {
     eyebrow: "Selected Images",
     title: "Official portraiture and campaign imagery",
     description:
-      "The strongest homepage does not bury Veronica beneath generic copy. It lets the portraits, campaign stills, and album-era visuals carry part of the story.",
+      "Official portraits and campaign stills now do the visual work while the text stays close to the release history.",
     chips: ["Portraits", "Meteriyaye", "Press", "Campaigns"],
     items: [
       {
@@ -185,13 +184,13 @@ const researchedHomePageContent: HomePageContent = {
       {
         title: "Album-era styling",
         era: "Meteriyaye",
-        note: "A cinematic look that supports the scale of the current release period.",
+        note: "A cinematic look that supports the current release period.",
         image: homeImages.visualChapters[1],
       },
       {
         title: "Campaign colour",
         era: "Public image",
-        note: "A sharper glamour direction for features, artwork, and press-facing moments.",
+        note: "A sharper glamour direction for artwork, features, and press-facing moments.",
         image: homeImages.visualChapters[2],
       },
     ],
@@ -203,29 +202,29 @@ const researchedHomePageContent: HomePageContent = {
     items: [],
   },
   heritage: {
-    eyebrow: "Roots",
-    title: "Addis Ababa, family legacy, and a clear sense of identity.",
+    eyebrow: "Catalogue focus",
+    title: "The home page should stay close to the music and the official visuals.",
     description:
-      "The biography that shows up most consistently in public sources starts in Addis Ababa, stays connected to family performance history, and carries that cultural grounding into a modern music career.",
-    tags: ["Addis Ababa", "Adane Teka", "Mekelle University", "Music career"],
+      "That keeps the story honest. Instead of padded claims, visitors get the album, the release history, the interview framing, and the selected image archive.",
+    tags: ["Meteriyaye", "Singles", "Videos", "Official images"],
     image: homeImages.heritage,
   },
   rise: {
-    eyebrow: "Trajectory",
-    title: "From covers and early releases to a full album cycle.",
+    eyebrow: "Release line",
+    title: "The release history is clearer than generic marketing language.",
     description:
-      "Public profiles point to an early period of spiritual songs, mashups, and cover videos before original releases and larger-scale recognition took hold.",
+      "Apple Music already gives the homepage a simple timeline: earlier singles in 2021, 2022, and 2023, followed by the full album cycle in 2024.",
     nationalNote:
-      "The story reads as gradual momentum: early online visibility, catalogue building, and steady audience growth inside Ethiopia.",
+      "Apple Music lists Tewu and Tefet Alegn in 2021, Kurfya in 2022, and Enaney and Abebaye in 2023 before Meteriyaye.",
     internationalNote:
-      "The Zojak Worldwide acquisition placed Meteriyaye inside a broader distribution conversation beyond the local market.",
+      "Apple Music also shows a 2025 live-performance release, so the catalogue now reads as an active timeline rather than a single isolated project.",
     images: [...homeImages.rise],
   },
   campaign: {
     eyebrow: "Current Focus",
     title: "Music, press, and image now need to work as one clean public system.",
     description:
-      "The homepage should help visitors understand Veronica quickly: who she is, where the current album sits, and where to go next for music, biography, and official images.",
+      "The strongest version of the homepage is straightforward: verified release history, official photography, and direct links into deeper pages.",
     featureImage: homeImages.campaignFeature,
     supportingImages: [...homeImages.campaignSupport],
   },
@@ -240,16 +239,16 @@ const researchedHomePageContent: HomePageContent = {
         href: "/about",
         accent: "Biography",
         description:
-          "Read the grounded version of Veronica Adane's background, education, and rise into the current album era.",
-        note: "Roots, study, trajectory",
+          "Read the fuller profile page and keep the homepage focused on the catalogue, the visuals, and the core introduction.",
+        note: "Longer artist profile",
       },
       {
         title: "Music & Videos",
         href: "/music",
         accent: "Catalogue",
         description:
-          "Move through releases, videos, and the songs currently shaping Veronica's public profile.",
-        note: "Singles, albums, visuals",
+          "Move straight into the releases, videos, and songs that make up the public discography.",
+        note: "Singles, album, videos",
       },
       {
         title: "Media",
@@ -265,33 +264,33 @@ const researchedHomePageContent: HomePageContent = {
     eyebrow: "Official Presence",
     title: "The site now keeps the story concise and the imagery forward.",
     description:
-      "Instead of overexplaining Veronica, the platform now lets the strongest facts and the official images do the work together.",
+      "Instead of overexplaining Veronica, the platform now lets the clearest release facts and the official images do the work together.",
     primaryAction: { href: "/media", label: "Open Media Grid" },
     secondaryAction: { href: "/about", label: "Read About Veronica" },
     credits: [
       {
-        label: "Addis Ababa roots",
-        note: "A biography anchored in place, family history, and early discipline.",
+        label: "2024 album listing",
+        note: "Meteriyaye appears on both Apple Music and SoundCloud as the central album-era project.",
       },
       {
-        label: "Mekelle University",
-        note: "Journalism and communication training remains part of the public story.",
+        label: "12-song tracklist",
+        note: "Apple Music and SoundCloud both show the album as a 12-song or 12-track release.",
       },
       {
-        label: "Meteriyaye",
-        note: "The current album era gives the site its clearest musical anchor.",
+        label: "51-minute runtime",
+        note: "Apple Music gives the album a concrete runtime that helps the page stay factual.",
       },
       {
-        label: "Zojak Worldwide",
-        note: "A major acquisition story helped expand the album's public significance.",
+        label: "Singles before the album",
+        note: "Apple Music shows releases from 2021, 2022, and 2023 leading into Meteriyaye.",
       },
       {
-        label: "Selected imagery",
-        note: "Portraits and campaign stills now lead instead of fighting with filler text.",
+        label: "SBS interview framing",
+        note: "Veronica described the album around love, hope, unity, patriotism, and peace.",
       },
       {
-        label: "Official routing",
-        note: "Biography, music, and media now sit in cleaner public pathways.",
+        label: "Official images",
+        note: "The public image library now carries more of the introduction without added filler.",
       },
     ],
   },
