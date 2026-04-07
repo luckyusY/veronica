@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import NextTopLoader from "nextjs-toploader";
 import { AnimatePresence, motion } from "motion/react";
 import { ScrollToTop } from "@/components/scroll-to-top";
+import { SitePreloader } from "@/components/site-preloader";
 
 type AppShellProps = {
   children: ReactNode;
@@ -26,6 +27,8 @@ export function AppShell({ children, header, footer }: AppShellProps) {
         shadow="0 0 12px rgba(242, 210, 139, 0.85), 0 0 24px rgba(217, 79, 43, 0.28)"
         showSpinner={false}
       />
+
+      {!isAdminRoute && <SitePreloader />}
 
       {isAdminRoute ? (
         <div className="min-h-screen">{children}</div>

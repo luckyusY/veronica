@@ -2,7 +2,10 @@ import Link from "next/link";
 import { RevealBlock } from "@/components/animated-text";
 import { EditorialImage } from "@/components/editorial-image";
 import { HomeHeroSwiper } from "@/components/home-hero-swiper";
-import { TestimonialsCarousel } from "@/components/testimonials-carousel";
+import {
+  getHomePageContent,
+  homeResearchSignals,
+} from "@/lib/artist-page-content";
 import { getCmsPage } from "@/lib/cms-store";
 import type { HomePageContent } from "@/lib/cms-types";
 
@@ -10,31 +13,8 @@ export const revalidate = 60;
 
 export default async function Home() {
   const page = await getCmsPage("home");
-  const content = page.content as HomePageContent;
+  const content = getHomePageContent(page.content as HomePageContent);
   const visualChaptersSet = content.visualChapters.items;
-  const heroSignals = [
-    {
-      label: content.hero.slides[0]?.accent ?? "Portraiture",
-      title: content.hero.slides[0]?.title ?? "Official Portraiture",
-      detail:
-        content.hero.slides[0]?.copy ??
-        "A cinematic first impression that frames Veronica as an artist, not a template profile.",
-    },
-    {
-      label: "Live Reach",
-      title: content.intro.stats[0]?.value ?? "41M+",
-      detail:
-        content.intro.stats[0]?.detail ??
-        "Momentum built from national touring, independent releases, and diaspora demand.",
-    },
-    {
-      label: content.hero.slides[1]?.accent ?? "Campaign Era",
-      title: content.hero.slides[1]?.title ?? "Release Worldbuilding",
-      detail:
-        content.hero.slides[1]?.copy ??
-        "Every era should feel like a chapter with its own lighting, wardrobe, and emotional tone.",
-    },
-  ];
 
   return (
     <main className="editorial-home pb-16 sm:pb-20">
@@ -49,7 +29,7 @@ export default async function Home() {
 
       <section className="section-shell relative z-10 pb-6 sm:pb-8 lg:-mt-2">
         <div className="home-signal-band">
-          {heroSignals.map((item, index) => (
+          {homeResearchSignals.map((item, index) => (
             <RevealBlock
               className="home-signal-card"
               delay={0.06 + index * 0.06}
@@ -69,8 +49,8 @@ export default async function Home() {
         <div className="grid gap-5 lg:grid-cols-[0.88fr_1.12fr]">
           <RevealBlock
             className="editorial-photo-block editorial-photo-block--tall image-hover-glow"
-            variant="left"
             distance={40}
+            variant="left"
           >
             <EditorialImage
               className="editorial-photo-shell"
@@ -82,7 +62,7 @@ export default async function Home() {
             />
           </RevealBlock>
 
-          <RevealBlock className="editorial-paper-panel" delay={0.1} variant="right" distance={40}>
+          <RevealBlock className="editorial-paper-panel" delay={0.1} distance={40} variant="right">
             <p className="section-label">{content.intro.eyebrow}</p>
             <h2 className="display-title mt-5 max-w-4xl text-4xl text-[#1f1914] sm:text-5xl">
               {content.intro.title}
@@ -99,15 +79,11 @@ export default async function Home() {
             <div className="mt-8 grid gap-4 md:grid-cols-3">
               {content.intro.stats.map((item) => (
                 <article className="editorial-stat" key={item.label}>
-                  <p className="display-title text-4xl text-[#18120d] sm:text-5xl">
-                    {item.value}
-                  </p>
+                  <p className="display-title text-4xl text-[#18120d] sm:text-5xl">{item.value}</p>
                   <p className="editorial-stat-label mt-3 text-sm font-semibold uppercase text-[#6d5738]">
                     {item.label}
                   </p>
-                  <p className="mt-3 text-sm leading-7 text-[#4b4138]">
-                    {item.detail}
-                  </p>
+                  <p className="mt-3 text-sm leading-7 text-[#4b4138]">{item.detail}</p>
                 </article>
               ))}
             </div>
@@ -116,7 +92,7 @@ export default async function Home() {
       </section>
 
       <section className="editorial-section-opener-shell">
-        <RevealBlock className="editorial-section-opener" variant="up" distance={28}>
+        <RevealBlock className="editorial-section-opener" distance={28} variant="up">
           <p className="section-label">{content.visualChapters.eyebrow}</p>
           <div className="editorial-section-opener-row">
             <h2 className="display-title editorial-section-opener-title">
@@ -139,8 +115,8 @@ export default async function Home() {
         <div className="editorial-asymmetric-gallery">
           <RevealBlock
             className="editorial-bleed-tile editorial-bleed-tile--portrait"
-            variant="left"
             distance={34}
+            variant="left"
           >
             <EditorialImage
               className="editorial-bleed-image editorial-parallax-portrait"
@@ -181,38 +157,9 @@ export default async function Home() {
         </div>
       </section>
 
-      <TestimonialsCarousel
-        description={content.testimonials.description}
-        eyebrow={content.testimonials.eyebrow}
-        items={content.testimonials.items}
-        title={content.testimonials.title}
-      />
-
-      <section className="section-shell py-10">
-        <RevealBlock className="home-quote-banner" variant="up" distance={28}>
-          <p className="home-quote-banner-label">Artist World</p>
-          <p className="home-quote-banner-copy">
-            Veronica&apos;s digital presence should feel like a premiere night, a press
-            archive, and a live performance invitation all at once.
-          </p>
-        </RevealBlock>
-      </section>
-
-      <section className="editorial-section-opener-shell editorial-section-opener-shell--compact">
-        <RevealBlock className="editorial-section-opener" variant="up" distance={24}>
-          <p className="section-label">Tour Studies</p>
-          <div className="editorial-section-opener-row">
-            <h2 className="display-title editorial-section-opener-title editorial-section-opener-title--small">
-              Across Ethiopia
-            </h2>
-            <span aria-hidden="true" className="editorial-section-opener-rule" />
-          </div>
-        </RevealBlock>
-      </section>
-
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-2">
-          <RevealBlock className="editorial-dark-panel" variant="left" distance={36}>
+          <RevealBlock className="editorial-dark-panel" distance={36} variant="left">
             <p className="section-label">{content.heritage.eyebrow}</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
               {content.heritage.title}
@@ -232,8 +179,8 @@ export default async function Home() {
           <RevealBlock
             className="editorial-photo-block image-hover-glow"
             delay={0.1}
-            variant="right"
             distance={36}
+            variant="right"
           >
             <EditorialImage
               className="editorial-photo-shell"
@@ -249,7 +196,7 @@ export default async function Home() {
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.92fr_1.08fr]">
-          <RevealBlock className="editorial-paper-panel" variant="left" distance={32}>
+          <RevealBlock className="editorial-paper-panel" distance={32} variant="left">
             <p className="section-label">{content.rise.eyebrow}</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
               {content.rise.title}
@@ -259,17 +206,19 @@ export default async function Home() {
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               <div className="editorial-note">
-                <p className="section-label">National</p>
+                <p className="section-label">Within Ethiopia</p>
                 <p className="mt-3 text-sm leading-7 text-[#4b4138]">{content.rise.nationalNote}</p>
               </div>
               <div className="editorial-note">
-                <p className="section-label">International</p>
-                <p className="mt-3 text-sm leading-7 text-[#4b4138]">{content.rise.internationalNote}</p>
+                <p className="section-label">Beyond Ethiopia</p>
+                <p className="mt-3 text-sm leading-7 text-[#4b4138]">
+                  {content.rise.internationalNote}
+                </p>
               </div>
             </div>
           </RevealBlock>
 
-          <RevealBlock className="editorial-mosaic" delay={0.1} variant="right" distance={32}>
+          <RevealBlock className="editorial-mosaic" delay={0.1} distance={32} variant="right">
             <div className="editorial-mosaic-narrow image-hover-glow">
               <div className="image-tilt-shell">
                 <EditorialImage
@@ -298,21 +247,9 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="editorial-section-opener-shell editorial-section-opener-shell--compact">
-        <RevealBlock className="editorial-section-opener" variant="up" distance={24}>
-          <p className="section-label">{content.campaign.eyebrow}</p>
-          <div className="editorial-section-opener-row">
-            <h2 className="display-title editorial-section-opener-title editorial-section-opener-title--small">
-              Release Energy
-            </h2>
-            <span aria-hidden="true" className="editorial-section-opener-rule" />
-          </div>
-        </RevealBlock>
-      </section>
-
       <section className="section-shell py-10">
         <div className="editorial-filmstrip">
-          <RevealBlock className="editorial-film-panel editorial-film-panel--dark" variant="left" distance={44}>
+          <RevealBlock className="editorial-film-panel editorial-film-panel--dark" distance={44} variant="left">
             <p className="section-label">{content.campaign.eyebrow}</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
               {content.campaign.title}
@@ -335,9 +272,9 @@ export default async function Home() {
               strength={80}
             />
             <div className="editorial-film-copy">
-              <p className="section-label text-white/78">Release Energy</p>
+              <p className="section-label text-white/78">Official imagery</p>
               <h3 className="display-title mt-4 max-w-2xl text-4xl text-white sm:text-5xl">
-                Campaign imagery can be bold, romantic, and unmistakably her own.
+                A cleaner public image helps the music land with more authority.
               </h3>
             </div>
           </RevealBlock>
@@ -345,26 +282,26 @@ export default async function Home() {
           <RevealBlock
             className="editorial-film-panel editorial-film-panel--double"
             delay={0.18}
-            variant="right"
             distance={44}
+            variant="right"
           >
             <div className="editorial-film-double editorial-film-double--small image-hover-glow">
-                <EditorialImage
-                  className="editorial-photo-shell"
-                  image={content.campaign.supportingImages[0]}
-                  motionPreset="settle-right"
-                  sizes="(max-width: 1024px) 100vw, 18vw"
-                  strength={68}
+              <EditorialImage
+                className="editorial-photo-shell"
+                image={content.campaign.supportingImages[0]}
+                motionPreset="settle-right"
+                sizes="(max-width: 1024px) 100vw, 18vw"
+                strength={68}
                 tilt
               />
             </div>
             <div className="editorial-film-double editorial-film-double--large image-hover-glow">
-                <EditorialImage
-                  className="editorial-photo-shell"
-                  image={content.campaign.supportingImages[1]}
-                  motionPreset="from-left"
-                  sizes="(max-width: 1024px) 100vw, 28vw"
-                  strength={78}
+              <EditorialImage
+                className="editorial-photo-shell"
+                image={content.campaign.supportingImages[1]}
+                motionPreset="from-left"
+                sizes="(max-width: 1024px) 100vw, 28vw"
+                strength={78}
                 tilt
               />
             </div>
@@ -374,7 +311,7 @@ export default async function Home() {
 
       <section className="section-shell py-10">
         <div className="grid gap-5 lg:grid-cols-[0.82fr_1.18fr]">
-          <RevealBlock className="editorial-paper-panel" variant="left" distance={30}>
+          <RevealBlock className="editorial-paper-panel" distance={30} variant="left">
             <p className="section-label">{content.pathways.eyebrow}</p>
             <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
               {content.pathways.title}
