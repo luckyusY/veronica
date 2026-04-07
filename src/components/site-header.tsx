@@ -8,7 +8,7 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import { useMotionLite } from "@/components/providers";
 import { VeronicaWordmark } from "@/components/veronica-wordmark";
-import { YoutubeIcon, FacebookIcon, InstagramIcon } from "@/components/social-icons";
+import { YoutubeIcon, FacebookIcon, InstagramIcon, TikTokIcon } from "@/components/social-icons";
 import type { CmsSiteSettings } from "@/lib/cms-types";
 import { navigationItems } from "@/lib/site-data";
 
@@ -161,9 +161,10 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               className="site-header-desktop-socials"
               style={{ display: 'flex', gap: '0.75rem', marginRight: '0.5rem', alignItems: 'center' }}
             >
-              <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube" className="hover:text-white transition-colors"><YoutubeIcon width={20} height={20} /></a>
-              <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook" className="hover:text-white transition-colors"><FacebookIcon width={20} height={20} /></a>
-              <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram" className="hover:text-white transition-colors"><InstagramIcon width={20} height={20} /></a>
+              <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube" className="header-social-icon"><YoutubeIcon width={18} height={18} /></a>
+              <a href="https://www.tiktok.com/@veronicaadane?_r=1&_t=ZS-95Kt36szYxt" target="_blank" rel="noreferrer" aria-label="TikTok" title="TikTok" className="header-social-icon"><TikTokIcon width={16} height={16} /></a>
+              <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook" className="header-social-icon"><FacebookIcon width={18} height={18} /></a>
+              <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram" className="header-social-icon"><InstagramIcon width={18} height={18} /></a>
             </motion.div>
             {actionNavigation.map((item, index) => {
               const label =
@@ -200,11 +201,12 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               </span>
             </Link>
 
-            <div className="site-header-mobile-right" style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-              <div className="site-header-mobile-socials" style={{ display: 'flex', gap: '0.65rem' }}>
-                <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube" className="hover:text-white transition-colors"><YoutubeIcon width={18} height={18} /></a>
-                <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook" className="hover:text-white transition-colors"><FacebookIcon width={18} height={18} /></a>
-                <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram" className="hover:text-white transition-colors"><InstagramIcon width={18} height={18} /></a>
+            <div className="site-header-mobile-right">
+              <div className="site-header-mobile-socials">
+                <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube" className="mobile-social-icon"><YoutubeIcon width={16} height={16} /></a>
+                <a href="https://www.tiktok.com/@veronicaadane?_r=1&_t=ZS-95Kt36szYxt" target="_blank" rel="noreferrer" aria-label="TikTok" title="TikTok" className="mobile-social-icon"><TikTokIcon width={14} height={14} /></a>
+                <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook" className="mobile-social-icon"><FacebookIcon width={16} height={16} /></a>
+                <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram" className="mobile-social-icon"><InstagramIcon width={16} height={16} /></a>
               </div>
               <button
                 aria-expanded={menuOpen}

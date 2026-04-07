@@ -1038,6 +1038,73 @@
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
 }
 
+/* ── Desktop header social icons ────────────────────────────────────────── */
+
+.header-social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 169, 110, 0.18);
+  color: rgba(247, 242, 234, 0.65);
+  text-decoration: none;
+  transition:
+    color 200ms ease,
+    border-color 200ms ease,
+    background 200ms ease,
+    transform 200ms ease;
+}
+
+.header-social-icon:hover {
+  color: #f7f2ea;
+  border-color: rgba(201, 169, 110, 0.5);
+  background: rgba(201, 169, 110, 0.1);
+  transform: translateY(-1px);
+}
+
+/* ── Mobile header right side layout ────────────────────────────────────── */
+
+.site-header-mobile-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.site-header-mobile-socials {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* ── Mobile header social icon pills ────────────────────────────────────── */
+
+.mobile-social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 169, 110, 0.16);
+  color: rgba(247, 242, 234, 0.6);
+  text-decoration: none;
+  transition:
+    color 200ms ease,
+    border-color 200ms ease,
+    background 200ms ease,
+    transform 200ms ease;
+}
+
+.mobile-social-icon:hover {
+  color: #f7f2ea;
+  border-color: rgba(201, 169, 110, 0.44);
+  background: rgba(201, 169, 110, 0.1);
+  transform: scale(1.08);
+}
+
 .site-header-mobile-panel {
   position: absolute;
   inset: 100% 0 auto;
@@ -7066,7 +7133,7 @@ a:not([class]):hover {
 }
 
 .editorial-site-footer {
-  margin-top: 4rem;
+  margin-top: 1.5rem;
   border-top: 1px solid rgba(176, 141, 87, 0.14);
   background:
     radial-gradient(circle at top, rgba(176, 141, 87, 0.08), transparent 28%),

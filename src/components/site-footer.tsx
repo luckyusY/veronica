@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { YoutubeIcon, FacebookIcon, InstagramIcon } from "@/components/social-icons";
+import { YoutubeIcon, FacebookIcon, InstagramIcon, TikTokIcon } from "@/components/social-icons";
 import { VeronicaWordmark } from "@/components/veronica-wordmark";
 import type { CmsSiteSettings } from "@/lib/cms-types";
 
@@ -25,14 +25,17 @@ export function SiteFooter({ settings }: SiteFooterProps) {
             {settings.description}
           </p>
         </div>
-        <div className="site-footer-social-row" aria-label="Social reach" style={{ display: 'flex', gap: '1rem' }}>
-          <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube" className="site-footer-social-chip" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.6rem', borderRadius: '50%' }}>
+        <div className="site-footer-social-row" aria-label="Social reach" style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <a href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk" target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube" className="header-social-icon" style={{ width: '2.6rem', height: '2.6rem' }}>
             <YoutubeIcon width={22} height={22} />
           </a>
-          <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook" className="site-footer-social-chip" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.6rem', borderRadius: '50%' }}>
+          <a href="https://www.tiktok.com/@veronicaadane?_r=1&_t=ZS-95Kt36szYxt" target="_blank" rel="noreferrer" aria-label="TikTok" title="TikTok" className="header-social-icon" style={{ width: '2.6rem', height: '2.6rem' }}>
+            <TikTokIcon width={20} height={20} />
+          </a>
+          <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook" className="header-social-icon" style={{ width: '2.6rem', height: '2.6rem' }}>
             <FacebookIcon width={22} height={22} />
           </a>
-          <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram" className="site-footer-social-chip" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.6rem', borderRadius: '50%' }}>
+          <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram" className="header-social-icon" style={{ width: '2.6rem', height: '2.6rem' }}>
             <InstagramIcon width={22} height={22} />
           </a>
         </div>
