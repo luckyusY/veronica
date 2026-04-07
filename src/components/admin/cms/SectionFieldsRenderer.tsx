@@ -7,6 +7,8 @@ import {
   getArrayTemplate,
   getItemLabel,
   humanizeKey,
+  isLikelyMediaItemArrayKey,
+  isMediaItemArray,
   isMediaItemValue,
   isPlainObject,
   isTagListKey,
@@ -20,6 +22,7 @@ import {
 } from "@/lib/cms-editor-utils";
 import { RepeatableField } from "@/components/admin/cms/fields/RepeatableField";
 import { ImagePickerField } from "@/components/admin/cms/fields/ImagePickerField";
+import { MultiImagePickerField } from "@/components/admin/cms/fields/MultiImagePickerField";
 import { TagListField } from "@/components/admin/cms/fields/TagListField";
 import { TextField } from "@/components/admin/cms/fields/TextField";
 import { TextareaField } from "@/components/admin/cms/fields/TextareaField";
@@ -137,6 +140,23 @@ export function SectionFieldsRenderer({
   }
 
   if (Array.isArray(value)) {
+    // ── Multi-image array (e.g. gallery items) ──────────────────────────────
+    // Detect filled arrays of CmsMediaItem, or empty arrays whose key name
+    // strongly implies a media gallery (items, photos, slides, images…).
+    if (isMediaItemArray(value) || (value.length === 0 && isLikelyMediaItemArrayKey(key))) {
+      return (
+        <MultiImagePickerField
+          assets={mediaAssets}
+          error={error}
+          label={label}
+          onChange={(nextValue) =>
+            updateAtPath(contentRoot, path, nextValue, onContentChange)
+          }
+          value={value}
+        />
+      );
+    }
+
     if (value.every((item) => typeof item === "string")) {
       if (isTagListKey(key)) {
         return (

@@ -13871,3 +13871,50 @@ a:not([class]):hover {
   background: rgba(239, 68, 68, 0.12);
   color: rgba(252, 165, 165, 1);
 }
+
+/* ═══════════════════════════════════════════════════
+   CMS EDITOR — Multi-image picker field
+   ═══════════════════════════════════════════════════ */
+
+.multi-img-picker-count {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: rgba(176, 141, 87, 0.82);
+  letter-spacing: 0.04em;
+}
+
+.multi-img-picker-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.multi-img-picker-search-icon {
+  position: absolute;
+  left: 0.65rem;
+  color: rgba(237, 237, 237, 0.35);
+  pointer-events: none;
+}
+
+/* Thumbnail title label on hover */
+.multi-img-picker-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: rgba(245, 242, 236, 0.9);
+  background: linear-gradient(to top, rgba(0,0,0,0.72), transparent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transition: opacity 0.16s;
+  pointer-events: none;
+}
+.cip-thumb:hover .multi-img-picker-title {
+  opacity: 1;
+}

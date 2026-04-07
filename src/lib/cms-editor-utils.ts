@@ -123,6 +123,28 @@ export function isMediaItemValue(value: unknown): value is CmsMediaItem {
   );
 }
 
+/**
+ * Returns true when value is a non-empty array where every element is a
+ * CmsMediaItem — e.g. the `items` array on a gallery section.
+ */
+export function isMediaItemArray(value: unknown): value is CmsMediaItem[] {
+  return (
+    Array.isArray(value) &&
+    value.length > 0 &&
+    value.every(isMediaItemValue)
+  );
+}
+
+/**
+ * Returns true when value is an empty array whose path key suggests it is
+ * a media gallery field (items, photos, gallery, images, slides…). This
+ * ensures empty arrays are still rendered as the multi-picker instead of
+ * a generic text repeatable.
+ */
+export function isLikelyMediaItemArrayKey(key: string) {
+  return /(^items$|photos|gallery|images|slides|mediaItems)/i.test(key);
+}
+
 export function looksLikeUrlField(key: string) {
   return /(^href$|^url$|link$|url$)/i.test(key);
 }
