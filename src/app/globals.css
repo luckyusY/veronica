@@ -12358,12 +12358,12 @@ a:not([class]):hover {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 22% 18%, rgba(242, 210, 139, 0.16), transparent 28%),
-    linear-gradient(180deg, rgba(6, 8, 11, 0.08) 0%, rgba(6, 8, 11, 0.36) 42%, rgba(6, 8, 11, 0.76) 100%);
+    radial-gradient(circle at 22% 18%, rgba(242, 210, 139, 0.12), transparent 28%),
+    linear-gradient(180deg, rgba(6, 8, 11, 0.06) 0%, rgba(6, 8, 11, 0.28) 42%, rgba(6, 8, 11, 0.68) 100%);
 }
 
 .editorial-image-backdrop-element {
-  filter: blur(26px) saturate(1.04) brightness(0.42) contrast(1.04);
+  filter: blur(32px) saturate(1.1) brightness(0.35) contrast(1.06);
   opacity: 0.98;
   transform: scale(1.16);
 }
@@ -12802,6 +12802,79 @@ a:not([class]):hover {
 .home-auto-gallery-title,
 .home-auto-gallery-note {
   display: none;
+}
+
+/* ── Portrait Grid ─────────────────────────────────────────── */
+.home-portrait-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.2rem;
+}
+
+.home-portrait-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.home-portrait-frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 2 / 3;
+  background: #090d12;
+}
+
+.home-portrait-image {
+  position: absolute;
+  inset: 0;
+}
+
+.home-portrait-veil {
+  background: linear-gradient(180deg, transparent 68%, rgba(7, 9, 12, 0.18) 100%);
+}
+
+.home-portrait-caption {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.9rem 0.35rem 0.5rem;
+}
+
+.home-portrait-eyebrow {
+  color: rgba(242, 210, 139, 0.9);
+}
+
+.home-portrait-title {
+  margin: 0;
+  font-size: clamp(1.35rem, 2vw, 2rem);
+  color: #f3ede4;
+  line-height: 1.06;
+}
+
+.home-portrait-note {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.65;
+  color: rgba(245, 242, 236, 0.54);
+  max-width: 26rem;
+}
+
+@media (max-width: 900px) {
+  .home-portrait-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .home-portrait-grid .home-portrait-card:nth-child(3) {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-portrait-grid {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+  .home-portrait-grid .home-portrait-card:nth-child(3) {
+    display: flex;
+  }
 }
 
 .home-visual-card,

@@ -65,13 +65,13 @@ function HomeImageCard({
       <div className={`home-full-image-frame ${frameClassName}`.trim()}>
         <EditorialImage
           className="home-full-image-shell"
-          fit="cover"
+          fit="contain"
           image={image}
           overlayClassName="home-full-image-veil"
           priority={priority}
           shimmer={false}
           sizes={sizes}
-          strength={18}
+          strength={52}
         />
         {eyebrow ? (
           <span className="home-full-image-tag">{eyebrow}</span>
@@ -105,18 +105,51 @@ function HomeAutoGalleryRow({
               <div className="home-auto-gallery-media">
                 <EditorialImage
                   className="home-auto-gallery-image"
-                  fit="cover"
+                  fit="contain"
                   image={item.image}
                   overlayClassName="home-auto-gallery-veil"
                   shimmer={false}
                   sizes="(max-width: 1024px) 72vw, 18vw"
-                  strength={12}
+                  strength={40}
                 />
                 <span className="home-image-copyright">© All rights reserved</span>
               </div>
             </article>
           ))}
         </div>
+      ))}
+    </div>
+  );
+}
+
+function HomePortraitGrid({ items }: { items: HomeGalleryItem[] }) {
+  return (
+    <div className="home-portrait-grid">
+      {items.slice(0, 3).map((item, index) => (
+        <RevealBlock
+          className="home-portrait-card"
+          delay={0.08 + index * 0.12}
+          distance={44}
+          key={item.title}
+          variant="up"
+        >
+          <div className="home-portrait-frame">
+            <EditorialImage
+              className="home-portrait-image"
+              fit="contain"
+              image={item.image}
+              overlayClassName="home-portrait-veil"
+              shimmer
+              sizes="(max-width: 900px) 90vw, 30vw"
+              strength={48}
+            />
+          </div>
+          <div className="home-portrait-caption">
+            <p className="section-label home-portrait-eyebrow">{item.eyebrow}</p>
+            <h3 className="display-title home-portrait-title">{item.title}</h3>
+            <p className="home-portrait-note">{item.note}</p>
+          </div>
+        </RevealBlock>
       ))}
     </div>
   );
@@ -330,13 +363,13 @@ export default async function Home() {
               <p className="section-label home-intro-visual-kicker">Official image</p>
               <EditorialImage
                 className="home-intro-image"
-                fit="cover"
+                fit="contain"
                 image={content.intro.image}
                 overlayClassName="home-intro-image-veil"
                 priority
                 shimmer={false}
                 sizes="(max-width: 1024px) 100vw, 46vw"
-                strength={18}
+                strength={52}
               />
               <span className="home-image-copyright">© All rights reserved</span>
             </div>
@@ -364,51 +397,12 @@ export default async function Home() {
           </RevealBlock>
 
           {visualRows.length > 0 ? (
-            <div className="home-editorial-stack">
-              {visualRows.map((item, index) => {
-                const darkPanel = index % 2 === 1;
-
-                return (
-                  <HomeEditorialPair
-                    className={index === 0 ? "home-editorial-pair--feature" : ""}
-                    frameClassName={
-                      index === 0
-                        ? "home-full-image-frame--split-feature"
-                        : "home-full-image-frame--split-standard"
-                    }
-                    image={item.image}
-                    imageEyebrow={item.era}
-                    imageSide={index % 2 === 0 ? "right" : "left"}
-                    key={item.title}
-                    panelClassName={`${
-                      darkPanel ? "editorial-dark-panel" : "editorial-paper-panel"
-                    } home-editorial-copy-panel`}
-                    panel={
-                      <>
-                        <div>
-                          <p className="section-label">{item.era}</p>
-                          <h3
-                            className={`display-title mt-5 max-w-3xl text-4xl sm:text-5xl ${
-                              darkPanel ? "text-white" : "text-[#1f1914]"
-                            }`}
-                          >
-                            {item.title}
-                          </h3>
-                        </div>
-                        <p
-                          className={`max-w-2xl text-base leading-8 ${
-                            darkPanel ? "text-white/72" : "text-[#3a332d]"
-                          }`}
-                        >
-                          {item.note}
-                        </p>
-                      </>
-                    }
-                    sizes="(max-width: 1024px) 100vw, 52vw"
-                  />
-                );
-              })}
-            </div>
+            <HomePortraitGrid items={visualRows.map(item => ({
+              image: item.image,
+              eyebrow: item.era,
+              title: item.title,
+              note: item.note,
+            }))} />
           ) : null}
         </div>
       </section>

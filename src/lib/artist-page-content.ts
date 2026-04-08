@@ -78,22 +78,22 @@ const aboutImages = {
 
 export const homeResearchSignals = [
   {
+    label: "Heritage",
+    title: "Adane Teka's Daughter",
+    detail:
+      "Born and raised in Addis Ababa as the daughter of celebrated Ethiopian performer Adane Teka — performance was never a choice, it was an inheritance.",
+  },
+  {
     label: "Album",
     title: "Meteriyaye",
     detail:
-      "Apple Music and SoundCloud both list Meteriyaye as a Veronica Adane album from 2024.",
+      "A 12-track album released August 2024 — acquired by Zojak Worldwide in a record-setting deal reported by Addis Insight. The defining statement of her generation.",
   },
   {
-    label: "Track count",
-    title: "12 songs",
+    label: "The Message",
+    title: "Love, Hope, Unity",
     detail:
-      "Apple Music lists 12 songs and SoundCloud lists 12 tracks for the same project.",
-  },
-  {
-    label: "Interview theme",
-    title: "Love, hope, unity",
-    detail:
-      "In SBS Amharic, Veronica described the album around love, hope, unity, patriotism, and peace for Ethiopia.",
+      "Her own words from SBS Amharic: Meteriyaye is built around love, hope, unity, patriotism, and peace for Ethiopia.",
   },
 ] as const;
 
