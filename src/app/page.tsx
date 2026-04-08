@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { RevealBlock } from "@/components/animated-text";
 import { EditorialImage } from "@/components/editorial-image";
@@ -11,12 +12,29 @@ export const revalidate = 60;
 
 type HomePageImage = HomePageContent["intro"]["image"];
 type RevealVariant = "left" | "right" | "up" | "scale";
-
-type HomeImageCardProps = {
+type HomeGalleryItem = {
   image: HomePageImage;
   eyebrow: string;
   title: string;
   note: string;
+};
+type HomeEditorialPairProps = {
+  image: HomePageImage;
+  imageEyebrow: string;
+  panel: ReactNode;
+  panelClassName: string;
+  sizes: string;
+  imageSide?: "left" | "right";
+  className?: string;
+  frameClassName?: string;
+  imagePriority?: boolean;
+  imageDelay?: number;
+  panelDelay?: number;
+};
+
+type HomeImageCardProps = {
+  image: HomePageImage;
+  eyebrow: string;
   sizes: string;
   className?: string;
   frameClassName?: string;
@@ -29,8 +47,6 @@ type HomeImageCardProps = {
 function HomeImageCard({
   image,
   eyebrow,
-  title,
-  note,
   sizes,
   className = "",
   frameClassName = "",
@@ -49,23 +65,126 @@ function HomeImageCard({
       <div className={`home-full-image-frame ${frameClassName}`.trim()}>
         <EditorialImage
           className="home-full-image-shell"
-          fit="contain"
+          fit="cover"
           image={image}
           overlayClassName="home-full-image-veil"
           priority={priority}
           shimmer={false}
           sizes={sizes}
-          strength={72}
+          strength={18}
         />
-
-        <div className="home-full-image-meta">
-          <p className="section-label home-full-image-eyebrow">{eyebrow}</p>
-          <h3 className="display-title home-full-image-title">{title}</h3>
-          <p className="home-full-image-note">{note}</p>
-        </div>
+        {eyebrow ? (
+          <span className="home-full-image-tag">{eyebrow}</span>
+        ) : null}
+        <span className="home-image-copyright">© All rights reserved</span>
       </div>
     </RevealBlock>
   );
+}
+
+function HomeAutoGalleryRow({
+  items,
+  className = "",
+}: {
+  items: HomeGalleryItem[];
+  className?: string;
+}) {
+  return (
+    <div className={`home-auto-gallery-marquee ${className}`.trim()}>
+      {[0, 1].map((copyIndex) => (
+        <div
+          aria-hidden={copyIndex === 1}
+          className="home-auto-gallery-group"
+          key={`gallery-copy-${copyIndex}`}
+        >
+          {items.map((item, index) => (
+            <article
+              className="home-auto-gallery-tile"
+              key={`${item.title}-${copyIndex}-${index}`}
+            >
+              <div className="home-auto-gallery-media">
+                <EditorialImage
+                  className="home-auto-gallery-image"
+                  fit="cover"
+                  image={item.image}
+                  overlayClassName="home-auto-gallery-veil"
+                  shimmer={false}
+                  sizes="(max-width: 1024px) 72vw, 18vw"
+                  strength={12}
+                />
+                <span className="home-image-copyright">© All rights reserved</span>
+              </div>
+            </article>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function HomeEditorialPair({
+  image,
+  imageEyebrow,
+  panel,
+  panelClassName,
+  sizes,
+  imageSide = "right",
+  className = "",
+  frameClassName = "",
+  imagePriority = false,
+  imageDelay,
+  panelDelay,
+}: HomeEditorialPairProps) {
+  const imageVariant = imageSide === "left" ? "left" : "right";
+  const panelVariant = imageSide === "left" ? "right" : "left";
+
+  return (
+    <div
+      className={`home-viewport-breakout home-editorial-pair home-editorial-pair--image-${imageSide} ${className}`.trim()}
+    >
+      <RevealBlock
+        className={`home-editorial-copy ${panelClassName}`.trim()}
+        delay={panelDelay}
+        distance={34}
+        variant={panelVariant}
+      >
+        {panel}
+      </RevealBlock>
+
+      <HomeImageCard
+        className="home-editorial-image"
+        delay={imageDelay}
+        eyebrow={imageEyebrow}
+        frameClassName={frameClassName}
+        image={image}
+        priority={imagePriority}
+        sizes={sizes}
+        variant={imageVariant}
+      />
+    </div>
+  );
+}
+
+function looksLikeUploadName(value?: string) {
+  if (!value) {
+    return false;
+  }
+
+  const normalized = value.trim();
+
+  return /^(img|dsc|pxl|mvimg|image|file)[-_ ]?\d+/i.test(normalized);
+}
+
+function resolveImageTitle(label: string | undefined, fallback: string) {
+  if (!label || looksLikeUploadName(label)) {
+    return fallback;
+  }
+
+  return label;
+}
+
+function getHomeImageSourceKey(image: HomePageImage) {
+  return image.publicId ?? image.url ?? image.alt;
 }
 
 export default async function Home() {
@@ -74,6 +193,7 @@ export default async function Home() {
   const visualChaptersSet = content.visualChapters.items;
   const visualFeature = visualChaptersSet[0];
   const visualSupport = visualChaptersSet.slice(1);
+  const visualRows = visualChaptersSet;
   const risePrimaryImage = content.rise.images[0] ?? content.heritage.image;
   const riseSecondaryImage = content.rise.images[1] ?? risePrimaryImage;
   const campaignSupportPrimary =
@@ -81,6 +201,69 @@ export default async function Home() {
   const campaignSupportSecondary =
     content.campaign.supportingImages[1] ?? campaignSupportPrimary;
   const hasTestimonials = content.testimonials.items.length > 0;
+  const autoGalleryItems = [
+    {
+      image: content.intro.image,
+      eyebrow: "Official portrait",
+      title: resolveImageTitle(content.intro.image.label, "Full-frame portrait"),
+      note: "Lead press image used across platform headers, booking decks, and releases.",
+    },
+    visualFeature
+      ? {
+          image: visualFeature.image,
+          eyebrow: visualFeature.era,
+          title: visualFeature.title,
+          note: visualFeature.note,
+        }
+      : null,
+    ...visualSupport.slice(0, 2).map((item) => ({
+      image: item.image,
+      eyebrow: item.era,
+      title: item.title,
+      note: item.note,
+    })),
+    {
+      image: content.heritage.image,
+      eyebrow: content.heritage.eyebrow,
+      title: resolveImageTitle(content.heritage.image.label, "Live-stage portrait"),
+      note: "A heritage frame that anchors the homepage with a grounded live-performance portrait.",
+    },
+    {
+      image: risePrimaryImage,
+      eyebrow: "Tour frame",
+      title: resolveImageTitle(risePrimaryImage.label, "Stage direction"),
+      note: "Performance photography with enough breathing room for the styling and pose to stay intact.",
+    },
+    {
+      image: content.campaign.featureImage,
+      eyebrow: content.campaign.eyebrow,
+      title: resolveImageTitle(content.campaign.featureImage.label, "Campaign feature"),
+      note: "Campaign imagery staged for press kits, headers, and launch announcements.",
+    },
+    {
+      image: campaignSupportPrimary,
+      eyebrow: "Supporting frame",
+      title: resolveImageTitle(campaignSupportPrimary.label, "Campaign still 01"),
+      note: "Secondary photography that keeps the same editorial tone without feeling repetitive.",
+    },
+  ].filter((item): item is HomeGalleryItem => item !== null);
+  const seenGallerySources = new Set<string>();
+  const uniqueAutoGalleryItems = autoGalleryItems.filter((item) => {
+    const key = getHomeImageSourceKey(item.image);
+
+    if (seenGallerySources.has(key)) {
+      return false;
+    }
+
+    seenGallerySources.add(key);
+    return true;
+  });
+  const autoGallerySplitIndex = Math.ceil(uniqueAutoGalleryItems.length / 2);
+  const autoGalleryPrimaryRow = uniqueAutoGalleryItems.slice(0, autoGallerySplitIndex);
+  const autoGallerySecondaryRow =
+    uniqueAutoGalleryItems.slice(autoGallerySplitIndex).length > 0
+      ? uniqueAutoGalleryItems.slice(autoGallerySplitIndex)
+      : uniqueAutoGalleryItems.slice().reverse();
 
   return (
     <main className="editorial-home home-redesign pb-16 sm:pb-20">
@@ -142,17 +325,29 @@ export default async function Home() {
             </div>
           </RevealBlock>
 
-          <HomeImageCard
-            className="home-full-image-card--feature"
-            eyebrow="Official image"
-            frameClassName="home-full-image-frame--portrait"
-            image={content.intro.image}
-            note={content.intro.paragraphs[0]}
-            priority
-            sizes="(max-width: 1024px) 100vw, 42vw"
-            title={content.intro.image.label ?? "Full-frame portrait"}
-            variant="right"
-          />
+          <RevealBlock className="home-intro-visual" distance={40} variant="right">
+            <div className="home-intro-visual-stage">
+              <p className="section-label home-intro-visual-kicker">Official image</p>
+              <EditorialImage
+                className="home-intro-image"
+                fit="cover"
+                image={content.intro.image}
+                overlayClassName="home-intro-image-veil"
+                priority
+                shimmer={false}
+                sizes="(max-width: 1024px) 100vw, 46vw"
+                strength={18}
+              />
+              <span className="home-image-copyright">© All rights reserved</span>
+            </div>
+
+            <div className="home-intro-caption">
+              <h3 className="display-title home-intro-caption-title">
+                {resolveImageTitle(content.intro.image.label, "Signature portrait")}
+              </h3>
+              <p className="home-intro-caption-note">{content.intro.paragraphs[0]}</p>
+            </div>
+          </RevealBlock>
         </div>
       </section>
 
@@ -166,182 +361,222 @@ export default async function Home() {
               </h2>
               <span aria-hidden="true" className="editorial-section-opener-rule" />
             </div>
-            <p className="home-section-copy">{content.visualChapters.description}</p>
-            <div className="visual-chapters-chip-list">
-              {content.visualChapters.chips.map((item) => (
-                <span className="visual-chapters-chip" key={item}>
-                  {item}
-                </span>
-              ))}
-            </div>
           </RevealBlock>
 
-          {visualFeature ? (
-            <div className="home-visual-grid">
-              <HomeImageCard
-                className="home-visual-card home-visual-card--feature"
-                eyebrow={visualFeature.era}
-                frameClassName="home-full-image-frame--tall"
-                image={visualFeature.image}
-                note={visualFeature.note}
-                sizes="(max-width: 1024px) 100vw, 44vw"
-                title={visualFeature.title}
-                variant="left"
-              />
+          {visualRows.length > 0 ? (
+            <div className="home-editorial-stack">
+              {visualRows.map((item, index) => {
+                const darkPanel = index % 2 === 1;
 
-              {visualSupport.map((item, index) => (
-                <HomeImageCard
-                  className="home-visual-card"
-                  delay={0.08 + index * 0.08}
-                  eyebrow={item.era}
-                  frameClassName="home-full-image-frame--landscape"
-                  image={item.image}
-                  key={item.title}
-                  note={item.note}
-                  sizes="(max-width: 1024px) 100vw, 28vw"
-                  title={item.title}
-                  variant={index % 2 === 0 ? "up" : "right"}
-                />
-              ))}
+                return (
+                  <HomeEditorialPair
+                    className={index === 0 ? "home-editorial-pair--feature" : ""}
+                    frameClassName={
+                      index === 0
+                        ? "home-full-image-frame--split-feature"
+                        : "home-full-image-frame--split-standard"
+                    }
+                    image={item.image}
+                    imageEyebrow={item.era}
+                    imageSide={index % 2 === 0 ? "right" : "left"}
+                    key={item.title}
+                    panelClassName={`${
+                      darkPanel ? "editorial-dark-panel" : "editorial-paper-panel"
+                    } home-editorial-copy-panel`}
+                    panel={
+                      <>
+                        <div>
+                          <p className="section-label">{item.era}</p>
+                          <h3
+                            className={`display-title mt-5 max-w-3xl text-4xl sm:text-5xl ${
+                              darkPanel ? "text-white" : "text-[#1f1914]"
+                            }`}
+                          >
+                            {item.title}
+                          </h3>
+                        </div>
+                        <p
+                          className={`max-w-2xl text-base leading-8 ${
+                            darkPanel ? "text-white/72" : "text-[#3a332d]"
+                          }`}
+                        >
+                          {item.note}
+                        </p>
+                      </>
+                    }
+                    sizes="(max-width: 1024px) 100vw, 52vw"
+                  />
+                );
+              })}
             </div>
           ) : null}
         </div>
       </section>
 
       <section className="section-shell py-10">
-        <div className="home-dossier-grid">
-          <RevealBlock className="editorial-dark-panel home-dossier-panel" distance={34} variant="left">
-            <div>
-              <p className="section-label">{content.heritage.eyebrow}</p>
-              <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
-                {content.heritage.title}
-              </h2>
-            </div>
-            <p className="max-w-2xl text-base leading-8 text-white/72">
-              {content.heritage.description}
-            </p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {content.heritage.tags.map((item) => (
-                <span className="meta-chip" key={item}>
-                  {item}
-                </span>
-              ))}
-            </div>
-          </RevealBlock>
-
-          <HomeImageCard
-            className="home-full-image-card--wide"
-            eyebrow={content.heritage.eyebrow}
-            frameClassName="home-full-image-frame--wide"
-            image={content.heritage.image}
-            note={content.heritage.description}
-            sizes="(max-width: 1024px) 100vw, 48vw"
-            title={content.heritage.image.label ?? "Live-stage portrait"}
-            variant="right"
-          />
-
-          <RevealBlock className="editorial-paper-panel home-dossier-panel" delay={0.08} distance={32} variant="left">
-            <div>
-              <p className="section-label">{content.rise.eyebrow}</p>
-              <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
-                {content.rise.title}
-              </h2>
-            </div>
-
-            <p className="max-w-2xl text-base leading-8 text-[#3a332d]">
-              {content.rise.description}
-            </p>
-
-            <div className="home-dossier-notes">
-              <div className="editorial-note">
-                <p className="section-label">Within Ethiopia</p>
-                <p className="mt-3 text-sm leading-7 text-[#4b4138]">{content.rise.nationalNote}</p>
-              </div>
-              <div className="editorial-note">
-                <p className="section-label">Beyond Ethiopia</p>
-                <p className="mt-3 text-sm leading-7 text-[#4b4138]">
-                  {content.rise.internationalNote}
-                </p>
+        <div className="home-viewport-breakout">
+          <RevealBlock className="home-auto-gallery-stage" distance={32} variant="up">
+            <div className="home-auto-gallery-head">
+              <div>
+                <p className="section-label">Moving gallery</p>
+                <h2 className="display-title home-auto-gallery-heading">
+                  Photography in motion.
+                </h2>
               </div>
             </div>
-          </RevealBlock>
 
-          <div className="home-image-pair-grid">
-            <HomeImageCard
-              className="home-full-image-card--compact"
-              delay={0.12}
-              eyebrow="Tour frame"
-              frameClassName="home-full-image-frame--compact"
-              image={risePrimaryImage}
-              note={content.rise.nationalNote}
-              sizes="(max-width: 1024px) 100vw, 24vw"
-              title={risePrimaryImage.label ?? "Stage direction"}
-              variant="up"
+            <HomeAutoGalleryRow items={autoGalleryPrimaryRow} />
+            <HomeAutoGalleryRow
+              className="home-auto-gallery-marquee--alternate"
+              items={autoGallerySecondaryRow}
             />
-            <HomeImageCard
-              className="home-full-image-card--compact"
-              delay={0.18}
-              eyebrow="Audience frame"
-              frameClassName="home-full-image-frame--compact"
-              image={riseSecondaryImage}
-              note={content.rise.internationalNote}
-              sizes="(max-width: 1024px) 100vw, 24vw"
-              title={riseSecondaryImage.label ?? "Crowd energy"}
-              variant="up"
-            />
-          </div>
+          </RevealBlock>
         </div>
       </section>
 
       <section className="section-shell py-10">
-        <div className="home-campaign-grid">
-          <HomeImageCard
-            className="home-full-image-card--campaign"
-            eyebrow={content.campaign.eyebrow}
-            frameClassName="home-full-image-frame--campaign"
-            image={content.campaign.featureImage}
-            note={content.campaign.description}
-            sizes="(max-width: 1024px) 100vw, 46vw"
-            title={content.campaign.featureImage.label ?? "Campaign feature"}
-            variant="left"
+        <div className="home-editorial-stack">
+          <HomeEditorialPair
+            className="home-editorial-pair--feature"
+            frameClassName="home-full-image-frame--split-feature"
+            image={content.heritage.image}
+            imageEyebrow={content.heritage.eyebrow}
+            imageSide="right"
+            panelClassName="editorial-dark-panel home-editorial-copy-panel"
+            panel={
+              <>
+                <div>
+                  <p className="section-label">{content.heritage.eyebrow}</p>
+                  <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
+                    {content.heritage.title}
+                  </h2>
+                </div>
+                <p className="max-w-2xl text-base leading-8 text-white/72">
+                  {content.heritage.description}
+                </p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {content.heritage.tags.map((item) => (
+                    <span className="meta-chip" key={item}>
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </>
+            }
+            sizes="(max-width: 1024px) 100vw, 52vw"
           />
 
-          <RevealBlock className="editorial-paper-panel home-campaign-panel" delay={0.08} distance={34} variant="right">
-            <div>
-              <p className="section-label">{content.campaign.eyebrow}</p>
-              <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
-                {content.campaign.title}
-              </h2>
-              <p className="mt-6 max-w-2xl text-base leading-8 text-[#3a332d]">
-                {content.campaign.description}
-              </p>
-            </div>
+          <HomeEditorialPair
+            frameClassName="home-full-image-frame--split-standard"
+            image={risePrimaryImage}
+            imageEyebrow="Tour frame"
+            imageSide="left"
+            panelClassName="editorial-paper-panel home-editorial-copy-panel"
+            panel={
+              <>
+                <div>
+                  <p className="section-label">{content.rise.eyebrow}</p>
+                  <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
+                    {content.rise.title}
+                  </h2>
+                </div>
 
-            <div className="home-supporting-rail">
-              <HomeImageCard
-                className="home-full-image-card--support"
-                delay={0.12}
-                eyebrow="Supporting image"
-                frameClassName="home-full-image-frame--support"
-                image={campaignSupportPrimary}
-                note="Additional campaign imagery for platform headers, press kits, and release coverage."
-                sizes="(max-width: 1024px) 100vw, 22vw"
-                title={campaignSupportPrimary.label ?? "Campaign still 01"}
-                variant="up"
-              />
-              <HomeImageCard
-                className="home-full-image-card--support"
-                delay={0.18}
-                eyebrow="Supporting image"
-                frameClassName="home-full-image-frame--support"
-                image={campaignSupportSecondary}
-                note="A secondary full-frame visual that keeps the portrait readable without cropping."
-                sizes="(max-width: 1024px) 100vw, 22vw"
-                title={campaignSupportSecondary.label ?? "Campaign still 02"}
-                variant="up"
-              />
-            </div>
-          </RevealBlock>
+                <p className="max-w-2xl text-base leading-8 text-[#3a332d]">
+                  {content.rise.description}
+                </p>
+
+                <div className="home-dossier-notes">
+                  <div className="editorial-note">
+                    <p className="section-label">Within Ethiopia</p>
+                    <p className="mt-3 text-sm leading-7 text-[#4b4138]">
+                      {content.rise.nationalNote}
+                    </p>
+                  </div>
+                  <div className="editorial-note">
+                    <p className="section-label">Beyond Ethiopia</p>
+                    <p className="mt-3 text-sm leading-7 text-[#4b4138]">
+                      {content.rise.internationalNote}
+                    </p>
+                  </div>
+                </div>
+              </>
+            }
+            sizes="(max-width: 1024px) 100vw, 52vw"
+          />
+
+          <HomeEditorialPair
+            className="home-editorial-pair--compact"
+            frameClassName="home-full-image-frame--split-support"
+            image={riseSecondaryImage}
+            imageEyebrow="Audience frame"
+            imageSide="right"
+            panelClassName="editorial-dark-panel home-editorial-copy-panel home-editorial-copy-panel--compact"
+            panel={
+              <>
+                <div>
+                  <p className="section-label">Audience atmosphere</p>
+                  <h3 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
+                    Performance images can stay full without losing the live emotion.
+                  </h3>
+                </div>
+                <p className="max-w-2xl text-base leading-8 text-white/72">
+                  {content.rise.internationalNote}
+                </p>
+              </>
+            }
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+        </div>
+      </section>
+
+      <section className="section-shell py-10">
+        <div className="home-editorial-stack">
+          <HomeEditorialPair
+            className="home-editorial-pair--feature"
+            frameClassName="home-full-image-frame--split-feature"
+            image={content.campaign.featureImage}
+            imageEyebrow={content.campaign.eyebrow}
+            imageSide="right"
+            panelClassName="editorial-paper-panel home-editorial-copy-panel"
+            panel={
+              <>
+                <div>
+                  <p className="section-label">{content.campaign.eyebrow}</p>
+                  <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
+                    {content.campaign.title}
+                  </h2>
+                </div>
+                <p className="max-w-2xl text-base leading-8 text-[#3a332d]">
+                  {content.campaign.description}
+                </p>
+              </>
+            }
+            sizes="(max-width: 1024px) 100vw, 52vw"
+          />
+
+          <HomeEditorialPair
+            className="home-editorial-pair--compact"
+            frameClassName="home-full-image-frame--split-support"
+            image={campaignSupportSecondary}
+            imageEyebrow="Supporting frame"
+            imageSide="left"
+            panelClassName="editorial-dark-panel home-editorial-copy-panel home-editorial-copy-panel--compact"
+            panel={
+              <>
+                <div>
+                  <p className="section-label">Supporting stills</p>
+                  <h3 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
+                    Press-ready images should feel open, tall, and immediate.
+                  </h3>
+                </div>
+                <p className="max-w-2xl text-base leading-8 text-white/72">
+                  Additional campaign imagery for platform headers, press kits, release coverage,
+                  and social launch moments.
+                </p>
+              </>
+            }
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
         </div>
       </section>
 
