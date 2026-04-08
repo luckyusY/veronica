@@ -12862,8 +12862,12 @@ a:not([class]):hover {
   .home-portrait-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  /* Show all 3 cards — 3rd wraps to next row and spans full width */
   .home-portrait-grid .home-portrait-card:nth-child(3) {
-    display: none;
+    grid-column: 1 / -1;
+  }
+  .home-portrait-grid .home-portrait-card:nth-child(3) .home-portrait-frame {
+    aspect-ratio: 16 / 9;
   }
 }
 
@@ -12873,7 +12877,10 @@ a:not([class]):hover {
     gap: 0.15rem;
   }
   .home-portrait-grid .home-portrait-card:nth-child(3) {
-    display: flex;
+    grid-column: auto;
+  }
+  .home-portrait-grid .home-portrait-card:nth-child(3) .home-portrait-frame {
+    aspect-ratio: 2 / 3;
   }
 }
 
@@ -13101,6 +13108,57 @@ a:not([class]):hover {
   .home-section-copy {
     font-size: 0.86rem;
     line-height: 1.62;
+  }
+}
+
+/* ── Mobile layout: image-first ordering ── */
+@media (max-width: 899px) {
+  /* Image always appears above the text panel on mobile */
+  .home-editorial-image {
+    order: -1;
+  }
+
+  /* Intro section: portrait above the copy panel */
+  .home-stage-grid .home-intro-visual {
+    order: -1;
+  }
+
+  /* Seamless stack between editorial pairs on mobile */
+  .home-editorial-stack {
+    gap: 0;
+  }
+
+  /* Tighten copy panel padding to reclaim space */
+  .home-editorial-copy-panel {
+    padding: 1.5rem 1.25rem;
+  }
+
+  /* Reduce portrait caption padding */
+  .home-portrait-caption {
+    padding: 0.75rem 0.25rem 0.5rem;
+  }
+}
+
+/* ── Mobile: section vertical rhythm ── */
+@media (max-width: 639px) {
+  .editorial-home .section-shell.py-10 {
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  /* Tighten home-stage-grid gap on small screens */
+  .home-stage-grid {
+    gap: 0;
+  }
+
+  /* Reduce intro visual stage height on phone */
+  .home-intro-visual-stage {
+    min-height: 20rem;
+  }
+
+  /* Portrait title smaller on phone */
+  .home-portrait-title {
+    font-size: clamp(1.15rem, 5vw, 1.6rem);
   }
 }
 
