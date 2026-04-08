@@ -12407,6 +12407,9 @@ a:not([class]):hover {
 
 .home-redesign {
   position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .home-stage-grid,
@@ -12437,6 +12440,7 @@ a:not([class]):hover {
 .home-archive-panel {
   display: grid;
   gap: 1.35rem;
+  min-width: 0;
 }
 
 .home-stage-copy-body,
@@ -12451,10 +12455,13 @@ a:not([class]):hover {
 .home-viewport-breakout {
   position: relative;
   width: 100%;
+  max-width: 100%;
 }
 
 .home-editorial-stack {
   gap: 0.25rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 .home-intro-visual {
@@ -12468,6 +12475,8 @@ a:not([class]):hover {
   border-radius: 0;
   background: #090d12;
   box-shadow: none;
+  width: 100%;
+  max-width: 100%;
 }
 
 .home-intro-visual-kicker {
@@ -12506,6 +12515,7 @@ a:not([class]):hover {
   gap: 1.5rem;
   padding: 0.75rem 0 0;
   border-top: 1px solid rgba(245, 242, 236, 0.1);
+  min-width: 0;
 }
 
 .home-intro-caption-title {
@@ -12524,10 +12534,13 @@ a:not([class]):hover {
   font-size: 0.85rem;
   line-height: 1.65;
   color: rgba(245, 242, 236, 0.38);
+  min-width: 0;
 }
 
 .home-editorial-pair {
   align-items: stretch;
+  width: 100%;
+  max-width: 100%;
 }
 
 .home-editorial-copy-panel {
@@ -12545,11 +12558,13 @@ a:not([class]):hover {
   font-size: 0.98rem;
   line-height: 1.8;
   color: rgba(245, 242, 236, 0.74);
+  min-width: 0;
 }
 
 .home-full-image-card {
   position: relative;
   min-width: 0;
+  max-width: 100%;
 }
 
 .home-full-image-frame {
@@ -12688,6 +12703,8 @@ a:not([class]):hover {
   border-radius: 0;
   background: #05080b;
   box-shadow: none;
+  width: 100%;
+  max-width: 100%;
 }
 
 .home-auto-gallery-stage::before,
@@ -12741,6 +12758,8 @@ a:not([class]):hover {
   overflow: hidden;
   gap: var(--gallery-gap);
   margin-top: 0.8rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 .home-auto-gallery-group {
@@ -12809,6 +12828,8 @@ a:not([class]):hover {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.2rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 .home-portrait-card {
@@ -12837,6 +12858,7 @@ a:not([class]):hover {
   display: grid;
   gap: 0.3rem;
   padding: 0.9rem 0.35rem 0.5rem;
+  min-width: 0;
 }
 
 .home-portrait-eyebrow {
@@ -13059,6 +13081,17 @@ a:not([class]):hover {
     line-height: 1.62;
   }
 
+  .home-intro-caption {
+    display: grid;
+    gap: 0.45rem;
+    align-items: start;
+  }
+
+  .home-intro-caption-title,
+  .home-intro-caption-note {
+    max-width: 100%;
+  }
+
   .home-auto-gallery-copy {
     font-size: 0.84rem;
     line-height: 1.65;
@@ -13113,9 +13146,16 @@ a:not([class]):hover {
 
 /* ── Mobile layout: image-first ordering ── */
 @media (max-width: 899px) {
+  .home-redesign,
+  .home-redesign .section-shell,
+  .home-redesign .section-shell > * {
+    max-width: 100%;
+  }
+
   /* Image always appears above the text panel on mobile */
   .home-editorial-image {
     order: -1;
+    min-width: 0;
   }
 
   /* Intro section: portrait above the copy panel */
@@ -13137,10 +13177,25 @@ a:not([class]):hover {
   .home-portrait-caption {
     padding: 0.75rem 0.25rem 0.5rem;
   }
+
+  .home-stage-grid,
+  .home-visual-stage,
+  .home-editorial-stack,
+  .home-editorial-pair,
+  .home-route-stage,
+  .home-route-grid {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 /* ── Mobile: section vertical rhythm ── */
 @media (max-width: 639px) {
+  .editorial-home,
+  .editorial-home body {
+    overflow-x: clip;
+  }
+
   .editorial-home .section-shell.py-10 {
     padding-top: 1.75rem;
     padding-bottom: 1.75rem;
