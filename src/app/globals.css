@@ -12341,6 +12341,301 @@ a:not([class]):hover {
   background: rgba(176,141,87,0.08);
 }
 
+/* Homepage full-image redesign */
+.editorial-image-shell--contained {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(201, 169, 110, 0.14), transparent 24%),
+    radial-gradient(circle at 82% 80%, rgba(255, 111, 97, 0.08), transparent 26%),
+    linear-gradient(180deg, rgba(16, 19, 25, 0.98), rgba(9, 11, 14, 0.98));
+}
+
+.editorial-image-canvas--contained {
+  inset: 0;
+}
+
+.editorial-image-element--contained {
+  padding: clamp(0.9rem, 2vw, 1.4rem);
+  filter: blur(12px) saturate(0.56) brightness(0.78) contrast(0.92);
+  opacity: 0.52;
+  transform: scale(1.02);
+}
+
+.editorial-image-shell--contained.is-loaded .editorial-image-element--contained {
+  filter: blur(0) saturate(1.02) brightness(1.02) contrast(1);
+  opacity: 1;
+  transform: scale(1);
+}
+
+.editorial-image-shell--contained:hover .editorial-image-element--contained {
+  filter: blur(0) saturate(1.04) brightness(1.04) contrast(1.02);
+  transform: scale(1);
+}
+
+.editorial-image-shell--contained .editorial-image-matte {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 0 0 1rem rgba(5, 7, 10, 0.03);
+}
+
+.editorial-image-shell--contained .editorial-image-grain {
+  opacity: 0.1;
+}
+
+.home-redesign {
+  position: relative;
+}
+
+.home-stage-grid,
+.home-visual-stage,
+.home-visual-grid,
+.home-dossier-grid,
+.home-image-pair-grid,
+.home-campaign-grid,
+.home-supporting-rail,
+.home-route-stage,
+.home-route-grid,
+.home-archive-credit-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.home-stage-copy,
+.home-dossier-panel,
+.home-campaign-panel,
+.home-route-intro,
+.home-archive-panel {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.home-stage-copy-body,
+.home-stage-stats,
+.home-section-lead,
+.home-dossier-notes {
+  display: grid;
+  gap: 1rem;
+}
+
+.home-section-copy {
+  max-width: 46rem;
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: rgba(245, 242, 236, 0.74);
+}
+
+.home-full-image-card {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  padding: clamp(0.95rem, 2vw, 1.3rem);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2rem;
+  background:
+    linear-gradient(180deg, rgba(14, 18, 24, 0.98), rgba(8, 11, 15, 0.98)),
+    radial-gradient(circle at top right, rgba(201, 169, 110, 0.08), transparent 42%);
+  box-shadow: 0 26px 68px rgba(0, 0, 0, 0.3);
+}
+
+.home-full-image-card::before {
+  content: "";
+  position: absolute;
+  top: -24%;
+  left: -10%;
+  width: 58%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(201, 169, 110, 0.14), transparent 68%);
+  pointer-events: none;
+}
+
+.home-full-image-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.home-full-image-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.03), transparent 42%),
+    linear-gradient(180deg, rgba(18, 22, 29, 0.98), rgba(10, 13, 18, 0.98));
+}
+
+.home-full-image-frame--portrait {
+  min-height: clamp(24rem, 56vw, 41rem);
+}
+
+.home-full-image-frame--tall {
+  min-height: clamp(25rem, 60vw, 45rem);
+}
+
+.home-full-image-frame--wide {
+  min-height: clamp(21rem, 42vw, 31rem);
+}
+
+.home-full-image-frame--landscape {
+  min-height: clamp(18rem, 28vw, 23rem);
+}
+
+.home-full-image-frame--compact {
+  min-height: clamp(16rem, 24vw, 19rem);
+}
+
+.home-full-image-frame--campaign {
+  min-height: clamp(22rem, 48vw, 35rem);
+}
+
+.home-full-image-frame--support {
+  min-height: clamp(16rem, 22vw, 18rem);
+}
+
+.home-full-image-shell {
+  position: absolute;
+  inset: 0;
+}
+
+.home-full-image-meta {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.home-full-image-title {
+  margin: 0;
+  font-size: clamp(1.85rem, 3vw, 3rem);
+  line-height: 0.94;
+  color: #fff;
+}
+
+.home-full-image-note {
+  margin: 0;
+  max-width: 36rem;
+  font-size: 0.9rem;
+  line-height: 1.72;
+  color: rgba(237, 237, 237, 0.72);
+}
+
+.home-stage-stat {
+  height: 100%;
+}
+
+.home-visual-card,
+.home-route-link {
+  height: 100%;
+}
+
+.home-archive-top {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+@media only screen and (min-width: 900px) {
+  .home-stage-grid {
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    align-items: start;
+  }
+
+  .home-stage-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .home-visual-grid {
+    grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+    align-items: start;
+  }
+
+  .home-visual-card--feature {
+    grid-row: 1 / span 2;
+  }
+
+  .home-dossier-grid {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: start;
+  }
+
+  .home-image-pair-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-campaign-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .home-supporting-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-route-stage {
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+    align-items: start;
+  }
+
+  .home-route-grid,
+  .home-archive-credit-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .home-archive-top {
+    flex-direction: row;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+}
+
+@media only screen and (max-width: 1023px) {
+  .home-full-image-card {
+    border-radius: 1.6rem;
+  }
+
+  .home-full-image-frame {
+    border-radius: 1.25rem;
+  }
+
+  .home-full-image-frame--portrait,
+  .home-full-image-frame--tall {
+    min-height: clamp(22rem, 72vw, 34rem);
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .home-full-image-card {
+    padding: 0.9rem;
+    border-radius: 1.35rem;
+  }
+
+  .home-full-image-frame {
+    border-radius: 1rem;
+  }
+
+  .home-full-image-frame--wide,
+  .home-full-image-frame--landscape,
+  .home-full-image-frame--campaign {
+    min-height: 17rem;
+  }
+
+  .home-full-image-frame--compact,
+  .home-full-image-frame--support {
+    min-height: 14rem;
+  }
+
+  .home-full-image-title {
+    font-size: clamp(1.6rem, 8vw, 2.4rem);
+  }
+
+  .home-full-image-note,
+  .home-section-copy {
+    font-size: 0.86rem;
+    line-height: 1.62;
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════════════════
    COLLABORATIONS PAGE
    ═══════════════════════════════════════════════════════════════════════ */

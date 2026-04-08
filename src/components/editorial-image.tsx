@@ -32,6 +32,8 @@ type ImageMotionPreset =
   | "zoom-burst"
   | "diagonal";
 
+type ImageFit = "cover" | "contain";
+
 type EditorialImageProps = {
   image: EditorialImageAsset;
   sizes: string;
@@ -40,6 +42,7 @@ type EditorialImageProps = {
   strength?: number;
   overlayClassName?: string;
   motionPreset?: ImageMotionPreset;
+  fit?: ImageFit;
   /** Enable 3-D tilt on pointer hover */
   tilt?: boolean;
   /** Strength of the shimmer scan (0 = off) */
@@ -56,6 +59,7 @@ export function EditorialImage({
   strength = 52,
   overlayClassName = "bg-gradient-to-t from-black/38 via-black/10 to-transparent",
   motionPreset = "vertical",
+  fit = "cover",
   tilt = false,
   shimmer = true,
 }: EditorialImageProps) {
@@ -63,6 +67,7 @@ export function EditorialImage({
   const prefersReducedMotion = useReducedMotion();
   const motionLite = useMotionLite();
   const reducedMotion = Boolean(prefersReducedMotion || motionLite);
+  const contained = fit === "contain";
   const [isLoaded, setIsLoaded] = useState(false);
 
   // -- Scroll-based parallax --------------------------------------------------
@@ -72,7 +77,7 @@ export function EditorialImage({
   });
 
   const motionFrames = useMemo(() => {
-    if (reducedMotion) {
+    if (reducedMotion || contained) {
       return { x: [0, 0, 0], y: [0, 0, 0], scale: [1, 1, 1], rotate: [0, 0, 0] };
     }
 
@@ -128,7 +133,7 @@ export function EditorialImage({
           rotate: [0, 0, 0],
         };
     }
-  }, [motionPreset, reducedMotion, strength]);
+  }, [contained, motionPreset, reducedMotion, strength]);
 
   // Spring-smoothed transforms for buttery parallax
   const rawX = useTransform(scrollYProgress, [0, 0.5, 1], motionFrames.x);
@@ -199,7 +204,11 @@ export function EditorialImage({
 
   return (
     <motion.div
-      className={`editorial-image-shell editorial-scroll-reveal${isLoaded ? " is-loaded" : ""}${inView ? " img-in-view" : ""}${tilt && !reducedMotion ? " image-hover-glow" : ""} ${className}`.trim()}
+      className={`editorial-image-shell editorial-scroll-reveal${
+        contained ? " editorial-image-shell--contained" : ""
+      }${isLoaded ? " is-loaded" : ""}${inView ? " img-in-view" : ""}${
+        tilt && !reducedMotion ? " image-hover-glow" : ""
+      } ${className}`.trim()}
       ref={containerRef}
       style={
         tilt && !reducedMotion
@@ -218,13 +227,13 @@ export function EditorialImage({
       animate={reducedMotion ? { opacity: 1 } : inView ? "visible" : "hidden"}
     >
       <motion.div
-        className="editorial-image-canvas"
-        style={reducedMotion ? undefined : { x, y, scale, rotate }}
+        className={`editorial-image-canvas${contained ? " editorial-image-canvas--contained" : ""}`}
+        style={reducedMotion || contained ? undefined : { x, y, scale, rotate }}
       >
         <Image
           alt={image.alt}
           blurDataURL={blurDataURL}
-          className="editorial-image-element"
+          className={`editorial-image-element${contained ? " editorial-image-element--contained" : ""}`}
           fill
           loading={priority ? undefined : "lazy"}
           onLoad={() => setIsLoaded(true)}
@@ -233,7 +242,7 @@ export function EditorialImage({
           quality={92}
           sizes={sizes}
           src={imageSrc}
-          style={{ objectFit: "cover", objectPosition: image.position ?? "center" }}
+          style={{ objectFit: fit, objectPosition: image.position ?? "center" }}
         />
       </motion.div>
 

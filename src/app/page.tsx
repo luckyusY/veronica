@@ -2,22 +2,88 @@ import Link from "next/link";
 import { RevealBlock } from "@/components/animated-text";
 import { EditorialImage } from "@/components/editorial-image";
 import { HomeHeroSwiper } from "@/components/home-hero-swiper";
-import {
-  getHomePageContent,
-  homeResearchSignals,
-} from "@/lib/artist-page-content";
+import { TestimonialsCarousel } from "@/components/testimonials-carousel";
+import { getHomePageContent, homeResearchSignals } from "@/lib/artist-page-content";
 import { getCmsPage } from "@/lib/cms-store";
 import type { HomePageContent } from "@/lib/cms-types";
 
 export const revalidate = 60;
 
+type HomePageImage = HomePageContent["intro"]["image"];
+type RevealVariant = "left" | "right" | "up" | "scale";
+
+type HomeImageCardProps = {
+  image: HomePageImage;
+  eyebrow: string;
+  title: string;
+  note: string;
+  sizes: string;
+  className?: string;
+  frameClassName?: string;
+  priority?: boolean;
+  delay?: number;
+  distance?: number;
+  variant?: RevealVariant;
+};
+
+function HomeImageCard({
+  image,
+  eyebrow,
+  title,
+  note,
+  sizes,
+  className = "",
+  frameClassName = "",
+  priority = false,
+  delay,
+  distance = 32,
+  variant = "up",
+}: HomeImageCardProps) {
+  return (
+    <RevealBlock
+      className={`home-full-image-card ${className}`.trim()}
+      delay={delay}
+      distance={distance}
+      variant={variant}
+    >
+      <div className={`home-full-image-frame ${frameClassName}`.trim()}>
+        <EditorialImage
+          className="home-full-image-shell"
+          fit="contain"
+          image={image}
+          overlayClassName="bg-transparent"
+          priority={priority}
+          shimmer={false}
+          sizes={sizes}
+          strength={72}
+        />
+      </div>
+
+      <div className="home-full-image-meta">
+        <p className="section-label">{eyebrow}</p>
+        <h3 className="display-title home-full-image-title">{title}</h3>
+        <p className="home-full-image-note">{note}</p>
+      </div>
+    </RevealBlock>
+  );
+}
+
 export default async function Home() {
   const page = await getCmsPage("home");
   const content = getHomePageContent(page.content as HomePageContent);
   const visualChaptersSet = content.visualChapters.items;
+  const visualFeature = visualChaptersSet[0];
+  const visualSupport = visualChaptersSet.slice(1);
+  const risePrimaryImage = content.rise.images[0] ?? content.heritage.image;
+  const riseSecondaryImage = content.rise.images[1] ?? risePrimaryImage;
+  const campaignSupportPrimary =
+    content.campaign.supportingImages[0] ?? content.campaign.featureImage;
+  const campaignSupportSecondary =
+    content.campaign.supportingImages[1] ?? campaignSupportPrimary;
+  const hasTestimonials = content.testimonials.items.length > 0;
 
   return (
-    <main className="editorial-home pb-16 sm:pb-20">
+    <main className="editorial-home home-redesign pb-16 sm:pb-20">
       <HomeHeroSwiper
         headlineLines={content.hero.headlineLines}
         headlineTop={content.hero.headlineTop}
@@ -46,39 +112,26 @@ export default async function Home() {
       </section>
 
       <section className="section-shell py-10">
-        <div className="grid gap-5 lg:grid-cols-[0.88fr_1.12fr]">
-          <RevealBlock
-            className="editorial-photo-block editorial-photo-block--tall image-hover-glow"
-            distance={40}
-            variant="left"
-          >
-            <EditorialImage
-              className="editorial-photo-shell"
-              image={content.intro.image}
-              motionPreset="from-left"
-              sizes="(max-width: 1024px) 100vw, 40vw"
-              strength={88}
-              tilt
-            />
-          </RevealBlock>
+        <div className="home-stage-grid">
+          <RevealBlock className="editorial-paper-panel home-stage-copy" distance={40} variant="left">
+            <div>
+              <p className="section-label">{content.intro.eyebrow}</p>
+              <h2 className="display-title mt-5 max-w-4xl text-4xl text-[#1f1914] sm:text-5xl">
+                {content.intro.title}
+              </h2>
+            </div>
 
-          <RevealBlock className="editorial-paper-panel" delay={0.1} distance={40} variant="right">
-            <p className="section-label">{content.intro.eyebrow}</p>
-            <h2 className="display-title mt-5 max-w-4xl text-4xl text-[#1f1914] sm:text-5xl">
-              {content.intro.title}
-            </h2>
-
-            <div className="mt-6 grid gap-4 text-[#3a332d]">
+            <div className="home-stage-copy-body">
               {content.intro.paragraphs.map((paragraph) => (
-                <p className="max-w-3xl text-base leading-8" key={paragraph}>
+                <p className="max-w-3xl text-base leading-8 text-[#3a332d]" key={paragraph}>
                   {paragraph}
                 </p>
               ))}
             </div>
 
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
+            <div className="home-stage-stats">
               {content.intro.stats.map((item) => (
-                <article className="editorial-stat" key={item.label}>
+                <article className="editorial-stat home-stage-stat" key={item.label}>
                   <p className="display-title text-4xl text-[#18120d] sm:text-5xl">{item.value}</p>
                   <p className="editorial-stat-label mt-3 text-sm font-semibold uppercase text-[#6d5738]">
                     {item.label}
@@ -88,86 +141,86 @@ export default async function Home() {
               ))}
             </div>
           </RevealBlock>
-        </div>
-      </section>
 
-      <section className="editorial-section-opener-shell">
-        <RevealBlock className="editorial-section-opener" distance={28} variant="up">
-          <p className="section-label">{content.visualChapters.eyebrow}</p>
-          <div className="editorial-section-opener-row">
-            <h2 className="display-title editorial-section-opener-title">
-              {content.visualChapters.title}
-            </h2>
-            <span aria-hidden="true" className="editorial-section-opener-rule" />
-          </div>
-          <p className="editorial-section-opener-copy">{content.visualChapters.description}</p>
-          <div className="visual-chapters-chip-list">
-            {content.visualChapters.chips.map((item) => (
-              <span className="visual-chapters-chip" key={item}>
-                {item}
-              </span>
-            ))}
-          </div>
-        </RevealBlock>
-      </section>
-
-      <section className="section-shell pb-10">
-        <div className="editorial-asymmetric-gallery">
-          <RevealBlock
-            className="editorial-bleed-tile editorial-bleed-tile--portrait"
-            distance={34}
-            variant="left"
-          >
-            <EditorialImage
-              className="editorial-bleed-image editorial-parallax-portrait"
-              image={visualChaptersSet[0].image}
-              motionPreset="settle-left"
-              overlayClassName="bg-transparent"
-              sizes="(max-width: 1024px) 100vw, 44vw"
-              strength={132}
-            />
-            <div className="editorial-bleed-hover">
-              <p className="editorial-bleed-caption">{visualChaptersSet[0].title}</p>
-              <p className="editorial-bleed-era">{visualChaptersSet[0].era}</p>
-            </div>
-          </RevealBlock>
-
-          {visualChaptersSet.slice(1).map((item, index) => (
-            <RevealBlock
-              className="editorial-bleed-tile editorial-bleed-tile--landscape"
-              delay={0.08 + index * 0.08}
-              distance={30}
-              key={item.title}
-              variant="right"
-            >
-              <EditorialImage
-                className="editorial-bleed-image"
-                image={item.image}
-                motionPreset={index === 0 ? "from-right" : "diagonal"}
-                overlayClassName="bg-transparent"
-                sizes="(max-width: 1024px) 100vw, 34vw"
-                strength={92}
-              />
-              <div className="editorial-bleed-hover">
-                <p className="editorial-bleed-caption">{item.title}</p>
-                <p className="editorial-bleed-era">{item.era}</p>
-              </div>
-            </RevealBlock>
-          ))}
+          <HomeImageCard
+            className="home-full-image-card--feature"
+            eyebrow="Official image"
+            frameClassName="home-full-image-frame--portrait"
+            image={content.intro.image}
+            note={content.intro.paragraphs[0]}
+            priority
+            sizes="(max-width: 1024px) 100vw, 42vw"
+            title={content.intro.image.label ?? "Full-frame portrait"}
+            variant="right"
+          />
         </div>
       </section>
 
       <section className="section-shell py-10">
-        <div className="grid gap-5 lg:grid-cols-2">
-          <RevealBlock className="editorial-dark-panel" distance={36} variant="left">
-            <p className="section-label">{content.heritage.eyebrow}</p>
-            <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
-              {content.heritage.title}
-            </h2>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-white/72">
+        <div className="home-visual-stage">
+          <RevealBlock className="home-section-lead" distance={28} variant="up">
+            <p className="section-label">{content.visualChapters.eyebrow}</p>
+            <div className="editorial-section-opener-row">
+              <h2 className="display-title editorial-section-opener-title">
+                {content.visualChapters.title}
+              </h2>
+              <span aria-hidden="true" className="editorial-section-opener-rule" />
+            </div>
+            <p className="home-section-copy">{content.visualChapters.description}</p>
+            <div className="visual-chapters-chip-list">
+              {content.visualChapters.chips.map((item) => (
+                <span className="visual-chapters-chip" key={item}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          </RevealBlock>
+
+          {visualFeature ? (
+            <div className="home-visual-grid">
+              <HomeImageCard
+                className="home-visual-card home-visual-card--feature"
+                eyebrow={visualFeature.era}
+                frameClassName="home-full-image-frame--tall"
+                image={visualFeature.image}
+                note={visualFeature.note}
+                sizes="(max-width: 1024px) 100vw, 44vw"
+                title={visualFeature.title}
+                variant="left"
+              />
+
+              {visualSupport.map((item, index) => (
+                <HomeImageCard
+                  className="home-visual-card"
+                  delay={0.08 + index * 0.08}
+                  eyebrow={item.era}
+                  frameClassName="home-full-image-frame--landscape"
+                  image={item.image}
+                  key={item.title}
+                  note={item.note}
+                  sizes="(max-width: 1024px) 100vw, 28vw"
+                  title={item.title}
+                  variant={index % 2 === 0 ? "up" : "right"}
+                />
+              ))}
+            </div>
+          ) : null}
+        </div>
+      </section>
+
+      <section className="section-shell py-10">
+        <div className="home-dossier-grid">
+          <RevealBlock className="editorial-dark-panel home-dossier-panel" distance={34} variant="left">
+            <div>
+              <p className="section-label">{content.heritage.eyebrow}</p>
+              <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
+                {content.heritage.title}
+              </h2>
+            </div>
+            <p className="max-w-2xl text-base leading-8 text-white/72">
               {content.heritage.description}
             </p>
-            <div className="mt-8 flex flex-wrap gap-2">
+            <div className="mt-2 flex flex-wrap gap-2">
               {content.heritage.tags.map((item) => (
                 <span className="meta-chip" key={item}>
                   {item}
@@ -176,35 +229,30 @@ export default async function Home() {
             </div>
           </RevealBlock>
 
-          <RevealBlock
-            className="editorial-photo-block image-hover-glow"
-            delay={0.1}
-            distance={36}
+          <HomeImageCard
+            className="home-full-image-card--wide"
+            eyebrow={content.heritage.eyebrow}
+            frameClassName="home-full-image-frame--wide"
+            image={content.heritage.image}
+            note={content.heritage.description}
+            sizes="(max-width: 1024px) 100vw, 48vw"
+            title={content.heritage.image.label ?? "Live-stage portrait"}
             variant="right"
-          >
-            <EditorialImage
-              className="editorial-photo-shell"
-              image={content.heritage.image}
-              motionPreset="from-right"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              strength={82}
-              tilt
-            />
-          </RevealBlock>
-        </div>
-      </section>
+          />
 
-      <section className="section-shell py-10">
-        <div className="grid gap-5 lg:grid-cols-[0.92fr_1.08fr]">
-          <RevealBlock className="editorial-paper-panel" distance={32} variant="left">
-            <p className="section-label">{content.rise.eyebrow}</p>
-            <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
-              {content.rise.title}
-            </h2>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#3a332d]">
+          <RevealBlock className="editorial-paper-panel home-dossier-panel" delay={0.08} distance={32} variant="left">
+            <div>
+              <p className="section-label">{content.rise.eyebrow}</p>
+              <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
+                {content.rise.title}
+              </h2>
+            </div>
+
+            <p className="max-w-2xl text-base leading-8 text-[#3a332d]">
               {content.rise.description}
             </p>
-            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+
+            <div className="home-dossier-notes">
               <div className="editorial-note">
                 <p className="section-label">Within Ethiopia</p>
                 <p className="mt-3 text-sm leading-7 text-[#4b4138]">{content.rise.nationalNote}</p>
@@ -218,110 +266,107 @@ export default async function Home() {
             </div>
           </RevealBlock>
 
-          <RevealBlock className="editorial-mosaic" delay={0.1} distance={32} variant="right">
-            <div className="editorial-mosaic-narrow image-hover-glow">
-              <div className="image-tilt-shell">
-                <EditorialImage
-                  className="editorial-photo-shell"
-                  image={content.rise.images[0]}
-                  motionPreset="from-left"
-                  sizes="(max-width: 1024px) 100vw, 22vw"
-                  strength={78}
-                  tilt
-                />
-              </div>
-            </div>
-            <div className="editorial-mosaic-wide image-hover-glow">
-              <div className="image-tilt-shell">
-                <EditorialImage
-                  className="editorial-photo-shell"
-                  image={content.rise.images[1]}
-                  motionPreset="from-right"
-                  sizes="(max-width: 1024px) 100vw, 38vw"
-                  strength={78}
-                  tilt
-                />
-              </div>
-            </div>
-          </RevealBlock>
-        </div>
-      </section>
-
-      <section className="section-shell py-10">
-        <div className="editorial-filmstrip">
-          <RevealBlock className="editorial-film-panel editorial-film-panel--dark" distance={44} variant="left">
-            <p className="section-label">{content.campaign.eyebrow}</p>
-            <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
-              {content.campaign.title}
-            </h2>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-white/72">
-              {content.campaign.description}
-            </p>
-          </RevealBlock>
-
-          <RevealBlock
-            className="editorial-film-panel editorial-film-panel--stacked image-hover-glow"
-            delay={0.1}
-            variant="scale"
-          >
-            <EditorialImage
-              className="editorial-film-media"
-              image={content.campaign.featureImage}
-              motionPreset="zoom-burst"
-              sizes="(max-width: 1024px) 100vw, 34vw"
-              strength={80}
+          <div className="home-image-pair-grid">
+            <HomeImageCard
+              className="home-full-image-card--compact"
+              delay={0.12}
+              eyebrow="Tour frame"
+              frameClassName="home-full-image-frame--compact"
+              image={risePrimaryImage}
+              note={content.rise.nationalNote}
+              sizes="(max-width: 1024px) 100vw, 24vw"
+              title={risePrimaryImage.label ?? "Stage direction"}
+              variant="up"
             />
-            <div className="editorial-film-copy">
-              <p className="section-label text-white/78">Official imagery</p>
-              <h3 className="display-title mt-4 max-w-2xl text-4xl text-white sm:text-5xl">
-                A cleaner public image helps the music land with more authority.
-              </h3>
-            </div>
-          </RevealBlock>
+            <HomeImageCard
+              className="home-full-image-card--compact"
+              delay={0.18}
+              eyebrow="Audience frame"
+              frameClassName="home-full-image-frame--compact"
+              image={riseSecondaryImage}
+              note={content.rise.internationalNote}
+              sizes="(max-width: 1024px) 100vw, 24vw"
+              title={riseSecondaryImage.label ?? "Crowd energy"}
+              variant="up"
+            />
+          </div>
+        </div>
+      </section>
 
-          <RevealBlock
-            className="editorial-film-panel editorial-film-panel--double"
-            delay={0.18}
-            distance={44}
-            variant="right"
-          >
-            <div className="editorial-film-double editorial-film-double--small image-hover-glow">
-              <EditorialImage
-                className="editorial-photo-shell"
-                image={content.campaign.supportingImages[0]}
-                motionPreset="settle-right"
-                sizes="(max-width: 1024px) 100vw, 18vw"
-                strength={68}
-                tilt
-              />
+      <section className="section-shell py-10">
+        <div className="home-campaign-grid">
+          <HomeImageCard
+            className="home-full-image-card--campaign"
+            eyebrow={content.campaign.eyebrow}
+            frameClassName="home-full-image-frame--campaign"
+            image={content.campaign.featureImage}
+            note={content.campaign.description}
+            sizes="(max-width: 1024px) 100vw, 46vw"
+            title={content.campaign.featureImage.label ?? "Campaign feature"}
+            variant="left"
+          />
+
+          <RevealBlock className="editorial-paper-panel home-campaign-panel" delay={0.08} distance={34} variant="right">
+            <div>
+              <p className="section-label">{content.campaign.eyebrow}</p>
+              <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
+                {content.campaign.title}
+              </h2>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-[#3a332d]">
+                {content.campaign.description}
+              </p>
             </div>
-            <div className="editorial-film-double editorial-film-double--large image-hover-glow">
-              <EditorialImage
-                className="editorial-photo-shell"
-                image={content.campaign.supportingImages[1]}
-                motionPreset="from-left"
-                sizes="(max-width: 1024px) 100vw, 28vw"
-                strength={78}
-                tilt
+
+            <div className="home-supporting-rail">
+              <HomeImageCard
+                className="home-full-image-card--support"
+                delay={0.12}
+                eyebrow="Supporting image"
+                frameClassName="home-full-image-frame--support"
+                image={campaignSupportPrimary}
+                note="Additional campaign imagery for platform headers, press kits, and release coverage."
+                sizes="(max-width: 1024px) 100vw, 22vw"
+                title={campaignSupportPrimary.label ?? "Campaign still 01"}
+                variant="up"
+              />
+              <HomeImageCard
+                className="home-full-image-card--support"
+                delay={0.18}
+                eyebrow="Supporting image"
+                frameClassName="home-full-image-frame--support"
+                image={campaignSupportSecondary}
+                note="A secondary full-frame visual that keeps the portrait readable without cropping."
+                sizes="(max-width: 1024px) 100vw, 22vw"
+                title={campaignSupportSecondary.label ?? "Campaign still 02"}
+                variant="up"
               />
             </div>
           </RevealBlock>
         </div>
       </section>
 
+      {hasTestimonials ? (
+        <TestimonialsCarousel
+          description={content.testimonials.description}
+          eyebrow={content.testimonials.eyebrow}
+          items={content.testimonials.items}
+          title={content.testimonials.title}
+        />
+      ) : null}
+
       <section className="section-shell py-10">
-        <div className="grid gap-5 lg:grid-cols-[0.82fr_1.18fr]">
-          <RevealBlock className="editorial-paper-panel" distance={30} variant="left">
+        <div className="home-route-stage">
+          <RevealBlock className="editorial-dark-panel home-route-intro" distance={30} variant="left">
             <p className="section-label">{content.pathways.eyebrow}</p>
-            <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
+            <h2 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
               {content.pathways.title}
             </h2>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#3a332d]">
+            <p className="mt-6 max-w-2xl text-base leading-8 text-white/72">
               {content.pathways.description}
             </p>
           </RevealBlock>
 
-          <div className="grid gap-4 xl:grid-cols-3">
+          <div className="home-route-grid">
             {content.pathways.items.map((item, index) => (
               <RevealBlock
                 delay={0.08 + index * 0.08}
@@ -329,7 +374,7 @@ export default async function Home() {
                 key={item.title}
                 variant={index === 0 ? "left" : index === 1 ? "up" : "right"}
               >
-                <Link className="editorial-route-link" href={item.href ?? "#"}>
+                <Link className="editorial-route-link home-route-link" href={item.href ?? "#"}>
                   <span className="editorial-route-index">
                     {String(index + 1).padStart(2, "0")}
                   </span>
@@ -348,8 +393,8 @@ export default async function Home() {
       </section>
 
       <section className="section-shell py-10">
-        <RevealBlock className="editorial-paper-panel">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <RevealBlock className="editorial-paper-panel home-archive-panel" distance={28} variant="up">
+          <div className="home-archive-top">
             <div className="max-w-4xl">
               <p className="section-label">{content.archive.eyebrow}</p>
               <h2 className="display-title mt-5 text-4xl text-[#1f1914] sm:text-5xl">
@@ -370,7 +415,7 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="mt-8 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          <div className="home-archive-credit-grid">
             {content.archive.credits.map((item) => (
               <article className="editorial-credit-link" key={item.label}>
                 <span>{item.label}</span>
