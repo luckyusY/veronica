@@ -79,30 +79,37 @@ export function HomeHeroSwiper({
         pagination={{ clickable: true }}
         speed={1600}
       >
-        {slides.map((slide, index) => (
-          <SwiperSlide key={slide.title}>
-            <div className="home-hero-slide">
-              <div className="home-hero-slide-media">
-                <Image
-                  alt={slide.image.alt}
-                  blurDataURL={createSvgBlurDataURL(
-                    slide.image.placeholderBase ?? "#141012",
-                    slide.image.placeholderHighlight ?? "#8e6b43",
-                  )}
-                  className="home-hero-slide-image"
-                  fill
-                  placeholder="blur"
-                  priority={index === 0}
-                  loading={index === 0 ? undefined : "lazy"}
-                  sizes="100vw"
-                  src={slide.image.src ?? slide.image.url ?? ""}
-                  style={{ objectPosition: slide.image.position ?? "center center" }}
-                />
+        {slides.map((slide, index) => {
+          const imageSrc = slide.image.src ?? slide.image.url ?? "";
+          const useDirectCloudinary =
+            typeof imageSrc === "string" && imageSrc.includes("res.cloudinary.com/");
+
+          return (
+            <SwiperSlide key={slide.title}>
+              <div className="home-hero-slide">
+                <div className="home-hero-slide-media">
+                  <Image
+                    alt={slide.image.alt}
+                    blurDataURL={createSvgBlurDataURL(
+                      slide.image.placeholderBase ?? "#141012",
+                      slide.image.placeholderHighlight ?? "#8e6b43",
+                    )}
+                    className="home-hero-slide-image"
+                    fill
+                    placeholder="blur"
+                    priority={index === 0}
+                    loading={index === 0 ? undefined : "lazy"}
+                    sizes="100vw"
+                    src={imageSrc}
+                    unoptimized={useDirectCloudinary}
+                    style={{ objectPosition: slide.image.position ?? "center center" }}
+                  />
+                </div>
+                <div className="home-hero-vignette" />
               </div>
-              <div className="home-hero-vignette" />
-            </div>
-          </SwiperSlide>
-        ))}
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
 
       <div className="home-hero-overlay">

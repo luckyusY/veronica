@@ -161,6 +161,8 @@ export function EditorialImage({
 
   const shimmerActive = !reducedMotion && shimmer && isLoaded && inView;
   const imageSrc = image.src ?? image.url ?? "";
+  const useDirectCloudinary = typeof imageSrc === "string" && imageSrc.includes("res.cloudinary.com/");
+  const hasBackdrop = contained && Boolean(imageSrc);
 
   // -- 3-D tilt state ---------------------------------------------------------
   const [tiltStyle, setTiltStyle] = useState<CSSProperties>({});
@@ -226,6 +228,24 @@ export function EditorialImage({
       initial={reducedMotion ? { opacity: 0 } : "hidden"}
       animate={reducedMotion ? { opacity: 1 } : inView ? "visible" : "hidden"}
     >
+      {hasBackdrop ? (
+        <div aria-hidden="true" className="editorial-image-backdrop">
+          <Image
+            alt=""
+            blurDataURL={blurDataURL}
+          className="editorial-image-backdrop-element"
+          fill
+          loading={priority ? undefined : "lazy"}
+          placeholder="blur"
+          quality={useDirectCloudinary ? undefined : 68}
+          unoptimized={useDirectCloudinary}
+          sizes={sizes}
+          src={imageSrc}
+          style={{ objectFit: "cover", objectPosition: image.position ?? "center" }}
+        />
+        </div>
+      ) : null}
+
       <motion.div
         className={`editorial-image-canvas${contained ? " editorial-image-canvas--contained" : ""}`}
         style={reducedMotion || contained ? undefined : { x, y, scale, rotate }}
@@ -239,9 +259,10 @@ export function EditorialImage({
           onLoad={() => setIsLoaded(true)}
           placeholder="blur"
           priority={priority}
-          quality={92}
+          quality={useDirectCloudinary ? undefined : 92}
           sizes={sizes}
           src={imageSrc}
+          unoptimized={useDirectCloudinary}
           style={{ objectFit: fit, objectPosition: image.position ?? "center" }}
         />
       </motion.div>

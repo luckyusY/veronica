@@ -51,18 +51,18 @@ function HomeImageCard({
           className="home-full-image-shell"
           fit="contain"
           image={image}
-          overlayClassName="bg-transparent"
+          overlayClassName="home-full-image-veil"
           priority={priority}
           shimmer={false}
           sizes={sizes}
           strength={72}
         />
-      </div>
 
-      <div className="home-full-image-meta">
-        <p className="section-label">{eyebrow}</p>
-        <h3 className="display-title home-full-image-title">{title}</h3>
-        <p className="home-full-image-note">{note}</p>
+        <div className="home-full-image-meta">
+          <p className="section-label home-full-image-eyebrow">{eyebrow}</p>
+          <h3 className="display-title home-full-image-title">{title}</h3>
+          <p className="home-full-image-note">{note}</p>
+        </div>
       </div>
     </RevealBlock>
   );

@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   transpilePackages: ["swiper"],
   outputFileTracingRoot: path.join(__dirname),
   images: {
+    qualities: [68, 75, 92],
     remotePatterns: [
       {
         protocol: "https",
