@@ -7,27 +7,6 @@ import type {
   StandardSection,
 } from "@/lib/cms-types";
 
-export const homeResearchSignals = [
-  {
-    label: "Heritage",
-    title: "Azmari Daughter",
-    detail:
-      "The daughter of Adane Teka turned family legacy into public pride and helped many young Azmari sons and daughters embrace their identity.",
-  },
-  {
-    label: "Journey",
-    title: "One Phone to Stages",
-    detail:
-      "She began with cover songs on a single mobile phone, supported herself through tutoring, and later funded her music through nonstop live performance.",
-  },
-  {
-    label: "Recognition",
-    title: "Africa Is Watching",
-    detail:
-      "African Union recognition, Zikomo Awards wins, and AFRIMA recognition marked a wider pan-African chapter in 2025.",
-  },
-] as const;
-
 function isGallerySection(
   section: StandardSection,
 ): section is Extract<StandardSection, { type: "gallery" }> {
@@ -93,10 +72,57 @@ export function getHomePageContent(source?: HomePageContent): HomePageContent {
           .map((item) => (typeof item === "string" ? item.trim() : ""))
           .filter(Boolean)
       : fallbackPlaylists.highlights;
+  const rawSignals = Array.isArray(source.signals) ? source.signals : [];
+  const signals =
+    rawSignals.length > 0
+      ? rawSignals.map((item, index) => {
+          const fallbackItem =
+            fallback.signals[index] ?? fallback.signals[fallback.signals.length - 1];
+
+          return {
+            label: item?.label?.trim() || fallbackItem.label,
+            title: item?.title?.trim() || fallbackItem.title,
+            detail: item?.detail?.trim() || fallbackItem.detail,
+          };
+        })
+      : fallback.signals;
 
   return {
     ...fallback,
     ...source,
+    signals,
+    intro: {
+      ...fallback.intro,
+      ...(source.intro ?? {}),
+    },
+    visualChapters: {
+      ...fallback.visualChapters,
+      ...(source.visualChapters ?? {}),
+    },
+    testimonials: {
+      ...fallback.testimonials,
+      ...(source.testimonials ?? {}),
+    },
+    heritage: {
+      ...fallback.heritage,
+      ...(source.heritage ?? {}),
+    },
+    rise: {
+      ...fallback.rise,
+      ...(source.rise ?? {}),
+      spotlight: {
+        ...fallback.rise.spotlight,
+        ...(source.rise?.spotlight ?? {}),
+      },
+    },
+    campaign: {
+      ...fallback.campaign,
+      ...(source.campaign ?? {}),
+      supportFeature: {
+        ...fallback.campaign.supportFeature,
+        ...(source.campaign?.supportFeature ?? {}),
+      },
+    },
     playlists: {
       ...fallbackPlaylists,
       ...rawPlaylists,
@@ -106,6 +132,14 @@ export function getHomePageContent(source?: HomePageContent): HomePageContent {
       },
       highlights,
       items: playlistItems,
+    },
+    pathways: {
+      ...fallback.pathways,
+      ...(source.pathways ?? {}),
+    },
+    archive: {
+      ...fallback.archive,
+      ...(source.archive ?? {}),
     },
   };
 }

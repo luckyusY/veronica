@@ -6,7 +6,7 @@ import { EditorialImage } from "@/components/editorial-image";
 import { HomeHeroSwiper } from "@/components/home-hero-swiper";
 import { TestimonialsCarousel } from "@/components/testimonials-carousel";
 import { YouTubeFacade } from "@/components/youtube-facade";
-import { getHomePageContent, homeResearchSignals } from "@/lib/artist-page-content";
+import { getHomePageContent } from "@/lib/artist-page-content";
 import { getCmsPage } from "@/lib/cms-store";
 import type { HomePageContent } from "@/lib/cms-types";
 import {
@@ -340,7 +340,7 @@ export default async function Home() {
 
       <section className="section-shell relative z-10 pb-6 sm:pb-8 lg:-mt-2">
         <div className="home-signal-band">
-          {homeResearchSignals.map((item, index) => (
+          {content.signals.map((item, index) => (
             <RevealBlock
               className="home-signal-card"
               delay={0.06 + index * 0.06}
@@ -426,7 +426,9 @@ export default async function Home() {
 
           <RevealBlock className="home-intro-visual" distance={40} variant="right">
             <div className="home-intro-visual-stage">
-              <p className="section-label home-intro-visual-kicker">Official image</p>
+              <p className="section-label home-intro-visual-kicker">
+                {content.intro.imageEyebrow}
+              </p>
               <EditorialImage
                 className="home-intro-image"
                 fit="contain"
@@ -443,7 +445,10 @@ export default async function Home() {
 
             <div className="home-intro-caption">
               <h3 className="display-title home-intro-caption-title">
-                {resolveImageTitle(content.intro.image.label, "Signature portrait")}
+                {resolveImageTitle(
+                  content.intro.image.label,
+                  content.intro.imageTitleFallback,
+                )}
               </h3>
               <p className="home-intro-caption-note">{content.intro.paragraphs[0]}</p>
             </div>
@@ -509,7 +514,7 @@ export default async function Home() {
           <HomeEditorialPair
             frameClassName="home-full-image-frame--split-standard"
             image={risePrimaryImage}
-            imageEyebrow="Touring"
+            imageEyebrow={content.rise.imageEyebrow}
             imageSide="left"
             panelClassName="editorial-paper-panel home-editorial-copy-panel"
             panel={
@@ -527,13 +532,13 @@ export default async function Home() {
 
                 <div className="home-dossier-notes">
                   <div className="editorial-note">
-                    <p className="section-label">Within Ethiopia</p>
+                    <p className="section-label">{content.rise.nationalLabel}</p>
                     <p className="mt-3 text-sm leading-7 text-[#4b4138]">
                       {content.rise.nationalNote}
                     </p>
                   </div>
                   <div className="editorial-note">
-                    <p className="section-label">Beyond Ethiopia</p>
+                    <p className="section-label">{content.rise.internationalLabel}</p>
                     <p className="mt-3 text-sm leading-7 text-[#4b4138]">
                       {content.rise.internationalNote}
                     </p>
@@ -548,19 +553,19 @@ export default async function Home() {
             className="home-editorial-pair--compact"
             frameClassName="home-full-image-frame--split-support"
             image={riseSecondaryImage}
-            imageEyebrow="Global reach"
+            imageEyebrow={content.rise.spotlight.imageEyebrow}
             imageSide="right"
             panelClassName="editorial-dark-panel home-editorial-copy-panel home-editorial-copy-panel--compact"
             panel={
               <>
                 <div>
-                  <p className="section-label">Global demand</p>
+                  <p className="section-label">{content.rise.spotlight.eyebrow}</p>
                   <h3 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
-                    Diaspora audiences carried Veronica from Ethiopia to the Middle East, the United States, and Europe.
+                    {content.rise.spotlight.title}
                   </h3>
                 </div>
                 <p className="max-w-2xl text-base leading-8 text-white/72">
-                  {content.rise.internationalNote}
+                  {content.rise.spotlight.description}
                 </p>
               </>
             }
@@ -598,21 +603,19 @@ export default async function Home() {
             className="home-editorial-pair--compact home-editorial-pair--campaign-support"
             frameClassName="home-full-image-frame--split-support"
             image={campaignSupportSecondary}
-            imageEyebrow="Future chapter"
+            imageEyebrow={content.campaign.supportFeature.imageEyebrow}
             imageSide="left"
             panelClassName="editorial-dark-panel home-editorial-copy-panel home-editorial-copy-panel--compact"
             panel={
               <>
                 <div>
-                  <p className="section-label">Faith and future</p>
+                  <p className="section-label">{content.campaign.supportFeature.eyebrow}</p>
                   <h3 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
-                    Acting, advocacy, brand work, and a multilingual EP show how much larger the next chapter can become.
+                    {content.campaign.supportFeature.title}
                   </h3>
                 </div>
                 <p className="max-w-2xl text-base leading-8 text-white/72">
-                  She has supported women and communities, built a house for her father,
-                  represented Kelati Human Hair and Midea Ethiopia, and dreams of launching a
-                  foundation for women, youth, and people in need.
+                  {content.campaign.supportFeature.description}
                 </p>
               </>
             }

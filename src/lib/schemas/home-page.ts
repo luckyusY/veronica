@@ -4,6 +4,7 @@ import {
   cmsCreditSchema,
   cmsHeroSlideSchema,
   cmsMediaItemSchema,
+  cmsSignalSchema,
   cmsStatSchema,
   cmsTestimonialSchema,
   cmsTextCardSchema,
@@ -20,6 +21,7 @@ export const homePageSchema = z.object({
     secondaryAction: cmsActionSchema,
     slides: z.array(cmsHeroSlideSchema).min(1, "Add at least one hero slide."),
   }),
+  signals: z.array(cmsSignalSchema).min(1, "Add at least one homepage signal."),
   intro: z.object({
     eyebrow: z.string().trim().min(1, "Intro eyebrow is required."),
     title: z.string().trim().min(1, "Intro title is required."),
@@ -27,6 +29,8 @@ export const homePageSchema = z.object({
       .array(z.string().trim().min(1, "Intro paragraph is required."))
       .min(1, "Add at least one intro paragraph."),
     image: cmsMediaItemSchema,
+    imageEyebrow: z.string().trim().min(1, "Intro image eyebrow is required."),
+    imageTitleFallback: z.string().trim().min(1, "Intro image title fallback is required."),
     stats: z.array(cmsStatSchema).min(1, "Add at least one intro stat."),
   }),
   visualChapters: z.object({
@@ -48,10 +52,10 @@ export const homePageSchema = z.object({
       .min(1, "Add at least one visual chapter item."),
   }),
   testimonials: z.object({
-    eyebrow: z.string().trim().min(1, "Testimonials eyebrow is required."),
-    title: z.string().trim().min(1, "Testimonials title is required."),
-    description: z.string().trim().min(1, "Testimonials description is required."),
-    items: z.array(cmsTestimonialSchema).min(1, "Add at least one testimonial."),
+    eyebrow: z.string().trim(),
+    title: z.string().trim(),
+    description: z.string().trim(),
+    items: z.array(cmsTestimonialSchema),
   }),
   heritage: z.object({
     eyebrow: z.string().trim().min(1, "Heritage eyebrow is required."),
@@ -66,8 +70,17 @@ export const homePageSchema = z.object({
     eyebrow: z.string().trim().min(1, "Rise eyebrow is required."),
     title: z.string().trim().min(1, "Rise title is required."),
     description: z.string().trim().min(1, "Rise description is required."),
+    imageEyebrow: z.string().trim().min(1, "Rise image eyebrow is required."),
+    nationalLabel: z.string().trim().min(1, "National label is required."),
     nationalNote: z.string().trim().min(1, "National note is required."),
+    internationalLabel: z.string().trim().min(1, "International label is required."),
     internationalNote: z.string().trim().min(1, "International note is required."),
+    spotlight: z.object({
+      imageEyebrow: z.string().trim().min(1, "Spotlight image eyebrow is required."),
+      eyebrow: z.string().trim().min(1, "Spotlight eyebrow is required."),
+      title: z.string().trim().min(1, "Spotlight title is required."),
+      description: z.string().trim().min(1, "Spotlight description is required."),
+    }),
     images: z.array(cmsMediaItemSchema).min(1, "Add at least one rise image."),
   }),
   campaign: z.object({
@@ -78,6 +91,12 @@ export const homePageSchema = z.object({
     supportingImages: z
       .array(cmsMediaItemSchema)
       .min(1, "Add at least one supporting campaign image."),
+    supportFeature: z.object({
+      imageEyebrow: z.string().trim().min(1, "Support image eyebrow is required."),
+      eyebrow: z.string().trim().min(1, "Support eyebrow is required."),
+      title: z.string().trim().min(1, "Support title is required."),
+      description: z.string().trim().min(1, "Support description is required."),
+    }),
   }),
   playlists: z.object({
     eyebrow: z.string().trim().min(1, "Playlist eyebrow is required."),

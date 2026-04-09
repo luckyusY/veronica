@@ -52,6 +52,12 @@ export type CmsStat = {
   detail: string;
 };
 
+export type CmsSignal = {
+  label: string;
+  title: string;
+  detail: string;
+};
+
 export type CmsTextCard = {
   title: string;
   description: string;
@@ -80,11 +86,14 @@ export type HomePageContent = {
     secondaryAction: CmsAction;
     slides: CmsHeroSlide[];
   };
+  signals: CmsSignal[];
   intro: {
     eyebrow: string;
     title: string;
     paragraphs: string[];
     image: CmsMediaItem;
+    imageEyebrow: string;
+    imageTitleFallback: string;
     stats: CmsStat[];
   };
   visualChapters: {
@@ -116,8 +125,17 @@ export type HomePageContent = {
     eyebrow: string;
     title: string;
     description: string;
+    imageEyebrow: string;
+    nationalLabel: string;
     nationalNote: string;
+    internationalLabel: string;
     internationalNote: string;
+    spotlight: {
+      imageEyebrow: string;
+      eyebrow: string;
+      title: string;
+      description: string;
+    };
     images: CmsMediaItem[];
   };
   campaign: {
@@ -126,6 +144,12 @@ export type HomePageContent = {
     description: string;
     featureImage: CmsMediaItem;
     supportingImages: CmsMediaItem[];
+    supportFeature: {
+      imageEyebrow: string;
+      eyebrow: string;
+      title: string;
+      description: string;
+    };
   };
   playlists: {
     eyebrow: string;

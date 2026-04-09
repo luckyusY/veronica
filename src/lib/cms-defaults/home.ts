@@ -48,6 +48,26 @@ export const defaultHomePageContent: HomePageContent = {
       },
     ],
   },
+  signals: [
+    {
+      label: "Heritage",
+      title: "Azmari Daughter",
+      detail:
+        "The daughter of Adane Teka turned family legacy into public pride and helped many young Azmari sons and daughters embrace their identity.",
+    },
+    {
+      label: "Journey",
+      title: "One Phone to Stages",
+      detail:
+        "She began with cover songs on a single mobile phone, supported herself through tutoring, and later funded her music through nonstop live performance.",
+    },
+    {
+      label: "Recognition",
+      title: "Africa Is Watching",
+      detail:
+        "African Union recognition, Zikomo Awards wins, and AFRIMA recognition marked a wider pan-African chapter in 2025.",
+    },
+  ],
   intro: {
     eyebrow: "Overview",
     title: "An Ethiopian artist whose story joins faith, scholarship, performance, and public impact.",
@@ -57,6 +77,8 @@ export const defaultHomePageContent: HomePageContent = {
       "That mix of faith, study, work ethic, and public purpose now shapes her music, film work, advocacy, brand partnerships, and growing international profile.",
     ],
     image: defaultMediaLibrary.cliff,
+    imageEyebrow: "Official image",
+    imageTitleFallback: "Signature portrait",
     stats: [
       {
         value: "1 phone",
@@ -121,10 +143,21 @@ export const defaultHomePageContent: HomePageContent = {
     title: "Her career moved from campus cover videos to the busiest live stages in the country.",
     description:
       "Before the biggest songs, Veronica balanced university life, private tutoring, professional leadership, and early online covers. After graduation she worked at DCT Entertainment, performed at the ETRSS-1 satellite celebration on December 20, 2019, and later left a stable job to follow music full time.",
+    imageEyebrow: "Touring",
+    nationalLabel: "Within Ethiopia",
     nationalNote:
       "Before releasing her album, she toured Addis Ababa, Gondar, Hawassa, Harar, Dire Dawa, Bahir Dar, Arba Minch, Dilla, and many other cities across Ethiopia.",
+    internationalLabel: "Beyond Ethiopia",
     internationalNote:
       "Diaspora demand later took her to Dubai, Abu Dhabi, Qatar, Bahrain, Israel, major cities across the United States, and the Meteriyaye tour across Europe, where many shows sold out.",
+    spotlight: {
+      imageEyebrow: "Global reach",
+      eyebrow: "Global demand",
+      title:
+        "Diaspora audiences carried Veronica from Ethiopia to the Middle East, the United States, and Europe.",
+      description:
+        "Diaspora demand later took her to Dubai, Abu Dhabi, Qatar, Bahrain, Israel, major cities across the United States, and the Meteriyaye tour across Europe, where many shows sold out.",
+    },
     images: [defaultMediaLibrary.crowd, defaultMediaLibrary.aerialCrowd],
   },
   campaign: {
@@ -134,6 +167,14 @@ export const defaultHomePageContent: HomePageContent = {
       "In 2025 she was welcomed as a Special Guest at the African Union, later received two major Zikomo Awards, earned AFRIMA recognition in Nigeria, starred in Key Mesmer, and kept using her platform for women, children, and the voiceless.",
     featureImage: defaultMediaLibrary.heartMid,
     supportingImages: [defaultMediaLibrary.stage, defaultMediaLibrary.furClose],
+    supportFeature: {
+      imageEyebrow: "Future chapter",
+      eyebrow: "Faith and future",
+      title:
+        "Acting, advocacy, brand work, and a multilingual EP show how much larger the next chapter can become.",
+      description:
+        "She has supported women and communities, built a house for her father, represented Kelati Human Hair and Midea Ethiopia, and dreams of launching a foundation for women, youth, and people in need.",
+    },
   },
   playlists: {
     eyebrow: "Screening room",

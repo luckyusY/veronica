@@ -56,6 +56,12 @@ export const cmsStatSchema = z.object({
   detail: requiredText("Stat detail"),
 });
 
+export const cmsSignalSchema = z.object({
+  label: requiredText("Signal label"),
+  title: requiredText("Signal title"),
+  detail: requiredText("Signal detail"),
+});
+
 export const cmsTextCardSchema = z.object({
   title: requiredText("Card title"),
   description: requiredText("Card description"),
