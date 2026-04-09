@@ -71,6 +71,7 @@ function HomeImageCard({
           className="home-full-image-shell"
           fit="contain"
           image={image}
+          mobileFit="cover"
           overlayClassName="home-full-image-veil"
           priority={priority}
           shimmer={false}
@@ -111,6 +112,7 @@ function HomeAutoGalleryRow({
                   className="home-auto-gallery-image"
                   fit="contain"
                   image={item.image}
+                  mobileFit="cover"
                   overlayClassName="home-auto-gallery-veil"
                   shimmer={false}
                   sizes="(max-width: 1024px) 72vw, 18vw"
@@ -142,6 +144,7 @@ function HomePortraitGrid({ items }: { items: HomeGalleryItem[] }) {
               className="home-portrait-image"
               fit="contain"
               image={item.image}
+              mobileFit="cover"
               overlayClassName="home-portrait-veil"
               shimmer
               sizes="(max-width: 900px) 90vw, 30vw"
@@ -475,6 +478,7 @@ export default async function Home() {
                 className="home-intro-image"
                 fit="contain"
                 image={content.intro.image}
+                mobileFit="cover"
                 overlayClassName="home-intro-image-veil"
                 priority
                 shimmer={false}

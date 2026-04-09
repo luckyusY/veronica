@@ -13784,12 +13784,51 @@ a:not([class]):hover {
 
   /* Reduce intro visual stage height on phone */
   .home-intro-visual-stage {
-    min-height: 20rem;
+    min-height: auto;
+    aspect-ratio: 4 / 5;
   }
 
   /* Portrait title smaller on phone */
   .home-portrait-title {
     font-size: clamp(1.15rem, 5vw, 1.6rem);
+  }
+
+  .home-full-image-frame,
+  .home-portrait-frame,
+  .home-auto-gallery-media {
+    min-height: auto;
+    aspect-ratio: 4 / 5;
+  }
+
+  .home-full-image-frame--wide,
+  .home-full-image-frame--split-feature,
+  .home-full-image-frame--split-standard,
+  .home-full-image-frame--split-support,
+  .home-full-image-frame--story-hero,
+  .home-full-image-frame--visual-support,
+  .home-full-image-frame--campaign-hero,
+  .home-full-image-frame--compact,
+  .home-full-image-frame--support {
+    min-height: auto;
+  }
+
+  .editorial-image-shell[data-mobile-fit="cover"] .editorial-image-backdrop {
+    display: none;
+  }
+
+  .editorial-image-shell[data-mobile-fit="cover"] .editorial-image-element--contained {
+    object-fit: cover !important;
+    filter: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .editorial-image-shell[data-mobile-fit="cover"] .editorial-image-overlay {
+    background: linear-gradient(180deg, transparent 72%, rgba(7, 9, 12, 0.14) 100%);
+  }
+
+  .editorial-image-shell[data-mobile-fit="cover"] .editorial-image-grain {
+    opacity: 0.03;
   }
 
   .home-playlist-banner {
@@ -13932,13 +13971,13 @@ a:not([class]):hover {
 
   .home-editorial-pair--campaign-support .home-editorial-image,
   .home-editorial-pair--campaign-support .home-editorial-copy {
-    width: min(100%, 21rem);
-    margin-inline: auto;
+    width: 100%;
+    margin-inline: 0;
   }
 
   .home-editorial-pair--campaign-support .home-full-image-frame--split-support {
     min-height: auto;
-    aspect-ratio: 0.76;
+    aspect-ratio: 4 / 5;
   }
 
   .home-editorial-pair--campaign-support .home-editorial-copy-panel {

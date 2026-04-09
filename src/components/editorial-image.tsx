@@ -43,6 +43,7 @@ type EditorialImageProps = {
   overlayClassName?: string;
   motionPreset?: ImageMotionPreset;
   fit?: ImageFit;
+  mobileFit?: ImageFit;
   /** Enable 3-D tilt on pointer hover */
   tilt?: boolean;
   /** Strength of the shimmer scan (0 = off) */
@@ -60,6 +61,7 @@ export function EditorialImage({
   overlayClassName = "bg-gradient-to-t from-black/38 via-black/10 to-transparent",
   motionPreset = "vertical",
   fit = "cover",
+  mobileFit,
   tilt = false,
   shimmer = true,
 }: EditorialImageProps) {
@@ -211,6 +213,7 @@ export function EditorialImage({
       }${isLoaded ? " is-loaded" : ""}${inView ? " img-in-view" : ""}${
         tilt && !reducedMotion ? " image-hover-glow" : ""
       } ${className}`.trim()}
+      data-mobile-fit={mobileFit}
       ref={containerRef}
       style={
         tilt && !reducedMotion
