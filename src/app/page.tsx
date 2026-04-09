@@ -627,34 +627,52 @@ export default async function Home() {
           </RevealBlock>
 
           <div className="home-route-grid home-route-grid--playlists">
-            {featuredPlaylists.map((item, index) => (
-              <RevealBlock
-                delay={0.08 + index * 0.08}
-                distance={28}
-                key={item.href}
-                variant={index === 0 ? "up" : "right"}
-              >
-                <a
-                  className="editorial-route-link home-route-link home-playlist-link"
-                  href={item.href}
-                  rel="noreferrer"
-                  target="_blank"
+            {featuredPlaylists.map((item, index) => {
+              const listMatch = item.href.match(/[?&]list=([^&]+)/);
+              const listId = listMatch ? listMatch[1] : null;
+
+              return (
+                <RevealBlock
+                  delay={0.08 + index * 0.08}
+                  distance={28}
+                  key={item.href}
+                  variant={index === 0 ? "up" : "right"}
                 >
-                  <span className="editorial-route-index">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <p className="section-label">{item.accent}</p>
-                  <h3 className="display-title home-playlist-title mt-4 text-white">{item.title}</h3>
-                  <p className="home-playlist-copy mt-5 text-sm leading-7 text-white/72">
-                    {item.description}
-                  </p>
-                  <div className="editorial-route-footer">
-                    <span>{item.note}</span>
-                    <span>Open on YouTube</span>
+                  <div className="flex flex-col gap-5">
+                    {listId && (
+                      <div className="aspect-video w-full overflow-hidden rounded-[1.8rem] border border-white/10 shadow-2xl bg-[#0b0f14]">
+                        <iframe
+                          className="h-full w-full"
+                          src={`https://www.youtube.com/embed/videoseries?list=${listId}&rel=0&modestbranding=1`}
+                          title={item.title}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                    )}
+                    <a
+                      className="editorial-route-link home-route-link home-playlist-link"
+                      href={item.href}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      <span className="editorial-route-index">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <p className="section-label">{item.accent}</p>
+                      <h3 className="display-title home-playlist-title mt-4 text-white">{item.title}</h3>
+                      <p className="home-playlist-copy mt-5 text-sm leading-7 text-white/72">
+                        {item.description}
+                      </p>
+                      <div className="editorial-route-footer">
+                        <span>{item.note}</span>
+                        <span>Open on YouTube</span>
+                      </div>
+                    </a>
                   </div>
-                </a>
-              </RevealBlock>
-            ))}
+                </RevealBlock>
+              );
+            })}
           </div>
         </div>
       </section>

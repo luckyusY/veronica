@@ -3,13 +3,32 @@
 import { useState } from "react";
 
 type Props = {
-  videoId: string;
   title: string;
+  videoId?: string;
+  playlistId?: string;
+  thumbnailUrl?: string;
   className?: string;
 };
 
-export function YouTubeFacade({ videoId, title, className }: Props) {
+export function YouTubeFacade({
+  title,
+  videoId,
+  playlistId,
+  thumbnailUrl,
+  className,
+}: Props) {
   const [active, setActive] = useState(false);
+  const embedSrc = playlistId
+    ? `https://www.youtube.com/embed/videoseries?list=${playlistId}&rel=0&modestbranding=1&autoplay=1`
+    : videoId
+      ? `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&autoplay=1`
+      : null;
+  const fallbackThumb =
+    thumbnailUrl ?? (videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : null);
+
+  if (!embedSrc || !fallbackThumb) {
+    return null;
+  }
 
   if (active) {
     return (
@@ -17,7 +36,7 @@ export function YouTubeFacade({ videoId, title, className }: Props) {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
         className={className ?? "mv-card-iframe"}
-        src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&autoplay=1`}
+        src={embedSrc}
         title={title}
       />
     );
@@ -34,7 +53,7 @@ export function YouTubeFacade({ videoId, title, className }: Props) {
         alt={title}
         className="mv-yt-facade-thumb"
         loading="lazy"
-        src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`}
+        src={fallbackThumb}
       />
       <div className="mv-yt-facade-overlay" />
       <div className="mv-yt-facade-btn">
