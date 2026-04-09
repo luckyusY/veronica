@@ -5318,22 +5318,23 @@ a {
     justify-content: center;
     width: fit-content;
     max-width: none;
-    border: 1px solid rgba(242, 210, 139, 0.28);
-    background:
-      linear-gradient(180deg, rgba(47, 31, 20, 0.9), rgba(24, 16, 11, 0.94));
-    color: rgba(242, 239, 233, 0.92);
+    border: 1px solid var(--cta-pill-solid);
+    background: var(--cta-pill-solid);
+    color: var(--cta-pill-ink);
+    box-shadow:
+      0 12px 26px var(--cta-pill-shadow),
+      inset 0 1px 0 rgba(255, 255, 255, 0.16);
   }
 
   .editorial-nav-button--accent:hover,
   .editorial-classic-nav-cta:hover {
-    transform: translateY(-2px);
-    border-color: rgba(242, 210, 139, 0.44);
-    background:
-      linear-gradient(180deg, rgba(59, 40, 27, 0.98), rgba(30, 20, 14, 0.98));
+    transform: translateY(-1px);
+    border-color: var(--cta-pill-solid-hover);
+    background: var(--cta-pill-solid-hover);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.05),
-      0 14px 30px rgba(0, 0, 0, 0.28);
-    color: white;
+      0 16px 30px var(--cta-pill-shadow-strong),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    color: var(--cta-pill-ink);
     text-decoration: none;
   }
 
@@ -13745,6 +13746,10 @@ a:not([class]):hover {
     gap: 0.9rem;
   }
 
+  .home-playlist-stage {
+    padding: 0.85rem;
+  }
+
   .home-playlist-marks {
     gap: 0.4rem;
   }
@@ -13755,15 +13760,15 @@ a:not([class]):hover {
   }
 
   .home-playlist-media-badge {
-    top: 0.75rem;
-    left: 0.75rem;
-    right: 0.75rem;
+    top: 0.65rem;
+    left: 0.65rem;
+    right: 0.65rem;
     grid-template-columns: auto 1fr;
-    gap: 0.55rem;
+    gap: 0.45rem;
   }
 
   .home-playlist-media-chip-row {
-    gap: 0.4rem;
+    gap: 0.3rem;
   }
 
   .home-playlist-media-hint {
@@ -13772,10 +13777,11 @@ a:not([class]):hover {
   }
 
   .home-playlist-media-copy {
-    left: 0.85rem;
-    right: 0.85rem;
-    bottom: 0.9rem;
-    gap: 0.35rem;
+    left: 0.72rem;
+    right: 0.72rem;
+    bottom: 0.72rem;
+    gap: 0.2rem;
+    max-width: min(64%, 11.25rem);
   }
 
   .home-playlist-media-label,
@@ -13783,21 +13789,85 @@ a:not([class]):hover {
   .home-playlist-stat,
   .home-playlist-note,
   .home-playlist-media-note {
-    font-size: 0.55rem;
-    letter-spacing: 0.16em;
+    font-size: 0.5rem;
+    letter-spacing: 0.14em;
+  }
+
+  .home-playlist-media-index,
+  .home-playlist-media-label,
+  .home-playlist-media-hint,
+  .home-playlist-stat {
+    padding: 0.28rem 0.5rem;
+  }
+
+  .home-playlist-media-note {
+    display: none;
   }
 
   .home-playlist-title--feature {
-    font-size: clamp(2rem, 9.5vw, 3rem);
+    display: -webkit-box;
+    max-width: 6.1ch;
+    overflow: hidden;
+    font-size: clamp(1.45rem, 7.2vw, 2rem);
+    line-height: 0.92;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
   .home-playlist-title--secondary {
-    font-size: clamp(1.55rem, 7vw, 2.15rem);
+    display: -webkit-box;
+    max-width: 7.3ch;
+    overflow: hidden;
+    font-size: clamp(1.1rem, 5.6vw, 1.5rem);
+    line-height: 0.92;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
   .home-playlist-copy {
-    font-size: 0.86rem;
-    line-height: 1.64;
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 0.78rem;
+    line-height: 1.52;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .home-playlist-copy-card {
+    gap: 0.7rem;
+    padding: 0.9rem 0.82rem 0.92rem;
+  }
+
+  .home-playlist-copy-card--feature,
+  .home-playlist-copy-card--secondary {
+    width: calc(100% - 1rem);
+    margin: -1.7rem 0 0 0.5rem;
+  }
+
+  .home-playlist-copy-card--feature .home-playlist-copy {
+    -webkit-line-clamp: 2;
+  }
+
+  .home-playlist-actions {
+    gap: 0.55rem;
+  }
+
+  .home-playlist-actions .primary-button,
+  .home-playlist-actions .secondary-button {
+    min-height: 2.8rem;
+    padding: 0.7rem 0.95rem;
+    font-size: 0.84rem;
+  }
+
+  .home-playlist-banner-support > .secondary-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .home-playlist-media-wash {
+    background:
+      linear-gradient(180deg, rgba(7, 9, 13, 0.03), rgba(7, 9, 13, 0.08) 46%, rgba(7, 9, 13, 0.56) 100%),
+      radial-gradient(circle at center, rgba(242, 210, 139, 0.08), transparent 22%);
   }
 
   .home-editorial-pair--campaign-support .home-editorial-image,
