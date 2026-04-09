@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { ArrowUpRight, Play } from "lucide-react";
 import { RevealBlock } from "@/components/animated-text";
 import { EditorialImage } from "@/components/editorial-image";
 import { HomeHeroSwiper } from "@/components/home-hero-swiper";
+import { HomePlaylistStatChip } from "@/components/home-playlist-stat-chip";
 import { TestimonialsCarousel } from "@/components/testimonials-carousel";
 import { YouTubeFacade } from "@/components/youtube-facade";
 import { getHomePageContent, homeResearchSignals } from "@/lib/artist-page-content";
@@ -19,16 +21,7 @@ type HomeGalleryItem = {
   title: string;
   note: string;
 };
-type HomePlaylistItem = {
-  title: string;
-  href: string;
-  playlistId: string;
-  previewVideoId: string;
-  accent: string;
-  description: string;
-  note: string;
-  stat: string;
-};
+type HomePlaylistItem = HomePageContent["playlists"]["items"][number];
 type HomeEditorialPairProps = {
   image: HomePageImage;
   imageEyebrow: string;
@@ -259,9 +252,14 @@ function HomePlaylistPanel({
           <span className="home-playlist-media-index">{String(sequence).padStart(2, "0")}</span>
           <div className="home-playlist-media-chip-row">
             <span className="home-playlist-media-label">{item.accent}</span>
-            <span className="home-playlist-stat">{item.stat}</span>
+            <span className="home-playlist-stat">
+              <HomePlaylistStatChip value={item.stat} />
+            </span>
           </div>
-          <span className="home-playlist-media-hint">Tap preview to play</span>
+          <span className="home-playlist-media-hint">
+            <Play size={12} strokeWidth={2.2} />
+            Tap preview to play
+          </span>
         </div>
         <div className={`home-playlist-media-copy home-playlist-media-copy--${variant}`.trim()}>
           <p className="home-playlist-media-note">{item.note}</p>
@@ -280,38 +278,14 @@ function HomePlaylistPanel({
             rel="noreferrer"
             target="_blank"
           >
-            Open playlist
+            <span>Open playlist</span>
+            <ArrowUpRight size={16} strokeWidth={2.1} />
           </a>
         </div>
       </div>
     </RevealBlock>
   );
 }
-
-const featuredPlaylists: HomePlaylistItem[] = [
-  {
-    title: "Veronica Adane Hit Singles (102M Views)",
-    href: "https://youtube.com/playlist?list=PLj1hYyBldtFN-jNTdW57IeQ898Z2efccd&si=HTiu4REORFYg-RQB",
-    playlistId: "PLj1hYyBldtFN-jNTdW57IeQ898Z2efccd",
-    previewVideoId: "C-syqgWYs7Q",
-    accent: "YouTube playlist",
-    description:
-      "A direct entry into the biggest singles run, collected for fast listening, sharing, and press reference.",
-    note: "Hit singles / official uploads",
-    stat: "102M views",
-  },
-  {
-    title: "Veronica Adane music video clips behind the scenes",
-    href: "https://youtube.com/playlist?list=PLj1hYyBldtFPOSCDsVEBxhXTlyhGTl7bD&si=ixkbAbTof-_G9BVI",
-    playlistId: "PLj1hYyBldtFPOSCDsVEBxhXTlyhGTl7bD",
-    previewVideoId: "IwL3RdaLlM8",
-    accent: "Behind the scenes",
-    description:
-      "Extra visual context from music-video production moments, set footage, and campaign-adjacent clips.",
-    note: "BTS footage / video moments",
-    stat: "On-set access",
-  },
-];
 
 export default async function Home() {
   const page = await getCmsPage("home");
@@ -390,8 +364,8 @@ export default async function Home() {
     uniqueAutoGalleryItems.slice(autoGallerySplitIndex).length > 0
       ? uniqueAutoGalleryItems.slice(autoGallerySplitIndex)
       : uniqueAutoGalleryItems.slice().reverse();
-  const primaryPlaylist = featuredPlaylists[0];
-  const secondaryPlaylist = featuredPlaylists[1];
+  const primaryPlaylist = content.playlists.items[0];
+  const secondaryPlaylist = content.playlists.items[1];
 
   return (
     <main className="editorial-home home-redesign pb-16 sm:pb-20">
@@ -426,29 +400,27 @@ export default async function Home() {
         <div className="home-viewport-breakout home-playlist-stage">
           <RevealBlock className="home-playlist-banner" distance={28} variant="up">
             <div className="home-playlist-banner-copy">
-              <p className="section-label">Screening room</p>
+              <p className="section-label">{content.playlists.eyebrow}</p>
               <h2 className="display-title text-4xl text-white sm:text-5xl">
-                The video story should feel like a premiere, not a link list.
+                {content.playlists.title}
               </h2>
             </div>
             <div className="home-playlist-banner-support">
               <p className="text-base leading-8 text-white/72">
-                The homepage now opens with a true viewing moment: a dominant hit-singles feature,
-                an offset behind-the-scenes companion, inline playback, and direct access to the
-                official YouTube channel.
+                {content.playlists.description}
               </p>
               <div className="home-playlist-marks">
-                <span>Inline playback</span>
-                <span>Official YouTube</span>
-                <span>Playlist-first</span>
+                {content.playlists.highlights.map((item) => (
+                  <span key={item}>{item}</span>
+                ))}
               </div>
               <a
                 className="secondary-button"
-                href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk"
+                href={content.playlists.channelAction.href}
                 rel="noreferrer"
                 target="_blank"
               >
-                Open YouTube channel
+                {content.playlists.channelAction.label}
               </a>
             </div>
           </RevealBlock>

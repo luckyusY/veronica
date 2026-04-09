@@ -127,6 +127,23 @@ export type HomePageContent = {
     featureImage: CmsMediaItem;
     supportingImages: CmsMediaItem[];
   };
+  playlists: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    highlights: string[];
+    channelAction: CmsAction;
+    items: Array<{
+      title: string;
+      href: string;
+      playlistId: string;
+      previewVideoId: string;
+      accent: string;
+      description: string;
+      note: string;
+      stat: string;
+    }>;
+  };
   pathways: {
     eyebrow: string;
     title: string;

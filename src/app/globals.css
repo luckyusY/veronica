@@ -12932,6 +12932,7 @@ a:not([class]):hover {
     0 32px 88px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
   isolation: isolate;
+  perspective: 1600px;
 }
 
 .home-playlist-stage::before,
@@ -12977,6 +12978,7 @@ a:not([class]):hover {
   display: grid;
   gap: 0;
   min-width: 0;
+  transform-style: preserve-3d;
 }
 
 .home-playlist-banner-copy,
@@ -13023,6 +13025,10 @@ a:not([class]):hover {
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  transition:
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 380ms ease,
+    border-color 280ms ease;
 }
 
 .home-playlist-copy-card--feature {
@@ -13037,6 +13043,14 @@ a:not([class]):hover {
   z-index: 3;
   width: min(22rem, calc(100% - 2rem));
   margin: -3.3rem 0 0 0.95rem;
+}
+
+.home-playlist-panel:hover .home-playlist-copy-card {
+  transform: translateY(-3px);
+  border-color: rgba(242, 210, 139, 0.18);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.32),
+    0 0 32px rgba(176, 141, 87, 0.07);
 }
 
 .home-playlist-media {
@@ -13054,7 +13068,8 @@ a:not([class]):hover {
   transition:
     transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 380ms ease,
-    border-color 280ms ease;
+    border-color 280ms ease,
+    filter 320ms ease;
 }
 
 .home-playlist-panel:hover .home-playlist-media {
@@ -13063,6 +13078,7 @@ a:not([class]):hover {
   box-shadow:
     0 42px 110px rgba(0, 0, 0, 0.42),
     0 0 42px rgba(176, 141, 87, 0.08);
+  filter: saturate(1.04);
 }
 
 .home-playlist-media::before {
@@ -13098,6 +13114,7 @@ a:not([class]):hover {
   background:
     linear-gradient(180deg, rgba(7, 9, 13, 0.08), rgba(7, 9, 13, 0.16) 45%, rgba(7, 9, 13, 0.84) 100%),
     radial-gradient(circle at center, rgba(242, 210, 139, 0.14), transparent 22%);
+  transition: opacity 280ms ease;
 }
 
 .home-playlist-media-badge {
@@ -13111,6 +13128,9 @@ a:not([class]):hover {
   align-items: start;
   gap: 0.75rem;
   pointer-events: none;
+  transition:
+    opacity 280ms ease,
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .home-playlist-media-index,
@@ -13154,6 +13174,7 @@ a:not([class]):hover {
   margin-left: auto;
   background: rgba(7, 9, 13, 0.36);
   color: rgba(245, 242, 236, 0.82);
+  gap: 0.35rem;
 }
 
 .home-playlist-media-copy {
@@ -13165,6 +13186,9 @@ a:not([class]):hover {
   display: grid;
   gap: 0.45rem;
   pointer-events: none;
+  transition:
+    opacity 280ms ease,
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .home-playlist-stat,
@@ -13220,6 +13244,32 @@ a:not([class]):hover {
   margin-top: auto;
 }
 
+.home-playlist-actions .primary-button,
+.home-playlist-actions .secondary-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.home-playlist-actions .primary-button svg,
+.home-playlist-actions .secondary-button svg {
+  flex-shrink: 0;
+}
+
+.home-playlist-media:has(iframe) .home-playlist-media-wash,
+.home-playlist-media:has(iframe) .home-playlist-media-badge,
+.home-playlist-media:has(iframe) .home-playlist-media-copy {
+  opacity: 0;
+}
+
+.home-playlist-media:has(iframe) .home-playlist-media-badge {
+  transform: translateY(-8px);
+}
+
+.home-playlist-media:has(iframe) .home-playlist-media-copy {
+  transform: translateY(12px);
+}
+
 .home-playlist-media .mv-yt-facade-overlay {
   background:
     linear-gradient(180deg, rgba(7, 9, 13, 0.08), rgba(7, 9, 13, 0.12) 46%, rgba(7, 9, 13, 0.72) 100%),
@@ -13231,11 +13281,38 @@ a:not([class]):hover {
   width: 82px;
   height: 58px;
   filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.34));
+  animation: homePlaylistPulse 3.2s ease-in-out infinite;
 }
 
 .home-playlist-media--feature .mv-yt-facade-btn {
   width: 94px;
   height: 66px;
+}
+
+.home-playlist-media:hover .mv-yt-facade-btn {
+  animation-play-state: paused;
+}
+
+.home-playlist-stat-flow {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.18rem;
+}
+
+.home-playlist-stat-suffix,
+.home-playlist-stat-text {
+  white-space: nowrap;
+}
+
+@keyframes homePlaylistPulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.06);
+  }
 }
 
 .home-story-strip {

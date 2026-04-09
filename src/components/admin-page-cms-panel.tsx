@@ -5,10 +5,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ExternalLink, FileJson, LoaderCircle, RefreshCcw, Rocket, Save, Trash2 } from "lucide-react";
 import { SectionEditor } from "@/components/admin/cms/SectionEditor";
 import { SectionFieldsRenderer } from "@/components/admin/cms/SectionFieldsRenderer";
-import { ImagePickerField } from "@/components/admin/cms/fields/ImagePickerField";
 import { MultiImagePickerField } from "@/components/admin/cms/fields/MultiImagePickerField";
-import { RepeatableField } from "@/components/admin/cms/fields/RepeatableField";
-import { getSelectedMediaGridItems } from "@/lib/artist-page-content";
+import { getHomePageContent, getSelectedMediaGridItems } from "@/lib/artist-page-content";
 import { defaultCmsPageContent } from "@/lib/cms-defaults";
 import { defaultMediaLibrary } from "@/lib/cms-defaults/shared";
 import {
@@ -29,6 +27,7 @@ import type {
   CmsMediaItem,
   CmsPageSlug,
   CmsPageWorkspaceDocument,
+  HomePageContent,
   StandardPageContent,
   StandardSection,
 } from "@/lib/cms-types";
@@ -148,7 +147,15 @@ function createMediaAdminContent(content: unknown): StandardPageContent {
 }
 
 function getEditablePageContent(slug: CmsPageSlug, content: unknown) {
-  return slug === "media" ? createMediaAdminContent(content) : content;
+  if (slug === "media") {
+    return createMediaAdminContent(content);
+  }
+
+  if (slug === "home") {
+    return getHomePageContent(content as HomePageContent);
+  }
+
+  return content;
 }
 
 function createDraftState(page: CmsPageWorkspaceDocument): PageDraft {

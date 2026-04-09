@@ -79,6 +79,33 @@ export const homePageSchema = z.object({
       .array(cmsMediaItemSchema)
       .min(1, "Add at least one supporting campaign image."),
   }),
+  playlists: z.object({
+    eyebrow: z.string().trim().min(1, "Playlist eyebrow is required."),
+    title: z.string().trim().min(1, "Playlist title is required."),
+    description: z.string().trim().min(1, "Playlist description is required."),
+    highlights: z
+      .array(z.string().trim().min(1, "Highlight label is required."))
+      .min(1, "Add at least one playlist highlight."),
+    channelAction: cmsActionSchema,
+    items: z
+      .array(
+        z.object({
+          title: z.string().trim().min(1, "Playlist title is required."),
+          href: z
+            .string()
+            .trim()
+            .min(1, "Playlist link is required.")
+            .url("Use a valid playlist URL."),
+          playlistId: z.string().trim().min(1, "Playlist ID is required."),
+          previewVideoId: z.string().trim().min(1, "Preview video ID is required."),
+          accent: z.string().trim().min(1, "Playlist accent is required."),
+          description: z.string().trim().min(1, "Playlist description is required."),
+          note: z.string().trim().min(1, "Playlist note is required."),
+          stat: z.string().trim().min(1, "Playlist stat is required."),
+        }),
+      )
+      .min(1, "Add at least one featured playlist."),
+  }),
   pathways: z.object({
     eyebrow: z.string().trim().min(1, "Pathways eyebrow is required."),
     title: z.string().trim().min(1, "Pathways title is required."),

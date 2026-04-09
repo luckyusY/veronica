@@ -31,12 +31,12 @@ function mergeMediaItem(candidate: unknown, fallback: CmsMediaItem): CmsMediaIte
   };
 }
 
-function mergeMediaList(candidates: unknown, fallbacks: readonly CmsMediaItem[]) {
+function _mergeMediaList(candidates: unknown, fallbacks: readonly CmsMediaItem[]) {
   const list = Array.isArray(candidates) ? candidates : [];
   return fallbacks.map((fallback, index) => mergeMediaItem(list[index], fallback));
 }
 
-function hasImageSection(
+function _hasImageSection(
   section: StandardSection,
 ): section is Extract<StandardSection, { image: CmsMediaItem }> {
   return "image" in section;
@@ -97,7 +97,7 @@ export const homeResearchSignals = [
   },
 ] as const;
 
-const researchedHomePageContent: HomePageContent = {
+const _researchedHomePageContent: HomePageContent = {
   hero: {
     verticalLabel: "VERONICA ADANE / OFFICIAL",
     headlineTop: "Veronica Adane",
@@ -230,6 +230,41 @@ const researchedHomePageContent: HomePageContent = {
     featureImage: homeImages.campaignFeature,
     supportingImages: [...homeImages.campaignSupport],
   },
+  playlists: {
+    eyebrow: "Screening room",
+    title: "The video story should feel like a premiere, not a link list.",
+    description:
+      "The homepage now opens the video catalogue with a dominant hit-singles feature, a behind-the-scenes companion, inline playback, and direct access to the official YouTube channel.",
+    highlights: ["Inline playback", "Official YouTube", "Playlist-first"],
+    channelAction: {
+      href: "https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk",
+      label: "Open YouTube channel",
+    },
+    items: [
+      {
+        title: "Veronica Adane Hit Singles (102M Views)",
+        href: "https://youtube.com/playlist?list=PLj1hYyBldtFN-jNTdW57IeQ898Z2efccd&si=HTiu4REORFYg-RQB",
+        playlistId: "PLj1hYyBldtFN-jNTdW57IeQ898Z2efccd",
+        previewVideoId: "C-syqgWYs7Q",
+        accent: "YouTube playlist",
+        description:
+          "A direct entry into the biggest singles run, collected for fast listening, sharing, and press reference.",
+        note: "Hit singles / official uploads",
+        stat: "102M views",
+      },
+      {
+        title: "Veronica Adane music video clips behind the scenes",
+        href: "https://youtube.com/playlist?list=PLj1hYyBldtFPOSCDsVEBxhXTlyhGTl7bD&si=ixkbAbTof-_G9BVI",
+        playlistId: "PLj1hYyBldtFPOSCDsVEBxhXTlyhGTl7bD",
+        previewVideoId: "IwL3RdaLlM8",
+        accent: "Behind the scenes",
+        description:
+          "Extra visual context from music-video production moments, set footage, and campaign-adjacent clips.",
+        note: "BTS footage / video moments",
+        stat: "On-set access",
+      },
+    ],
+  },
   pathways: {
     eyebrow: "Go Deeper",
     title: "Open the biography, the catalogue, and the image archive.",
@@ -298,7 +333,7 @@ const researchedHomePageContent: HomePageContent = {
   },
 };
 
-const researchedAboutPageContent: StandardPageContent = {
+const _researchedAboutPageContent: StandardPageContent = {
   hero: {
     eyebrow: "About Veronica",
     title: "A story grounded in Addis Ababa, family legacy, study, and music.",
@@ -423,7 +458,55 @@ const researchedAboutPageContent: StandardPageContent = {
 };
 
 export function getHomePageContent(source?: HomePageContent): HomePageContent {
-  return source || defaultHomePageContent;
+  const fallback = defaultHomePageContent;
+
+  if (!source) {
+    return fallback;
+  }
+
+  const rawPlaylists = source.playlists;
+  const fallbackPlaylists = fallback.playlists;
+  const playlistItems =
+    Array.isArray(rawPlaylists?.items) && rawPlaylists.items.length > 0
+      ? rawPlaylists.items.map((item, index) => {
+          const fallbackItem =
+            fallbackPlaylists.items[index] ??
+            fallbackPlaylists.items[fallbackPlaylists.items.length - 1];
+
+          return {
+            title: item?.title?.trim() || fallbackItem.title,
+            href: item?.href?.trim() || fallbackItem.href,
+            playlistId: item?.playlistId?.trim() || fallbackItem.playlistId,
+            previewVideoId: item?.previewVideoId?.trim() || fallbackItem.previewVideoId,
+            accent: item?.accent?.trim() || fallbackItem.accent,
+            description: item?.description?.trim() || fallbackItem.description,
+            note: item?.note?.trim() || fallbackItem.note,
+            stat: item?.stat?.trim() || fallbackItem.stat,
+          };
+        })
+      : fallbackPlaylists.items;
+  const highlights =
+    Array.isArray(rawPlaylists?.highlights) &&
+    rawPlaylists.highlights.some((item) => typeof item === "string" && item.trim())
+      ? rawPlaylists.highlights
+          .map((item) => (typeof item === "string" ? item.trim() : ""))
+          .filter(Boolean)
+      : fallbackPlaylists.highlights;
+
+  return {
+    ...fallback,
+    ...source,
+    playlists: {
+      ...fallbackPlaylists,
+      ...rawPlaylists,
+      channelAction: {
+        ...fallbackPlaylists.channelAction,
+        ...(rawPlaylists?.channelAction ?? {}),
+      },
+      highlights,
+      items: playlistItems,
+    },
+  };
 }
 
 export function getAboutPageContent(source?: StandardPageContent): StandardPageContent {

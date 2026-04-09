@@ -160,6 +160,41 @@ export const defaultHomePageContent: HomePageContent = {
     featureImage: defaultMediaLibrary.hero,
     supportingImages: [defaultMediaLibrary.furSeated, defaultMediaLibrary.cliff],
   },
+  playlists: {
+    eyebrow: "Screening room",
+    title: "The video story should feel like a premiere, not a link list.",
+    description:
+      "The homepage now opens the video catalogue with a dominant hit-singles feature, a behind-the-scenes companion, inline playback, and direct access to the official YouTube channel.",
+    highlights: ["Inline playback", "Official YouTube", "Playlist-first"],
+    channelAction: {
+      href: "https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk",
+      label: "Open YouTube channel",
+    },
+    items: [
+      {
+        title: "Veronica Adane Hit Singles (102M Views)",
+        href: "https://youtube.com/playlist?list=PLj1hYyBldtFN-jNTdW57IeQ898Z2efccd&si=HTiu4REORFYg-RQB",
+        playlistId: "PLj1hYyBldtFN-jNTdW57IeQ898Z2efccd",
+        previewVideoId: "C-syqgWYs7Q",
+        accent: "YouTube playlist",
+        description:
+          "A direct entry into the biggest singles run, collected for fast listening, sharing, and press reference.",
+        note: "Hit singles / official uploads",
+        stat: "102M views",
+      },
+      {
+        title: "Veronica Adane music video clips behind the scenes",
+        href: "https://youtube.com/playlist?list=PLj1hYyBldtFPOSCDsVEBxhXTlyhGTl7bD&si=ixkbAbTof-_G9BVI",
+        playlistId: "PLj1hYyBldtFPOSCDsVEBxhXTlyhGTl7bD",
+        previewVideoId: "IwL3RdaLlM8",
+        accent: "Behind the scenes",
+        description:
+          "Extra visual context from music-video production moments, set footage, and campaign-adjacent clips.",
+        note: "BTS footage / video moments",
+        stat: "On-set access",
+      },
+    ],
+  },
   pathways: {
     eyebrow: "Explore",
     title: "Biography, music, and official imagery.",
@@ -227,5 +262,4 @@ export const defaultHomePageContent: HomePageContent = {
     ],
   },
 };
-
 
