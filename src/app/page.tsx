@@ -18,6 +18,13 @@ type HomeGalleryItem = {
   title: string;
   note: string;
 };
+type HomePlaylistItem = {
+  title: string;
+  href: string;
+  accent: string;
+  description: string;
+  note: string;
+};
 type HomeEditorialPairProps = {
   image: HomePageImage;
   imageEyebrow: string;
@@ -219,6 +226,25 @@ function resolveImageTitle(label: string | undefined, fallback: string) {
 function getHomeImageSourceKey(image: HomePageImage) {
   return image.publicId ?? image.url ?? image.alt;
 }
+
+const featuredPlaylists: HomePlaylistItem[] = [
+  {
+    title: "Veronica Adane Hit Singles (102M Views)",
+    href: "https://youtube.com/playlist?list=PLj1hYyBldtFN-jNTdW57IeQ898Z2efccd&si=HTiu4REORFYg-RQB",
+    accent: "YouTube playlist",
+    description:
+      "A direct entry into the biggest singles run, collected for fast listening, sharing, and press reference.",
+    note: "Hit singles / official uploads",
+  },
+  {
+    title: "Veronica Adane music video clips behind the scenes",
+    href: "https://youtube.com/playlist?list=PLj1hYyBldtFPOSCDsVEBxhXTlyhGTl7bD&si=ixkbAbTof-_G9BVI",
+    accent: "Behind the scenes",
+    description:
+      "Extra visual context from music-video production moments, set footage, and campaign-adjacent clips.",
+    note: "BTS footage / video moments",
+  },
+];
 
 export default async function Home() {
   const page = await getCmsPage("home");
@@ -549,7 +575,7 @@ export default async function Home() {
           />
 
           <HomeEditorialPair
-            className="home-editorial-pair--compact"
+            className="home-editorial-pair--compact home-editorial-pair--campaign-support"
             frameClassName="home-full-image-frame--split-support"
             image={campaignSupportSecondary}
             imageEyebrow="Supporting frame"
@@ -582,6 +608,56 @@ export default async function Home() {
           title={content.testimonials.title}
         />
       ) : null}
+
+      <section className="section-shell py-10">
+        <div className="home-route-stage home-route-stage--playlists">
+          <RevealBlock
+            className="editorial-paper-panel home-route-intro home-playlist-intro"
+            distance={30}
+            variant="left"
+          >
+            <p className="section-label">Featured playlists</p>
+            <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
+              Go straight to the official YouTube playlists.
+            </h2>
+            <p className="mt-6 max-w-2xl text-base leading-8 text-[#3a332d]">
+              The homepage now includes direct playlist paths for the biggest hit singles and
+              behind-the-scenes video clips, without making visitors hunt through the full channel.
+            </p>
+          </RevealBlock>
+
+          <div className="home-route-grid home-route-grid--playlists">
+            {featuredPlaylists.map((item, index) => (
+              <RevealBlock
+                delay={0.08 + index * 0.08}
+                distance={28}
+                key={item.href}
+                variant={index === 0 ? "up" : "right"}
+              >
+                <a
+                  className="editorial-route-link home-route-link home-playlist-link"
+                  href={item.href}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <span className="editorial-route-index">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <p className="section-label">{item.accent}</p>
+                  <h3 className="display-title home-playlist-title mt-4 text-white">{item.title}</h3>
+                  <p className="home-playlist-copy mt-5 text-sm leading-7 text-white/72">
+                    {item.description}
+                  </p>
+                  <div className="editorial-route-footer">
+                    <span>{item.note}</span>
+                    <span>Open on YouTube</span>
+                  </div>
+                </a>
+              </RevealBlock>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section className="section-shell py-10">
         <div className="home-route-stage">
