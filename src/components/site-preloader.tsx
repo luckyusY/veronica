@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { VeronicaWordmark } from "@/components/veronica-wordmark";
 
@@ -40,7 +41,19 @@ export function SitePreloader({
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
-              <VeronicaWordmark className="preloader-wordmark" />
+              <div className="preloader-brand-lockup">
+                <span aria-hidden="true" className="preloader-brand-mark">
+                  <Image
+                    alt=""
+                    height={88}
+                    priority
+                    src="/logo.png"
+                    width={88}
+                    style={{ objectFit: "contain" }}
+                  />
+                </span>
+                <VeronicaWordmark className="preloader-wordmark" />
+              </div>
             </motion.div>
 
             <motion.div

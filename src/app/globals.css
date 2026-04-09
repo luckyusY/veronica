@@ -7012,6 +7012,33 @@ a:not([class]):hover {
   justify-items: center;
 }
 
+.preloader-brand-lockup {
+  display: grid;
+  justify-items: center;
+  gap: 0.8rem;
+}
+
+.preloader-brand-mark {
+  display: grid;
+  place-items: center;
+  width: clamp(4rem, 9vw, 5.5rem);
+  aspect-ratio: 1;
+  padding: 0.45rem;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(244, 228, 198, 0.16), transparent 52%),
+    linear-gradient(180deg, rgba(54, 42, 34, 0.88), rgba(24, 18, 14, 0.94));
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 0 1px rgba(200, 155, 98, 0.12);
+}
+
+.preloader-brand-mark img {
+  width: 100%;
+  height: auto;
+}
+
 .preloader-wordmark {
   justify-items: center;
   gap: 0.08rem;
@@ -7298,6 +7325,15 @@ a:not([class]):hover {
   .preloader-body {
     min-width: auto;
     padding: 1.5rem 0.8rem;
+  }
+
+  .preloader-brand-lockup {
+    gap: 0.68rem;
+  }
+
+  .preloader-brand-mark {
+    width: clamp(3.4rem, 18vw, 4.4rem);
+    padding: 0.38rem;
   }
 
   .preloader-wordmark .veronica-wordmark-script {
