@@ -7,6 +7,7 @@ type Props = {
   videoId?: string;
   playlistId?: string;
   thumbnailUrl?: string;
+  loading?: "eager" | "lazy";
   className?: string;
 };
 
@@ -15,6 +16,7 @@ export function YouTubeFacade({
   videoId,
   playlistId,
   thumbnailUrl,
+  loading = "lazy",
   className,
 }: Props) {
   const [active, setActive] = useState(false);
@@ -49,10 +51,11 @@ export function YouTubeFacade({
       onClick={() => setActive(true)}
       type="button"
     >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         alt={title}
         className="mv-yt-facade-thumb"
-        loading="lazy"
+        loading={loading}
         src={fallbackThumb}
       />
       <div className="mv-yt-facade-overlay" />

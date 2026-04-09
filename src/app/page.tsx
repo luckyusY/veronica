@@ -4,6 +4,7 @@ import { RevealBlock } from "@/components/animated-text";
 import { EditorialImage } from "@/components/editorial-image";
 import { HomeHeroSwiper } from "@/components/home-hero-swiper";
 import { TestimonialsCarousel } from "@/components/testimonials-carousel";
+import { YouTubeFacade } from "@/components/youtube-facade";
 import { getHomePageContent, homeResearchSignals } from "@/lib/artist-page-content";
 import { getCmsPage } from "@/lib/cms-store";
 import type { HomePageContent } from "@/lib/cms-types";
@@ -21,9 +22,12 @@ type HomeGalleryItem = {
 type HomePlaylistItem = {
   title: string;
   href: string;
+  playlistId: string;
+  previewVideoId: string;
   accent: string;
   description: string;
   note: string;
+  stat: string;
 };
 type HomeEditorialPairProps = {
   image: HomePageImage;
@@ -227,22 +231,74 @@ function getHomeImageSourceKey(image: HomePageImage) {
   return image.publicId ?? image.url ?? image.alt;
 }
 
+function HomePlaylistPanel({
+  item,
+  variant = "secondary",
+}: {
+  item: HomePlaylistItem;
+  variant?: "feature" | "secondary";
+}) {
+  return (
+    <RevealBlock
+      className={`home-playlist-panel home-playlist-panel--${variant}`.trim()}
+      distance={30}
+      variant={variant === "feature" ? "left" : "right"}
+    >
+      <div className={`home-playlist-media home-playlist-media--${variant}`.trim()}>
+        <YouTubeFacade
+          className="home-playlist-embed"
+          loading={variant === "feature" ? "eager" : "lazy"}
+          playlistId={item.playlistId}
+          thumbnailUrl={`https://i.ytimg.com/vi/${item.previewVideoId}/hqdefault.jpg`}
+          title={item.title}
+        />
+        <div className="home-playlist-media-badge">
+          <span className="home-playlist-media-label">{item.accent}</span>
+          <span className="home-playlist-media-hint">Click preview to play</span>
+        </div>
+      </div>
+
+      <div className={`home-playlist-copy-card home-playlist-copy-card--${variant}`.trim()}>
+        <div className="home-playlist-copy-topline">
+          <span className="home-playlist-stat">{item.stat}</span>
+          <span className="home-playlist-note">{item.note}</span>
+        </div>
+        <h3 className={`display-title home-playlist-title home-playlist-title--${variant}`.trim()}>
+          {item.title}
+        </h3>
+        <p className="home-playlist-copy">{item.description}</p>
+        <div className="home-playlist-actions">
+          <a className="secondary-button" href={item.href} rel="noreferrer" target="_blank">
+            Open playlist
+          </a>
+        </div>
+      </div>
+    </RevealBlock>
+  );
+}
+
 const featuredPlaylists: HomePlaylistItem[] = [
   {
     title: "Veronica Adane Hit Singles (102M Views)",
     href: "https://youtube.com/playlist?list=PLj1hYyBldtFN-jNTdW57IeQ898Z2efccd&si=HTiu4REORFYg-RQB",
+    playlistId: "PLj1hYyBldtFN-jNTdW57IeQ898Z2efccd",
+    previewVideoId: "C-syqgWYs7Q",
     accent: "YouTube playlist",
     description:
       "A direct entry into the biggest singles run, collected for fast listening, sharing, and press reference.",
     note: "Hit singles / official uploads",
+    stat: "102M views",
   },
   {
     title: "Veronica Adane music video clips behind the scenes",
     href: "https://youtube.com/playlist?list=PLj1hYyBldtFPOSCDsVEBxhXTlyhGTl7bD&si=ixkbAbTof-_G9BVI",
+    playlistId: "PLj1hYyBldtFPOSCDsVEBxhXTlyhGTl7bD",
+    previewVideoId: "IwL3RdaLlM8",
     accent: "Behind the scenes",
     description:
       "Extra visual context from music-video production moments, set footage, and campaign-adjacent clips.",
     note: "BTS footage / video moments",
+    stat: "On-set access",
   },
 ];
 
@@ -323,6 +379,8 @@ export default async function Home() {
     uniqueAutoGalleryItems.slice(autoGallerySplitIndex).length > 0
       ? uniqueAutoGalleryItems.slice(autoGallerySplitIndex)
       : uniqueAutoGalleryItems.slice().reverse();
+  const primaryPlaylist = featuredPlaylists[0];
+  const secondaryPlaylist = featuredPlaylists[1];
 
   return (
     <main className="editorial-home home-redesign pb-16 sm:pb-20">
@@ -350,6 +408,41 @@ export default async function Home() {
               <p className="home-signal-detail">{item.detail}</p>
             </RevealBlock>
           ))}
+        </div>
+      </section>
+
+      <section className="section-shell py-10">
+        <div className="home-viewport-breakout home-playlist-stage">
+          <RevealBlock className="home-playlist-banner" distance={28} variant="up">
+            <div className="home-playlist-banner-copy">
+              <p className="section-label">Video spotlight</p>
+              <h2 className="display-title text-4xl text-white sm:text-5xl">
+                Official playlists should be seen before they are searched for.
+              </h2>
+            </div>
+            <div className="home-playlist-banner-support">
+              <p className="text-base leading-8 text-white/72">
+                Two direct viewing lanes sit near the top now: the hit-singles run and the
+                behind-the-scenes clips. The previews play inline, and the full playlists stay one
+                click away.
+              </p>
+              <a
+                className="secondary-button"
+                href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk"
+                rel="noreferrer"
+                target="_blank"
+              >
+                Open YouTube channel
+              </a>
+            </div>
+          </RevealBlock>
+
+          <div className="home-playlist-runway">
+            {primaryPlaylist ? <HomePlaylistPanel item={primaryPlaylist} variant="feature" /> : null}
+            {secondaryPlaylist ? (
+              <HomePlaylistPanel item={secondaryPlaylist} variant="secondary" />
+            ) : null}
+          </div>
         </div>
       </section>
 
@@ -608,74 +701,6 @@ export default async function Home() {
           title={content.testimonials.title}
         />
       ) : null}
-
-      <section className="section-shell py-10">
-        <div className="home-route-stage home-route-stage--playlists">
-          <RevealBlock
-            className="editorial-paper-panel home-route-intro home-playlist-intro"
-            distance={30}
-            variant="left"
-          >
-            <p className="section-label">Featured playlists</p>
-            <h2 className="display-title mt-5 max-w-3xl text-4xl text-[#1f1914] sm:text-5xl">
-              Go straight to the official YouTube playlists.
-            </h2>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#3a332d]">
-              The homepage now includes direct playlist paths for the biggest hit singles and
-              behind-the-scenes video clips, without making visitors hunt through the full channel.
-            </p>
-          </RevealBlock>
-
-          <div className="home-route-grid home-route-grid--playlists">
-            {featuredPlaylists.map((item, index) => {
-              const listMatch = item.href.match(/[?&]list=([^&]+)/);
-              const listId = listMatch ? listMatch[1] : null;
-
-              return (
-                <RevealBlock
-                  delay={0.08 + index * 0.08}
-                  distance={28}
-                  key={item.href}
-                  variant={index === 0 ? "up" : "right"}
-                >
-                  <div className="flex flex-col gap-5">
-                    {listId && (
-                      <div className="aspect-video w-full overflow-hidden rounded-[1.8rem] border border-white/10 shadow-2xl bg-[#0b0f14]">
-                        <iframe
-                          className="h-full w-full"
-                          src={`https://www.youtube.com/embed/videoseries?list=${listId}&rel=0&modestbranding=1`}
-                          title={item.title}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                      </div>
-                    )}
-                    <a
-                      className="editorial-route-link home-route-link home-playlist-link"
-                      href={item.href}
-                      rel="noreferrer"
-                      target="_blank"
-                    >
-                      <span className="editorial-route-index">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <p className="section-label">{item.accent}</p>
-                      <h3 className="display-title home-playlist-title mt-4 text-white">{item.title}</h3>
-                      <p className="home-playlist-copy mt-5 text-sm leading-7 text-white/72">
-                        {item.description}
-                      </p>
-                      <div className="editorial-route-footer">
-                        <span>{item.note}</span>
-                        <span>Open on YouTube</span>
-                      </div>
-                    </a>
-                  </div>
-                </RevealBlock>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       <section className="section-shell py-10">
         <div className="home-route-stage">
