@@ -242,6 +242,7 @@ function HomePlaylistPanel({
       <div className={`home-playlist-media home-playlist-media--${variant}`.trim()}>
         <YouTubeFacade
           className="home-playlist-embed"
+          fullscreenOnPlay
           loading={variant === "feature" ? "eager" : "lazy"}
           playlistId={item.playlistId}
           thumbnailUrl={`https://i.ytimg.com/vi/${item.previewVideoId}/hqdefault.jpg`}
