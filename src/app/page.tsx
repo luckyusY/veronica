@@ -87,7 +87,7 @@ function HomeImageCard({
   );
 }
 
-function HomeAutoGalleryRow({
+function _HomeAutoGalleryRow({
   items,
   className = "",
 }: {
@@ -223,10 +223,6 @@ function resolveImageTitle(label: string | undefined, fallback: string) {
   return label;
 }
 
-function getHomeImageSourceKey(image: HomePageImage) {
-  return image.publicId ?? image.url ?? image.alt;
-}
-
 function HomePlaylistPanel({
   item,
   variant = "secondary",
@@ -295,8 +291,6 @@ export default async function Home() {
   const page = await getCmsPage("home");
   const content = getHomePageContent(page.content as HomePageContent);
   const visualChaptersSet = content.visualChapters.items;
-  const visualFeature = visualChaptersSet[0];
-  const visualSupport = visualChaptersSet.slice(1);
   const visualRows = visualChaptersSet;
   const risePrimaryImage = content.rise.images[0] ?? content.heritage.image;
   const riseSecondaryImage = content.rise.images[1] ?? risePrimaryImage;
@@ -305,69 +299,6 @@ export default async function Home() {
   const campaignSupportSecondary =
     content.campaign.supportingImages[1] ?? campaignSupportPrimary;
   const hasTestimonials = content.testimonials.items.length > 0;
-  const autoGalleryItems = [
-    {
-      image: content.intro.image,
-      eyebrow: "Official portrait",
-      title: resolveImageTitle(content.intro.image.label, "Full-frame portrait"),
-      note: "Lead press image used across platform headers, booking decks, and releases.",
-    },
-    visualFeature
-      ? {
-          image: visualFeature.image,
-          eyebrow: visualFeature.era,
-          title: visualFeature.title,
-          note: visualFeature.note,
-        }
-      : null,
-    ...visualSupport.slice(0, 2).map((item) => ({
-      image: item.image,
-      eyebrow: item.era,
-      title: item.title,
-      note: item.note,
-    })),
-    {
-      image: content.heritage.image,
-      eyebrow: content.heritage.eyebrow,
-      title: resolveImageTitle(content.heritage.image.label, "Live-stage portrait"),
-      note: "A heritage frame that anchors the homepage with a grounded live-performance portrait.",
-    },
-    {
-      image: risePrimaryImage,
-      eyebrow: "Tour frame",
-      title: resolveImageTitle(risePrimaryImage.label, "Stage direction"),
-      note: "Performance photography with enough breathing room for the styling and pose to stay intact.",
-    },
-    {
-      image: content.campaign.featureImage,
-      eyebrow: content.campaign.eyebrow,
-      title: resolveImageTitle(content.campaign.featureImage.label, "Campaign feature"),
-      note: "Campaign imagery staged for press kits, headers, and launch announcements.",
-    },
-    {
-      image: campaignSupportPrimary,
-      eyebrow: "Supporting frame",
-      title: resolveImageTitle(campaignSupportPrimary.label, "Campaign still 01"),
-      note: "Secondary photography that keeps the same editorial tone without feeling repetitive.",
-    },
-  ].filter((item): item is HomeGalleryItem => item !== null);
-  const seenGallerySources = new Set<string>();
-  const uniqueAutoGalleryItems = autoGalleryItems.filter((item) => {
-    const key = getHomeImageSourceKey(item.image);
-
-    if (seenGallerySources.has(key)) {
-      return false;
-    }
-
-    seenGallerySources.add(key);
-    return true;
-  });
-  const autoGallerySplitIndex = Math.ceil(uniqueAutoGalleryItems.length / 2);
-  const autoGalleryPrimaryRow = uniqueAutoGalleryItems.slice(0, autoGallerySplitIndex);
-  const autoGallerySecondaryRow =
-    uniqueAutoGalleryItems.slice(autoGallerySplitIndex).length > 0
-      ? uniqueAutoGalleryItems.slice(autoGallerySplitIndex)
-      : uniqueAutoGalleryItems.slice().reverse();
   const primaryPlaylist = content.playlists.items[0];
   const secondaryPlaylist = content.playlists.items[1];
 
@@ -518,27 +449,6 @@ export default async function Home() {
               note: item.note,
             }))} />
           ) : null}
-        </div>
-      </section>
-
-      <section className="section-shell py-10">
-        <div className="home-viewport-breakout">
-          <RevealBlock className="home-auto-gallery-stage" distance={32} variant="up">
-            <div className="home-auto-gallery-head">
-              <div>
-                <p className="section-label">Moving gallery</p>
-                <h2 className="display-title home-auto-gallery-heading">
-                  Photography in motion.
-                </h2>
-              </div>
-            </div>
-
-            <HomeAutoGalleryRow items={autoGalleryPrimaryRow} />
-            <HomeAutoGalleryRow
-              className="home-auto-gallery-marquee--alternate"
-              items={autoGallerySecondaryRow}
-            />
-          </RevealBlock>
         </div>
       </section>
 
