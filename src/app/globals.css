@@ -12917,29 +12917,65 @@ a:not([class]):hover {
 }
 
 .home-playlist-stage {
+  position: relative;
   width: 100%;
   max-width: 100%;
-  gap: 0.9rem;
+  gap: 1rem;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(circle at top right, rgba(176, 141, 87, 0.16), transparent 26%),
+    radial-gradient(circle at 18% 18%, rgba(176, 141, 87, 0.08), transparent 28%),
+    linear-gradient(135deg, rgba(13, 18, 24, 0.985), rgba(7, 9, 13, 0.985));
+  box-shadow:
+    0 32px 88px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  isolation: isolate;
+}
+
+.home-playlist-stage::before,
+.home-playlist-stage::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.home-playlist-stage::before {
+  inset: auto auto -10rem -8rem;
+  width: 26rem;
+  height: 26rem;
+  background: radial-gradient(circle, rgba(176, 141, 87, 0.12), transparent 72%);
+  opacity: 0.9;
+}
+
+.home-playlist-stage::after {
+  inset: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  opacity: 0.9;
 }
 
 .home-playlist-banner {
-  padding: clamp(1.4rem, 3vw, 2.2rem);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background:
-    radial-gradient(circle at top right, rgba(242, 210, 139, 0.14), transparent 30%),
-    linear-gradient(140deg, rgba(13, 18, 24, 0.98), rgba(7, 9, 13, 0.98));
-  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.26);
+  position: relative;
+  z-index: 2;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .home-playlist-runway {
+  position: relative;
+  z-index: 2;
   width: 100%;
   max-width: 100%;
-  gap: 0.9rem;
+  gap: 1rem;
 }
 
 .home-playlist-panel {
+  position: relative;
   display: grid;
-  gap: 0.85rem;
+  gap: 0;
   min-width: 0;
 }
 
@@ -12952,37 +12988,98 @@ a:not([class]):hover {
   gap: 1rem;
 }
 
+.home-playlist-marks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.home-playlist-marks span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(245, 242, 236, 0.76);
+}
+
 .home-playlist-copy-card {
   display: grid;
-  gap: 1rem;
+  gap: 0.9rem;
   min-width: 0;
-  padding: clamp(1.2rem, 2vw, 1.6rem);
+  padding: clamp(1rem, 2vw, 1.35rem);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 1.8rem;
+  border-radius: 1.45rem;
   background:
-    linear-gradient(180deg, rgba(18, 24, 31, 0.98), rgba(10, 13, 18, 0.98)),
+    linear-gradient(180deg, rgba(16, 21, 29, 0.92), rgba(9, 12, 18, 0.94)),
     radial-gradient(circle at top right, rgba(242, 210, 139, 0.08), transparent 38%);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.home-playlist-copy-card--feature {
+  position: relative;
+  z-index: 3;
+  width: min(30rem, calc(100% - 3rem));
+  margin: -4.8rem 0 0 1.15rem;
+}
+
+.home-playlist-copy-card--secondary {
+  position: relative;
+  z-index: 3;
+  width: min(22rem, calc(100% - 2rem));
+  margin: -3.3rem 0 0 0.95rem;
 }
 
 .home-playlist-media {
   position: relative;
   overflow: hidden;
-  border-radius: 1.8rem;
+  border-radius: 2rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background:
     radial-gradient(circle at top right, rgba(242, 210, 139, 0.1), transparent 38%),
     #090d12;
-  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.22);
+  box-shadow:
+    0 34px 92px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
   isolation: isolate;
+  transition:
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 380ms ease,
+    border-color 280ms ease;
+}
+
+.home-playlist-panel:hover .home-playlist-media {
+  transform: translateY(-4px);
+  border-color: rgba(242, 210, 139, 0.18);
+  box-shadow:
+    0 42px 110px rgba(0, 0, 0, 0.42),
+    0 0 42px rgba(176, 141, 87, 0.08);
+}
+
+.home-playlist-media::before {
+  content: "";
+  position: absolute;
+  inset: 0.7rem;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  pointer-events: none;
 }
 
 .home-playlist-media--feature {
-  min-height: clamp(22rem, 42vw, 34rem);
+  min-height: clamp(24rem, 44vw, 36rem);
 }
 
 .home-playlist-media--secondary {
-  min-height: clamp(17rem, 28vw, 22rem);
+  min-height: clamp(19rem, 30vw, 24rem);
 }
 
 .home-playlist-embed {
@@ -12993,19 +13090,30 @@ a:not([class]):hover {
   border: 0;
 }
 
+.home-playlist-media-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(7, 9, 13, 0.08), rgba(7, 9, 13, 0.16) 45%, rgba(7, 9, 13, 0.84) 100%),
+    radial-gradient(circle at center, rgba(242, 210, 139, 0.14), transparent 22%);
+}
+
 .home-playlist-media-badge {
   position: absolute;
-  top: 0.95rem;
-  left: 0.95rem;
-  right: 0.95rem;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
   z-index: 3;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: start;
-  justify-content: space-between;
   gap: 0.75rem;
   pointer-events: none;
 }
 
+.home-playlist-media-index,
 .home-playlist-media-label,
 .home-playlist-media-hint,
 .home-playlist-stat {
@@ -13019,10 +13127,27 @@ a:not([class]):hover {
   -webkit-backdrop-filter: blur(10px);
 }
 
+.home-playlist-media-index,
 .home-playlist-media-label,
 .home-playlist-stat {
   background: rgba(7, 9, 13, 0.54);
   color: rgba(242, 210, 139, 0.94);
+}
+
+.home-playlist-media-index {
+  justify-content: center;
+  min-width: 2.35rem;
+  font-family: var(--font-display-serif), "Didot", Georgia, serif;
+  font-size: 0.9rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.home-playlist-media-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: start;
 }
 
 .home-playlist-media-hint {
@@ -13031,21 +13156,31 @@ a:not([class]):hover {
   color: rgba(245, 242, 236, 0.82);
 }
 
-.home-playlist-copy-topline {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  align-items: center;
+.home-playlist-media-copy {
+  position: absolute;
+  left: clamp(1.15rem, 2vw, 1.7rem);
+  right: clamp(1.15rem, 2vw, 1.7rem);
+  bottom: clamp(1.1rem, 2vw, 1.5rem);
+  z-index: 3;
+  display: grid;
+  gap: 0.45rem;
+  pointer-events: none;
 }
 
 .home-playlist-stat,
-.home-playlist-note,
+.home-playlist-media-note,
 .home-playlist-media-label,
-.home-playlist-media-hint {
+.home-playlist-media-hint,
+.home-playlist-note {
   font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+}
+
+.home-playlist-media-note {
+  margin: 0;
+  color: rgba(242, 210, 139, 0.84);
 }
 
 .home-playlist-note {
@@ -13055,15 +13190,18 @@ a:not([class]):hover {
 .home-playlist-title {
   margin: 0;
   line-height: 0.96;
+  color: #ffffff;
+  text-wrap: balance;
+  text-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);
 }
 
 .home-playlist-title--feature {
-  font-size: clamp(2.3rem, 4.4vw, 4rem);
+  font-size: clamp(2.6rem, 5vw, 4.6rem);
   max-width: 10ch;
 }
 
 .home-playlist-title--secondary {
-  font-size: clamp(1.7rem, 3vw, 2.55rem);
+  font-size: clamp(1.85rem, 3vw, 2.9rem);
   max-width: 12ch;
 }
 
@@ -13071,7 +13209,7 @@ a:not([class]):hover {
   margin: 0;
   max-width: 34rem;
   font-size: 0.92rem;
-  line-height: 1.72;
+  line-height: 1.78;
   color: rgba(245, 242, 236, 0.72);
 }
 
@@ -13080,6 +13218,24 @@ a:not([class]):hover {
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: auto;
+}
+
+.home-playlist-media .mv-yt-facade-overlay {
+  background:
+    linear-gradient(180deg, rgba(7, 9, 13, 0.08), rgba(7, 9, 13, 0.12) 46%, rgba(7, 9, 13, 0.72) 100%),
+    radial-gradient(circle at center, rgba(242, 210, 139, 0.14), transparent 22%);
+}
+
+.home-playlist-media .mv-yt-facade-btn {
+  z-index: 2;
+  width: 82px;
+  height: 58px;
+  filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.34));
+}
+
+.home-playlist-media--feature .mv-yt-facade-btn {
+  width: 94px;
+  height: 66px;
 }
 
 .home-story-strip {
@@ -13126,8 +13282,12 @@ a:not([class]):hover {
   }
 
   .home-playlist-runway {
-    grid-template-columns: minmax(0, 1.24fr) minmax(0, 0.76fr);
+    grid-template-columns: minmax(0, 1.28fr) minmax(0, 0.72fr);
     align-items: start;
+  }
+
+  .home-playlist-panel--secondary {
+    margin-top: clamp(2.8rem, 6vw, 5rem);
   }
 
   .home-editorial-pair {
@@ -13371,9 +13531,16 @@ a:not([class]):hover {
     max-width: 100%;
   }
 
-  .home-playlist-banner,
+  .home-playlist-stage {
+    padding: 0.95rem;
+  }
+
+  .home-playlist-banner {
+    gap: 0.95rem;
+  }
+
   .home-playlist-copy-card {
-    padding: 1.25rem 1rem;
+    padding: 1rem 0.95rem;
   }
 
   .home-playlist-title--feature,
@@ -13382,11 +13549,21 @@ a:not([class]):hover {
   }
 
   .home-playlist-media--feature {
-    min-height: 18rem;
+    min-height: 19rem;
   }
 
   .home-playlist-media--secondary {
-    min-height: 15rem;
+    min-height: 16rem;
+  }
+
+  .home-playlist-panel--secondary {
+    margin-top: 0;
+  }
+
+  .home-playlist-copy-card--feature,
+  .home-playlist-copy-card--secondary {
+    width: calc(100% - 1.4rem);
+    margin: -2.8rem 0 0 0.7rem;
   }
 
   .home-editorial-pair--campaign-support {
@@ -13429,19 +13606,54 @@ a:not([class]):hover {
     gap: 0.9rem;
   }
 
+  .home-playlist-marks {
+    gap: 0.4rem;
+  }
+
+  .home-playlist-marks span {
+    font-size: 0.55rem;
+    letter-spacing: 0.16em;
+  }
+
   .home-playlist-media-badge {
     top: 0.75rem;
     left: 0.75rem;
     right: 0.75rem;
-    flex-wrap: wrap;
+    grid-template-columns: auto 1fr;
+    gap: 0.55rem;
+  }
+
+  .home-playlist-media-chip-row {
+    gap: 0.4rem;
+  }
+
+  .home-playlist-media-hint {
+    grid-column: 1 / -1;
+    margin-left: 0;
+  }
+
+  .home-playlist-media-copy {
+    left: 0.85rem;
+    right: 0.85rem;
+    bottom: 0.9rem;
+    gap: 0.35rem;
   }
 
   .home-playlist-media-label,
   .home-playlist-media-hint,
   .home-playlist-stat,
-  .home-playlist-note {
+  .home-playlist-note,
+  .home-playlist-media-note {
     font-size: 0.55rem;
     letter-spacing: 0.16em;
+  }
+
+  .home-playlist-title--feature {
+    font-size: clamp(2rem, 9.5vw, 3rem);
+  }
+
+  .home-playlist-title--secondary {
+    font-size: clamp(1.55rem, 7vw, 2.15rem);
   }
 
   .home-playlist-copy {

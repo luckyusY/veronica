@@ -234,9 +234,11 @@ function getHomeImageSourceKey(image: HomePageImage) {
 function HomePlaylistPanel({
   item,
   variant = "secondary",
+  sequence,
 }: {
   item: HomePlaylistItem;
   variant?: "feature" | "secondary";
+  sequence: number;
 }) {
   return (
     <RevealBlock
@@ -252,23 +254,32 @@ function HomePlaylistPanel({
           thumbnailUrl={`https://i.ytimg.com/vi/${item.previewVideoId}/hqdefault.jpg`}
           title={item.title}
         />
+        <div className="home-playlist-media-wash" />
         <div className="home-playlist-media-badge">
-          <span className="home-playlist-media-label">{item.accent}</span>
-          <span className="home-playlist-media-hint">Click preview to play</span>
+          <span className="home-playlist-media-index">{String(sequence).padStart(2, "0")}</span>
+          <div className="home-playlist-media-chip-row">
+            <span className="home-playlist-media-label">{item.accent}</span>
+            <span className="home-playlist-stat">{item.stat}</span>
+          </div>
+          <span className="home-playlist-media-hint">Tap preview to play</span>
+        </div>
+        <div className={`home-playlist-media-copy home-playlist-media-copy--${variant}`.trim()}>
+          <p className="home-playlist-media-note">{item.note}</p>
+          <h3 className={`display-title home-playlist-title home-playlist-title--${variant}`.trim()}>
+            {item.title}
+          </h3>
         </div>
       </div>
 
       <div className={`home-playlist-copy-card home-playlist-copy-card--${variant}`.trim()}>
-        <div className="home-playlist-copy-topline">
-          <span className="home-playlist-stat">{item.stat}</span>
-          <span className="home-playlist-note">{item.note}</span>
-        </div>
-        <h3 className={`display-title home-playlist-title home-playlist-title--${variant}`.trim()}>
-          {item.title}
-        </h3>
         <p className="home-playlist-copy">{item.description}</p>
         <div className="home-playlist-actions">
-          <a className="secondary-button" href={item.href} rel="noreferrer" target="_blank">
+          <a
+            className={variant === "feature" ? "primary-button" : "secondary-button"}
+            href={item.href}
+            rel="noreferrer"
+            target="_blank"
+          >
             Open playlist
           </a>
         </div>
@@ -415,17 +426,22 @@ export default async function Home() {
         <div className="home-viewport-breakout home-playlist-stage">
           <RevealBlock className="home-playlist-banner" distance={28} variant="up">
             <div className="home-playlist-banner-copy">
-              <p className="section-label">Video spotlight</p>
+              <p className="section-label">Screening room</p>
               <h2 className="display-title text-4xl text-white sm:text-5xl">
-                Official playlists should be seen before they are searched for.
+                The video story should feel like a premiere, not a link list.
               </h2>
             </div>
             <div className="home-playlist-banner-support">
               <p className="text-base leading-8 text-white/72">
-                Two direct viewing lanes sit near the top now: the hit-singles run and the
-                behind-the-scenes clips. The previews play inline, and the full playlists stay one
-                click away.
+                The homepage now opens with a true viewing moment: a dominant hit-singles feature,
+                an offset behind-the-scenes companion, inline playback, and direct access to the
+                official YouTube channel.
               </p>
+              <div className="home-playlist-marks">
+                <span>Inline playback</span>
+                <span>Official YouTube</span>
+                <span>Playlist-first</span>
+              </div>
               <a
                 className="secondary-button"
                 href="https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk"
@@ -438,9 +454,11 @@ export default async function Home() {
           </RevealBlock>
 
           <div className="home-playlist-runway">
-            {primaryPlaylist ? <HomePlaylistPanel item={primaryPlaylist} variant="feature" /> : null}
+            {primaryPlaylist ? (
+              <HomePlaylistPanel item={primaryPlaylist} sequence={1} variant="feature" />
+            ) : null}
             {secondaryPlaylist ? (
-              <HomePlaylistPanel item={secondaryPlaylist} variant="secondary" />
+              <HomePlaylistPanel item={secondaryPlaylist} sequence={2} variant="secondary" />
             ) : null}
           </div>
         </div>
