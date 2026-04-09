@@ -8,9 +8,17 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import { useMotionLite } from "@/components/providers";
 import { VeronicaWordmark } from "@/components/veronica-wordmark";
-import { YoutubeIcon, FacebookIcon, InstagramIcon, TikTokIcon } from "@/components/social-icons";
+import {
+  YoutubeIcon,
+  FacebookIcon,
+  InstagramIcon,
+  TikTokIcon,
+  TelegramIcon,
+} from "@/components/social-icons";
 import type { CmsSiteSettings } from "@/lib/cms-types";
 import { navigationItems } from "@/lib/site-data";
+
+const TELEGRAM_CHANNEL_URL = "https://t.me/azmariveronica";
 
 const primaryNavigation = navigationItems.filter(
   (item) => item.href !== "/shop" && item.href !== "/contact",
@@ -165,6 +173,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               <a href="https://www.tiktok.com/@veronicaadane?_r=1&_t=ZS-95Kt36szYxt" target="_blank" rel="noreferrer" aria-label="TikTok" title="TikTok" className="header-social-icon"><TikTokIcon width={16} height={16} /></a>
               <a href="https://www.facebook.com/share/19KHyCQSkL/?mibextid=wwXIfr" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook" className="header-social-icon"><FacebookIcon width={18} height={18} /></a>
               <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram" className="header-social-icon"><InstagramIcon width={18} height={18} /></a>
+              <a href={TELEGRAM_CHANNEL_URL} target="_blank" rel="noreferrer" aria-label="Telegram channel" title="Telegram channel" className="header-social-icon"><TelegramIcon width={16} height={16} /></a>
             </motion.div>
             {actionNavigation.map((item, index) => {
               const label =
@@ -297,6 +306,25 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                     </motion.div>
                     );
                   })}
+                  <motion.div
+                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, x: -12 }}
+                    transition={{
+                      duration: 0.34,
+                      delay: 0.34,
+                      ease: itemEase,
+                    }}
+                  >
+                    <a
+                      className="site-header-mobile-link site-header-mobile-link--action"
+                      href={TELEGRAM_CHANNEL_URL}
+                      onClick={() => setMenuOpen(false)}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      Telegram Channel
+                    </a>
+                  </motion.div>
                 </div>
               </div>
             </motion.div>

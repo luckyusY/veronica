@@ -1,16 +1,22 @@
 import Link from "next/link";
 import Image from "next/image";
-import { YoutubeIcon, FacebookIcon, InstagramIcon, TikTokIcon } from "@/components/social-icons";
+import {
+  YoutubeIcon,
+  FacebookIcon,
+  InstagramIcon,
+  TikTokIcon,
+  TelegramIcon,
+} from "@/components/social-icons";
 import { VeronicaWordmark } from "@/components/veronica-wordmark";
 import type { CmsSiteSettings } from "@/lib/cms-types";
+
+const TELEGRAM_CHANNEL_URL = "https://t.me/azmariveronica";
 
 type SiteFooterProps = {
   settings: CmsSiteSettings["footer"];
 };
 
 export function SiteFooter({ settings }: SiteFooterProps) {
-  const year = new Date().getFullYear();
-
   return (
     <footer className="editorial-site-footer">
       <div className="section-shell py-4" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
@@ -47,7 +53,25 @@ export function SiteFooter({ settings }: SiteFooterProps) {
           <a href="https://www.instagram.com/veronica_adane?igsh=djhzenc2NTZseWRn" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram" className="header-social-icon" style={{ width: '2.4rem', height: '2.4rem' }}>
             <InstagramIcon width={20} height={20} />
           </a>
+          <a href={TELEGRAM_CHANNEL_URL} target="_blank" rel="noreferrer" aria-label="Telegram channel" title="Telegram channel" className="header-social-icon" style={{ width: '2.4rem', height: '2.4rem' }}>
+            <TelegramIcon width={18} height={18} />
+          </a>
         </div>
+
+        <a
+          href={TELEGRAM_CHANNEL_URL}
+          target="_blank"
+          rel="noreferrer"
+          style={{
+            color: "rgba(247,242,234,0.72)",
+            fontSize: "0.78rem",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+          }}
+        >
+          Join Telegram Channel
+        </a>
 
         <div style={{ opacity: 0.55, fontSize: '0.6rem', letterSpacing: '0.08em', textAlign: 'center' }}>
           <p style={{ margin: 0 }}>Developed by <a href="https://madocreatives.com/" target="_blank" rel="noreferrer" style={{ textDecoration: 'underline' }}>Mado Creatives</a> as web developer.</p>
