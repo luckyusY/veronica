@@ -7,7 +7,7 @@ import type { StandardPageContent } from "@/lib/cms-types";
 export const metadata: Metadata = {
   title: "About Veronica Adane",
   description:
-    "A researched biography of Veronica Adane, covering her Addis Ababa roots, education, and the Meteriyaye era.",
+    "Biography of Veronica Adane, from Addis Ababa roots and Azmari heritage to journalism, touring, advocacy, and international recognition.",
 };
 
 export const revalidate = 60;

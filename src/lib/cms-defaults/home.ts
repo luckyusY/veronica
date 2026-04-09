@@ -1,265 +1,216 @@
 import type { HomePageContent } from "@/lib/cms-types";
 import { defaultMediaLibrary } from "@/lib/cms-defaults/shared";
+import { officialYouTubePlaylists } from "@/lib/youtube-playlists";
 
 export const defaultHomePageContent: HomePageContent = {
   hero: {
     verticalLabel: "VERONICA ADANE / OFFICIAL",
-    headlineTop: "Voice of a generation.",
-    headlineLines: ["Born in Addis Ababa.", "Heard across the world."],
-    primaryAction: { href: "/music", label: "Listen to Meteriyaye" },
-    secondaryAction: { href: "/media", label: "View Official Images" },
+    headlineTop: "Veronica Adane",
+    headlineLines: ["from Addis Ababa", "to global stages"],
+    primaryAction: { href: "/about", label: "Read Full Biography" },
+    secondaryAction: { href: "/music", label: "Explore Music" },
     slides: [
       {
-        eyebrow: "2024 Album",
-        title: "The record-setting album that changed everything.",
+        eyebrow: "Origins",
+        title: "Born in Addis Ababa and shaped by faith, sacrifice, and purpose.",
         copy:
-          "Meteriyaye — 12 songs, 51 minutes — acquired by Zojak Worldwide in a landmark deal reported by Addis Insight. The defining record of her generation.",
-        image: defaultMediaLibrary.hero,
-        stat: "Record-Setting Deal",
-        accent: "Out Now",
+          "Veronica Adane built her life and career on belief in God, hard work, and a refusal to let humble beginnings define the size of her future.",
+        image: defaultMediaLibrary.cliff,
+        stat: "Addis Ababa",
+        accent: "The beginning",
       },
       {
         eyebrow: "Heritage",
-        title: "Born into music as Adane Teka's daughter.",
+        title: "The daughter of Adane Teka chose pride over shame.",
         copy:
-          "Her father's legacy lives in every note. Adane Teka — celebrated Ethiopian performer — gave Veronica not just a name, but a calling. The inheritance runs deep.",
-        image: defaultMediaLibrary.stage,
-        stat: "Addis Ababa",
-        accent: "The Inheritance",
+          "Raised inside the legacy of a respected traditional singer, Veronica later reclaimed the word Azmari in public and turned heritage into one of the strongest parts of her identity.",
+        image: defaultMediaLibrary.microphone,
+        stat: "Azmari heritage",
+        accent: "Family legacy",
       },
       {
-        eyebrow: "Meteriyaye",
-        title: "Love, hope, unity, patriotism, and peace.",
+        eyebrow: "Independent rise",
+        title: "A music journey that started with one phone and no safety net.",
         copy:
-          "Her own words from SBS Amharic: Meteriyaye is an album for Ethiopia — built from love, threaded with hope, and offered in the spirit of unity and peace.",
+          "While still a university student, she recorded cover songs with only a mobile phone, worked as a private tutor to support her family, and slowly built the audience that changed her life.",
+        image: defaultMediaLibrary.crowd,
+        stat: "One phone",
+        accent: "Self-made story",
+      },
+      {
+        eyebrow: "Global chapter",
+        title: "Tours, awards, advocacy, and a multilingual chapter are already underway.",
+        copy:
+          "National demand, diaspora tours, a 41M+ album run for Meteriyaye, African Union recognition, and major awards now point to a much larger future.",
         image: defaultMediaLibrary.heartMid,
-        stat: "For Ethiopia",
-        accent: "The Message",
-      },
-      {
-        eyebrow: "2021 — 2025",
-        title: "From Nalegn to Meteriyaye and beyond.",
-        copy:
-          "Nalegn (2020), Tewu (2021), Kurfya (2022), Enaney and Abebaye (2023) — each single a step toward the album that would change everything. And still the story continues.",
-        image: defaultMediaLibrary.furClose,
-        stat: "Active Catalogue",
-        accent: "The Journey",
+        stat: "2025 recognition",
+        accent: "What comes next",
       },
     ],
   },
   intro: {
-    eyebrow: "Veronica Adane",
-    title: "Heritage, voice, and the Meteriyaye era.",
+    eyebrow: "Overview",
+    title: "An Ethiopian artist whose story joins faith, scholarship, performance, and public impact.",
     paragraphs: [
-      "Veronica Adane is the daughter of Adane Teka — one of Ethiopia's most celebrated performers. Born and raised in Addis Ababa, she grew up inside the music, shaped by a legacy that demanded nothing less than greatness.",
-      "After studying journalism and communication at Mekelle University, she returned to music on her own terms. Beginning with spiritual songs and covers shared online, she built a steady catalogue of singles before arriving at Meteriyaye — the 12-track album that defines her era.",
-      "Meteriyaye was acquired by Zojak Worldwide in a record-setting deal reported by Addis Insight. Released August 2024, it announced Veronica Adane to the world not as a promise, but as a presence.",
+      "Veronica Adane is an Ethiopian singer, songwriter, actress, journalist, and one of the most influential female artists in Ethiopia today. Born and raised in Addis Ababa, she is known as a woman who started from nothing and built her name through discipline, courage, and belief in God.",
+      "She earned a Bachelor's Degree in Journalism and Communication from Mekelle University with strong academic results, and her research on freedom of speech was placed in the university library as a reference paper for future students.",
+      "That mix of faith, study, work ethic, and public purpose now shapes her music, film work, advocacy, brand partnerships, and growing international profile.",
     ],
     image: defaultMediaLibrary.cliff,
     stats: [
       {
-        value: "12",
-        label: "Tracks",
-        detail: "Meteriyaye is a 12-track album — every song a deliberate statement.",
+        value: "1 phone",
+        label: "How the journey began",
+        detail: "She started posting cover songs online with no studio, no team, and only one mobile phone.",
       },
       {
-        value: "51 min",
-        label: "Album Runtime",
-        detail: "Fifty-one minutes of love, hope, unity, patriotism, and peace for Ethiopia.",
+        value: "41M+",
+        label: "Meteriyaye album views",
+        detail: "Her debut album Meteriyaye passed more than 41 million YouTube views within one year.",
       },
       {
-        value: "2024",
-        label: "Record Deal",
-        detail: "Acquired by Zojak Worldwide in a record-setting deal. Addis Insight reported it.",
+        value: "1.8M+",
+        label: "TikTok community",
+        detail: "Her social platform includes more than 1.8 million TikTok followers alongside strong Instagram and Facebook reach.",
       },
     ],
   },
   visualChapters: {
-    eyebrow: "Official Imagery",
-    title: "Portraits from the Meteriyaye era.",
+    eyebrow: "Public image",
+    title: "A visual identity built from heritage, stage authority, and modern Ethiopian glamour.",
     description:
-      "A visual world built around the music — fur coats, crystal baths, and gown portraits that carry the weight of the record they represent.",
-    chips: ["Portraits", "Meteriyaye", "Campaign", "Press"],
+      "The imagery around Veronica now holds multiple roles at once: biography, stage power, press presence, and a wider global ambition.",
+    chips: ["Biography", "Performance", "Press", "Future"],
     items: [
       {
-        title: "Fur Coat",
-        era: "Meteriyaye",
-        note: "The signature fur portrait — commanding, elegant, and unmistakably Veronica.",
-        image: defaultMediaLibrary.crowd,
+        title: "Roots and resolve",
+        era: "Biography",
+        note: "Portraits that foreground faith, discipline, and the dignity of her Addis Ababa beginning.",
+        image: defaultMediaLibrary.furSeated,
       },
       {
-        title: "Crystal Bath",
-        era: "Official Visuals",
-        note: "A crystalline campaign image that defines the visual language of the album era.",
+        title: "Live authority",
+        era: "Performance",
+        note: "Images for the artist who became one of Ethiopia's most in-demand live performers, often taking multiple shows in one night.",
         image: defaultMediaLibrary.stage,
       },
       {
-        title: "Gown Portrait",
-        era: "Press",
-        note: "A formal gown portrait for press, editorial, and official biography contexts.",
+        title: "Global presence",
+        era: "Press and future",
+        note: "A polished image system for tours, interviews, awards, film work, and brand partnerships.",
         image: defaultMediaLibrary.heartClose,
       },
     ],
   },
   testimonials: {
-    eyebrow: "The Reception",
-    title: "Critics and fans agree: the live show is a mandatory experience.",
-    description:
-      "Whether it's in the studio or on the stage, the execution is flawless. Read what people are saying about the latest run of shows.",
-    items: [
-      {
-        quote:
-          "One of the most commanding and energetic live sets we have seen this year. She owned the room from the first note.",
-        name: "C. Desta",
-        role: "Live Music Review",
-      },
-      {
-        quote:
-          "The album translated to the stage perfectly. A rare instance where the live vocals actually outshine the studio recordings.",
-        name: "A. Alemu",
-        role: "Music Critic",
-      },
-      {
-        quote:
-          "The crowd knew every single word. The connection she has with her audience is incredible to witness.",
-        name: "N. Tesfaye",
-        role: "Tour Promoter",
-      },
-      {
-        quote:
-          "Every visual, every outfit, every note feels intentional. She isn't just an artist, she's an entire era.",
-        name: "M. Robinson",
-        role: "Fan & Collector",
-      },
-    ],
+    eyebrow: "",
+    title: "",
+    description: "",
+    items: [],
   },
   heritage: {
-    eyebrow: "The Inheritance",
-    title: "Adane Teka's daughter carries the legacy forward.",
+    eyebrow: "Heritage",
+    title: "Adane Teka's daughter turned heritage into strength, not apology.",
     description:
-      "To be born in Addis Ababa as the daughter of a celebrated Ethiopian performer is to inherit both the weight and the wonder of performance. Veronica Adane didn't choose music — music chose her long before she had a say in the matter.",
-    tags: ["Addis Ababa", "Adane Teka", "Ethiopia", "Legacy"],
-    image: defaultMediaLibrary.aerialCrowd,
+      "Adane Teka's life as a masinko performer and freestyle storyteller gave Veronica more than inspiration. It gave her a living connection to Ethiopian history, cultural education, and the Azmari identity she later defended with public pride.",
+    tags: ["Adane Teka", "Masinko", "Azmari", "Addis Ababa"],
+    image: defaultMediaLibrary.microphone,
   },
   rise: {
-    eyebrow: "The Timeline",
-    title: "From first songs to Meteriyaye.",
+    eyebrow: "Independent rise",
+    title: "Her career moved from campus cover videos to the busiest live stages in the country.",
     description:
-      "Nalegn (2020) opened the story. Tewu, Kurfya, Enaney, and Abebaye followed — each single sharpening the voice and broadening the audience. Then came the album that made everything clear.",
+      "Before the biggest songs, Veronica balanced university life, private tutoring, professional leadership, and early online covers. After graduation she worked at DCT Entertainment, performed at the ETRSS-1 satellite celebration on December 20, 2019, and later left a stable job to follow music full time.",
     nationalNote:
-      "Live performances across Ethiopia — from Addis Ababa to Gondar and Bahir Dar — built the foundation of an audience that knew every word before the album arrived.",
+      "Before releasing her album, she toured Addis Ababa, Gondar, Hawassa, Harar, Dire Dawa, Bahir Dar, Arba Minch, Dilla, and many other cities across Ethiopia.",
     internationalNote:
-      "Acquired by Zojak Worldwide for global distribution, the catalogue is now active and expanding. A 2025 live-performance release confirms the story is still being written.",
-    images: [defaultMediaLibrary.stage, defaultMediaLibrary.crowd],
+      "Diaspora demand later took her to Dubai, Abu Dhabi, Qatar, Bahrain, Israel, major cities across the United States, and the Meteriyaye tour across Europe, where many shows sold out.",
+    images: [defaultMediaLibrary.crowd, defaultMediaLibrary.aerialCrowd],
   },
   campaign: {
-    eyebrow: "Meteriyaye",
-    title: "The album that defined a generation.",
+    eyebrow: "Recognition and impact",
+    title: "Awards, acting, advocacy, and brand leadership widened the story beyond music.",
     description:
-      "Twelve tracks. Fifty-one minutes. A record-setting acquisition by Zojak Worldwide. Meteriyaye is the full statement — love, hope, unity, patriotism, and peace woven into every song.",
-    featureImage: defaultMediaLibrary.hero,
-    supportingImages: [defaultMediaLibrary.furSeated, defaultMediaLibrary.cliff],
+      "In 2025 she was welcomed as a Special Guest at the African Union, later received two major Zikomo Awards, earned AFRIMA recognition in Nigeria, starred in Key Mesmer, and kept using her platform for women, children, and the voiceless.",
+    featureImage: defaultMediaLibrary.heartMid,
+    supportingImages: [defaultMediaLibrary.stage, defaultMediaLibrary.furClose],
   },
   playlists: {
     eyebrow: "Screening room",
-    title: "The video story should feel like a premiere, not a link list.",
+    title: "Official playlists for the album, hit songs, visuals, and behind-the-scenes footage.",
     description:
-      "The homepage now opens the video catalogue with a dominant hit-singles feature, a behind-the-scenes companion, inline playback, and direct access to the official YouTube channel.",
-    highlights: ["Inline playback", "Official YouTube", "Playlist-first"],
+      "From Meteriyaye to the songs that built her audience, the playlist grid gives visitors a fast route into the official channel without losing context.",
+    highlights: ["4 featured playlists", "Official YouTube", "Direct playback"],
     channelAction: {
       href: "https://youtube.com/@veronica_adane?si=l5aWL2XoK4xlqGDk",
       label: "Open YouTube channel",
     },
-    items: [
-      {
-        title: "Veronica Adane Hit Singles (102M Views)",
-        href: "https://youtube.com/playlist?list=PLj1hYyBldtFN-jNTdW57IeQ898Z2efccd&si=HTiu4REORFYg-RQB",
-        playlistId: "PLj1hYyBldtFN-jNTdW57IeQ898Z2efccd",
-        previewVideoId: "C-syqgWYs7Q",
-        accent: "YouTube playlist",
-        description:
-          "A direct entry into the biggest singles run, collected for fast listening, sharing, and press reference.",
-        note: "Hit singles / official uploads",
-        stat: "102M views",
-      },
-      {
-        title: "Veronica Adane music video clips behind the scenes",
-        href: "https://youtube.com/playlist?list=PLj1hYyBldtFPOSCDsVEBxhXTlyhGTl7bD&si=ixkbAbTof-_G9BVI",
-        playlistId: "PLj1hYyBldtFPOSCDsVEBxhXTlyhGTl7bD",
-        previewVideoId: "IwL3RdaLlM8",
-        accent: "Behind the scenes",
-        description:
-          "Extra visual context from music-video production moments, set footage, and campaign-adjacent clips.",
-        note: "BTS footage / video moments",
-        stat: "On-set access",
-      },
-    ],
+    items: officialYouTubePlaylists.map((item) => ({ ...item })),
   },
   pathways: {
     eyebrow: "Explore",
-    title: "Biography, music, and official imagery.",
+    title: "Biography, music, and official imagery in one place.",
     description:
-      "Three destinations. The full story, the full catalogue, and the official visual archive — everything you need in one place.",
+      "The official site should move quickly between the life story, the catalogue, and the approved visual archive without losing the truth of how the career was built.",
     items: [
       {
         title: "About",
         href: "/about",
         accent: "Biography",
         description:
-          "The full story: Addis Ababa, Adane Teka, Mekelle University, the singles, the album, and the record deal that followed.",
-        note: "Heritage, journey, era",
+          "Read the full story: Addis Ababa roots, Mekelle University, Azmari identity, journalism, acting, advocacy, and the journey from one phone to international stages.",
+        note: "Roots, study, mission",
       },
       {
         title: "Music & Videos",
         href: "/music",
         accent: "Catalogue",
         description:
-          "Every release from Nalegn to Meteriyaye — singles, the album, and the growing live catalogue. Available on all major platforms.",
-        note: "Singles, album, videos",
+          "Move through hit songs, official playlists, album visuals, and the music that built local and diaspora demand.",
+        note: "Singles, album, playlists",
       },
       {
         title: "Media",
         href: "/media",
         accent: "Official Images",
         description:
-          "High-resolution official portraits, campaign imagery, and press-ready visuals from the Meteriyaye era.",
-        note: "Portraits, campaign, press",
+          "Open approved portraits and press-ready imagery for interviews, features, and partner use.",
+        note: "Portraits, press, archive",
       },
     ],
   },
   archive: {
-    eyebrow: "Official Presence",
-    title: "The full story lives here.",
+    eyebrow: "The next chapter",
+    title: "This is not the end. This is only the beginning.",
     description:
-      "From Addis Ababa to global stages — the biography, the catalogue, the images, and the legacy of Adane Teka's daughter. Everything is in one place.",
-    primaryAction: { href: "/music", label: "Listen to Meteriyaye" },
-    secondaryAction: { href: "/media", label: "View Official Images" },
+      "Veronica is now working on a five-song multilingual EP and dreams of building a foundation for women, youth, and people in need while growing into a global African artist and businesswoman.",
+    primaryAction: { href: "/about", label: "Read Biography" },
+    secondaryAction: { href: "/music", label: "Open Music & Videos" },
     credits: [
       {
+        label: "Addis Ababa",
+        note: "Born and raised in the Ethiopian capital, where faith, family, and discipline shaped the foundation of the story.",
+      },
+      {
+        label: "Mekelle University",
+        note: "Earned a degree in Journalism and Communication, with a freedom-of-speech research paper preserved in the university library.",
+      },
+      {
+        label: "One phone",
+        note: "Started posting cover songs online with almost no resources while tutoring students and helping support her family.",
+      },
+      {
+        label: "Touring force",
+        note: "Built demand through nonstop live performances across Ethiopia before expanding to the Middle East, the United States, and Europe.",
+      },
+      {
         label: "Meteriyaye",
-        note: "The 12-track debut album — August 2024, 51 minutes, the defining record of her era.",
+        note: "Her debut album gained more than 41 million YouTube views within one year and became the highest paid album deal for an Ethiopian artist at the time.",
       },
       {
-        label: "Adane Teka Heritage",
-        note: "Born in Addis Ababa as the daughter of celebrated Ethiopian performer Adane Teka.",
-      },
-      {
-        label: "SBS Interview",
-        note: "In SBS Amharic, Veronica described Meteriyaye as built around love, hope, unity, patriotism, and peace.",
-      },
-      {
-        label: "Zojak Worldwide",
-        note: "Acquired by Zojak Worldwide in a record-setting deal reported by Addis Insight.",
-      },
-      {
-        label: "Singles 2021–2023",
-        note: "Tewu, Kurfya, Enaney, and Abebaye — the singles that built the audience before the album arrived.",
-      },
-      {
-        label: "Official Imagery",
-        note: "Portraits, campaign visuals, and press imagery from the Meteriyaye era — available in the media grid.",
+        label: "2025 recognition",
+        note: "African Union recognition, Zikomo Awards wins, AFRIMA recognition, and a growing advocacy voice marked a wider pan-African chapter.",
       },
     ],
   },
 };
-

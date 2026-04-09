@@ -1,15 +1,20 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Play } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { RevealBlock } from "@/components/animated-text";
 import { EditorialImage } from "@/components/editorial-image";
 import { HomeHeroSwiper } from "@/components/home-hero-swiper";
-import { HomePlaylistStatChip } from "@/components/home-playlist-stat-chip";
 import { TestimonialsCarousel } from "@/components/testimonials-carousel";
 import { YouTubeFacade } from "@/components/youtube-facade";
 import { getHomePageContent, homeResearchSignals } from "@/lib/artist-page-content";
 import { getCmsPage } from "@/lib/cms-store";
 import type { HomePageContent } from "@/lib/cms-types";
+import {
+  fetchPlaylistVideos,
+  formatPublished,
+  formatViews,
+  type PlaylistVideo,
+} from "@/lib/youtube-playlists";
 
 export const revalidate = 60;
 
@@ -22,6 +27,11 @@ type HomeGalleryItem = {
   note: string;
 };
 type HomePlaylistItem = HomePageContent["playlists"]["items"][number];
+type HomeFeaturedVideoItem = HomePlaylistItem & {
+  feedTitle: string;
+  leadVideo: PlaylistVideo | null;
+  playlistCount: number;
+};
 type HomeEditorialPairProps = {
   image: HomePageImage;
   imageEyebrow: string;
@@ -223,57 +233,62 @@ function resolveImageTitle(label: string | undefined, fallback: string) {
   return label;
 }
 
-function HomePlaylistPanel({
+function HomeFeaturedVideoCard({
   item,
-  variant = "secondary",
-  sequence,
+  index,
 }: {
-  item: HomePlaylistItem;
-  variant?: "feature" | "secondary";
-  sequence: number;
+  item: HomeFeaturedVideoItem;
+  index: number;
 }) {
+  const embedVideoId = item.leadVideo?.id ?? item.previewVideoId;
+  const videoTitle = item.leadVideo?.title ?? item.title;
+  const published = item.leadVideo ? formatPublished(item.leadVideo.published) : "";
+  const views = item.leadVideo ? formatViews(item.leadVideo.views) : "";
+  const meta = [published, views].filter(Boolean).join(" • ");
+  const playlistCountLabel =
+    item.playlistCount > 0
+      ? `${item.playlistCount} ${item.playlistCount === 1 ? "video" : "videos"}`
+      : item.stat;
+
   return (
     <RevealBlock
-      className={`home-playlist-panel home-playlist-panel--${variant}`.trim()}
+      className="home-playlist-video-card"
+      delay={0.08 + index * 0.08}
       distance={30}
-      variant={variant === "feature" ? "left" : "right"}
+      variant={index % 2 === 0 ? "left" : "right"}
     >
-      <div className={`home-playlist-media home-playlist-media--${variant}`.trim()}>
+      <div className="home-playlist-video-media">
         <YouTubeFacade
-          className="home-playlist-embed"
+          className="home-playlist-video-embed"
           fullscreenOnPlay
-          loading={variant === "feature" ? "eager" : "lazy"}
-          playlistId={item.playlistId}
-          thumbnailUrl={`https://i.ytimg.com/vi/${item.previewVideoId}/hqdefault.jpg`}
-          title={item.title}
+          loading={index === 0 ? "eager" : "lazy"}
+          thumbnailUrl={
+            item.leadVideo?.thumbnail ?? `https://i.ytimg.com/vi/${embedVideoId}/hqdefault.jpg`
+          }
+          title={videoTitle}
+          videoId={embedVideoId}
         />
-        <div className="home-playlist-media-wash" />
-        <div className="home-playlist-media-badge">
-          <span className="home-playlist-media-index">{String(sequence).padStart(2, "0")}</span>
-          <div className="home-playlist-media-chip-row">
-            <span className="home-playlist-media-label">{item.accent}</span>
-            <span className="home-playlist-stat">
-              <HomePlaylistStatChip value={item.stat} />
-            </span>
+        <div className="home-playlist-video-wash" />
+        <div className="home-playlist-video-topline">
+          <span className="home-playlist-video-index">{String(index + 1).padStart(2, "0")}</span>
+          <div className="home-playlist-video-chip-row">
+            <span className="home-playlist-video-chip">{item.accent}</span>
+            <span className="home-playlist-video-chip">{playlistCountLabel}</span>
+            {item.feedTitle && item.feedTitle !== item.title ? (
+              <span className="home-playlist-video-chip">{item.feedTitle}</span>
+            ) : null}
           </div>
-          <span className="home-playlist-media-hint">
-            <Play size={12} strokeWidth={2.2} />
-            Tap preview to play
-          </span>
-        </div>
-        <div className={`home-playlist-media-copy home-playlist-media-copy--${variant}`.trim()}>
-          <p className="home-playlist-media-note">{item.note}</p>
-          <h3 className={`display-title home-playlist-title home-playlist-title--${variant}`.trim()}>
-            {item.title}
-          </h3>
         </div>
       </div>
 
-      <div className={`home-playlist-copy-card home-playlist-copy-card--${variant}`.trim()}>
-        <p className="home-playlist-copy">{item.description}</p>
-        <div className="home-playlist-actions">
+      <div className="home-playlist-video-body">
+        <p className="section-label home-playlist-video-kicker">{item.title}</p>
+        <h3 className="display-title home-playlist-video-title">{videoTitle}</h3>
+        {meta ? <p className="home-playlist-video-meta">{meta}</p> : null}
+        <p className="home-playlist-video-description">{item.description}</p>
+        <div className="home-playlist-video-actions">
           <a
-            className={variant === "feature" ? "primary-button" : "secondary-button"}
+            className="primary-button"
             href={item.href}
             rel="noreferrer"
             target="_blank"
@@ -294,13 +309,23 @@ export default async function Home() {
   const visualRows = visualChaptersSet;
   const risePrimaryImage = content.rise.images[0] ?? content.heritage.image;
   const riseSecondaryImage = content.rise.images[1] ?? risePrimaryImage;
-  const campaignSupportPrimary =
-    content.campaign.supportingImages[0] ?? content.campaign.featureImage;
   const campaignSupportSecondary =
-    content.campaign.supportingImages[1] ?? campaignSupportPrimary;
+    content.campaign.supportingImages[1] ??
+    content.campaign.supportingImages[0] ??
+    content.campaign.featureImage;
   const hasTestimonials = content.testimonials.items.length > 0;
-  const primaryPlaylist = content.playlists.items[0];
-  const secondaryPlaylist = content.playlists.items[1];
+  const featuredVideos = await Promise.all(
+    content.playlists.items.slice(0, 4).map(async (item) => {
+      const feed = await fetchPlaylistVideos(item.playlistId);
+
+      return {
+        ...item,
+        feedTitle: feed.feedTitle,
+        leadVideo: feed.items[0] ?? null,
+        playlistCount: feed.items.length,
+      };
+    }),
+  );
 
   return (
     <main className="editorial-home home-redesign pb-16 sm:pb-20">
@@ -360,13 +385,10 @@ export default async function Home() {
             </div>
           </RevealBlock>
 
-          <div className="home-playlist-runway">
-            {primaryPlaylist ? (
-              <HomePlaylistPanel item={primaryPlaylist} sequence={1} variant="feature" />
-            ) : null}
-            {secondaryPlaylist ? (
-              <HomePlaylistPanel item={secondaryPlaylist} sequence={2} variant="secondary" />
-            ) : null}
+          <div className="home-playlist-grid">
+            {featuredVideos.map((item, index) => (
+              <HomeFeaturedVideoCard index={index} item={item} key={item.playlistId} />
+            ))}
           </div>
         </div>
       </section>
@@ -487,7 +509,7 @@ export default async function Home() {
           <HomeEditorialPair
             frameClassName="home-full-image-frame--split-standard"
             image={risePrimaryImage}
-            imageEyebrow="Tour frame"
+            imageEyebrow="Touring"
             imageSide="left"
             panelClassName="editorial-paper-panel home-editorial-copy-panel"
             panel={
@@ -526,15 +548,15 @@ export default async function Home() {
             className="home-editorial-pair--compact"
             frameClassName="home-full-image-frame--split-support"
             image={riseSecondaryImage}
-            imageEyebrow="Audience frame"
+            imageEyebrow="Global reach"
             imageSide="right"
             panelClassName="editorial-dark-panel home-editorial-copy-panel home-editorial-copy-panel--compact"
             panel={
               <>
                 <div>
-                  <p className="section-label">Audience atmosphere</p>
+                  <p className="section-label">Global demand</p>
                   <h3 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
-                    Performance images can stay full without losing the live emotion.
+                    Diaspora audiences carried Veronica from Ethiopia to the Middle East, the United States, and Europe.
                   </h3>
                 </div>
                 <p className="max-w-2xl text-base leading-8 text-white/72">
@@ -576,20 +598,21 @@ export default async function Home() {
             className="home-editorial-pair--compact home-editorial-pair--campaign-support"
             frameClassName="home-full-image-frame--split-support"
             image={campaignSupportSecondary}
-            imageEyebrow="Supporting frame"
+            imageEyebrow="Future chapter"
             imageSide="left"
             panelClassName="editorial-dark-panel home-editorial-copy-panel home-editorial-copy-panel--compact"
             panel={
               <>
                 <div>
-                  <p className="section-label">Supporting stills</p>
+                  <p className="section-label">Faith and future</p>
                   <h3 className="display-title mt-5 max-w-3xl text-4xl text-white sm:text-5xl">
-                    Press-ready images should feel open, tall, and immediate.
+                    Acting, advocacy, brand work, and a multilingual EP show how much larger the next chapter can become.
                   </h3>
                 </div>
                 <p className="max-w-2xl text-base leading-8 text-white/72">
-                  Additional campaign imagery for platform headers, press kits, release coverage,
-                  and social launch moments.
+                  She has supported women and communities, built a house for her father,
+                  represented Kelati Human Hair and Midea Ethiopia, and dreams of launching a
+                  foundation for women, youth, and people in need.
                 </p>
               </>
             }

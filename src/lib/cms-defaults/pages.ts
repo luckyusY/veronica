@@ -4,91 +4,141 @@ import { defaultMediaLibrary } from "@/lib/cms-defaults/shared";
 export const defaultAboutPageContent: StandardPageContent = {
   hero: {
     eyebrow: "About Veronica",
-    title: "A journey shaped by faith, study, sacrifice, and the courage to keep going.",
+    title: "Veronica Adane built her name through faith, study, sacrifice, and fearless self-definition.",
     description:
-      "Veronica Adane is an Ethiopian singer, songwriter, actress, and journalist whose story is built on faith, discipline, sacrifice, and purpose.",
-    highlightWords: ["faith", "discipline", "purpose"],
+      "Veronica Adane is an Ethiopian singer, songwriter, actress, journalist, and one of the most influential female artists in Ethiopia. Born and raised in Addis Ababa, she is widely known for turning humble beginnings into a career with discipline, courage, and belief in God.",
+    highlightWords: ["faith", "study", "sacrifice"],
     image: defaultMediaLibrary.cliff,
     imageMotionPreset: "from-right",
     imageLabel: "Official full-length studio portrait",
-    noteTitle: "A Modern Icon",
+    noteTitle: "From Addis Ababa",
     noteText:
-      "From recording cover songs on a single phone to becoming one of Ethiopia's most influential female artists.",
-    primaryCta: { href: "/media", label: "View press & media" },
-    secondaryCta: { href: "/music", label: "Explore releases" },
+      "Singer, songwriter, actress, journalist, and a powerful Ethiopian voice at home and abroad.",
+    primaryCta: { href: "/music", label: "Explore Music" },
+    secondaryCta: { href: "/media", label: "View Press & Media" },
   },
   sections: [
     {
-      id: "narrative-frame",
+      id: "roots-identity",
       type: "split",
       theme: "paper",
-      eyebrow: "The Origin",
+      eyebrow: "Heritage",
       title:
-        "Carrying heritage, courage, and deliberate self-definition into the global spotlight.",
+        "Family, Azmari identity, and the courage to turn inherited culture into public pride.",
       description:
-        "The story begins in Addis Ababa. Driven by a deep connection to the musical legacy of her father, Adane Teka, Veronica's trajectory is a testament to the power of independent artistry. What started as raw, unaccompanied vocal covers quickly gathered unstoppable momentum, bridging traditional Ethiopian roots with a sleek, contemporary global pop sensibility.",
-      image: defaultMediaLibrary.furSeated,
+        "Veronica is the daughter of Adane Teka, a respected Ethiopian traditional singer known for performing with the masinko and for powerful freestyle storytelling. His music carried Ethiopian culture, history, and social education to audiences in Ethiopia and abroad.",
+      body: [
+        "Adane Teka also used music as education. One of his best-known works focused on HIV awareness at a time when the virus was spreading widely, proving that art could teach as well as entertain.",
+        "When classmates tried to shame Veronica by calling her an Azmari daughter, she answered with pride. At her first major public performance she brought her father on stage, declared herself an Azmari daughter, and helped many other young people embrace that identity instead of hiding it.",
+      ],
+      image: defaultMediaLibrary.microphone,
       imageSide: "right",
       imageMotionPreset: "from-right",
       tallImage: true,
       cards: [
-        { title: "Faith", description: "A deep-seated belief and discipline sit at the absolute center of her story." },
-        { title: "Identity", description: "The Azmari heritage is presented and celebrated with pride, not apology." },
         {
-          title: "Study",
-          description: "Graduating with a degree in journalism, her academic rigor heavily influences her songwriting and advocacy.",
+          title: "Adane Teka",
+          description: "A respected traditional singer whose masinko performances and storytelling introduced Ethiopian culture to audiences around the world.",
+        },
+        {
+          title: "Azmari",
+          description: "A cultural role rooted in music and oral storytelling that Veronica openly reclaimed with pride.",
+        },
+        {
+          title: "Identity",
+          description: "Her public image is built on honoring family, culture, and truth rather than running from them.",
         },
       ],
       cardVariant: "note",
     },
     {
-      id: "story-layers",
+      id: "formation",
       type: "timeline",
       theme: "dark",
-      eyebrow: "Milestones",
-      title: "From local recognition to international reach.",
+      eyebrow: "Formation",
+      title: "Education, work, and the long road before the breakout.",
       description:
-        "Building a music career independently is not just about releasing records. It is about emotional connection, sacrifice, and elevating the cultural conversation at every step.",
+        "Her rise was not instant. It was built through study, side work, leadership roles, and years of steady effort before the biggest songs arrived.",
       items: [
-        "Raised in Addis Ababa, deeply shaped by the musical and storytelling legacy of Adane Teka.",
-        "Graduated from Mekelle University in journalism and communication, laying the foundation for her media presence.",
-        "Began sharing cover performances online using only a mobile phone while simultaneously supporting her family and studies.",
-        "Transitioned into full-time music, funding her own high-end releases and music videos entirely through live performance income.",
-        "Expanded from national Ethiopian recognition to massive diaspora tours spanning the US, Europe, and the Middle East.",
+        "Earned a Bachelor's Degree in Journalism and Communication from Mekelle University with strong academic results.",
+        "Completed a research project on freedom of speech that was placed in the university library as a reference paper for other students.",
+        "While still a student, supported herself and her family as a private tutor and even sent money for her sister's education.",
+        "Started sharing cover songs online with no studio, no budget, no team, and only one mobile phone.",
+        "Became one of the first Ethiopian artists to consistently post cover videos on social media, inspiring other young artists across the country.",
+        "Worked at DCT Entertainment as an Online Director and Event Manager after graduation.",
+        "On December 20, 2019, was selected and paid to perform the Ethiopian Flag Song at the historic ETRSS-1 celebration attended by senior national leaders.",
+        "Left a stable professional career to pursue music full time.",
       ],
     },
     {
-      id: "biography-atmosphere",
-      type: "banner",
-      theme: "dark",
-      eyebrow: "The Vision",
-      title: "A public image built on both unshakeable confidence and genuine warmth.",
-      image: defaultMediaLibrary.stage,
-      imageMotionPreset: "settle-left",
-    },
-    {
-      id: "biography-chapters",
+      id: "music-recognition",
       type: "cards",
       theme: "paper",
-      eyebrow: "Core Foundations",
-      title: "The pillars of the Veronica Adane identity.",
+      eyebrow: "Music and recognition",
+      title: "Hit songs, national touring, international demand, and album success turned momentum into scale.",
+      description:
+        "As live demand surged, Veronica often performed multiple shows in one night and used that income to fund her music independently.",
+      columns: 2,
+      cardVariant: "route",
       items: [
         {
-          title: "Azmari Heritage",
+          title: "Hit songs",
+          accent: "YouTube reach",
           description:
-            "Veronica proudly reclaims the Azmari identity through the legacy of her father, Adane Teka, continuing long traditions of Ethiopian storytelling and musical expression.",
+            "Songs like Tew (16M+), Tefet Alegn (23M+), Kurfya (11M+), Abebaye (17M+), Enaney (33M+), and Nalegn built a major audience on YouTube.",
         },
         {
-          title: "Journalism & Advocacy",
+          title: "National tour",
+          accent: "Across Ethiopia",
           description:
-            "Her background in journalism adds profound depth to her lyricism, allowing her to advocate effectively for truth, women's empowerment, and social progression.",
+            "Before releasing the album, she toured Addis Ababa, Gondar, Hawassa, Harar, Dire Dawa, Bahir Dar, Arba Minch, Dilla, and many other cities across Ethiopia.",
         },
         {
-          title: "Fierce Independence",
+          title: "International tours",
+          accent: "Middle East / US / Europe",
           description:
-            "From DIY phone recordings to fully realized cinematic campaigns, her entire catalogue and touring empire has been built independently through grit and self-belief.",
+            "Diaspora demand took her to Dubai, Abu Dhabi, Qatar, Bahrain, Israel, major US cities, and the Meteriyaye tour across Amsterdam, Paris, Zurich, Oslo, Frankfurt, and Stockholm.",
+        },
+        {
+          title: "Meteriyaye",
+          accent: "41M+ in one year",
+          description:
+            "Released with Zojak Worldwide, the debut album gained more than 41 million YouTube views within one year and became the highest paid album deal for an Ethiopian artist at the time.",
         },
       ],
+    },
+    {
+      id: "voice-future",
+      type: "split",
+      theme: "dark",
+      eyebrow: "Voice and future",
+      title: "Acting, advocacy, and a wider mission now sit alongside the music.",
+      description:
+        "Veronica's platform reaches beyond entertainment. She acted in Key Mesmer, a story about women's struggles and sexual violence, and she uses her journalism background to speak for women, children, and other unheard communities.",
+      body: [
+        "Her social reach includes more than 800,000 followers on Instagram, 500,000 on Facebook, and 1.8 million on TikTok, giving her major influence across audiences at home and in the diaspora.",
+        "In 2025 she was welcomed as a Special Guest at the African Union, later received Best Female Artist of the Year and Best Female Performing Artist of the Year at the Zikomo Awards, and also earned AFRIMA recognition in Nigeria.",
+        "She is a brand ambassador for Kelati Human Hair and Midea Ethiopia, has supported women and communities, built a house for her father, and is now working on a five-song multilingual EP plus a future foundation for women, youth, and people in need.",
+      ],
+      image: defaultMediaLibrary.stage,
+      imageSide: "left",
+      imageMotionPreset: "from-left",
+      tallImage: true,
+      cards: [
+        {
+          title: "Acting",
+          description: "Her screen work includes Key Mesmer, with another film project on the way.",
+        },
+        {
+          title: "Advocacy",
+          description: "Her public advocacy on the case of a seven-year-old girl reached international media including BBC and Al Jazeera.",
+        },
+        {
+          title: "Future",
+          description: "She aims to grow as a global African artist, successful businesswoman, and founder of a foundation that serves women, youth, and people in need.",
+        },
+      ],
+      cardVariant: "dark-note",
     },
   ],
 };
