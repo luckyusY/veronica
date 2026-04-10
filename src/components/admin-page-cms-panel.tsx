@@ -158,6 +158,43 @@ function getEditablePageContent(slug: CmsPageSlug, content: unknown) {
   return content;
 }
 
+function getSectionEditorTitle(
+  slug: CmsPageSlug,
+  sectionKey: string,
+  sectionValue: unknown,
+) {
+  const fallback = humanizeKey(sectionKey);
+
+  if (slug === "home") {
+    if (sectionKey === "signals") {
+      return "Signal band";
+    }
+
+    if (isPlainObject(sectionValue)) {
+      const eyebrow =
+        typeof sectionValue.eyebrow === "string" ? sectionValue.eyebrow.trim() : "";
+      const title =
+        sectionKey === "hero"
+          ? typeof sectionValue.headlineTop === "string"
+            ? sectionValue.headlineTop.trim()
+            : ""
+          : typeof sectionValue.title === "string"
+            ? sectionValue.title.trim()
+            : "";
+
+      if (eyebrow) {
+        return `${fallback} · ${eyebrow}`;
+      }
+
+      if (title) {
+        return `${fallback} · ${title}`;
+      }
+    }
+  }
+
+  return fallback;
+}
+
 function createDraftState(page: CmsPageWorkspaceDocument): PageDraft {
   return {
     name: page.name,
@@ -756,7 +793,11 @@ export function AdminPageCmsPanel({
                     })
                   }
                   sectionKey={sectionKey}
-                  title={humanizeKey(sectionKey)}
+                  title={getSectionEditorTitle(
+                    selectedPage.slug,
+                    sectionKey,
+                    (selectedDraft.content as Record<string, unknown>)[sectionKey],
+                  )}
                   value={(selectedDraft.content as Record<string, unknown>)[sectionKey]}
                 >
                   <SectionFieldsRenderer
