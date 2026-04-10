@@ -183,11 +183,11 @@ function getSectionEditorTitle(
             : "";
 
       if (eyebrow) {
-        return `${fallback} · ${eyebrow}`;
+        return eyebrow;
       }
 
       if (title) {
-        return `${fallback} · ${title}`;
+        return title;
       }
     }
   }
