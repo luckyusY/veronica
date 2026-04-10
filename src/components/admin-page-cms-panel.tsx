@@ -6,7 +6,11 @@ import { ArrowLeft, ExternalLink, FileJson, LoaderCircle, RefreshCcw, Rocket, Sa
 import { SectionEditor } from "@/components/admin/cms/SectionEditor";
 import { SectionFieldsRenderer } from "@/components/admin/cms/SectionFieldsRenderer";
 import { MultiImagePickerField } from "@/components/admin/cms/fields/MultiImagePickerField";
-import { getHomePageContent, getSelectedMediaGridItems } from "@/lib/artist-page-content";
+import {
+  getAboutPageContent,
+  getHomePageContent,
+  getSelectedMediaGridItems,
+} from "@/lib/artist-page-content";
 import { defaultCmsPageContent } from "@/lib/cms-defaults";
 import { defaultMediaLibrary } from "@/lib/cms-defaults/shared";
 import {
@@ -153,6 +157,10 @@ function getEditablePageContent(slug: CmsPageSlug, content: unknown) {
 
   if (slug === "home") {
     return getHomePageContent(content as HomePageContent);
+  }
+
+  if (slug === "about") {
+    return getAboutPageContent(content as StandardPageContent);
   }
 
   return content;
